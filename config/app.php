@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'TrackMyVaccine'),
 
     /*
     |--------------------------------------------------------------------------
@@ -174,6 +174,11 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        /**
+         * Third Party Service Providers...
+         */
+        jeremykenedy\LaravelRoles\RolesServiceProvider::class,
 
     ],
 
