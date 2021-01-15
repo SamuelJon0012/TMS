@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+// use jeremykenedy\LaravelRoles\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,15 +19,16 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+// LaravelRoles::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Route::get('/roles', 'LaravelRolesController@index')->name('laravelroles::roles.index'); //jeremykenedy\laravel-roles\src\App\Http\Controllers
 
-Route::group(['prefix' => 'roles', 'namespace' => 'jeremykenedy\LaravelRoles\App\Http\Controllers', 'middleware' => ['web', 'auth']], function () {
+/*Route::group(['prefix' => 'roles', 'namespace' => 'jeremykenedy\LaravelRoles\App\Http\Controllers'], function () {
 
     // Dashboards
-    Route::get('/', 'LaravelRolesController@index')->name('laravelroles::roles.index');
+    Route::get('/', 'LaravelRolesController@index');
     // Route::get('/cleared', ['uses' => 'LaravelLoggerController@showClearedActivityLog'])->name('cleared');
 
-});
+});*/
