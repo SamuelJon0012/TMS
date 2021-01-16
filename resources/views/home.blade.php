@@ -15,6 +15,11 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
+                    @if(Auth::check() && Auth::user()->hasRole('admin'))
+                        user has admin role
+                    @endif
+
                 </div>
             </div>
         </div>
