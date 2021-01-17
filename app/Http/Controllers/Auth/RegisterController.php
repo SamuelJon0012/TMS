@@ -70,14 +70,19 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);*/
 
+        // dd($data);
+
         $user = config('roles.models.defaultUser')::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
 
-        $role = config('roles.models.role')::where('name', '=', 'User')->first();  //choose the default role upon user creation.
-        $user->attachRole($role);
+        if($data['r_type']) {
+          $role = config('roles.models.role')::where('slug', '=', $data['r_type'])->first();  //choose the default role upon user creation.
+          if($role)
+            $user->attachRole($role);
+        }
 
         return $user;
     }
