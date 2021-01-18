@@ -69,12 +69,12 @@
                             </div>
                         </div>
 
-
+                        @if(request()->get('rt') == "patient")
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Date Of Birth') }}</label>
 
                             <div class="col-md-6">
-                                <input id="dob" type="date" class="form-control @error('dob') is-invalid @enderror" name="name" value="{{ old('dob') }}" required autocomplete="dob">
+                                <input id="dob" type="date" class="form-control @error('dob') is-invalid @enderror" name="dob" value="{{ old('dob') }}" required autocomplete="dob">
 
                                 @error('dob')
                                     <span class="invalid-feedback" role="alert">
@@ -83,6 +83,39 @@
                                 @enderror
                             </div>
                         </div>
+
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Primary Phone Number') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
+
+                                @error('phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Power of Attorney Name (optional)') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="power" type="text" class="form-control @error('power') is-invalid @enderror" name="power" value="{{ old('power') }}" autocomplete="power">
+
+                                @error('power')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        @else
+                          <input id="dob" type="hidden" name="dob" value=""><input id="phone" type="hidden" name="phone" value=""><input id="power" type="hidden" name="power" value="">
+                        @endif
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

@@ -53,6 +53,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // 'dob' => ['required', 'date'],
+            // 'name' => ['required', 'string', 'max:100'],
         ]);
     }
 
@@ -75,6 +77,9 @@ class RegisterController extends Controller
         $user = config('roles.models.defaultUser')::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'dob' => $data['dob'],
+            'phone' => $data['phone'],
+            'power' => $data['power'],
             'password' => bcrypt($data['password']),
         ]);
 
