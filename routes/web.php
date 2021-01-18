@@ -15,20 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route('login'));//return view('welcome');
 });
 
 Auth::routes();
-// LaravelRoles::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-// Route::get('/roles', 'LaravelRolesController@index')->name('laravelroles::roles.index'); //jeremykenedy\laravel-roles\src\App\Http\Controllers
-
-/*Route::group(['prefix' => 'roles', 'namespace' => 'jeremykenedy\LaravelRoles\App\Http\Controllers'], function () {
-
-    // Dashboards
-    Route::get('/', 'LaravelRolesController@index');
-    // Route::get('/cleared', ['uses' => 'LaravelLoggerController@showClearedActivityLog'])->name('cleared');
-
-});*/

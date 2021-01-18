@@ -5,7 +5,21 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+                <div class="card-header">
+                  @if(Auth::check() && Auth::user()->hasRole('patient'))
+                    {{ __('Patient') }}
+                  @endif
+
+                  @if(Auth::check() && Auth::user()->hasRole('provider'))
+                    {{ __('Provider') }}
+                  @endif
+
+                  @if(Auth::check() && Auth::user()->hasRole('admin'))
+                    {{ __('Admin') }}
+                  @endif
+
+                  {{ __('Dashboard') }}
+                </div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,11 +28,20 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    {{ __('You are logged in ! ') }}
 
-                    @if(Auth::check() && Auth::user()->hasRole('admin'))
-                        user has admin role
-                    @endif
+                    <br><br>
+                    <b>
+                      @if(Auth::check() && Auth::user()->hasRole('patient'))
+                        {{ __('PATIENT') }}
+                      @endif
+
+                      @if(Auth::check() && Auth::user()->hasRole('provider'))
+                        {{ __('PROVIDER') }}
+                      @endif
+                      Menus will be coming here.
+                    </b>
+
 
                 </div>
             </div>
