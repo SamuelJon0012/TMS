@@ -24,3 +24,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 #Route::webhooks('api/xcelerateudi');
+
+Route::get('/addvaccine', function () {
+    return view('addvaccine');
+});
