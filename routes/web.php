@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 // use jeremykenedy\LaravelRoles\Route;
 
 /*
@@ -21,3 +22,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+#Route::webhooks('api/xcelerateudi');
+
+Route::get('/addvaccine', function () {
+    return view('addvaccine');
+});
