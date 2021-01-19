@@ -73,7 +73,7 @@
                 <button class="btn btn-primary form-control">Schedule a Vaccine Visit</button>
               </div>
               <div class="col-6">
-                <button class="btn btn-primary form-control">Add a Vaccine</button>
+                <button class="btn btn-primary form-control" id="addVaccine">Add a Vaccine</button>
               </div>
             </div>
           @endif
@@ -175,7 +175,7 @@
 @section('scriptJs')
 
 $(document).ready(function(){
-  $("#myvaccine-button").click(function(){
+  $("#addVaccine").click(function(){
     window.location.href = 'addvaccine';
   });
 });
