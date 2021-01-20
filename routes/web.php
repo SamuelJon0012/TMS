@@ -24,3 +24,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/addvaccine', function () {
     return view('addvaccine');
 });
+
+Route::resource('patientvaccine', 'PatientVaccineController');
