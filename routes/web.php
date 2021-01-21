@@ -23,13 +23,28 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-// Grab the jwt from BurstIq for the current user and store it as a Cookie
-#Route::get('/jwt', 'BurstIqController@jwt')->name('jwt');
+/*
+ *
+ *  Testing BurstIq methods
+ *
+ */
+
+Route::get('/biq/test-status', 'BurstIqTestController@status')->name('test_status');
+Route::get('/biq/test-login', 'BurstIqTestController@login')->name('test_login');
+Route::get('/biq/test-getting-a-chain', 'BurstIqTestController@testGettingAChain')->name('test_getting_a_chain');
+Route::get('/biq/test-getting-a-patient', 'BurstIqTestController@testGettingAPatient')->name('test_getting_a_patient');
+Route::get('/biq/test-upserting-a-patient', 'BurstIqTestController@testUpsertingAPatient')->name('test_upserting_a_patient');
+
+
+/*
+ *
+ *  Actual BurstIq methods
+ *
+ */
 
 Route::get('/biq/status', 'BurstIqController@status')->name('status');
 Route::get('/biq/login', 'BurstIqController@login')->name('login');
-Route::get('/biq/test', 'BurstIqController@test')->name('test');
-Route::get('/biq/test2', 'BurstIqController@test2')->name('test2');
+
 
 #Route::webhooks('api/xcelerateudi');
 
