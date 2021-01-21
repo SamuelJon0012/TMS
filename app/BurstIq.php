@@ -4,38 +4,57 @@ namespace App;
 use Illuminate\Http\Request;
 
 
-
+/**
+ * Class BurstIq
+ * @package App
+ */
 class BurstIq
 {
     // Abstract BurstIq model - extend this for each asset
 
-    const BI_USERNAME = 'erik.olson@trackmysolutions.us'; // this will be the actual user username
-    const BI_PASSWORD = 'Mermaid7!!'; // this will be the actual user password
     const BI_PUBLIC_KEY = '5e30e5d7ac277901e92dbae9f5c6d17126a8463a'; // put this in .env
     const BI_BASE_URL = 'https://stage-trackmy.burstiq.com/trackmy/'; // ''
 
-    protected $url, $username, $password, $jwt, $data;
+
+    protected $url, $username, $password, $jwt, $data, $id=0;
 
     # Put a wrapper around queries to attempt to re-login if jwt is expired?  Or logout the user <-- this
 
-    public function __construct() {
+    /**
+     * BurstIq constructor.
+     * @param false $username
+     * @param false $password
+     *
+     * Optional username and password in constructor
+     *
+     * You can also pass them with $this->login() method.  login() creates the JWT used by the other methods
+     *
+     */
+    public function __construct($username=false, $password=false) {
 
         # Do not instantiate this object if the user isn't logged in except for Registration, and right now we don't have this
 
-        # if(user_is_logged_in) { ...
-
-        $this->username = self::BI_USERNAME;
-        $this->password = self::BI_PASSWORD;
+        # if(user_is_logged_in)
 
         $this->jwt = session('bi_jwt', false);
 
         if (empty($this->jwt)) {
 
-            $this->login();
+            if ($username && $password) {
+
+                $this->username  = $username;
+                $this->password = $password;
+
+                $this->login($username, $password);
+
+            }
 
         }
     }
 
+    /**
+     * @return bool|string
+     */
     function status() {
 
         $this->url = self::BI_BASE_URL . 'util/status';
@@ -45,11 +64,15 @@ class BurstIq
 
     }
 
-    function login(Request $request = null) {
+    /**
+     * @param $username
+     * @param $password
+     * @return mixed
+     */
+    function login($username, $password) {
 
-        $this->username = self::BI_USERNAME;
-
-        $this->password = self::BI_PASSWORD;
+        $this->username = $username;
+        $this->password = $password;
 
         $this->url = self::BI_BASE_URL . 'util/login';
 
@@ -63,9 +86,13 @@ class BurstIq
 
         return $this->jwt;
 
-
     }
 
+    /**
+     * @param $chain
+     * @param $query
+     * @return bool|string
+     */
     function query($chain, $query) {
 
         $postFields = "{
@@ -78,6 +105,11 @@ class BurstIq
 
     }
 
+    /**
+     * @param $chain
+     * @param $postFields
+     * @return bool|string
+     */
     function upsert($chain, $postFields) {
 
         if (gettype($postFields) != 'string') {
@@ -90,6 +122,9 @@ class BurstIq
 
     }
 
+    /**
+     * @return bool|string
+     */
     function getCurl() {
 
         $curl = curl_init();
@@ -115,6 +150,10 @@ class BurstIq
 
     }
 
+    /**
+     * @param $postFields
+     * @return bool|string
+     */
     function postCurl($postFields) {
 
         $curl = curl_init();
@@ -141,6 +180,10 @@ class BurstIq
         return $response;
     }
 
+    /**
+     * @param $postFields
+     * @return bool|string
+     */
     function putCurl($postFields) {
 
         $curl = curl_init();
@@ -166,5 +209,88 @@ class BurstIq
         curl_close($curl);
         return $response;
     }
+
+    /**
+     * @param string $username
+     * @return mixed
+     */
+    public function setUsername(string $username): PatientProfile
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     * @return mixed
+     */
+    public function setPassword(string $password): PatientProfile
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJwt()
+    {
+        return $this->jwt;
+    }
+
+    /**
+     * @param  $jwt
+     * @return mixed
+     */
+    public function setJwt($jwt)
+    {
+        $this->jwt = $jwt;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param mixed $data
+     * @return mixed
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     * @return mixed
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
 
 }

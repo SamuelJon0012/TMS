@@ -14,7 +14,6 @@ class PatientProfile extends BurstIq
     # $this->upsert(chain, postfields) accepts object or json_encoded object
     # see BurtIqController for examples
 
-    private $id;
     private $email;
     private $relationship_to_owner;
     private $first_name;
@@ -30,7 +29,19 @@ class PatientProfile extends BurstIq
     private $dl_number;
     private $ethnicity;
     private $race;
-    private $phone_numbers;
+    private $phone_numbers; # Array of arrays [ is_primary / phone_type / phone_number ]
+    private $insurances; # Array of arrays:
+    /*
+        administrator_name
+        group_id
+        employer_name
+        coverage_effective_date
+        issuer_id
+        primary_cardholder
+        patient_profile_id
+        insurance_type
+     */
+
 
     /**
      * @return mixed
@@ -44,7 +55,7 @@ class PatientProfile extends BurstIq
      * @param mixed $url
      * @return PatientProfile
      */
-    public function setUrl($url)
+    public function setUrl($url): PatientProfile
     {
         $this->url = $url;
         return $this;
@@ -56,88 +67,6 @@ class PatientProfile extends BurstIq
     public function getUsername(): string
     {
         return $this->username;
-    }
-
-    /**
-     * @param string $username
-     * @return PatientProfile
-     */
-    public function setUsername(string $username): PatientProfile
-    {
-        $this->username = $username;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param string $password
-     * @return PatientProfile
-     */
-    public function setPassword(string $password): PatientProfile
-    {
-        $this->password = $password;
-        return $this;
-    }
-
-    /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed
-     */
-    public function getJwt()
-    {
-        return $this->jwt;
-    }
-
-    /**
-     * @param \Illuminate\Contracts\Foundation\Application|\Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed $jwt
-     * @return PatientProfile
-     */
-    public function setJwt($jwt)
-    {
-        $this->jwt = $jwt;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * @param mixed $data
-     * @return PatientProfile
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     * @return PatientProfile
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
     }
 
     /**
@@ -170,7 +99,7 @@ class PatientProfile extends BurstIq
      * @param mixed $relationship_to_owner
      * @return PatientProfile
      */
-    public function setRelationshipToOwner($relationship_to_owner)
+    public function setRelationshipToOwner($relationship_to_owner): PatientProfile
     {
         $this->relationship_to_owner = $relationship_to_owner;
         return $this;
@@ -206,7 +135,7 @@ class PatientProfile extends BurstIq
      * @param mixed $last_name
      * @return PatientProfile
      */
-    public function setLastName($last_name)
+    public function setLastName($last_name): PatientProfile
     {
         $this->last_name = $last_name;
         return $this;
@@ -224,7 +153,7 @@ class PatientProfile extends BurstIq
      * @param mixed $date_of_birth
      * @return PatientProfile
      */
-    public function setDateOfBirth($date_of_birth)
+    public function setDateOfBirth($date_of_birth): PatientProfile
     {
         $this->date_of_birth = $date_of_birth;
         return $this;
@@ -242,7 +171,7 @@ class PatientProfile extends BurstIq
      * @param mixed $address1
      * @return PatientProfile
      */
-    public function setAddress1($address1)
+    public function setAddress1($address1): PatientProfile
     {
         $this->address1 = $address1;
         return $this;
@@ -260,7 +189,7 @@ class PatientProfile extends BurstIq
      * @param mixed $address2
      * @return PatientProfile
      */
-    public function setAddress2($address2)
+    public function setAddress2($address2): PatientProfile
     {
         $this->address2 = $address2;
         return $this;
@@ -278,7 +207,7 @@ class PatientProfile extends BurstIq
      * @param mixed $city
      * @return PatientProfile
      */
-    public function setCity($city)
+    public function setCity($city): PatientProfile
     {
         $this->city = $city;
         return $this;
@@ -296,7 +225,7 @@ class PatientProfile extends BurstIq
      * @param mixed $state
      * @return PatientProfile
      */
-    public function setState($state)
+    public function setState($state): PatientProfile
     {
         $this->state = $state;
         return $this;
@@ -314,7 +243,7 @@ class PatientProfile extends BurstIq
      * @param mixed $zipcode
      * @return PatientProfile
      */
-    public function setZipcode($zipcode)
+    public function setZipcode($zipcode): PatientProfile
     {
         $this->zipcode = $zipcode;
         return $this;
@@ -350,7 +279,7 @@ class PatientProfile extends BurstIq
      * @param mixed $dl_state
      * @return PatientProfile
      */
-    public function setDlState($dl_state)
+    public function setDlState($dl_state): PatientProfile
     {
         $this->dl_state = $dl_state;
         return $this;
@@ -368,7 +297,7 @@ class PatientProfile extends BurstIq
      * @param mixed $dl_number
      * @return PatientProfile
      */
-    public function setDlNumber($dl_number)
+    public function setDlNumber($dl_number): PatientProfile
     {
         $this->dl_number = $dl_number;
         return $this;
@@ -386,7 +315,7 @@ class PatientProfile extends BurstIq
      * @param mixed $ethnicity
      * @return PatientProfile
      */
-    public function setEthnicity($ethnicity)
+    public function setEthnicity($ethnicity): PatientProfile
     {
         $this->ethnicity = $ethnicity;
         return $this;
@@ -421,15 +350,164 @@ class PatientProfile extends BurstIq
     /**
      * @param mixed $phone_numbers
      * @return PatientProfile
+     *
+     * Array of arrays or objects [ is_primary / phone_type / phone_number ]
+     *
+     * @throws \Exception
      */
-    public function setPhoneNumbers($phone_numbers)
+    public function setPhoneNumbers($phone_numbers): PatientProfile
     {
-        $this->phone_numbers = $phone_numbers;
+
+        $phone_numbers_array = [];
+
+        try {
+
+            foreach ($phone_numbers as $phone_number) {
+
+                $phone_number = (array) $phone_number;
+
+                # cause an exception if any of these do not exist
+
+                $phone_numbers_array[] =
+                [
+                    'is_primary' => $phone_number['is_primary'],
+                    'phone_type' => $phone_number['phone_type'],
+                    'phone_number' => $phone_number['phone_number']
+                ];
+            }
+        } catch (\Exception $e) {
+
+            throw new \Exception('Invalid phone numbers passed to setPhoneNumbers in PatientProfile. Parameter must be a string or an array of phone number objects');
+        }
+
+        $this->phone_numbers = $phone_numbers_array;
         return $this;
     }
 
-    
+    /**
+     * @return mixed
+     */
+    public function getInsurances()
+    {
+        return $this->insurances;
+    }
 
+    /**
+     * @param mixed $insurances
+     * @return PatientProfile
+     *
+     * Array of arrays or objects
+     *
+     * @throws \Exception
+     */
+    public function setInsurances($insurances): PatientProfile
+    {
+
+        $insurances_array = [];
+
+
+        try {
+
+            foreach ($insurances as $insurance) {
+
+                $insurance = (array) $insurance;
+
+                # cause an exception if any of these do not exist
+
+                $insurances_array[] =
+                [
+                    'administrator_name' => $insurance['administrator_name'],
+                    'group_id' => $insurance['group_id'],
+                    'employer_name' => $insurance['employer_name'],
+                    'coverage_effective_date' => $insurance['coverage_effective_date'],
+                    'issuer_id' => $insurance['issuer_id'],
+                    'primary_cardholder' => $insurance['primary_cardholder'],
+                    'patient_profile_id' => $insurance['patient_profile_id'],
+                    'insurance_type' => $insurance['insurance_type'],
+                ];
+            }
+        } catch (\Exception $e) {
+
+            throw new \Exception('Invalid insurances passed to setInsurances in PatientProfile. Parameter must be a string or an array of insirance objects');
+        }
+
+        $this->insurances = $insurances_array;
+        return $this;
+    }
+
+    public function save() {
+
+        // Create sub asset json strings, then assemble the whole body for posting
+
+        $phone_numbers = ""; // default to empty
+
+        foreach ($this->phone_numbers as $phone_number) {
+
+            $phone_numbers .= "{
+                \"is_primary\":\"{$phone_number['is_primary']}\",
+                \"phone_type\":\"{$phone_number['phone_type']}\",
+                \"phone_number\": \"{$phone_number['phone_number']}\"
+            },";
+        }
+
+        $phone_numbers = '[' . trim($phone_numbers, ',') . ']';
+
+        $insurances = '';
+
+        foreach ($this->insurances as $insurance) {
+
+            $insurances .= "{
+                \"administrator_name\":\"{$insurance['administrator_name']}\",
+                \"group_id\":\"{$insurance['group_id']}\",
+                \"employer_name\":\"{$insurance['employer_name']}\",
+                \"coverage_effective_date\":\"{$insurance['coverage_effective_date']}\",
+                \"issuer_id\":\"{$insurance['issuer_id']}\",
+                \"primary_cardholder\":\"{$insurance['primary_cardholder']}\",
+                \"patient_profile_id\":\"{$insurance['patient_profile_id']}\",
+                \"insurance_type\": \"{$insurance['insurance_type']}\"
+            },";
+
+            $insurances = '[' . trim($insurances, ',') . ']';
+        }
+
+        $json = "{
+            \"id\": \"$this->id\",
+            \"email\": \"$this->email\",
+            \"first_name\": \"$this->first_name\",
+            \"last_name\": \"$this->last_name\",
+            \"relationship_to_owner\": \"$this->relationship_to_owner\",
+            \"date_of_birth\":\"$this->date_of_birth\",
+            \"address1\":\"$this->address1\",
+            \"address2\":\"$this->address2\",
+            \"city\":\"$this->city\",
+            \"state\":\"$this->state\",
+            \"zipcode\":\"$this->zipcode\",
+            \"ssn\":\"$this->ssn\",
+            \"dl_state\":\"$this->dl_state\",
+            \"dl_number\":\"$this->dl_number\",
+            \"ethnicity\":\"$this->ethnicity\",
+            \"race\":\"$this->race\",
+            \"phone_numbers\": $phone_numbers,
+            \"insurance\": $insurances
+            }";
+
+        #exit($json);
+
+        return $this->upsert('patient_profile', $json);
+
+    }
+
+    public function get($query) {
+
+        $json = $this->query('patient_profile', $query);
+
+        $data = json_decode($json);
+
+        var_dump($data); exit;
+
+        return $this;
+
+    }
 
 
 }
