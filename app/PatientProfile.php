@@ -14,6 +14,9 @@ class PatientProfile extends BurstIq
     # $this->upsert(chain, postfields) accepts object or json_encoded object
     # see BurtIqController for examples
 
+    protected $chain = 'patient_profile';
+    protected $view = 'biq/patient_profile';
+
     private $email;
     private $relationship_to_owner;
     private $first_name;
@@ -435,79 +438,62 @@ class PatientProfile extends BurstIq
         return $this;
     }
 
-    public function save() {
+    public function make($record) {
 
-        // Create sub asset json strings, then assemble the whole body for posting
+        # get the full asset object
 
-        $phone_numbers = ""; // default to empty
+        $asset = $record->asset;
 
-        foreach ($this->phone_numbers as $phone_number) {
+        $this->id = $asset->id;
+        $this->email = $asset->email;
+        $this->relationship_to_owner = $asset->   relationship_to_owner;
+        $this->first_name = $asset->first_name;
+        $this->last_name = $asset->last_name;
+        $this->date_of_birth = $asset->date_of_birth;
+        $this->address1 = $asset->address1;
+        $this->address2 = $asset->address2;
+        $this->city = $asset->city;
+        $this->state = $asset->state;
+        $this->zipcode = $asset->zipcode;
+        $this->ssn = $asset->ssn;
+        $this->dl_state = $asset->dl_state;
+        $this->dl_number = $asset->dl_number;
+        $this->ethnicity = $asset->ethnicity;
+        $this->race = $asset->race;
+        $this->phone_numbers = $asset->phone_numbers;
+        $this->insurances = $asset->insurance;
 
-            $phone_numbers .= "{
-                \"is_primary\":\"{$phone_number['is_primary']}\",
-                \"phone_type\":\"{$phone_number['phone_type']}\",
-                \"phone_number\": \"{$phone_number['phone_number']}\"
-            },";
-        }
+        # make a useful array of this row
 
-        $phone_numbers = '[' . trim($phone_numbers, ',') . ']';
+        $array = [
 
-        $insurances = '';
+            'id' => $asset->id,
+            'email' => $asset->email,
+            'relationship_to_owner' => $asset->   relationship_to_owner,
+            'first_name' => $asset->first_name,
+            'last_name' => $asset->last_name,
+            'date_of_birth' => $asset->date_of_birth,
+            'address1' => $asset->address1,
+            'address2' => $asset->address2,
+            'city' => $asset->city,
+            'state' => $asset->state,
+            'zipcode' => $asset->zipcode,
+            'ssn' => $asset->ssn,
+            'dl_state' => $asset->dl_state,
+            'dl_number' => $asset->dl_number,
+            'ethnicity' => $asset->ethnicity,
+            'race' => $asset->race,
+            'phone_numbers' => $asset->phone_numbers,
+            'insurances' => $asset->insurance
 
-        foreach ($this->insurances as $insurance) {
+        ];
 
-            $insurances .= "{
-                \"administrator_name\":\"{$insurance['administrator_name']}\",
-                \"group_id\":\"{$insurance['group_id']}\",
-                \"employer_name\":\"{$insurance['employer_name']}\",
-                \"coverage_effective_date\":\"{$insurance['coverage_effective_date']}\",
-                \"issuer_id\":\"{$insurance['issuer_id']}\",
-                \"primary_cardholder\":\"{$insurance['primary_cardholder']}\",
-                \"patient_profile_id\":\"{$insurance['patient_profile_id']}\",
-                \"insurance_type\": \"{$insurance['insurance_type']}\"
-            },";
+        # and APPEND this row's array to the object's array[] array
 
-            $insurances = '[' . trim($insurances, ',') . ']';
-        }
+        $this->array[] = $array;
 
-        $json = "{
-            \"id\": \"$this->id\",
-            \"email\": \"$this->email\",
-            \"first_name\": \"$this->first_name\",
-            \"last_name\": \"$this->last_name\",
-            \"relationship_to_owner\": \"$this->relationship_to_owner\",
-            \"date_of_birth\":\"$this->date_of_birth\",
-            \"address1\":\"$this->address1\",
-            \"address2\":\"$this->address2\",
-            \"city\":\"$this->city\",
-            \"state\":\"$this->state\",
-            \"zipcode\":\"$this->zipcode\",
-            \"ssn\":\"$this->ssn\",
-            \"dl_state\":\"$this->dl_state\",
-            \"dl_number\":\"$this->dl_number\",
-            \"ethnicity\":\"$this->ethnicity\",
-            \"race\":\"$this->race\",
-            \"phone_numbers\": $phone_numbers,
-            \"insurance\": $insurances
-            }";
-
-        #exit($json);
-
-        return $this->upsert('patient_profile', $json);
+        return $array;
 
     }
-
-    public function get($query) {
-
-        $json = $this->query('patient_profile', $query);
-
-        $data = json_decode($json);
-
-        var_dump($data); exit;
-
-        return $this;
-
-    }
-
 
 }

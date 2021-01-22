@@ -1,0 +1,20 @@
+{
+    "id": {{(int)$data->getId()}},
+    "email": "{{$data->getEmail()}}",
+    "first_name": "{{$data->getFirstName()}}",
+    "last_name": "{{$data->getLastName()}}",
+    "relationship_to_owner": "{{$data->getRelationshipToOwner()}}",
+    "date_of_birth":{!!json_encode($data->getDateOfBirth())!!},
+    "address1":"{{$data->getAddress1()}}",
+    "address2":"{{$data->getAddress2()}}",
+    "city":"{{$data->getCity()}}",
+    "state":"{{$data->getState()}}",
+    "zipcode":"{{$data->getZipcode()}}",
+    "ssn":"{{$data->getSsn()}}",
+    "dl_state":"{{$data->getDlState()}}",
+    "dl_number":"{{$data->getDlNumber()}}",
+    "ethnicity":"{{$data->getEthnicity()}}",
+    "race":"{{$data->getRace()}}",
+    "phone_numbers": {!!json_encode($data->getPhoneNumbers())!!},
+    "insurance": {!!json_encode($data->getInsurances())!!}
+    }
