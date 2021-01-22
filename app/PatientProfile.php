@@ -14,6 +14,9 @@ class PatientProfile extends BurstIq
     # $this->upsert(chain, postfields) accepts object or json_encoded object
     # see BurtIqController for examples
 
+    protected $chain = 'patient_profile';
+    protected $view = 'biq/patient_profile';
+
     private $email;
     private $relationship_to_owner;
     private $first_name;
@@ -439,7 +442,7 @@ class PatientProfile extends BurstIq
 
         // Create sub asset json strings, then assemble the whole body for posting
 
-        $phone_numbers = ""; // default to empty
+        // This should have been a blade like the others (idkwiwt)
 
         foreach ($this->phone_numbers as $phone_number) {
 
@@ -497,17 +500,82 @@ class PatientProfile extends BurstIq
 
     }
 
-    public function get($query) {
+    public function make($record) {
 
-        $json = $this->query('patient_profile', $query);
+        # get the full asset object
 
-        $data = json_decode($json);
+        $asset = $record->asset;
 
-        var_dump($data); exit;
+        # make a new BurstIq object for this record / row
 
-        return $this;
+        $O = new PatientProfile();
+
+        # stick the needful into into this record / row
+
+        $O->setJWT($this->getJwt())->setUsername($this->getUsername())->setPassword($this->getPassword());
+
+        # set the properties of this record / row
+
+        $O->asset_id = $record->asset_id;
+        $O->insurances = $asset->insurance;
+        $O->phone_numbers = $asset->phone_numbers;
+        $O->id = $asset->id;
+        $O->email = $asset->email;
+        $O->relationship_to_owner = $asset->relationship_to_owner;
+        $O->first_name = $asset->first_name;
+        $O->last_name = $asset->last_name;
+        $O->date_of_birth = $asset->date_of_birth;
+        $O->address1 = $asset->address1;
+        $O->address2 = $asset->address2;
+        $O->city = $asset->city;
+        $O->state = $asset->state;
+        $O->zipcode = $asset->zipcode;
+        $O->ssn = $asset->ssn;
+        $O->dl_state = $asset->dl_state;
+        $O->dl_number = $asset->dl_number;
+        $O->ethnicity = $asset->ethnicity;
+        $O->race = $asset->race;
+        $O->data = $asset;
+        $O->get = $asset;
+
+        # add this row to the primary object's get[] array
+
+            # This is a mess: I wanted to have the full object for each item in the array but I think it dereferences.
+            # We'll have to get a single item by asset_id in order to save it
+
+            //$this->get[] = $O;
+
+        # make a useful array of this row FOR this row object
+
+        $O->array = [
+
+            'id' => $asset->id,
+            'email' => $asset->email,
+            'relationship_to_owner' => $asset->   relationship_to_owner,
+            'first_name' => $asset->first_name,
+            'last_name' => $asset->last_name,
+            'date_of_birth' => $asset->date_of_birth,
+            'address1' => $asset->address1,
+            'address2' => $asset->address2,
+            'city' => $asset->city,
+            'state' => $asset->state,
+            'zipcode' => $asset->zipcode,
+            'ssn' => $asset->ssn,
+            'dl_state' => $asset->dl_state,
+            'dl_number' => $asset->dl_number,
+            'ethnicity' => $asset->ethnicity,
+            'race' => $asset->race,
+            'phone_numbers' => $asset->phone_numbers,
+            'insurances' => $asset->insurance
+
+        ];
+
+        # and APPEND this row's array to the primary object's array[] array
+
+        $this->array[] = $O->array;
+
+        # So now, each object in the get[] array has itselfs data amd array
 
     }
-
 
 }

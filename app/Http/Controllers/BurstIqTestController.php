@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BurstIq;
 use App\PatientProfile;
+use App\ProviderProfile;
 use Illuminate\Http\Request;
 
 class BurstIqTestController extends Controller
@@ -30,9 +31,24 @@ class BurstIqTestController extends Controller
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
 
+        $A = '';
+
         $B = new BurstIq('erik.olson@trackmysolutions.us','Mermaid7!!');
 
-        return $B->query('patient_profile',"WHERE asset.id = 123");
+        $A .= "\n\n" . $B->query('patient_profile',"WHERE asset.id >= 0");
+        $A .= "\n\n" . $B->query('provider_profile',"WHERE asset.id >= 0");
+        $A .= "\n\n" . $B->query('site_profile',"WHERE asset.id >= 0");
+        $A .= "\n\n" . $B->query('drug_profile',"WHERE asset.id >= 0");
+        $A .= "\n\n" . $B->query('question_profile',"WHERE asset.id >= 0");
+        $A .= "\n\n" . $B->query('encounter_schedule',"WHERE asset.id >= 0");
+        $A .= "\n\n" . $B->query('encounter',"WHERE asset.id >= 0");
+        $A .= "\n\n" . $B->query('procedure_results',"WHERE asset.id >= 0");
+        $A .= "\n\n" . $B->query('user',"WHERE asset.id >= 0");
+
+        exit("<textarea style='width:100%;height:600px;'>$A</textarea>");
+
+
+
     }
 
     function testGettingAPatient(Request $request) {
@@ -41,11 +57,42 @@ class BurstIqTestController extends Controller
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
 
-        $B = new BurstIq('erik.olson@trackmysolutions.us','Mermaid7!!');
+        $P = new ProviderProfile('erik.olson@trackmysolutions.us','Mermaid7!!');
 
-        return $B->query('patient_profile',"WHERE asset.id = 123");
+        $test = $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
+
+        //$test = $P->get(); // IDK what's up with this, removing for now
+
+        $test = $P->array(); // Get an array of rows (arrays with sub ojects or sub arrays of sub objects)
+
+        foreach ($test as $row) {
+
+            #echo $row['first_name'] . ' ' . $row['last_name'] . '<br/>';
+            echo $row['npi'] . '<br/>';
+
+            $P->find("WHERE asset.id = {$row['id']}");
+
+            $P->setNPI('Loretta')->save();
+
+            exit;
+
+        }
+
+
+        exit;
+
     }
 
+    function testGettingAProvider(Request $request) {
+
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
+        $P = new ProviderProfile('erik.olson@trackmysolutions.us','Mermaid7!!');
+
+        return $P->find("WHERE asset.id >= 0");
+    }
 
 
     function testUpsertingAPatient(Request $request) {

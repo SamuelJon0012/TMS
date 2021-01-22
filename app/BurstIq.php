@@ -16,7 +16,9 @@ class BurstIq
     const BI_BASE_URL = 'https://stage-trackmy.burstiq.com/trackmy/'; // ''
 
 
-    protected $url, $username, $password, $jwt, $data, $id=0;
+    protected $url, $username='', $password='', $jwt='', $data, $id=0, $asset_id='';
+
+    protected $get=[], $first, $array=[];
 
     # Put a wrapper around queries to attempt to re-login if jwt is expired?  Or logout the user <-- this
 
@@ -211,10 +213,18 @@ class BurstIq
     }
 
     /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
      * @param string $username
      * @return mixed
      */
-    public function setUsername(string $username): PatientProfile
+    public function setUsername(string $username)
     {
         $this->username = $username;
         return $this;
@@ -232,7 +242,7 @@ class BurstIq
      * @param string $password
      * @return mixed
      */
-    public function setPassword(string $password): PatientProfile
+    public function setPassword(string $password)
     {
         $this->password = $password;
         return $this;
@@ -275,6 +285,80 @@ class BurstIq
     }
 
     /**
+     * @return string
+     */
+    public function getAssetId(): string
+    {
+        return $this->asset_id;
+    }
+
+    /**
+     * @param string $asset_id
+     * @return BurstIq
+     */
+    public function setAssetId(string $asset_id): BurstIq
+    {
+        $this->asset_id = $asset_id;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function get(): array
+    {
+        return $this->get;
+    }
+
+    /**
+     * @param array $get
+     * @return BurstIq
+     */
+    public function setGet(array $get): BurstIq
+    {
+        $this->get = $get;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function first()
+    {
+        return $this->first;
+    }
+
+    /**
+     * @param mixed $first
+     * @return BurstIq
+     */
+    public function setFirst($first)
+    {
+        $this->first = $first;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function array(): array
+    {
+        return $this->array;
+    }
+
+    /**
+     * @param array $array
+     * @return BurstIq
+     */
+    public function setArray(array $array): BurstIq
+    {
+        $this->array = $array;
+        return $this;
+    }
+
+
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -292,5 +376,45 @@ class BurstIq
         return $this;
     }
 
+    public function save() {
+
+        $json = view($this->view)->with(['data' => $this]);
+
+        var_dump($json);exit;
+
+        return $this->upsert($this->chain, $json);
+
+    }
+
+    public function find($query) {
+
+        # Todo: Try Catch the heck out of this kind of stuff, check for $data->status = 200, etc
+
+        $json = $this->query($this->chain, $query);
+
+        $this->data = json_decode($json);
+
+        $records = $this->data->records;
+
+        $this->get = [];
+
+        foreach ($records as $record) {
+
+            $this->get[] = $this->make($record);
+
+        }
+
+        return $this;
+        # find and store an array of this object with all of the search results.  Make a first, get and toArray method (in base class?)
+
+    }
+
+    function make($record) {
+
+        // you must implement this in the child class
+
+        return [];
+
+    }
 
 }
