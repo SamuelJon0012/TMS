@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 
 
-class PatientProfile extends BurstIq
+class Template extends BurstIq
 {
 
     # base class methods
@@ -14,10 +14,10 @@ class PatientProfile extends BurstIq
     # $this->login()
     # $this->query(chain, query)
     # $this->upsert(chain, json) accepts object or json_encoded object
-    # see BurtIqController for examples
+    # see BurtIqTestController for examples
 
-    protected $chain = 'provider_profile';
-    protected $view = 'biq/provider_profile';
+    protected $chain = 'chain_name';
+    protected $view = 'biq/chain_name';
 
     # List all of the private vars here (id and other common ones are in the base class
 
@@ -29,34 +29,29 @@ class PatientProfile extends BurstIq
 
     public function make($record) {
 
+        # example
 
         # get the full asset object
 
         $asset = $record->asset;
 
+        # populate id and all the other properties
 
-        # make a useful array of this row
+        $this->id = $asset->id;
+//.. etc
+
+
+        # make a useful array of this row, for example:
 
         $array = [
 
             'id' => $asset->id,
-            'email' => $asset->email,
-            'relationship_to_owner' => $asset->   relationship_to_owner,
-            'first_name' => $asset->first_name,
-            'last_name' => $asset->last_name,
-            'date_of_birth' => $asset->date_of_birth,
-            'address1' => $asset->address1,
-            'address2' => $asset->address2,
-            'city' => $asset->city,
-            'state' => $asset->state,
-            'zipcode' => $asset->zipcode,
-            'ssn' => $asset->ssn,
-            'dl_state' => $asset->dl_state,
-            'dl_number' => $asset->dl_number,
-            'ethnicity' => $asset->ethnicity,
-            'race' => $asset->race,
-            'phone_numbers' => $asset->phone_numbers,
-            'insurances' => $asset->insurance
+            'is_doctor' => $asset->is_doctor,
+            'is_nurse' => $asset->is_nurse,
+            'is_nurse_practitioner' => $asset->is_nurse_practitioner,
+            'user_id' => $asset->user_id,
+            'npi' => $asset->npi,
+            'sites' => $asset->sites,
 
         ];
 
@@ -64,9 +59,7 @@ class PatientProfile extends BurstIq
 
         $this->array[] = $array;
 
+        return $array;
 
     }
-
-    private $get, $first, $array; # ? base class?
-
 }

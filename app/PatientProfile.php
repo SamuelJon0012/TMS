@@ -438,116 +438,34 @@ class PatientProfile extends BurstIq
         return $this;
     }
 
-    public function save() {
-
-        // Create sub asset json strings, then assemble the whole body for posting
-
-        // This should have been a blade like the others (idkwiwt)
-
-        foreach ($this->phone_numbers as $phone_number) {
-
-            $phone_numbers .= "{
-                \"is_primary\":\"{$phone_number['is_primary']}\",
-                \"phone_type\":\"{$phone_number['phone_type']}\",
-                \"phone_number\": \"{$phone_number['phone_number']}\"
-            },";
-        }
-
-        $phone_numbers = '[' . trim($phone_numbers, ',') . ']';
-
-        $insurances = '';
-
-        foreach ($this->insurances as $insurance) {
-
-            $insurances .= "{
-                \"administrator_name\":\"{$insurance['administrator_name']}\",
-                \"group_id\":\"{$insurance['group_id']}\",
-                \"employer_name\":\"{$insurance['employer_name']}\",
-                \"coverage_effective_date\":\"{$insurance['coverage_effective_date']}\",
-                \"issuer_id\":\"{$insurance['issuer_id']}\",
-                \"primary_cardholder\":\"{$insurance['primary_cardholder']}\",
-                \"patient_profile_id\":\"{$insurance['patient_profile_id']}\",
-                \"insurance_type\": \"{$insurance['insurance_type']}\"
-            },";
-
-            $insurances = '[' . trim($insurances, ',') . ']';
-        }
-
-        $json = "{
-            \"id\": \"$this->id\",
-            \"email\": \"$this->email\",
-            \"first_name\": \"$this->first_name\",
-            \"last_name\": \"$this->last_name\",
-            \"relationship_to_owner\": \"$this->relationship_to_owner\",
-            \"date_of_birth\":\"$this->date_of_birth\",
-            \"address1\":\"$this->address1\",
-            \"address2\":\"$this->address2\",
-            \"city\":\"$this->city\",
-            \"state\":\"$this->state\",
-            \"zipcode\":\"$this->zipcode\",
-            \"ssn\":\"$this->ssn\",
-            \"dl_state\":\"$this->dl_state\",
-            \"dl_number\":\"$this->dl_number\",
-            \"ethnicity\":\"$this->ethnicity\",
-            \"race\":\"$this->race\",
-            \"phone_numbers\": $phone_numbers,
-            \"insurance\": $insurances
-            }";
-
-        #exit($json);
-
-        return $this->upsert('patient_profile', $json);
-
-    }
-
     public function make($record) {
 
         # get the full asset object
 
         $asset = $record->asset;
 
-        # make a new BurstIq object for this record / row
+        $this->id = $asset->id;
+        $this->email = $asset->email;
+        $this->relationship_to_owner = $asset->   relationship_to_owner;
+        $this->first_name = $asset->first_name;
+        $this->last_name = $asset->last_name;
+        $this->date_of_birth = $asset->date_of_birth;
+        $this->address1 = $asset->address1;
+        $this->address2 = $asset->address2;
+        $this->city = $asset->city;
+        $this->state = $asset->state;
+        $this->zipcode = $asset->zipcode;
+        $this->ssn = $asset->ssn;
+        $this->dl_state = $asset->dl_state;
+        $this->dl_number = $asset->dl_number;
+        $this->ethnicity = $asset->ethnicity;
+        $this->race = $asset->race;
+        $this->phone_numbers = $asset->phone_numbers;
+        $this->insurances = $asset->insurance;
 
-        $O = new PatientProfile();
+        # make a useful array of this row
 
-        # stick the needful into into this record / row
-
-        $O->setJWT($this->getJwt())->setUsername($this->getUsername())->setPassword($this->getPassword());
-
-        # set the properties of this record / row
-
-        $O->asset_id = $record->asset_id;
-        $O->insurances = $asset->insurance;
-        $O->phone_numbers = $asset->phone_numbers;
-        $O->id = $asset->id;
-        $O->email = $asset->email;
-        $O->relationship_to_owner = $asset->relationship_to_owner;
-        $O->first_name = $asset->first_name;
-        $O->last_name = $asset->last_name;
-        $O->date_of_birth = $asset->date_of_birth;
-        $O->address1 = $asset->address1;
-        $O->address2 = $asset->address2;
-        $O->city = $asset->city;
-        $O->state = $asset->state;
-        $O->zipcode = $asset->zipcode;
-        $O->ssn = $asset->ssn;
-        $O->dl_state = $asset->dl_state;
-        $O->dl_number = $asset->dl_number;
-        $O->ethnicity = $asset->ethnicity;
-        $O->race = $asset->race;
-        $O->data = $asset;
-        $O->get = $asset;
-
-        # add this row to the primary object's get[] array
-
-            # This is a mess: I wanted to have the full object for each item in the array but I think it dereferences.
-            # We'll have to get a single item by asset_id in order to save it
-
-            //$this->get[] = $O;
-
-        # make a useful array of this row FOR this row object
-
-        $O->array = [
+        $array = [
 
             'id' => $asset->id,
             'email' => $asset->email,
@@ -570,11 +488,11 @@ class PatientProfile extends BurstIq
 
         ];
 
-        # and APPEND this row's array to the primary object's array[] array
+        # and APPEND this row's array to the object's array[] array
 
-        $this->array[] = $O->array;
+        $this->array[] = $array;
 
-        # So now, each object in the get[] array has itselfs data amd array
+        return $array;
 
     }
 

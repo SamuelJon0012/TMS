@@ -24,7 +24,28 @@ class ProviderProfile extends BurstIq
     private $is_nurse;
     private $is_nurse_practitioner;
     private $user_id;
+    private $npi;
     private $sites = [];
+
+    # Generate fluent getters and setters here
+
+    /**
+     * @return mixed
+     */
+    public function getNpi()
+    {
+        return $this->npi;
+    }
+
+    /**
+     * @param mixed $npi
+     * @return ProviderProfile
+     */
+    public function setNpi($npi)
+    {
+        $this->npi = $npi;
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -36,7 +57,7 @@ class ProviderProfile extends BurstIq
 
     /**
      * @param mixed $is_doctor
-     * @return PatientProfile
+     * @return ProviderProfile
      */
     public function setIsDoctor($is_doctor)
     {
@@ -54,7 +75,7 @@ class ProviderProfile extends BurstIq
 
     /**
      * @param mixed $is_nurse
-     * @return PatientProfile
+     * @return ProviderProfile
      */
     public function setIsNurse($is_nurse)
     {
@@ -72,7 +93,7 @@ class ProviderProfile extends BurstIq
 
     /**
      * @param mixed $is_nurse_practitioner
-     * @return PatientProfile
+     * @return ProviderProfile
      */
     public function setIsNursePractitioner($is_nurse_practitioner)
     {
@@ -90,13 +111,15 @@ class ProviderProfile extends BurstIq
 
     /**
      * @param mixed $user_id
-     * @return PatientProfile
+     * @return ProviderProfile
      */
     public function setUserId($user_id)
     {
         $this->user_id = $user_id;
         return $this;
     }
+
+
 
     /**
      * @return array
@@ -108,16 +131,13 @@ class ProviderProfile extends BurstIq
 
     /**
      * @param array $sites
-     * @return PatientProfile
+     * @return ProviderProfile
      */
-    public function setSites(array $sites): PatientProfile
+    public function setSites(array $sites): ProviderProfile
     {
         $this->sites = $sites;
         return $this;
     }
-
-    # Generate fluent getters and setters here
-
 
 
     # custom functions here
@@ -125,24 +145,40 @@ class ProviderProfile extends BurstIq
 
     public function make($record) {
 
+        # get the full asset object
+
         $asset = $record->asset;
 
-        $class = get_class();
+        $this->id = $asset->id;
+        $this->is_doctor = $asset->is_doctor;
+        $this->is_nurse = $asset->is_nurse;
+        $this->is_nurse_practitioner = $asset->is_nurse_practioner;
+        $this->user_id = $asset->user_id;
+        $this->npi = $asset->npi;
+        $this->sites = $asset->sites;
 
-        $O = new $class;
+        # make a useful array of this row
 
-        # This is gay
+        $array = [
 
-        #$O->setJWT($this->getJwt())->setUsername($this->getUsername())->setPassword($this->getPassword());
+            'id' => $asset->id,
+            'is_doctor' => $asset->is_doctor,
+            'is_nurse' => $asset->is_nurse,
+            'is_nurse_practitioner' => $asset->is_nurse_practioner,
+            'user_id' => $asset->user_id,
+            'npi' => $asset->npi,
+            'sites' => $asset->sites,
 
-        # Todo add $asset_id to this class
+        ];
 
 
 
+        # and APPEND this row's array to the object's array[] array
 
+        $this->array[] = $array;
+
+        return $array;
 
     }
-
-
 
 }

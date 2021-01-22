@@ -1,9 +1,9 @@
 {
-  "id": 789,
-  "is_doctor": 1,
-  "is_nurse": 0,
-  "is_nurse_practioner": 0,
-  "user_id": 0,
-  "npi": 0,
-  "sites": [1,2,3]
+  "id": {{(int)$data->getId()}},
+  "is_doctor": {{(int)$data->getIsDoctor()}},
+  "is_nurse": {{(int)$data->getIsNurse()}},
+  "is_nurse_practioner": {{(int)$data->getIsNursePractitioner()}},
+  "user_id": {{(int)$data->getUserId()}},
+  "npi": "{{$data->getNPI()}}",
+  "sites": {{json_encode($data->getSites())}}
 }

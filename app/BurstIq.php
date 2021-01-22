@@ -378,11 +378,15 @@ class BurstIq
 
     public function save() {
 
-        $json = view($this->view)->with(['data' => $this]);
+        $json = view($this->view)->with(['data' => $this])->render();
 
-        var_dump($json);exit;
+        var_dump($json);
 
-        return $this->upsert($this->chain, $json);
+        $results = $this->upsert($this->chain, $json);
+
+        var_dump($results);
+
+        return $results;
 
     }
 
@@ -396,11 +400,9 @@ class BurstIq
 
         $records = $this->data->records;
 
-        $this->get = [];
-
         foreach ($records as $record) {
 
-            $this->get[] = $this->make($record);
+            $this->make($record);
 
         }
 
@@ -409,12 +411,12 @@ class BurstIq
 
     }
 
-    function make($record) {
-
-        // you must implement this in the child class
-
-        return [];
-
-    }
+//    function make($record) {
+//
+//        // you must implement this in the child class
+//
+//        return [];
+//
+//    }
 
 }
