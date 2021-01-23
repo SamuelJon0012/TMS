@@ -28,11 +28,13 @@
                                     </span>
                                 @enderror
 
-                                <div class="text-right">
-                                  <a class="btn btn-link" href="/forgotpassword">
-                                      {{ __('Forgot Your Password?') }}
-                                  </a>
-                                </div>
+                                @if (Route::has('password.request'))
+                                  <div class="text-right">
+                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                        {{ __('Forgot Your Password?') }}
+                                    </a>
+                                  </div>
+                                @endif
                             </div>
                         </div>
 
@@ -43,9 +45,9 @@
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="{{ __('Password') }}">
 
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                  <span class="invalid-feedback" role="alert">
+                                      <strong>{{ $message }}</strong>
+                                  </span>
                                 @enderror
                             </div>
                         </div>
@@ -99,7 +101,7 @@ $(function(){
  $("#sel_register").on('change', function(){
    if($(this).val())
    {
-     window.location.href = "/"+$(this).val()+"profile";
+     window.location.href = "{{ route('register') }}?rt="+$(this).val();
    }
  })
 
