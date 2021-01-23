@@ -42,8 +42,8 @@ Route::get('/biq/test-upserting-a-patient', 'BurstIqTestController@testUpserting
  *
  */
 
-Route::get('/biq/status', 'BurstIqController@status')->name('status');
-Route::get('/biq/login', 'BurstIqController@login')->name('login');
+Route::get('/biq/status', 'BurstIqController@status')->name('biq-status');
+Route::get('/biq/login', 'BurstIqController@login')->name('biq-login'); 
 
 
 #Route::webhooks('api/xcelerateudi');

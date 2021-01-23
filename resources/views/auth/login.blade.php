@@ -29,7 +29,7 @@
                                 @enderror
 
                                 <div class="text-right">
-                                  <a class="btn btn-link" href="{{ route('/forgotpassword') }}">
+                                  <a class="btn btn-link" href="/forgotpassword">
                                       {{ __('Forgot Your Password?') }}
                                   </a>
                                 </div>
