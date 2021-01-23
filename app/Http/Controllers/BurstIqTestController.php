@@ -72,6 +72,7 @@ class BurstIqTestController extends Controller
             echo $row['first_name'] . ' ' . $row['last_name'] . '<br/>';
 
             # You must have only ONE resulting row in order to edit and save it
+            # Otherwise the one you will edit and save will be the last one in the recordset
 
             $P->find("WHERE asset.id = {$row['id']}");
 
@@ -106,19 +107,16 @@ class BurstIqTestController extends Controller
             echo $row['npi'] . '<br/>';
 
             # You must have only ONE resulting row in order to edit and save it
+            # Otherwise the one you will edit and save will be the last one in the recordset
 
             $P->find("WHERE asset.id = {$row['id']}");
 
             $P->setNpi('ChangedMe!')->save();
 
         }
-
-
         exit;
 
     }
-
-
     function testUpsertingAPatient(Request $request) {
 
         $first_name = "Jack";
