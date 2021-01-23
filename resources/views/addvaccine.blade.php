@@ -14,16 +14,16 @@
 
           <div class="card-body">
 
-            <form method="POST" action="" onsubmit="javascript: alert('Under Development!!'); return false;">
+            <form method="POST" action="{{ route('patientvaccine.store') }}">
                 @csrf
 
                 <div class="form-group row">
                     <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Vaccine: ') }}</label>
 
                     <div class="col-md-6">
-                        <input id="vaccine" type="text" class="form-control @error('vaccine') is-invalid @enderror" name="vaccine" value="{{ old('vaccine') }}" required autocomplete="vaccine" autofocus>
+                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
-                        @error('vaccine')
+                        @error('name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -35,7 +35,10 @@
                     <label for="dose_number" class="col-md-4 col-form-label text-md-right">{{ __('Dose Number: ') }}</label>
 
                     <div class="col-md-6">
-                        <input id="dose_number" type="text" class="form-control @error('dose_number') is-invalid @enderror" name="dose_number" value="{{ old('dose_number') }}" required autocomplete="dose_number">
+                        <select id="dose_number" class="form-control @error('dose_number') is-invalid @enderror" name="dose_number" required>
+                          <option value="1">{{ __('First Dose') }}</option>
+                          <option value="2">{{ __('Second Dose') }}</option>
+                        </select>
 
                         @error('dose_number')
                             <span class="invalid-feedback" role="alert">
@@ -46,12 +49,12 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="product_name" class="col-md-4 col-form-label text-md-right">{{ __('Product Name: ') }}</label>
+                    <label for="vaccine_name" class="col-md-4 col-form-label text-md-right">{{ __('Product Name: ') }}</label>
 
                     <div class="col-md-6">
-                        <input id="product_name" type="text" class="form-control @error('product_name') is-invalid @enderror" name="product_name" value="{{ old('product_name') }}" required autocomplete="product_name" >
+                        <input id="vaccine_name" type="text" class="form-control @error('vaccine_name') is-invalid @enderror" name="vaccine_name" value="{{ old('vaccine_name') }}" required >
 
-                        @error('product_name')
+                        @error('vaccine_name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -63,7 +66,7 @@
                     <label for="lot_number" class="col-md-4 col-form-label text-md-right">{{ __('Lot Number: ') }}</label>
 
                     <div class="col-md-6">
-                        <input id="lot_number" type="text" class="form-control @error('lot_number') is-invalid @enderror" name="lot_number" value="{{ old('lot_number') }}" required autocomplete="lot_number" >
+                        <input id="lot_number" type="text" class="form-control @error('lot_number') is-invalid @enderror" name="lot_number" value="{{ old('lot_number') }}" required >
 
                         @error('lot_number')
                             <span class="invalid-feedback" role="alert">
@@ -77,7 +80,7 @@
                     <label for="manufacturer" class="col-md-4 col-form-label text-md-right">{{ __('Manufacturer: ') }}</label>
 
                     <div class="col-md-6">
-                        <input id="manufacturer" type="text" class="form-control @error('manufacturer') is-invalid @enderror" name="manufacturer" value="{{ old('manufacturer') }}" required autocomplete="manufacturer" >
+                        <input id="manufacturer" type="text" class="form-control @error('manufacturer') is-invalid @enderror" name="manufacturer" value="{{ old('manufacturer') }}" required >
 
                         @error('manufacturer')
                             <span class="invalid-feedback" role="alert">
@@ -90,7 +93,7 @@
                     <label for="dose_date" class="col-md-4 col-form-label text-md-right">{{ __('Dose Date: ') }}</label>
 
                     <div class="col-md-6">
-                        <input id="dose_date" type="date" class="form-control @error('dose_date') is-invalid @enderror" name="dose_date" value="{{ old('dose_date') }}" required autocomplete="dose_date" >
+                        <input id="dose_date" type="date" class="form-control @error('dose_date') is-invalid @enderror" name="dose_date" value="{{ old('dose_date') }}" required >
 
                         @error('dose_date')
                             <span class="invalid-feedback" role="alert">
@@ -100,12 +103,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="provider" class="col-md-4 col-form-label text-md-right">{{ __('Healthcare Professional / Clinical setAttribute: ') }}</label>
+                    <label for="health_pro" class="col-md-4 col-form-label text-md-right">{{ __('Healthcare Professional / Clinical setAttribute: ') }}</label>
 
                     <div class="col-md-6">
-                        <input id="provider" type="text" class="form-control @error('provider') is-invalid @enderror" name="provider" value="{{ old('provider') }}" required autocomplete="provider">
+                        <input id="health_pro" type="text" class="form-control @error('health_pro') is-invalid @enderror" name="health_pro" value="{{ old('health_pro') }}" >
 
-                        @error('provider')
+                        @error('health_pro')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

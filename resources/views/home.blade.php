@@ -31,6 +31,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+          @if(session()->get('success'))
+            <div class="alert alert-success">
+              {{ session()->get('success') }}
+            </div>
+          @endif
 
           @if(Auth::check() && Auth::user()->hasRole('patient'))
             <div class="row">
@@ -176,7 +181,7 @@
 
 $(document).ready(function(){
   $("#addVaccine").click(function(){
-    window.location.href = 'addvaccine';
+    window.location.href = 'patientvaccine/create';
   });
 });
 

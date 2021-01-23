@@ -52,4 +52,4 @@ Route::get('/addvaccine', function () {
     return view('addvaccine');
 });
 
-
+Route::resource('patientvaccine', 'PatientVaccineController');
