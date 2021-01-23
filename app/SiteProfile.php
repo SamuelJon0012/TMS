@@ -40,7 +40,152 @@ class SiteProfile extends BurstIq
     private $zipcode;
     private $county;
 
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     * @return SiteProfile
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVacinityName()
+    {
+        return $this->vacinity_name;
+    }
+
+    /**
+     * @param mixed $vacinity_name
+     * @return SiteProfile
+     */
+    public function setVacinityName($vacinity_name)
+    {
+        $this->vacinity_name = $vacinity_name;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAddress1()
+    {
+        return $this->address1;
+    }
+
+    /**
+     * @param mixed $address1
+     * @return SiteProfile
+     */
+    public function setAddress1($address1)
+    {
+        $this->address1 = $address1;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAddress2()
+    {
+        return $this->address2;
+    }
+
+    /**
+     * @param mixed $address2
+     * @return SiteProfile
+     */
+    public function setAddress2($address2)
+    {
+        $this->address2 = $address2;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     * @return SiteProfile
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param mixed $state
+     * @return SiteProfile
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getZipcode()
+    {
+        return $this->zipcode;
+    }
+
+    /**
+     * @param mixed $zipcode
+     * @return SiteProfile
+     */
+    public function setZipcode($zipcode)
+    {
+        $this->zipcode = $zipcode;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCounty()
+    {
+        return $this->county;
+    }
+
+    /**
+     * @param mixed $county
+     * @return SiteProfile
+     */
+    public function setCounty($county)
+    {
+        $this->county = $county;
+        return $this;
+    }
+
     # Generate fluent getters and setters here
+
 
 
     # custom functions here

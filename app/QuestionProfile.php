@@ -38,7 +38,134 @@ class QuestionProfile extends BurstIq
     private $is_testing_question;
     private $drug_id;
 
+    /**
+     * @return mixed
+     */
+    public function getQuestion()
+    {
+        return $this->question;
+    }
+
+    /**
+     * @param mixed $question
+     * @return QuestionProfile
+     */
+    public function setQuestion($question)
+    {
+        $this->question = $question;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsActive()
+    {
+        return $this->is_active;
+    }
+
+    /**
+     * @param mixed $is_active
+     * @return QuestionProfile
+     */
+    public function setIsActive($is_active)
+    {
+        $this->is_active = $is_active;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBeginDate()
+    {
+        return $this->begin_date;
+    }
+
+    /**
+     * @param mixed $begin_date
+     * @return QuestionProfile
+     */
+    public function setBeginDate($begin_date)
+    {
+        $this->begin_date = $begin_date;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndDate()
+    {
+        return $this->end_date;
+    }
+
+    /**
+     * @param mixed $end_date
+     * @return QuestionProfile
+     */
+    public function setEndDate($end_date)
+    {
+        $this->end_date = $end_date;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsDrugQuestion()
+    {
+        return $this->is_drug_question;
+    }
+
+    /**
+     * @param mixed $is_drug_question
+     * @return QuestionProfile
+     */
+    public function setIsDrugQuestion($is_drug_question)
+    {
+        $this->is_drug_question = $is_drug_question;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsTestingQuestion()
+    {
+        return $this->is_testing_question;
+    }
+
+    /**
+     * @param mixed $is_testing_question
+     * @return QuestionProfile
+     */
+    public function setIsTestingQuestion($is_testing_question)
+    {
+        $this->is_testing_question = $is_testing_question;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDrugId()
+    {
+        return $this->drug_id;
+    }
+
+    /**
+     * @param mixed $drug_id
+     * @return QuestionProfile
+     */
+    public function setDrugId($drug_id)
+    {
+        $this->drug_id = $drug_id;
+        return $this;
+    }
+
     # Generate fluent getters and setters here
+
 
 
     # custom functions here

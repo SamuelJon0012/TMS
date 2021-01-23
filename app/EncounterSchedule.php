@@ -47,7 +47,152 @@ class EncounterSchedule extends BurstIq
     private $provider_id;
     private $reminder;
 
+    /**
+     * @return mixed
+     */
+    public function getAppointmentType()
+    {
+        return $this->appointment_type;
+    }
+
+    /**
+     * @param mixed $appointment_type
+     * @return EncounterSchedule
+     */
+    public function setAppointmentType($appointment_type)
+    {
+        $this->appointment_type = $appointment_type;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsWalkin()
+    {
+        return $this->is_walkin;
+    }
+
+    /**
+     * @param mixed $is_walkin
+     * @return EncounterSchedule
+     */
+    public function setIsWalkin($is_walkin)
+    {
+        $this->is_walkin = $is_walkin;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getScheduledTime()
+    {
+        return $this->scheduled_time;
+    }
+
+    /**
+     * @param mixed $scheduled_time
+     * @return EncounterSchedule
+     */
+    public function setScheduledTime($scheduled_time)
+    {
+        $this->scheduled_time = $scheduled_time;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPatientQuestionResponses()
+    {
+        return $this->patient_question_responses;
+    }
+
+    /**
+     * @param mixed $patient_question_responses
+     * @return EncounterSchedule
+     */
+    public function setPatientQuestionResponses($patient_question_responses)
+    {
+        $this->patient_question_responses = $patient_question_responses;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPatientId()
+    {
+        return $this->patient_id;
+    }
+
+    /**
+     * @param mixed $patient_id
+     * @return EncounterSchedule
+     */
+    public function setPatientId($patient_id)
+    {
+        $this->patient_id = $patient_id;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSiteId()
+    {
+        return $this->site_id;
+    }
+
+    /**
+     * @param mixed $site_id
+     * @return EncounterSchedule
+     */
+    public function setSiteId($site_id)
+    {
+        $this->site_id = $site_id;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProviderId()
+    {
+        return $this->provider_id;
+    }
+
+    /**
+     * @param mixed $provider_id
+     * @return EncounterSchedule
+     */
+    public function setProviderId($provider_id)
+    {
+        $this->provider_id = $provider_id;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReminder()
+    {
+        return $this->reminder;
+    }
+
+    /**
+     * @param mixed $reminder
+     * @return EncounterSchedule
+     */
+    public function setReminder($reminder)
+    {
+        $this->reminder = $reminder;
+        return $this;
+    }
+
     # Generate fluent getters and setters here
+
 
 
     # custom functions here
