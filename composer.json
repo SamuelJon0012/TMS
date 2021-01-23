@@ -19,7 +19,9 @@
         "laravel/framework": "^7.29",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^2.4",
-        "spatie/laravel-webhook-client": "^2.7"
+        "spatie/laravel-webhook-client": "^2.7",
+      "ext-curl": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
