@@ -10,3 +10,4 @@ $factory->define(patientVaccine::class, function (Faker $faker) {
         //
     ];
 });
+n
