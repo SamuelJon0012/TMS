@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\BurstIq;
+use App\DrugProfile;
+use App\Encounter;
+use App\EncounterSchedule;
 use App\PatientProfile;
+use App\ProcedureResults;
 use App\ProviderProfile;
+use App\QuestionProfile;
+use App\SiteProfile;
 use Illuminate\Http\Request;
 
 class BurstIqTestController extends Controller
@@ -190,6 +196,83 @@ class BurstIqTestController extends Controller
         exit($result);
 
     }
+    function testGettingSiteProfile(Request $request) {
+        $P = new SiteProfile('erik.olson@trackmysolutions.us','Mermaid7!!');
+        $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
+        $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
+        foreach ($test as $row) {
+            var_dump($row);
+            # edit by querying for 1 result using primary key (id)
+            # and then say $Q->setThis($abc)->setThat($xyz)->save();
+            # or create a new $Q object and do the same thing. YOU must provide the unique value for id
+            # (see below for how I will solve that)
+        }
+        exit;
+    }
 
-
+    function testGettingDrugProfile(Request $request) {
+        $P = new DrugProfile('erik.olson@trackmysolutions.us','Mermaid7!!');
+        $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
+        $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
+        foreach ($test as $row) {
+            var_dump($row);
+            # edit by querying for 1 result using primary key (id)
+            # and then say $Q->setThis($abc)->setThat($xyz)->save();
+            # or create a new $Q object and do the same thing. YOU must provide the unique value for id
+            # (see below for how I will solve that)
+        }
+        exit;
+    }
+    function testGettingQuestionProfile(Request $request) {
+        $P = new QuestionProfile('erik.olson@trackmysolutions.us','Mermaid7!!');
+        $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
+        $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
+        foreach ($test as $row) {
+            var_dump($row);
+            # edit by querying for 1 result using primary key (id)
+            # and then say $Q->setThis($abc)->setThat($xyz)->save();
+            # or create a new $Q object and do the same thing. YOU must provide the unique value for id
+            # (see below for how I will solve that)
+        }
+        exit;
+    }
+    function testGettingEncounterSchedule(Request $request) {
+        $P = new EncounterSchedule('erik.olson@trackmysolutions.us','Mermaid7!!');
+        $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
+        $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
+        foreach ($test as $row) {
+            var_dump($row);
+            # edit by querying for 1 result using primary key (id)
+            # and then say $Q->setThis($abc)->setThat($xyz)->save();
+            # or create a new $Q object and do the same thing. YOU must provide the unique value for id
+            # (see below for how I will solve that)
+        }
+        exit;
+    }
+    function testGettingEncounter(Request $request) {
+        $P = new Encounter('erik.olson@trackmysolutions.us','Mermaid7!!');
+        $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
+        $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
+        foreach ($test as $row) {
+            var_dump($row);
+            # edit by querying for 1 result using primary key (id)
+            # and then say $Q->setThis($abc)->setThat($xyz)->save();
+            # or create a new $Q object and do the same thing. YOU must provide the unique value for id
+            # (see below for how I will solve that)
+        }
+        exit;
+    }
+    function testGettingProcedureResults(Request $request) {
+        $P = new ProcedureResults('erik.olson@trackmysolutions.us','Mermaid7!!');
+        $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
+        $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
+        foreach ($test as $row) {
+            var_dump($row);
+            # edit by querying for 1 result using primary key (id)
+            # and then say $Q->setThis($abc)->setThat($xyz)->save();
+            # or create a new $Q object and do the same thing. YOU must provide the unique value for id
+            # (see below for how I will solve that)
+        }
+        exit;
+    }
 }
