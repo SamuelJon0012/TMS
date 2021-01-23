@@ -46,8 +46,208 @@ class DrugProfile extends BurstIq
     private $days_between_doses;
     private $manufacturer_name;
 
+    /**
+     * @return mixed
+     */
+    public function getNdcPackageCode()
+    {
+        return $this->ndc_package_code;
+    }
+
+    /**
+     * @param mixed $ndc_package_code
+     * @return DrugProfile
+     */
+    public function setNdcPackageCode($ndc_package_code): DrugProfile
+    {
+        $this->ndc_package_code = $ndc_package_code;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNdcProductCode()
+    {
+        return $this->ndc_product_code;
+    }
+
+    /**
+     * @param mixed $ndc_product_code
+     * @return DrugProfile
+     */
+    public function setNdcProductCode($ndc_product_code): DrugProfile
+    {
+        $this->ndc_product_code = $ndc_product_code;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStrength()
+    {
+        return $this->strength;
+    }
+
+    /**
+     * @param mixed $strength
+     * @return DrugProfile
+     */
+    public function setStrength($strength)
+    {
+        $this->strength = $strength;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDoseageForm()
+    {
+        return $this->doseage_form;
+    }
+
+    /**
+     * @param mixed $doseage_form
+     * @return DrugProfile
+     */
+    public function setDoseageForm($doseage_form)
+    {
+        $this->doseage_form = $doseage_form;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
+    /**
+     * @param mixed $route
+     * @return DrugProfile
+     */
+    public function setRoute($route)
+    {
+        $this->route = $route;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNonproprietaryName()
+    {
+        return $this->nonproprietary_name;
+    }
+
+    /**
+     * @param mixed $nonproprietary_name
+     * @return DrugProfile
+     */
+    public function setNonproprietaryName($nonproprietary_name)
+    {
+        $this->nonproprietary_name = $nonproprietary_name;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLabelerName()
+    {
+        return $this->labeler_name;
+    }
+
+    /**
+     * @param mixed $labeler_name
+     * @return DrugProfile
+     */
+    public function setLabelerName($labeler_name)
+    {
+        $this->labeler_name = $labeler_name;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSubstanceName()
+    {
+        return $this->substance_name;
+    }
+
+    /**
+     * @param mixed $substance_name
+     * @return DrugProfile
+     */
+    public function setSubstanceName($substance_name)
+    {
+        $this->substance_name = $substance_name;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPackageDescription()
+    {
+        return $this->package_description;
+    }
+
+    /**
+     * @param mixed $package_description
+     * @return DrugProfile
+     */
+    public function setPackageDescription($package_description)
+    {
+        $this->package_description = $package_description;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDaysBetweenDoses()
+    {
+        return $this->days_between_doses;
+    }
+
+    /**
+     * @param mixed $days_between_doses
+     * @return DrugProfile
+     */
+    public function setDaysBetweenDoses($days_between_doses)
+    {
+        $this->days_between_doses = $days_between_doses;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getManufacturerName()
+    {
+        return $this->manufacturer_name;
+    }
+
+    /**
+     * @param mixed $manufacturer_name
+     * @return DrugProfile
+     */
+    public function setManufacturerName($manufacturer_name)
+    {
+        $this->manufacturer_name = $manufacturer_name;
+        return $this;
+    }
+
 
     # Generate fluent getters and setters here
+
+
 
 
     # custom functions here

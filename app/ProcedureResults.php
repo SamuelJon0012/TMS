@@ -29,7 +29,44 @@ class ProcedureResults extends BurstIq
     private $encounter_id;
     private $procedure_id;
 
+    /**
+     * @return mixed
+     */
+    public function getEncounterId()
+    {
+        return $this->encounter_id;
+    }
+
+    /**
+     * @param mixed $encounter_id
+     * @return ProcedureResults
+     */
+    public function setEncounterId($encounter_id)
+    {
+        $this->encounter_id = $encounter_id;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProcedureId()
+    {
+        return $this->procedure_id;
+    }
+
+    /**
+     * @param mixed $procedure_id
+     * @return ProcedureResults
+     */
+    public function setProcedureId($procedure_id)
+    {
+        $this->procedure_id = $procedure_id;
+        return $this;
+    }
+
     # Generate fluent getters and setters here
+
 
 
     # custom functions here
