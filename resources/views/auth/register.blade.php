@@ -271,7 +271,7 @@
 
                 <div class="form-group row justify-content-center">
                     <div class="col-md-4 text-center">
-                        <select id="dl_state" class="form-control @error('dl_state') is-invalid @enderror" name="dl_state" required placeholder="{{ __('State') }}">
+                        <select id="dl_state" class="form-control @error('dl_state') is-invalid @enderror" name="dl_state" placeholder="{{ __('State') }}">
                           <option value="">STATE</option>
                           <option value="AL">Alabama</option>
                         	<option value="AK">Alaska</option>
