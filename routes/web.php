@@ -32,6 +32,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/biq/test-status', 'BurstIqTestController@status')->name('test_status');
 Route::get('/biq/test-login', 'BurstIqTestController@login')->name('test_login');
 
+Route::get('/biq/find', 'BurstIqController@find')->name('biq_find');
+
 Route::get('/biq/test-getting-a-chain', 'BurstIqTestController@testGettingAChain')->name('test_getting_a_chain');
 /*
  *

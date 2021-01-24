@@ -380,11 +380,11 @@ class BurstIq
 
         $json = view($this->view)->with(['data' => $this])->render();
 
-        var_dump($json);
+        //var_dump($json);
 
         $results = $this->upsert($this->chain, $json);
 
-        var_dump($results);
+        //var_dump($results);
 
         return $results;
 
@@ -393,10 +393,19 @@ class BurstIq
     public function find($query) {
 
         # Todo: Try Catch the heck out of this kind of stuff, check for $data->status = 200, etc
+//exit($query);
 
         $json = $this->query($this->chain, $query);
 
         $this->data = json_decode($json);
+
+        # Test for json error here Todo:
+
+        if ($this->data->status != 200) {
+
+            return false;
+
+        }
 
         $records = $this->data->records;
 

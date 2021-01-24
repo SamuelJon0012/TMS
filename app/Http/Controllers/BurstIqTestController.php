@@ -65,7 +65,15 @@ class BurstIqTestController extends Controller
 
         $P = new PatientProfile('erik.olson@trackmysolutions.us','Mermaid7!!');
 
-        $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
+        $where = "WHERE asset.address1 ILIKE '%Lucy%' OR asset.first_name ILIKE '%Lucy%' OR asset.last_name ILIKE '%Lucy%' OR asset.email ILIKE '%Lucy%' OR asset.ssn ILIKE '%Lucy%' OR asset.dl_number ILIKE '%Lucy%' OR asset.first_name ILIKE '%Lucy%'";
+
+        if (!$P->find($where)) { // returns itself, or false if error Todo: hmmmm then you can't chain methods if there a error
+
+            exit('Search produced an error');
+
+        }
+
+        $P->getData();  // full object returned from BurstIq (returns itself ($this) so you can chain methods if you want)
 
         $test = $P->array(); // Get an array of rows (arrays with sub ojects or sub arrays of sub objects)
 
@@ -82,7 +90,7 @@ class BurstIqTestController extends Controller
 
             $P->find("WHERE asset.id = {$row['id']}");
 
-            $P->setFirstName('Shirley')->save();
+            $P->setFirstName('Lucy')->save();
 
         }
 

@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/custom.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 
     <!-- Fonts -->
@@ -114,10 +115,95 @@ s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
 <!--End of Tawk.to Script-->
-
 <script type="text/javascript">
 @yield('scriptJs')
+
+    // move this to custom.js
+var input, dtData = [];
+function doPatientSearch() {
+    input = $('#search-input').val();
+    setTimeout(function() {
+        $.ajax({
+            url: '/biq/find',
+            data: 'q=' + input,
+            dataType: 'json',
+            success: function(o) {
+
+                dtData = [];
+
+                // Todo: Check for an error object (success = false) or unexpected data
+
+                data = o.data;
+
+                data.forEach(function(orow) {
+
+                    let row = Object.keys(orow);
+
+                    console.log(row);
+
+                    dtData[dtData.length] = row;
+                });
+
+                console.log(dtData);
+
+                // Todo: Make DataTable
+
+            },
+            error: function() {
+                // Todo: handle this more elegantly
+                alert('An error has occurred');
+
+            },
+
+        });
+    },100);
+    return false;
+}
+
 </script>
+<style>
+    body, html {
+        height: 100%;
+    }
+    .search-modal {
+        /*display: none;*/
+        width: 100%;
+        height:90%;
+        position: fixed;
+        margin-top: 85px;
+        top: 0; left: 0;
+        background-color: #fff;
+        overflow:scroll;
+        padding:22px;
+
+    }
+    .search-modal-inner {
+
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        max-width: 900px;
+        min-height:400px;
+        background-color: #fff;
+        text-align: center;
+
+    }
+</style>
+<div class="search-modal">
+
+    <div class="search-modal-inner">
+
+        <form name="search-form" onsubmit="return doPatientSearch();">
+
+            <input id="search-input" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+
+        </form>
+
+
+
+    </div>
+
+</div>
 
 </body>
 </html>

@@ -42,7 +42,7 @@
               <div class="col-3">
                 <div id="myvaccine-button" class="homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/syringe.png">
-                  <br>
+                  <br/>
                   My Vaccines
                 </div>
               </div>
@@ -72,7 +72,7 @@
               </div>
 
             </div>
-            <br><br><br>
+            <br/><br/><br/>
             <div class="row">
               <div class="col-6">
                 <button class="btn btn-primary form-control">Schedule a Vaccine Visit</button>
@@ -88,7 +88,7 @@
               <div class="col-3">
                 <div class="patient-button homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/magnifyingglass-icon.png">
-                  <br>
+                  <br/>
                   Search For Patient
                 </div>
               </div>
@@ -116,12 +116,16 @@
                   Help
                 </div>
               </div>
-
             </div>
-
+            <br/><br/>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button class="btn btn-primary form-control set-vaccine-location" style="margin-left:25px;width:300px;">Set Vaccine Location</button>
+                </div>
+            </div>
           @endif
 
-          <br><br><br>
+          <br/><br/>
           <div class="row">
             <div class="col-12 text-center">
               <img src = "https://djdev.trackmyapp.us/images/trackmysolutionslogoregtm-web.jpg">
@@ -156,7 +160,7 @@
 
                     {{ __('You are logged in ! ') }}
 
-                    <br><br>
+                    <br/><br/>
                     <b>
                       @if(Auth::check() && Auth::user()->hasRole('patient'))
                         {{ __('PATIENT') }}
