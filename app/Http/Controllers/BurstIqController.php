@@ -76,7 +76,7 @@ class BurstIqController extends Controller
             default:
 
                 # How do you search on node and node[]s? i.e. phone_number)
-                $where = "SELECT id, CONCAT(asset.first_name, ', ', asset.last_name) as name, asset.date_of_birth, asset.email, asset.phone_numbers";
+                $where = "SELECT *";
                 $where .= " FROM patient_profile";
                 $where .= " WHERE asset.address1 ILIKE '%$Q%' OR asset.first_name ILIKE '%$Q%' OR asset.last_name  ILIKE '%$Q%' OR asset.email ILIKE '%$Q%' OR asset.ssn ILIKE '%$Q%' OR asset.dl_number ILIKE '%$Q%' OR asset.first_name ILIKE '%$Q%'";
 

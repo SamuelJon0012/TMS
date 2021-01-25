@@ -12,8 +12,8 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/custom.js') }}" defer></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -123,20 +123,56 @@ var input, dtData = [], DT=false;
 function doCreateTable(tableData) {
     var table = document.createElement('table');
     table.setAttribute("id", "search-table");
+    table.setAttribute("class", "stripe");
+    var tableHead = document.createElement('thead');
     var tableBody = document.createElement('tbody');
 
+    let once = true;
+
+    let row;
+
     tableData.forEach(function(rowData) {
-        var row = document.createElement('tr');
 
-        rowData.forEach(function(cellData) {
-            var cell = document.createElement('td');
-            cell.appendChild(document.createTextNode(cellData));
-            row.appendChild(cell);
-        });
+        let first=true;
 
-        tableBody.appendChild(row);
+        if (once) {
+            row = document.createElement('tr');
+
+            rowData.forEach(function (cellData) {
+                var cell = document.createElement('th');
+                cell.appendChild(document.createTextNode(cellData));
+                row.appendChild(cell);
+            });
+
+            tableHead.appendChild(row);
+            once=false;
+
+        } else {
+
+                row = document.createElement('tr');
+                rowData.forEach(function (cellData) {
+                    var cell = document.createElement('td');
+
+                    if (first) {
+                        var btn = document.createElement('button');
+                        btn.innerHTML = "X";
+                        btn.setAttribute('rel', cellData);
+                        btn.setAttribute('class', 'seluser');
+                        cell.appendChild(btn);
+                        first = false;
+                    } else {
+                        cell.appendChild(document.createTextNode(cellData));
+
+                    }
+
+                    row.appendChild(cell);
+                });
+
+               tableBody.appendChild(row);
+        }
     });
 
+    table.appendChild(tableHead);
     table.appendChild(tableBody);
     $('#search-results').html('');
     document.getElementById("search-results").appendChild(table);
@@ -153,19 +189,20 @@ function doPatientSearch() {
             dataType: 'json',
             success: function(o) {
 
-                dtData = [];
-
                 // Todo: Check for an error object (success = false) or unexpected data
 
                 data = o.data;
 
-                let row;
+                let row, btn;
 
-                data.forEach(function(orow) {
+                dtData = [['','fname', 'lname']] ;
 
-                    //row = Object.values(orow);
+                data.forEach(function(row) {
 
-                    dtData[dtData.length] = [row.first_name, row.last_name];
+                    dtData[dtData.length] =
+                        [
+                            row.id, row.first_name, row.last_name
+                        ];
                 });
 
                 console.log(dtData);
@@ -176,7 +213,12 @@ function doPatientSearch() {
                     DT.destroy(true);
                 }
                 doCreateTable(dtData);
-                DT = $('#search-table').DataTable();
+                DT = $('#search-table').DataTable({
+                    'searching': false,
+                    'paging': false,
+                    'scrollY': 300
+
+                });
                 console.log(DT);
 
             },
@@ -190,7 +232,13 @@ function doPatientSearch() {
     },100);
     return false;
 }
-
+setTimeout(function() {
+    $.noConflict();
+    $(document.body).on('click', '.seluser' ,function(){
+       let rel = $(this).attr('rel');
+       console.log(rel);
+    });
+}, 4000);
 </script>
 <style>
     body, html {
@@ -217,7 +265,13 @@ function doPatientSearch() {
         min-height:400px;
         background-color: #fff;
         text-align: center;
-
+    }
+    #search-results {
+        text-align:left;
+        width:100%;
+    }
+    #search-table {
+        width: 100%;
     }
 </style>
 <div class="search-modal">
@@ -240,3 +294,4 @@ function doPatientSearch() {
 
 </body>
 </html>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
