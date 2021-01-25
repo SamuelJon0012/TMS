@@ -13,7 +13,7 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/custom.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -118,8 +118,32 @@ s0.parentNode.insertBefore(s1,s0);
 <script type="text/javascript">
 @yield('scriptJs')
 
-    // move this to custom.js
-var input, dtData = [];
+    // Todo: move this to custom.js
+var input, dtData = [], DT=false;
+function doCreateTable(tableData) {
+    var table = document.createElement('table');
+    table.setAttribute("id", "search-table");
+    var tableBody = document.createElement('tbody');
+
+    tableData.forEach(function(rowData) {
+        var row = document.createElement('tr');
+
+        rowData.forEach(function(cellData) {
+            var cell = document.createElement('td');
+            cell.appendChild(document.createTextNode(cellData));
+            row.appendChild(cell);
+        });
+
+        tableBody.appendChild(row);
+    });
+
+    table.appendChild(tableBody);
+    $('#search-results').html('');
+    document.getElementById("search-results").appendChild(table);
+}
+
+// Todo: only include this if Provider
+
 function doPatientSearch() {
     input = $('#search-input').val();
     setTimeout(function() {
@@ -135,18 +159,25 @@ function doPatientSearch() {
 
                 data = o.data;
 
+                let row;
+
                 data.forEach(function(orow) {
 
-                    let row = Object.keys(orow);
+                    //row = Object.values(orow);
 
-                    console.log(row);
-
-                    dtData[dtData.length] = row;
+                    dtData[dtData.length] = [row.first_name, row.last_name];
                 });
 
                 console.log(dtData);
 
-                // Todo: Make DataTable
+                // Todo: hide the #search-results div while this is taking place? mebs
+
+                if (DT !== false) {
+                    DT.destroy(true);
+                }
+                doCreateTable(dtData);
+                DT = $('#search-table').DataTable();
+                console.log(DT);
 
             },
             error: function() {
@@ -196,6 +227,8 @@ function doPatientSearch() {
         <form name="search-form" onsubmit="return doPatientSearch();">
 
             <input id="search-input" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+
+            <div id="search-results"></div>
 
         </form>
 
