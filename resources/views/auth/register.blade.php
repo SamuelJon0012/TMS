@@ -8,7 +8,7 @@
           <h3>{{ __('Patient Registration') }}</h3>
         </div>
 
-        <form method="POST" action="{{ route('register') }}" onsubmit="Javascript: return false;">
+        <form method="POST" action="{{ route('register') }}">
           @csrf
           <div class="row">
           <div class="col-md-6">
@@ -52,7 +52,7 @@
 
                 <div class="form-group row justify-content-center">
                     <div class="col-md-12 text-center">
-                        <input id="first_name" type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" required autocomplete="first_name"  placeholder="{{ __('First Name') }}">
+                        <input id="first_name" type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" required autocomplete="first_name"  placeholder="{{ __('FIRST NAME') }}">
 
                         @error('first_name')
                             <span class="invalid-feedback" role="alert">
@@ -64,7 +64,7 @@
 
                 <div class="form-group row justify-content-center">
                     <div class="col-md-12 text-center">
-                        <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="last_name" placeholder="{{ __('Last Name') }}">
+                        <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="last_name" placeholder="{{ __('LAST NAME') }}">
 
                         @error('last_name')
                             <span class="invalid-feedback" role="alert">
@@ -76,7 +76,7 @@
 
                 <div class="form-group row justify-content-center">
                     <div class="col-md-12 text-center">
-                        <input id="date_of_birth" type="text" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth') }}" required autocomplete="date_of_birth" placeholder="{{ __('Date Of Birth (MM/DD/YYYY)') }}" onfocus="(this.type='date')">
+                        <input id="date_of_birth" type="text" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth') }}" required autocomplete="date_of_birth" placeholder="{{ __('DATE OF BIRTH (MM/DD/YYYY)') }}" onfocus="(this.type='date')">
 
                         @error('date_of_birth')
                             <span class="invalid-feedback" role="alert">
@@ -147,7 +147,7 @@
 
                 <div class="form-group row justify-content-center">
                     <div class="col-md-4 text-center">
-                        <select id="state" class="form-control @error('state') is-invalid @enderror" name="state" required placeholder="{{ __('State') }}">
+                        <select id="state" class="form-control @error('state') is-invalid @enderror" name="state" required placeholder="{{ __('STATE') }}">
                           <option value="">STATE</option>
                           <option value="AL">Alabama</option>
                         	<option value="AK">Alaska</option>
@@ -271,7 +271,7 @@
 
                 <div class="form-group row justify-content-center">
                     <div class="col-md-4 text-center">
-                        <select id="dl_state" class="form-control @error('dl_state') is-invalid @enderror" name="dl_state" placeholder="{{ __('State') }}">
+                        <select id="dl_state" class="form-control @error('dl_state') is-invalid @enderror" name="dl_state" placeholder="{{ __('STATE') }}">
                           <option value="">STATE</option>
                           <option value="AL">Alabama</option>
                         	<option value="AK">Alaska</option>
@@ -401,6 +401,129 @@
           </div>
         </div>
 
+        </form>
+      @endif
+
+      @if(request()->get('rt') == "provider")
+        <div class="col-md-12 text-center">
+          <h3>{{ __('Patient Registration') }}</h3>
+        </div>
+
+        <form method="POST" action="{{ route('register') }}">
+          @csrf
+          <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                {{ __('REQUIRED FIELDS') }}
+              </div>
+              <div class="card-body text-center">
+                {{ __('Please fill out all the Required fields to ensure that all neccessary information is captured for clinical and billing purposes.') }}
+                <br><br>
+
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-12 text-center">
+                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{ __('EMAIL') }}">
+
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-12 text-center">
+                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="{{ __('PASSWORD') }}" >
+
+                        @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-12 text-center">
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="{{ __('REPEAT PASSWORD') }}" >
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-12 text-center">
+                        <input id="first_name" type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" required autocomplete="first_name"  placeholder="{{ __('FIRST NAME') }}">
+
+                        @error('first_name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-12 text-center">
+                        <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="last_name" placeholder="{{ __('LAST NAME') }}">
+
+                        @error('last_name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-12 text-center">
+                        <input id="npi" type="text" class="form-control @error('npi') is-invalid @enderror" name="npi" value="{{ old('npi') }}" required autocomplete="npi" placeholder="{{ __('NATIONAL PROVIDER IDENTIFIER (NPI)') }}">
+
+                        @error('npi')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-12 ">
+                        {{ __('SELECT ALL THAT APPLY:') }}
+                        <div class="row">
+                          <div class="col-4">
+                            <input type="checkbox" name="is_doctor" id="is_doctor" value="1" > <label for ="is_doctor">{{ __('Doctor') }}</label>
+                          </div>
+                          <div class="col-4">
+                            <input type="checkbox" name="is_nurse" id="is_nurse" value="1"> <label for ="is_nurse">{{ __('Nurse') }}</label>
+                          </div>
+                          <div class="col-4">
+                            <input type="checkbox" name="is_nurse_practioner" id="is_nurse_practioner" value="1"> <label for ="is_nurse_practioner">{{ __('Nurse Practioner') }}</label>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-center">
+                  <div class="col-md-12 text-center">
+
+                    <br><br>
+                  </div>
+                </div>
+
+                <div class="form-group row justify-content-center">
+                  <div class="col-md-12 text-center">
+                    <input type="hidden" name="r_type" value="{{ request()->get('rt') }}">
+                    <button type="submit" class="btn btn-primary form-control">
+                        {{ __('Register') }}
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          </div>
         </form>
       @endif
     </div>
