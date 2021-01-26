@@ -103,7 +103,7 @@
             height: 100%;
         }
         .search-modal, .patient-form-modal {
-            /*display: none;*/
+            display: none;
             width: 100%;
             height:90%;
             position: fixed;
