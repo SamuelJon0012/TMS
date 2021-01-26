@@ -50,7 +50,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             // 'dob' => ['required', 'date'],
@@ -75,11 +76,11 @@ class RegisterController extends Controller
         // dd($data);
 
         $user = config('roles.models.defaultUser')::create([
-            'name' => $data['name'],
+            'name' => $data['first_name']." ".$data['last_name'],
             'email' => $data['email'],
-            'dob' => $data['dob'],
-            'phone' => $data['phone'],
-            'power' => $data['power'],
+            // 'dob' => $data['dob'],
+            // 'phone' => $data['phone'],
+            // 'power' => $data['power'],
             'password' => bcrypt($data['password']),
         ]);
 
@@ -87,6 +88,18 @@ class RegisterController extends Controller
           $role = config('roles.models.role')::where('slug', '=', $data['r_type'])->first();  //choose the default role upon user creation.
           if($role)
             $user->attachRole($role);
+
+          //for BurstIq
+          if($data['r_type'] == "patient") {
+            //Call for inserting Patient Record in BurstIq
+
+          }
+
+          if($data['r_type'] == "provider") {
+            //Call for inserting Provider Record in BurstIq
+
+          }
+
         }
 
         return $user;

@@ -7,8 +7,8 @@
       font-size:120%;
       margin: 13px;
       padding:32px 22px 22px 22px;
-      width: 174px;
-      height:174px;
+      width: 200px;
+      height: 200px;
       cursor:pointer;
       border-radius: 12px;
       border: 1px solid #007dc3;
@@ -42,8 +42,8 @@
               <div class="col-3">
                 <div id="myvaccine-button" class="homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/syringe.png">
-                  <br/>
-                  My Vaccines
+                  <br>
+                  {{ __('My Vaccines') }}
                 </div>
               </div>
 
@@ -51,7 +51,7 @@
                 <div class="alert-button homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/alert-icon.png" />
                   <br/>
-                  Alerts
+                  {{ __('Alerts') }}
                 </div>
               </div>
 
@@ -59,7 +59,7 @@
                 <div class="settings-button homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/settings-icon.png" />
                   <br/>
-                  Settings
+                  {{ __('Settings') }}
                 </div>
               </div>
 
@@ -67,7 +67,7 @@
                 <div class="help-button homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/help-icon.png" />
                   <br/>
-                  Help
+                  {{ __('Help') }}
                 </div>
               </div>
 
@@ -75,10 +75,10 @@
             <br/><br/><br/>
             <div class="row">
               <div class="col-6">
-                <button class="btn btn-primary form-control">Schedule a Vaccine Visit</button>
+                <button class="btn btn-primary form-control">{{ __('Schedule a Vaccine Visit') }}</button>
               </div>
               <div class="col-6">
-                <button class="btn btn-primary form-control" id="addVaccine">Add a Vaccine</button>
+                <button class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
               </div>
             </div>
           @endif
@@ -88,8 +88,8 @@
               <div class="col-3">
                 <div class="patient-button homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/magnifyingglass-icon.png">
-                  <br/>
-                  Search For Patient
+                  <br>
+                  {{ __('Search For Patient') }}
                 </div>
               </div>
 
@@ -97,7 +97,7 @@
                 <div class="provider-button homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/friend-icon.png" />
                   <br/>
-                  Provider Reports
+                  {{ __('Scheduled Patients by Location') }}
                 </div>
               </div>
 
@@ -105,7 +105,7 @@
                 <div class="settings-button homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/settings-icon.png" />
                   <br/>
-                  Settings
+                  {{ __('Settings') }}
                 </div>
               </div>
 
@@ -113,15 +113,15 @@
                 <div class="help-button homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/help-icon.png" />
                   <br/>
-                  Help
+                  {{ __('Help') }}
                 </div>
               </div>
             </div>
-            <br/><br/>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <button class="btn btn-primary form-control set-vaccine-location" style="margin-left:25px;width:300px;">Set Vaccine Location</button>
-                </div>
+            <br><br><br>
+            <div class="row justify-content-center">
+              <div class="col-6">
+                <button id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-locatio">{{ __('Set Vaccine Location') }}</button>
+              </div>
             </div>
           @endif
 
@@ -131,50 +131,6 @@
               <img src = "https://djdev.trackmyapp.us/images/trackmysolutionslogoregtm-web.jpg">
             </div>
           </div>
-
-
-
-            <!-- <div class="card">
-                <div class="card-header">
-                  @if(Auth::check() && Auth::user()->hasRole('patient'))
-                    {{ __('Patient') }}
-                  @endif
-
-                  @if(Auth::check() && Auth::user()->hasRole('provider'))
-                    {{ __('Provider') }}
-                  @endif
-
-                  @if(Auth::check() && Auth::user()->hasRole('admin'))
-                    {{ __('Admin') }}
-                  @endif
-
-                  {{ __('Dashboard') }}
-                </div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in ! ') }}
-
-                    <br/><br/>
-                    <b>
-                      @if(Auth::check() && Auth::user()->hasRole('patient'))
-                        {{ __('PATIENT') }}
-                      @endif
-
-                      @if(Auth::check() && Auth::user()->hasRole('provider'))
-                        {{ __('PROVIDER') }}
-                      @endif
-                      Menus will be coming here.
-                    </b>
-
-
-                </div>
-            </div> -->
         </div>
     </div>
 </div>
@@ -187,6 +143,11 @@ $(document).ready(function(){
   $("#addVaccine").click(function(){
     window.location.href = 'patientvaccine/create';
   });
+
+  $("#setVaccineLocation").click(function(){
+    window.location.href = '';
+  });
+
 });
 
 @endsection
