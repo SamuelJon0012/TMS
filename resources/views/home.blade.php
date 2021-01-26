@@ -72,7 +72,7 @@
               </div>
 
             </div>
-            <br><br><br>
+            <br/><br/><br/>
             <div class="row">
               <div class="col-6">
                 <button class="btn btn-primary form-control">{{ __('Schedule a Vaccine Visit') }}</button>
@@ -116,24 +116,21 @@
                   {{ __('Help') }}
                 </div>
               </div>
-
             </div>
             <br><br><br>
             <div class="row justify-content-center">
               <div class="col-6">
-                <button id="setVaccineLocation" class="btn btn-primary form-control">{{ __('Set Vaccine Location') }}</button>
+                <button id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-locatio">{{ __('Set Vaccine Location') }}</button>
               </div>
             </div>
-
           @endif
 
-          <br><br><br>
+          <br/><br/>
           <div class="row">
             <div class="col-12 text-center">
               <img src = "https://djdev.trackmyapp.us/images/trackmysolutionslogoregtm-web.jpg">
             </div>
           </div>
-
         </div>
     </div>
 </div>

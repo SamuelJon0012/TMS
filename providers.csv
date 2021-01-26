@@ -1,0 +1,5 @@
+id,is_doctor,is_nurse,is_nurse_practioner,npi,sites
+1,1,0,0,NPI1,[1,2,3]
+1,0,1,0,NPI2,[1,2,3]
+1,0,0,1,NPI3,[1,2,3]
+1,1,0,0,NPI4,[1,2,3]

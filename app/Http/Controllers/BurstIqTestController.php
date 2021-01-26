@@ -65,7 +65,15 @@ class BurstIqTestController extends Controller
 
         $P = new PatientProfile('erik.olson@trackmysolutions.us','Mermaid7!!');
 
-        $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
+        $where = "WHERE asset.address1 ILIKE '%Lucy%' OR asset.first_name ILIKE '%Lucy%' OR asset.last_name ILIKE '%Lucy%' OR asset.email ILIKE '%Lucy%' OR asset.ssn ILIKE '%Lucy%' OR asset.dl_number ILIKE '%Lucy%' OR asset.first_name ILIKE '%Lucy%'";
+
+        if (!$P->find($where)) { // returns itself, or false if error Todo: hmmmm then you can't chain methods if there a error
+
+            exit('Search produced an error');
+
+        }
+
+        $P->getData();  // full object returned from BurstIq (returns itself ($this) so you can chain methods if you want)
 
         $test = $P->array(); // Get an array of rows (arrays with sub ojects or sub arrays of sub objects)
 
@@ -82,7 +90,7 @@ class BurstIqTestController extends Controller
 
             $P->find("WHERE asset.id = {$row['id']}");
 
-            $P->setFirstName('Shirley')->save();
+            $P->setFirstName('Lucy')->save();
 
         }
 
@@ -275,4 +283,319 @@ class BurstIqTestController extends Controller
         }
         exit;
     }
+
+    function testUpsertingPatients(Request $request) {
+
+        $pats = file_get_contents('../patients.csv');
+
+        $lines = explode("\n", $pats);
+
+        $once = true;
+
+        foreach ($lines as $line) {
+
+            if (empty($line)) {
+                return;
+            }
+
+            $row = str_getcsv($line);
+
+            if ($once) {
+                $once = false;
+                continue;
+            }
+
+            $this->upsertPatient($row);
+
+        }
+    }
+
+    function upsertPatient($row) {
+
+        $id = 0;
+
+        $ctr = 0;
+
+        $id = $row[$ctr++];
+        $email = $row[$ctr++];
+        $relationship_to_owner = $row[$ctr++];
+        $first_name = $row[$ctr++];
+        $last_name = $row[$ctr++];
+        $birth_sex = $row[$ctr++];
+        $date_of_birth = $row[$ctr++];
+        $address1 = $row[$ctr++];
+        $address2 = $row[$ctr++];
+        $city = $row[$ctr++];
+        $state = $row[$ctr++];
+        $zipcode = $row[$ctr++];
+        $ssn = $row[$ctr++];
+        $dl_state = $row[$ctr++];
+        $dl_number = $row[$ctr++];
+        $ethnicity = $row[$ctr++];
+        $race = $row[$ctr++];
+
+        # instantiate a BurstIq class with optional username & password or use login() method later
+
+        $P = new PatientProfile('erik.olson@trackmysolutions.us', 'Mermaid7!!');
+
+        $P->setAddress1($address1)
+            ->setAddress2($address2)
+            ->setCity($city)
+            ->setDateOfBirth($date_of_birth)
+            ->setDlNumber($dl_number)
+            ->setDlState($dl_state)
+            ->setEmail($email)
+            ->setBirthSex($birth_sex)
+            ->setEthnicity($ethnicity)
+            ->setFirstName($first_name)
+            ->setLastName($last_name)
+            ->setRace($race)
+            ->setRelationshipToOwner($relationship_to_owner)
+            ->setSsn($ssn)
+            ->setState($state)
+            ->setZipcode($zipcode)
+            ->setId($id);
+
+        # sub assets must be stored as arrays and all fields must be included even if they are not required
+
+        $phone_number = $row[$ctr++];
+
+        $phone_numbers= [
+            [
+                "is_primary" => "1",
+                "phone_type" => "M",
+                "phone_number" => $phone_number
+            ],
+            [
+                "is_primary" => "0",
+                "phone_type" => "W",
+                "phone_number" => "8002822882"
+            ]
+
+        ];
+
+        $insurances = [[
+            "administrator_name" =>"Bo Snerdley",
+            "group_id" =>"123456",
+            "employer_name" =>"EIB Network",
+            "coverage_effective_date" =>"1/1/2021",
+            "issuer_id" =>"654321",
+            "primary_cardholder" =>"$last_name, $first_name",
+            "patient_profile_id" =>"$id",
+            "insurance_type" => 1
+        ]];
+
+
+        $result = $P->setInsurances($insurances)
+            ->setPhoneNumbers($phone_numbers)
+            ->save();
+
+        echo("<pre>$result</pre>");
+
+    }
+
+    function testUpsertingProviders(Request $request) {
+
+        $pats = file_get_contents('../providers.csv');
+
+        $lines = explode("\n", $pats);
+
+        $once = true;
+
+        foreach ($lines as $line) {
+
+            if (empty($line)) {
+                return;
+            }
+
+            $row = str_getcsv($line);
+
+            if ($once) {
+                $once = false;
+                continue;
+            }
+
+            $this->upsertProvider($row);
+
+        }
+    }
+
+    function upsertProvider($row) {
+
+        $id = 0;
+
+        $ctr = 0;
+
+        $id = $row[$ctr++];
+        $is_doctor = $row[$ctr++];
+        $is_nurse = $row[$ctr++];
+        $is_nurse_practioner = $row[$ctr++];
+        $npi = $row[$ctr++];
+        $sites = $row[$ctr++];
+
+        # instantiate a BurstIq class with optional username & password or use login() method later
+
+        $P = new ProviderProfile('erik.olson@trackmysolutions.us', 'Mermaid7!!');
+
+        $result = $P->setIsDoctor($is_doctor)
+                ->setIsNurse($is_nurse)
+                ->setIsNursePractitioner($is_nurse_practioner)
+                ->setNpi($npi)
+                ->setId($id)
+                ->setSites(json_decode("[1,2,3]"))
+                ->setUserId(1)
+                ->save();
+
+        echo("<pre>$result</pre>");
+
+    }
+    function testUpsertingSites(Request $request) {
+
+        $pats = file_get_contents('../sites.csv');
+
+        $lines = explode("\n", $pats);
+
+        $once = true;
+
+        foreach ($lines as $line) {
+
+            if (empty($line)) {
+                return;
+            }
+
+            $row = str_getcsv($line);
+
+            if ($once) {
+                $once = false;
+                continue;
+            }
+
+            $this->upsertSite($row);
+
+        }
+    }
+
+    function upsertSite($row) {
+
+        $id = 0;
+
+        $ctr = 0;
+
+        $id = $row[$ctr++];
+        $name = $row[$ctr++];
+        $vacinity_name = $row[$ctr++];
+        $address1 = $row[$ctr++];
+        $address2 = $row[$ctr++];
+        $city = $row[$ctr++];
+        $state = $row[$ctr++];
+        $zipcode = $row[$ctr++];
+        $county = $row[$ctr++];
+
+
+        # instantiate a BurstIq class with optional username & password or use login() method later
+
+        $P = new SiteProfile('erik.olson@trackmysolutions.us', 'Mermaid7!!');
+
+        $result = $P->setAddress1($address1)
+            ->setAddress2($address2)
+            ->setCity($city)
+            ->setVacinityName($vacinity_name)
+            ->setCounty($county)
+            ->setName($name)
+            ->setState($state)
+            ->setZipcode($zipcode)
+            ->setId($id)
+            ->save();
+
+        echo("<pre>$result</pre>");
+
+    }
+    function testUpsertingSchedules(Request $request) {
+
+        $pats = file_get_contents('../encounter_schedule.csv');
+
+        $lines = explode("\n", $pats);
+
+        $once = true;
+
+        foreach ($lines as $line) {
+
+            if (empty($line)) {
+                return;
+            }
+
+
+            $row = str_getcsv($line);
+
+            if ($once) {
+                $once = false;
+                continue;
+            }
+
+            $this->upsertSchedule($row);
+
+        }
+    }
+
+    function upsertSchedule($row) {
+
+        $id = 0;
+
+        $ctr = 0;
+
+        $id = $row[$ctr++];
+        $appointment_type = $row[$ctr++];
+        $is_walkin = $row[$ctr++];
+        $scheduled_time = $row[$ctr++];
+        $question_id1 = $row[$ctr++];
+        $patient_response1 = $row[$ctr++];
+        $question_id2 = $row[$ctr++];
+        $patient_response2 = $row[$ctr++];
+        $question_id3 = $row[$ctr++];
+        $patient_response3 = $row[$ctr++];
+        $question_id4 = $row[$ctr++];
+        $patient_response4 = $row[$ctr++];
+        $patient_id = $row[$ctr++];
+        $site_id = $row[$ctr++];
+        $provider_id = $row[$ctr++];
+        $type = $row[$ctr++];
+        $description = $row[$ctr++];
+        $scheduled = $row[$ctr++];
+        $acknowledged = $row[$ctr++];
+
+        $questions = [
+            [ $question_id1, $patient_response1 ],
+            [ $question_id2, $patient_response2 ],
+            [ $question_id3, $patient_response3 ],
+            [ $question_id4, $patient_response4 ]
+        ];
+
+        $reminder = [
+            $type,
+            $description,
+            $scheduled,
+            $acknowledged
+        ];
+
+
+        # instantiate a BurstIq class with optional username & password or use login() method later
+
+        $P = new EncounterSchedule('erik.olson@trackmysolutions.us', 'Mermaid7!!');
+
+        $result = $P->setAppointmentType($appointment_type)
+            ->setIsWalkin($is_walkin)
+            ->setScheduledTime($scheduled_time)
+            ->setSiteId($site_id)
+            ->setPatientId($patient_id)
+            ->setProviderId($provider_id)
+            ->setPatientQuestionResponses($questions)
+            ->setReminder($reminder)
+            ->setId($id)
+            ->save();
+
+        echo("<pre>$result</pre>");
+
+    }
+
+
 }

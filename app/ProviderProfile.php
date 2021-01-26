@@ -153,7 +153,7 @@ class ProviderProfile extends BurstIq
         $this->is_doctor = $asset->is_doctor;
         $this->is_nurse = $asset->is_nurse;
         $this->is_nurse_practitioner = $asset->is_nurse_practioner;
-        $this->user_id = $asset->user_id;
+        #Todo $this->user_id = $asset->user_id; ?? not in collection?
         $this->npi = $asset->npi;
         $this->sites = $asset->sites;
 
@@ -165,7 +165,7 @@ class ProviderProfile extends BurstIq
             'is_doctor' => $asset->is_doctor,
             'is_nurse' => $asset->is_nurse,
             'is_nurse_practitioner' => $asset->is_nurse_practioner,
-            'user_id' => $asset->user_id,
+            #Todo see above 'user_id' => $asset->user_id,
             'npi' => $asset->npi,
             'sites' => $asset->sites,
 

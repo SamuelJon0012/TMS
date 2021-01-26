@@ -103,7 +103,64 @@ class BurstIq
 
         $this->url = self::BI_BASE_URL . 'query/' . $chain;
 
-        return $this->postCurl($postFields);
+        $result = $this->postCurl($postFields);
+
+        $this->data = json_decode($result);
+
+        switch (json_last_error()) {
+            case JSON_ERROR_NONE:
+                $msg = false;
+                break;
+            case JSON_ERROR_DEPTH:
+                $msg =  ' - Maximum stack depth exceeded';
+                break;
+            case JSON_ERROR_STATE_MISMATCH:
+                $msg =  ' - Underflow or the modes mismatch';
+                break;
+            case JSON_ERROR_CTRL_CHAR:
+                $msg =  ' - Unexpected control character found';
+                break;
+            case JSON_ERROR_SYNTAX:
+                $msg =  ' - Syntax error, malformed JSON';
+                break;
+            case JSON_ERROR_UTF8:
+                $msg =  ' - Malformed UTF-8 characters, possibly incorrectly encoded';
+                break;
+            default:
+                $msg =  ' - Unknown error';
+                break;
+        }
+
+        if ($msg !== false) {
+            exit($this->error($msg . "\n\n" . $result));
+        }
+
+        if (!isset($this->data->status)) {
+            exit($this->error($result));
+        }
+
+        if ($this->data->status != 200) {
+
+            exit($this->error($result));
+
+        }
+
+
+//        if (strpos($result, 'Forbidden') > 0) {
+//
+//            // log in again
+//
+//            $this->url = self::BI_BASE_URL . 'query/' . $chain;
+//
+//            $this->login($this->username, $this->password);
+//
+//            # Todo -- make sure login was successful
+//
+//            $result = $this->postCurl($postFields);
+//
+//        }
+
+        return $this->data;
 
     }
 
@@ -380,23 +437,19 @@ class BurstIq
 
         $json = view($this->view)->with(['data' => $this])->render();
 
-        var_dump($json);
+        //var_dump($json);
 
         $results = $this->upsert($this->chain, $json);
 
-        var_dump($results);
+        //var_dump($results);
 
         return $results;
 
     }
 
-    public function find($query) {
+    public function find($query) { //exit($query);
 
-        # Todo: Try Catch the heck out of this kind of stuff, check for $data->status = 200, etc
-
-        $json = $this->query($this->chain, $query);
-
-        $this->data = json_decode($json);
+        $this->query($this->chain, $query);
 
         $records = $this->data->records;
 
@@ -411,12 +464,14 @@ class BurstIq
 
     }
 
-//    function make($record) {
-//
-//        // you must implement this in the child class
-//
-//        return [];
-//
-//    }
+    function error($msg = 'An error has occurred')
+    {
+
+        return json_encode([
+            'success' => false,
+            'message' => $msg,
+        ]);
+    }
+
 
 }
