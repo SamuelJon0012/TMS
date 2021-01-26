@@ -121,7 +121,7 @@
             <br><br><br>
             <div class="row justify-content-center">
               <div class="col-6">
-                <button class="btn btn-primary form-control">{{ __('Set Vaccine Location') }}</button>
+                <button id="setVaccineLocation" class="btn btn-primary form-control">{{ __('Set Vaccine Location') }}</button>
               </div>
             </div>
 
@@ -146,6 +146,11 @@ $(document).ready(function(){
   $("#addVaccine").click(function(){
     window.location.href = 'patientvaccine/create';
   });
+
+  $("#setVaccineLocation").click(function(){
+    window.location.href = '';
+  });
+
 });
 
 @endsection

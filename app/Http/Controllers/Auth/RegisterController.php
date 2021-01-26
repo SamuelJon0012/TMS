@@ -88,6 +88,18 @@ class RegisterController extends Controller
           $role = config('roles.models.role')::where('slug', '=', $data['r_type'])->first();  //choose the default role upon user creation.
           if($role)
             $user->attachRole($role);
+
+          //for BurstIq
+          if($data['r_type'] == "patient") {
+            //Call for inserting Patient Record in BurstIq
+
+          }
+
+          if($data['r_type'] == "provider") {
+            //Call for inserting Provider Record in BurstIq
+
+          }
+
         }
 
         return $user;
