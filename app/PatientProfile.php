@@ -22,6 +22,7 @@ class PatientProfile extends BurstIq
     private $first_name;
     private $last_name;
     private $date_of_birth;
+    private $birth_sex;
     private $address1;
     private $address2;
     private $city;
@@ -52,6 +53,24 @@ class PatientProfile extends BurstIq
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBirthSex()
+    {
+        return $this->birth_sex;
+    }
+
+    /**
+     * @param mixed $birth_sex
+     * @return PatientProfile
+     */
+    public function setBirthSex($birth_sex)
+    {
+        $this->birth_sex = $birth_sex;
+        return $this;
     }
 
     /**
@@ -449,6 +468,9 @@ class PatientProfile extends BurstIq
         $this->relationship_to_owner = $asset->   relationship_to_owner;
         $this->first_name = $asset->first_name;
         $this->last_name = $asset->last_name;
+
+        $this->birth_sex = '01/01/2000'; // $asset->birth_sex; #Todo not getting this
+
         $this->date_of_birth = $asset->date_of_birth;
         $this->address1 = $asset->address1;
         $this->address2 = $asset->address2;
@@ -472,6 +494,7 @@ class PatientProfile extends BurstIq
             'relationship_to_owner' => $asset->   relationship_to_owner,
             'first_name' => $asset->first_name,
             'last_name' => $asset->last_name,
+            'birth_sex' => '01/01/2000', //  $asset->birth_sex, # Todo: not getting this
             'date_of_birth' => $asset->date_of_birth,
             'address1' => $asset->address1,
             'address2' => $asset->address2,

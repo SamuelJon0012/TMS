@@ -283,4 +283,113 @@ class BurstIqTestController extends Controller
         }
         exit;
     }
+
+    function testUpsertingPatients(Request $request) {
+
+        $pats = file_get_contents('../patients.csv');
+
+        $lines = explode("\n", $pats);
+
+        $once = true;
+
+        foreach ($lines as $line) {
+
+            $row = str_getcsv($line);
+
+            if ($once) {
+                $once = false;
+                continue;
+            }
+
+            $this->upsertPatient($row);
+
+        }
+    }
+
+    function upsertPatient($row) {
+
+        $id = 0;
+
+        $ctr = 0;
+
+        $id = $row[$ctr++];
+        $email = $row[$ctr++];
+        $relationship_to_owner = $row[$ctr++];
+        $first_name = $row[$ctr++];
+        $last_name = $row[$ctr++];
+        $birth_sex = $row[$ctr++];
+        $date_of_birth = $row[$ctr++];
+        $address1 = $row[$ctr++];
+        $address2 = $row[$ctr++];
+        $city = $row[$ctr++];
+        $state = $row[$ctr++];
+        $zipcode = $row[$ctr++];
+        $ssn = $row[$ctr++];
+        $dl_state = $row[$ctr++];
+        $dl_number = $row[$ctr++];
+        $ethnicity = $row[$ctr++];
+        $race = $row[$ctr++];
+
+        # instantiate a BurstIq class with optional username & password or use login() method later
+
+        $P = new PatientProfile('erik.olson@trackmysolutions.us', 'Mermaid7!!');
+
+        $P->setAddress1($address1)
+            ->setAddress2($address2)
+            ->setCity($city)
+            ->setDateOfBirth($date_of_birth)
+            ->setDlNumber($dl_number)
+            ->setDlState($dl_state)
+            ->setEmail($email)
+            ->setBirthSex($birth_sex)
+            ->setEthnicity($ethnicity)
+            ->setFirstName($first_name)
+            ->setLastName($last_name)
+            ->setRace($race)
+            ->setRelationshipToOwner($relationship_to_owner)
+            ->setSsn($ssn)
+            ->setState($state)
+            ->setZipcode($zipcode)
+            ->setId($id);
+
+        # sub assets must be stored as arrays and all fields must be included even if they are not required
+
+        $phone_number = $row[$ctr++];
+
+        $phone_numbers= [
+            [
+                "is_primary" => "1",
+                "phone_type" => "M",
+                "phone_number" => $phone_number
+            ],
+            [
+                "is_primary" => "0",
+                "phone_type" => "W",
+                "phone_number" => "8002822882"
+            ]
+
+        ];
+
+        $insurances = [[
+            "administrator_name" =>"Bo Snerdley",
+            "group_id" =>"123456",
+            "employer_name" =>"EIB Network",
+            "coverage_effective_date" =>"1/1/2021",
+            "issuer_id" =>"654321",
+            "primary_cardholder" =>"$last_name, $first_name",
+            "patient_profile_id" =>"$id",
+            "insurance_type" => 1
+        ]];
+
+
+        $result = $P->setInsurances($insurances)
+            ->setPhoneNumbers($phone_numbers)
+            ->save();
+
+        echo("<pre>$result</pre>");
+
+    }
+
+
+
 }

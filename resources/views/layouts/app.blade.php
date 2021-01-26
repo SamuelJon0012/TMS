@@ -98,7 +98,43 @@
             @yield('content')
         </main>
     </div>
+    <style>
+        body, html {
+            height: 100%;
+        }
+        .search-modal, .patient-form-modal {
+            /*display: none;*/
+            width: 100%;
+            height:90%;
+            position: fixed;
+            margin-top: 85px;
+            top: 0; left: 0;
+            background-color: #fff;
+            overflow:scroll;
+            padding:22px;
 
+        }
+        .patient-form-modal {
+            display: none;
+        }
+        .search-modal-inner, .patient-form-modal-inner {
+
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            max-width: 900px;
+            min-height:400px;
+            background-color: #fff;
+            text-align: center;
+        }
+        #search-results {
+            text-align:left;
+            width:100%;
+        }
+        #search-table {
+            width: 100%;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
 <!-- TawkTo::widgetCode('5ffc8653c31c9117cb6d8992') -->
@@ -118,7 +154,7 @@ s0.parentNode.insertBefore(s1,s0);
 <script type="text/javascript">
 @yield('scriptJs')
 
-    // Todo: move this to custom.js
+// Todo: move this to custom.js where it can be CND'd
 var input, dtData = [], DT=false;
 function doCreateTable(tableData) {
     var table = document.createElement('table');
@@ -181,6 +217,7 @@ function doCreateTable(tableData) {
 // Todo: only include this if Provider
 
 function doPatientSearch() {
+    console.log('doPatientSearch');
     input = $('#search-input').val();
     setTimeout(function() {
         $.ajax({
@@ -195,16 +232,20 @@ function doPatientSearch() {
 
                 let row, btn;
 
-                dtData = [['','fname', 'lname']] ;
+                dtData = [['','Patient Name', 'Date of Birth', 'Patient Email', 'Patient Phone']] ;
 
                 data.forEach(function(row) {
 
                     dtData[dtData.length] =
                         [
-                            row.id, row.first_name, row.last_name
+                            row.id, row.first_name + ' ' + row.last_name,
+                            row.date_of_birth.$date.replace('T00:00:00.000Z',''),
+                            row.email,
+                            row.phone_numbers[0].phone_number
                         ];
                 });
 
+                console.log('dtData');
                 console.log(dtData);
 
                 // Todo: hide the #search-results div while this is taking place? mebs
@@ -219,6 +260,7 @@ function doPatientSearch() {
                     'scrollY': 300
 
                 });
+                console.log('DT');
                 console.log(DT);
 
             },
@@ -235,63 +277,166 @@ function doPatientSearch() {
 setTimeout(function() {
     $.noConflict();
     $(document.body).on('click', '.seluser' ,function(){
-       let rel = $(this).attr('rel');
-       console.log(rel);
+
+        let id = $(this).attr('rel');
+
+        $.ajax({
+            url: '/biq/get',
+            data: 'q=' + id,
+            dataType: 'json',
+            success: function(o) {
+
+                // Todo: Check for an error object (success = false) or unexpected data
+
+                console.log('o');
+                console.log(o);
+
+                // Todo: Confirm o.data[0] exists
+
+                doConfirmPatient(o.data[0]);
+
+            },
+            error: function() {
+                // Todo: handle this more elegantly
+                alert('An error has occurred');
+            },
+        });
+
     });
 }, 4000);
+function doConfirmPatient(data) {
+
+    $('.patient-form-modal').show();
+
+    let output = '<table><tr>';
+    for (const [key, value] of Object.entries(data)) {
+        console.log(`${key}: ${value}`);
+        $('#' + key).html(value);
+    }
+    // todo set patient_id hidden field value to data.id
+
+
+}
 </script>
-<style>
-    body, html {
-        height: 100%;
-    }
-    .search-modal {
-        /*display: none;*/
-        width: 100%;
-        height:90%;
-        position: fixed;
-        margin-top: 85px;
-        top: 0; left: 0;
-        background-color: #fff;
-        overflow:scroll;
-        padding:22px;
 
-    }
-    .search-modal-inner {
+    <div class="search-modal">
 
-        margin-left: auto;
-        margin-right: auto;
-        width: 100%;
-        max-width: 900px;
-        min-height:400px;
-        background-color: #fff;
-        text-align: center;
-    }
-    #search-results {
-        text-align:left;
-        width:100%;
-    }
-    #search-table {
-        width: 100%;
-    }
-</style>
-<div class="search-modal">
+        <div class="search-modal-inner">
 
-    <div class="search-modal-inner">
+            <form name="search-form" onsubmit="return doPatientSearch();">
 
-        <form name="search-form" onsubmit="return doPatientSearch();">
+                <input id="search-input" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
 
-            <input id="search-input" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+            </form>
 
             <div id="search-results"></div>
 
-        </form>
-
-
+        </div>
 
     </div>
+    <div class="patient-form-modal">
 
-</div>
+        <div class="patient-form-modal-inner">
 
+            <div id="patient-data">
+
+                <div class="leftside">
+                    <table>
+                        <tr>
+                            <td class="flabel">First Name</td>
+                            <td class="fvalue" id="first_name"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Last Name</td>
+                            <td class="fvalue" id="last_name"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Date of Birth</td>
+                            <td class="fvalue" id="date_of_birth"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">SSN</td>
+                            <td class="fvalue" id="ssn"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Driver's License</td>
+                            <td class="fvalue" id="dl_number"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Address Line 1</td>
+                            <td class="fvalue" id="address1"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Address Line 2</td>
+                            <td class="fvalue" id="address2"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">City</td>
+                            <td class="fvalue" id="city"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">State</td>
+                            <td class="fvalue" id="state"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Zipcode</td>
+                            <td class="fvalue" id="zipcode"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="rightside">
+                    <table>
+                        <tr>
+                            <td class="flabel">Email Address</td>
+                            <td class="fvalue" id="email"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Mobile Phone Number</td>
+                            <td class="fvalue" id="mphone"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Home Phone Number</td>
+                            <td class="fvalue" id="hphone"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Birth Sex</td>
+                            <td class="fvalue" id="birth_sex"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Race</td>
+                            <td class="fvalue" id="race"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Ethnicity</td>
+                            <td class="fvalue" id="ethnicity"></td>
+                        </tr>
+                    </table>
+
+                    <table>
+                        <tr>
+                            <td class="flabel">Location</td>
+                            <td class="fvalue" id="location"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Date</td>
+                            <td class="fvalue" id="date"></td>
+                        </tr>
+                        <tr>
+                            <td class="flabel">Time</td>
+                            <td class="fvalue" id="">time</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <form name="patient-form" onsubmit="return doPatientForm();">
+                <input type="hidden" value="0" id="patient_id" name="id">
+                <input type="submit" value="Confirm Patient" class="btn btn-primary">
+            </form>
+
+        </div>
+
+    </div>
 </body>
 </html>
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>

@@ -95,6 +95,32 @@ class BurstIqController extends Controller
         return $this->success($rows);
     }
 
+    function get(Request $request)
+    {
+
+        $Q = $request->get('q');
+
+        # Todo: sanitize Q to prevent hackery
+        #$Q = $this->sanitize($Q);
+
+        if (empty($Q)) {
+
+            # Todo or something
+        }
+        $P = new PatientProfile('erik.olson@trackmysolutions.us', 'Mermaid7!!');
+
+        $where = "WHERE asset.id=$Q";
+
+        if (!$P->find($where)) {
+
+            return $this->error('Search produced an error');
+
+        }
+        $rows = $P->array();
+
+        return $this->success($rows);
+    }
+
     function error($msg = 'An error has occurred')
     {
 
