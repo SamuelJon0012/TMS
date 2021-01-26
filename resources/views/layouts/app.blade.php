@@ -102,7 +102,7 @@
         body, html {
             height: 100%;
         }
-        
+
         .search-modal, .patient-form-modal {
             display: none;
             width: 100%;
@@ -379,6 +379,9 @@ $(function() {
         });
 
     });
+    $('.patient-button').on('click', function() {
+        $('.search-modal').show();
+    })
 });
 //, 4000);
 
