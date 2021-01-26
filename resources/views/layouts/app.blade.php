@@ -134,6 +134,52 @@
         #search-table {
             width: 100%;
         }
+        .patient-show {
+            border: 1px solid black;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            width: 400px;
+        }
+        .patient-show th {
+            text-align: right;
+            padding-right: 6px;
+            max-width: 200px;
+
+        }
+        .patient-show td {
+            text-align: left;
+            padding-left: 6px;
+            overflow: hidden;
+            max-width: 200px;
+
+        }
+        .rightside, .leftside {
+            float: left;
+
+
+        }
+        #preloader {
+
+            position: fixed;
+            top: 0; left:0; bottom: 0; right: 0;
+            background-color: rgba(0,0,255,0.1);
+            padding-top: 40%;
+            text-align: center;
+        }
+        .breadcrumbs {
+            text-align: left;
+            font-size: 80%;
+            margin-top:-20px;
+            padding-bottom: 6px;
+        }
+        .go_link {
+            cursor: pointer;
+        }
+
+        .go_link:hover {
+            text-decoration: underline;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
@@ -213,12 +259,22 @@ function doCreateTable(tableData) {
     $('#search-results').html('');
     document.getElementById("search-results").appendChild(table);
 }
+function preloader_on() {
 
+    $('#preloader').show();
+
+}
+function preloader_off() {
+
+    $('#preloader').hide();
+
+}
 // Todo: only include this if Provider
 
 function doPatientSearch() {
     console.log('doPatientSearch');
     input = $('#search-input').val();
+    preloader_on();
     setTimeout(function() {
         $.ajax({
             url: '/biq/find',
@@ -262,9 +318,11 @@ function doPatientSearch() {
                 });
                 console.log('DT');
                 console.log(DT);
-
+                preloader_off();
             },
             error: function() {
+                preloader_off();
+
                 // Todo: handle this more elegantly
                 alert('An error has occurred');
 
@@ -274,10 +332,26 @@ function doPatientSearch() {
     },100);
     return false;
 }
-setTimeout(function() {
+//setTimeout(function() {
+$(function() {
     $.noConflict();
-    $(document.body).on('click', '.seluser' ,function(){
 
+    $('.go_home').on('click', function() {
+        $('.modals').hide();
+        $('.fvalue').html('');
+        if (DT !== false) {
+            DT.destroy(true);
+        }
+
+    });
+    $('.go_search').on('click', function() {
+        $('.patient-form-modal').hide();
+        $('.fvalue').html('');
+
+        // Todo: Besure to hide anything else that might be on top of it.
+    });
+    $(document.body).on('click', '.seluser' ,function(){
+        preloader_on();
         let id = $(this).attr('rel');
 
         $.ajax({
@@ -297,31 +371,40 @@ setTimeout(function() {
 
             },
             error: function() {
+                preloader_off();
                 // Todo: handle this more elegantly
                 alert('An error has occurred');
             },
         });
 
     });
-}, 4000);
+});
+//, 4000);
+
 function doConfirmPatient(data) {
 
     $('.patient-form-modal').show();
 
-    let output = '<table><tr>';
     for (const [key, value] of Object.entries(data)) {
         console.log(`${key}: ${value}`);
         $('#' + key).html(value);
     }
+    // Todo: Get the encounter_schedule and site_profile as well, break up the date into date and time
+
+    // Todo: Break out the hphone and mphone if present
+
     // todo set patient_id hidden field value to data.id
 
+    preloader_off();
 
 }
 </script>
 
-    <div class="search-modal">
+    <div class="search-modal modals">
 
         <div class="search-modal-inner">
+
+            <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
 
             <form name="search-form" onsubmit="return doPatientSearch();">
 
@@ -334,107 +417,121 @@ function doConfirmPatient(data) {
         </div>
 
     </div>
-    <div class="patient-form-modal">
+    <div class="patient-form-modal modals">
 
         <div class="patient-form-modal-inner">
+
+            <div class="breadcrumbs"><span class="go_home go_link"><- Home</span> <span class="go_search go_link"> <- Search</span></div>
 
             <div id="patient-data">
 
                 <div class="leftside">
-                    <table>
+                    <table class="patient-show">
                         <tr>
-                            <td class="flabel">First Name</td>
+                            <td colspan="2" style="text-align:center;color:blue;">Personal Data</td>
+                        </tr>
+                        <tr>
+                            <th class="flabel">First Name</th>
                             <td class="fvalue" id="first_name"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Last Name</td>
+                            <th class="flabel">Last Name</th>
                             <td class="fvalue" id="last_name"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Date of Birth</td>
+                            <th class="flabel">Date of Birth</th>
                             <td class="fvalue" id="date_of_birth"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">SSN</td>
+                            <th class="flabel">SSN</th>
                             <td class="fvalue" id="ssn"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Driver's License</td>
+                            <th class="flabel">Driver's License</th>
                             <td class="fvalue" id="dl_number"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Address Line 1</td>
+                            <th class="flabel">Address Line 1</th>
                             <td class="fvalue" id="address1"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Address Line 2</td>
+                            <th class="flabel">Address Line 2</th>
                             <td class="fvalue" id="address2"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">City</td>
+                            <th class="flabel">City</th>
                             <td class="fvalue" id="city"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">State</td>
+                            <th class="flabel">State</th>
                             <td class="fvalue" id="state"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Zipcode</td>
+                            <th class="flabel">Zipcode</th>
                             <td class="fvalue" id="zipcode"></td>
                         </tr>
                     </table>
                 </div>
                 <div class="rightside">
-                    <table>
+                    <table class="patient-show">
                         <tr>
-                            <td class="flabel">Email Address</td>
+                            <td colspan="2" style="text-align:center;color:blue;">Demographic Data</td>
+                        </tr>
+                        <tr>
+                            <th class="flabel">Email Address</th>
                             <td class="fvalue" id="email"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Mobile Phone Number</td>
+                            <th class="flabel">Mobile Phone Number</th>
                             <td class="fvalue" id="mphone"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Home Phone Number</td>
+                            <th class="flabel">Home Phone Number</th>
                             <td class="fvalue" id="hphone"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Birth Sex</td>
+                            <th class="flabel">Birth Sex</th>
                             <td class="fvalue" id="birth_sex"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Race</td>
+                            <th class="flabel">Race</th>
                             <td class="fvalue" id="race"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Ethnicity</td>
+                            <th class="flabel">Ethnicity</th>
                             <td class="fvalue" id="ethnicity"></td>
                         </tr>
                     </table>
 
-                    <table>
+                    <table class="patient-show">
                         <tr>
-                            <td class="flabel">Location</td>
+                            <td colspan="2" style="text-align:center;color:blue;">Vaccine Schedule</td>
+                        </tr>
+                        <tr>
+                            <th class="flabel">Location</th>
                             <td class="fvalue" id="location"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Date</td>
+                            <th class="flabel">Date</th>
                             <td class="fvalue" id="date"></td>
                         </tr>
                         <tr>
-                            <td class="flabel">Time</td>
-                            <td class="fvalue" id="">time</td>
+                            <th class="flabel">Time</th>
+                            <td class="fvalue" id="time"></td>
                         </tr>
                     </table>
                 </div>
             </div>
-
+            <div style="clear:both;"></div>
             <form name="patient-form" onsubmit="return doPatientForm();">
                 <input type="hidden" value="0" id="patient_id" name="id">
                 <input type="submit" value="Confirm Patient" class="btn btn-primary">
             </form>
-
         </div>
+    </div>
+    <div id="preloader" style="display:none;">
+
+        <img src="/preloader.gif">
 
     </div>
 </body>

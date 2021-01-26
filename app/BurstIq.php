@@ -447,11 +447,11 @@ class BurstIq
 
     }
 
-    public function find($query) {
+    public function find($query) { //exit($query);
 
         $this->query($this->chain, $query);
 
-        $records = $this->data->records; 
+        $records = $this->data->records;
 
         foreach ($records as $record) {
 
