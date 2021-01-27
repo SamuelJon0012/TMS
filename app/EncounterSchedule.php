@@ -88,6 +88,7 @@ class EncounterSchedule extends BurstIq
      */
     public function getScheduledTime()
     {
+
         return $this->scheduled_time;
     }
 
@@ -97,6 +98,7 @@ class EncounterSchedule extends BurstIq
      */
     public function setScheduledTime($scheduled_time)
     {
+
         $this->scheduled_time = $scheduled_time;
         return $this;
     }

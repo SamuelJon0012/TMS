@@ -41,17 +41,25 @@ class BurstIqTestController extends Controller
 
         $B = new BurstIq('erik.olson@trackmysolutions.us','Mermaid7!!');
 
+        #$where = "SELECT p.id AS id, e.patient_id AS pid FROM patient_profile AS p JOIN encounter_schedule AS e ON e.patient_id=p.id WHERE (p.first_name ILIKE '%jeff%' OR p.last_name ILIKE '%jeff%') AND e.site_id=1";
+        #$where = "SELECT * FROM patient_profile AS p WHERE asset.first_name ILIKE '%jeff%'";
+        #$where = "SELECT * FROM patient_profile WHERE asset.first_name ILIKE '%jeff%'";
+
+        $where="SELECT p.asset.id AS id, e.asset.patient_id AS pid, e.asset.site_id as sid FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
+        //$where="SELECT p.asset.id AS id, e.asset.patient_id AS pid, e.asset.site_id as sid FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%') AND e.asset.site_id=1";
+
+
 //        $A .= "\n\n" . $B->query('patient_profile',"WHERE asset.id >= 0");
-        $A .= "\n\n" . $B->query('provider_profile',"WHERE asset.id >= 0");
+//        $A .= "\n\n" . $B->query('provider_profile',"WHERE asset.id >= 0");
 //        $A .= "\n\n" . $B->query('site_profile',"WHERE asset.id >= 0");
 //        $A .= "\n\n" . $B->query('drug_profile',"WHERE asset.id >= 0");
-//        $A .= "\n\n" . $B->query('question_profile',"WHERE asset.id >= 0");
-//        $A .= "\n\n" . $B->query('encounter_schedule',"WHERE asset.id >= 0");
+//        $A .= "\n\n" . $B->query('question_profile',"WHERE asset.id = asset_id");
+        $A = $B->query('patient_profile',$where );
 //        $A .= "\n\n" . $B->query('encounter',"WHERE asset.id >= 0");
-//        $A .= "\n\n" . $B->query('procedure_results',"WHERE asset.id >= 0");
+//        $A .= "\n\n" . $B->query('procedure_results',"WHERE asset.id != 10");
 //        $A .= "\n\n" . $B->query('user',"WHERE asset.id >= 0");
+var_dump($A); exit;
 
-        exit("<textarea style='width:100%;height:600px;'>$A</textarea>");
 
 
 
@@ -564,19 +572,18 @@ class BurstIqTestController extends Controller
         $acknowledged = $row[$ctr++];
 
         $questions = [
-            [ $question_id1, $patient_response1 ],
-            [ $question_id2, $patient_response2 ],
-            [ $question_id3, $patient_response3 ],
-            [ $question_id4, $patient_response4 ]
+            [ 'question_id' => $question_id1, 'patient_response' => $patient_response1 ],
+            [ 'question_id' => $question_id2, 'patient_response' => $patient_response2 ],
+            [ 'question_id' => $question_id3, 'patient_response' => $patient_response3 ],
+            [ 'question_id' => $question_id4, 'patient_response' => $patient_response4 ]
         ];
 
         $reminder = [
-            $type,
-            $description,
-            $scheduled,
-            $acknowledged
+            'type' => $type,
+            'description' => $description,
+            'scheduled' => $scheduled,
+            'acknowledged' => $acknowledged
         ];
-
 
         # instantiate a BurstIq class with optional username & password or use login() method later
 
