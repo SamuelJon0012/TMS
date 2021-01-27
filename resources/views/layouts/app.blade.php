@@ -102,7 +102,7 @@
         body, html {
             height: 100%;
         }
-        
+
         .search-modal, .patient-form-modal {
             display: none;
             width: 100%;
