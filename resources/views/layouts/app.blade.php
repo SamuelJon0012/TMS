@@ -383,8 +383,6 @@ $(function() {
         $('.search-modal').show();
     })
 });
-
-
 function doConfirmPatient(data) {
 
     $('.patient-form-modal').show();
