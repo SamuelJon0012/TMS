@@ -383,7 +383,7 @@ $(function() {
         $('.search-modal').show();
     })
 });
-//, 4000);
+
 
 function doConfirmPatient(data) {
 

@@ -38,7 +38,7 @@ Route::get('/biq/get', 'BurstIqController@get')->name('biq_get');
 Route::get('/biq/test-getting-a-chain', 'BurstIqTestController@testGettingAChain')->name('test_getting_a_chain');
 /*
  *
- *  BurstIq Model Classes  
+ *  BurstIq Model Classes
  */
 Route::get('/biq/test-upserting-a-patient', 'BurstIqTestController@testUpsertingAPatient')->name('test_upserting_a_patient');
 
@@ -74,4 +74,10 @@ Route::get('/addvaccine', function () {
     return view('addvaccine');
 });
 
+Route::get('/patientquestionaire', function () {
+    return view('patientquestionaire');
+});
 
+Route::get('/providerquestionaire', function () {
+    return view('providerquestionaire');
+});
