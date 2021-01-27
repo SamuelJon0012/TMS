@@ -379,9 +379,10 @@ $(function() {
         });
 
     });
+    $('.patient-button').on('click', function() {
+        $('.search-modal').show();
+    })
 });
-//, 4000);
-
 function doConfirmPatient(data) {
 
     $('.patient-form-modal').show();
