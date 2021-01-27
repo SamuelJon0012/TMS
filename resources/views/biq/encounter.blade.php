@@ -1,14 +1,14 @@
 {
-  "id": 1,
-  "patient_id": 123,
-  "site_id": 1,
-  "provider_id": 1,
-  "datetime": "",
-  "dx_icd10": ["z11.52"],
-  "refering_provider_id": "",
+  "id": {{(int)$data->getId()}},
+  "patient_id": {{(int)$data->getPatientId()}},
+  "site_id": {{(int)$data->getSiteId()}},
+  "provider_id": {{(int)$data->getProviderId()}},
+  "datetime": {{(int)$data->get()}},
+  "dx_icd10": ["{{(int)$data->getDxIcd10()}}"],
+  "refering_provider_id": "{{(int)$data->getReferringProviderId()}}",
 "patient_question_responses": [
     {
-      "question_id": 1,
+      "question_id": ,
       "patient_response": "Sir Lancelot of Camelot"
     },
     {

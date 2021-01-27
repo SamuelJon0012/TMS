@@ -12,6 +12,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/custom.js') }}" defer></script>
+    <script src="{{ asset('js/moment.min.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
     <!-- Fonts -->
@@ -103,7 +104,7 @@
             height: 100%;
         }
 
-        .search-modal, .patient-form-modal {
+        .search-modal, .patient-form-modal, .provider-search-modal, .set-vaccine-location-modal {
             display: none;
             width: 100%;
             height:90%;
@@ -272,14 +273,14 @@ function preloader_off() {
 }
 // Todo: only include this if Provider
 
-function doPatientSearch() {
+function doPatientSearch(inputId) {
     console.log('doPatientSearch');
-    input = $('#search-input').val();
+    input = $('#' + inputId).val();
     preloader_on();
     setTimeout(function() {
         $.ajax({
             url: '/biq/find',
-            data: 'q=' + input,
+            data: 'i=' + inputId + '&q=' + input,
             dataType: 'json',
             success: function(o) {
 
@@ -381,19 +382,42 @@ $(function() {
     });
     $('.patient-button').on('click', function() {
         $('.search-modal').show();
+    });
+    $('.provider-search-model').on('click', function() {
+        $('.provider-search-modal').show();
+    })
+    $('.set-vaccine-location').on('click', function() {
+        $('.set-vaccine-location-modal').show();
     })
 });
-//, 4000);
+
 
 function doConfirmPatient(data) {
 
     $('.patient-form-modal').show();
 
+    // schedule (encounter_schedule) and site (site_profile) are an array of objects which are joined with the patient
+
+
     for (const [key, value] of Object.entries(data)) {
-        console.log(`${key}: ${value}`);
-        $('#' + key).html(value);
+        if (key === 'schedule') {
+            dateString = value[0].scheduled_time.$date;
+            let date=moment(dateString).format('MM/DD/YYYY');
+            let time=moment(dateString).format('h:mm a');
+            console.log(date);
+            console.log(time);
+            $('#date').html(date);
+            $('#time').html(time);
+
+        } else if (key === 'site') {
+            console.log(value[0]);
+            $('#location').html(value[0].name);
+        } else {
+
+            console.log(`${key}: ${value}`);
+            $('#' + key).html(value);
+        }
     }
-    // Todo: Get the encounter_schedule and site_profile as well, break up the date into date and time
 
     // Todo: Break out the hphone and mphone if present
 
@@ -410,9 +434,47 @@ function doConfirmPatient(data) {
 
             <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
 
-            <form name="search-form" onsubmit="return doPatientSearch();">
+            <form name="search-form" onsubmit="return doPatientSearch('search-input');">
 
-                <input id="search-input" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+                <input id="search-input" value="jeff" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+
+            </form>
+
+            <div id="search-results"></div>
+
+        </div>
+
+    </div>
+     <div class="provider-search-modal modals">
+
+        <div class="provider-search-modal-inner">
+
+            <-- USES THE SAME SEARCH CODE, PASS input_id TO /biq/find -->
+
+            <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
+
+            <form name="provider-search-form" onsubmit="return doPatientSearch('provider-search-input');">
+
+                <input id="provider-search-input" type="search" class="form-control" name="provider-search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+
+            </form>
+
+            <div id="search-results"></div>
+
+        </div>
+
+    </div>
+     <div class="set-vaccine-location-modal modals">
+
+         <!-- SEARCH FOR SITES AND SET THE DEFAULT SITE(s?) FOR THE CURRENT USER -->
+
+        <div class="set-vaccine-location-search-modal-inner">
+
+            <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
+
+            <form name="vaccine-location-search-form" onsubmit="return doVaccineLocationSearch();">
+
+                <input id="vaccine-location-search-input" type="search" class="form-control" name="vaccine-location-search-input" placeholder="{{ __('Search by Name, Address, City, Zip or County') }}" >
 
             </form>
 
