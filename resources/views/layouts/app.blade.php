@@ -391,7 +391,6 @@ $(function() {
     })
 });
 
-
 function doConfirmPatient(data) {
 
     $('.patient-form-modal').show();

@@ -4,10 +4,10 @@
 
 .homeTop-button {
       text-align: center;
-      font-size:120%;
-      margin: 13px;
+      font-size:100%;
+      margin: 0px;
       padding:32px 22px 22px 22px;
-      width: 200px;
+      width: 100%;
       height: 200px;
       cursor:pointer;
       border-radius: 12px;
@@ -22,6 +22,7 @@
 
 .button-image {
     height: 72px;
+    max-height:50%;
   }
 
 @endsection
@@ -75,10 +76,10 @@
             <br/><br/><br/>
             <div class="row">
               <div class="col-6">
-                <button class="btn btn-primary form-control">{{ __('Schedule a Vaccine Visit') }}</button>
+                <button id="scheduleVaccineAppointment" class="btn btn-success form-control">{{ __('Schedule a Vaccine Appointment') }}</button>
               </div>
               <div class="col-6">
-                <button class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
+                <button id="addVaccine" class="btn btn-success form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
               </div>
             </div>
           @endif
@@ -120,7 +121,7 @@
             <br><br><br>
             <div class="row justify-content-center">
               <div class="col-6">
-                <button id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-locatio">{{ __('Set Vaccine Location') }}</button>
+                <button id="setVaccineLocation" class="btn btn-success form-control set-vaccine-location">{{ __('Set Vaccine Location') }}</button>
               </div>
             </div>
           @endif

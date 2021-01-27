@@ -74,4 +74,10 @@ Route::get('/addvaccine', function () {
     return view('addvaccine');
 });
 
+Route::get('/patientquestionaire', function () {
+    return view('patientquestionaire');
+});
 
+Route::get('/providerquestionaire', function () {
+    return view('providerquestionaire');
+});
