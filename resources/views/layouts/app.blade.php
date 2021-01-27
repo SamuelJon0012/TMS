@@ -104,7 +104,7 @@
             height: 100%;
         }
 
-        .search-modal, .patient-form-modal, .provider-search-modal, .set-vaccine-location-modal {
+        .search-modal, .patient-form-modal {
             display: none;
             width: 100%;
             height:90%;
