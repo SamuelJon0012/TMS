@@ -14,7 +14,8 @@ class BurstIq
 
     const BI_PUBLIC_KEY = '5e30e5d7ac277901e92dbae9f5c6d17126a8463a'; // put this in .env
     const BI_BASE_URL = 'https://stage-trackmy.burstiq.com/trackmy/'; // ''
-
+    const BI_USERNAME = 'sabbaas@gmail.com'; // Todo: get this from .env
+    const BI_PASSWORD = 'TrackMy21!';
 
     protected $url, $username='', $password='', $jwt='', $data, $id=0, $asset_id='';
 

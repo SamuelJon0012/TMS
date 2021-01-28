@@ -383,7 +383,7 @@ $(function() {
     $('.patient-button').on('click', function() {
         $('.search-modal').show();
     });
-    $('.provider-search-model').on('click', function() {
+    $('.provider-search').on('click', function() {
         $('.provider-search-modal').show();
     })
     $('.set-vaccine-location').on('click', function() {
@@ -391,10 +391,7 @@ $(function() {
     })
 });
 
-<<<<<<< HEAD
 
-=======
->>>>>>> aa0a48b9418d177eac6106a793a7864ce909a99a
 function doConfirmPatient(data) {
 
     $('.patient-form-modal').show();
