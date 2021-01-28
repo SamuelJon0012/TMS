@@ -47,7 +47,10 @@ class BurstIq
                 $this->username  = $username;
                 $this->password = $password;
 
-                $this->login($username, $password);
+                if ($this->login($username, $password) === false) {
+                    // Todo: Login failed
+
+                }
 
             }
 
@@ -81,6 +84,50 @@ class BurstIq
         $json = $this->getCurl();
 
         $this->data = json_decode($json);
+
+        # Todo: Make a json_decoder method because this is repetetetive :)
+
+        # And Log errors - have a realtime notifier
+
+        switch (json_last_error()) {
+            case JSON_ERROR_NONE:
+                $msg = false;
+                break;
+            case JSON_ERROR_DEPTH:
+                $msg =  ' - Maximum stack depth exceeded';
+                break;
+            case JSON_ERROR_STATE_MISMATCH:
+                $msg =  ' - Underflow or the modes mismatch';
+                break;
+            case JSON_ERROR_CTRL_CHAR:
+                $msg =  ' - Unexpected control character found';
+                break;
+            case JSON_ERROR_SYNTAX:
+                $msg =  ' - Syntax error, malformed JSON';
+                break;
+            case JSON_ERROR_UTF8:
+                $msg =  ' - Malformed UTF-8 characters, possibly incorrectly encoded';
+                break;
+            default:
+                $msg =  ' - Unknown error';
+                break;
+        }
+
+        if ($msg !== false) {
+            #exit($this->error($msg . "\n\n" . $json));
+            return false;
+        }
+
+        if (!isset($this->data->status)) {
+            #exit($this->error($json));
+            return false;
+        }
+
+        if ($this->data->status != 200) {
+
+            #exit($this->error($json));
+            return false;
+        }
 
         $this->jwt = $this->data->token;
 

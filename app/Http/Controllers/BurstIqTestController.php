@@ -28,7 +28,10 @@ class BurstIqTestController extends Controller
 
         $B = new BurstIq();
 
-        return $B->login('erik.olson@trackmysolutions.us','Mermaid7!!');
+        if ($B->login('erik.olson@trackmysolutions.us','Mermaid7!!') === false) {
+            // Todo: Login failed
+
+        }
     }
 
     function testGettingAChain(Request $request) {
@@ -39,13 +42,16 @@ class BurstIqTestController extends Controller
 
         $A = '';
 
-        $B = new BurstIq('erik.olson@trackmysolutions.us','Mermaid7!!');
+        #$B = new BurstIq('erik.olson@trackmysolutions.us','Mermaid7!!');
+        $B = new BurstIq('sabbaas@gmail.com','TrackMy21!');
 
         #$where = "SELECT p.id AS id, e.patient_id AS pid FROM patient_profile AS p JOIN encounter_schedule AS e ON e.patient_id=p.id WHERE (p.first_name ILIKE '%jeff%' OR p.last_name ILIKE '%jeff%') AND e.site_id=1";
         #$where = "SELECT * FROM patient_profile AS p WHERE asset.first_name ILIKE '%jeff%'";
         #$where = "SELECT * FROM patient_profile WHERE asset.first_name ILIKE '%jeff%'";
 
-        $where="SELECT p.asset.id AS id, e.asset.patient_id AS pid, e.asset.site_id as sid FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
+        ###$where="SELECT p.asset.id AS id, e.asset.patient_id AS pid, e.asset.site_id as sid FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
+        ##$where="SELECT p.asset.*, e.asset.* FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
+        #$where="SELECT p.asset.*, e.asset.*, s.asset.* FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id LEFT OUTER JOIN site_profile AS s ON s.asset.id=e.asset.site_id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
         //$where="SELECT p.asset.id AS id, e.asset.patient_id AS pid, e.asset.site_id as sid FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%') AND e.asset.site_id=1";
 
 
@@ -54,7 +60,8 @@ class BurstIqTestController extends Controller
 //        $A .= "\n\n" . $B->query('site_profile',"WHERE asset.id >= 0");
 //        $A .= "\n\n" . $B->query('drug_profile',"WHERE asset.id >= 0");
 //        $A .= "\n\n" . $B->query('question_profile',"WHERE asset.id = asset_id");
-        $A = $B->query('patient_profile',$where );
+#        $A = $B->query('patient_profile',$where );
+        $A = $B->query('site_profile',"WHERE asset.id >= 0" );
 //        $A .= "\n\n" . $B->query('encounter',"WHERE asset.id >= 0");
 //        $A .= "\n\n" . $B->query('procedure_results',"WHERE asset.id != 10");
 //        $A .= "\n\n" . $B->query('user',"WHERE asset.id >= 0");
