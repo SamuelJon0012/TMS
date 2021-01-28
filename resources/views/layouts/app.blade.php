@@ -391,7 +391,10 @@ $(function() {
     })
 });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> aa0a48b9418d177eac6106a793a7864ce909a99a
 function doConfirmPatient(data) {
 
     $('.patient-form-modal').show();
