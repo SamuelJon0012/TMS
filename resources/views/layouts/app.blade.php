@@ -104,7 +104,7 @@
             height: 100%;
         }
 
-        .search-modal, .patient-form-modal, .provider-search-modal, .set-vaccine-location-modal {
+        .search-modal, .patient-form-modal {
             display: none;
             width: 100%;
             height:90%;
@@ -383,13 +383,14 @@ $(function() {
     $('.patient-button').on('click', function() {
         $('.search-modal').show();
     });
-    $('.provider-search-model').on('click', function() {
+    $('.provider-search').on('click', function() {
         $('.provider-search-modal').show();
     })
     $('.set-vaccine-location').on('click', function() {
         $('.set-vaccine-location-modal').show();
     })
 });
+
 
 function doConfirmPatient(data) {
 
