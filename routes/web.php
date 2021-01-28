@@ -55,6 +55,7 @@ Route::get('/biq/test-getting-question-profile', 'BurstIqTestController@testGett
 Route::get('/biq/test-getting-encounter-schedule', 'BurstIqTestController@testGettingEncounterSchedule')->name('test_getting_encounter_schedule');
 Route::get('/biq/test-getting-encounter', 'BurstIqTestController@testGettingEncounter')->name('test_getting_encounter');
 Route::get('/biq/test-getting-procedure-results', 'BurstIqTestController@testGettingProcedureResults')->name('test_getting_procedure_results');
+Route::get('/biq/test-getting-patient-schedule-site-query', 'BurstIqTestController@testGettingPatientScheduleSiteQuery')->name('test_getting_patient_schedule_site_query');
 
 
 
