@@ -11,6 +11,7 @@ use App\ProcedureResults;
 use App\ProviderProfile;
 use App\QuestionProfile;
 use App\SiteProfile;
+use App\PatientScheduleSiteQuery;
 use Illuminate\Http\Request;
 
 class BurstIqTestController extends Controller
@@ -55,6 +56,7 @@ class BurstIqTestController extends Controller
         ##$where="SELECT p.asset.*, e.asset.* FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
         #$where="SELECT p.asset.*, e.asset.*, s.asset.* FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id LEFT OUTER JOIN site_profile AS s ON s.asset.id=e.asset.site_id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
         //$where="SELECT p.asset.id AS id, e.asset.patient_id AS pid, e.asset.site_id as sid FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%') AND e.asset.site_id=1";
+        $where="SELECT p.asset.*, e.asset.*, s.asset.* FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id LEFT OUTER JOIN site_profile AS s ON s.asset.id=e.asset.site_id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
 
 
 //        $A .= "\n\n" . $B->query('patient_profile',"WHERE asset.id >= 0");
@@ -105,9 +107,9 @@ var_dump($A); exit;
             # You must have only ONE resulting row in order to edit and save it
             # Otherwise the one you will edit and save will be the last one in the recordset
 
-            $P->find("WHERE asset.id = {$row['id']}");
-
-            $P->setFirstName('Lucy')->save();
+            // $P->find("WHERE asset.id = {$row['id']}");
+            //
+            // $P->setFirstName('Lucy')->save();
 
         }
 
@@ -224,6 +226,7 @@ var_dump($A); exit;
     function testGettingSiteProfile(Request $request) {
         $P = new SiteProfile(self::BI_USERNAME,self::BI_PASSWORD);
         $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
+        // var_dump($P); exit;
         $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
         foreach ($test as $row) {
             var_dump($row);
@@ -300,6 +303,23 @@ var_dump($A); exit;
         }
         exit;
     }
+    //By Abb
+    function testGettingPatientScheduleSiteQuery(Request $request) {
+        $P = new PatientScheduleSiteQuery('erik.olson@trackmysolutions.us','Mermaid7!!');
+        $where="SELECT p.asset.*, e.asset.*, s.asset.id as s_id, s.asset.name as name, s.asset.vacinity_name as vacinity_name, s.asset.address1 as site_address1, s.asset.address2 as site_address2, s.asset.city as site_city, s.asset.state as site_state, s.asset.zipcode as site_zipcode, s.asset.county as site_county FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id LEFT OUTER JOIN site_profile AS s ON s.asset.id=e.asset.site_id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
+        $test = $P->query('patient_profile',$where );
+
+        // $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
+        foreach ($test as $row) {
+            var_dump($row);
+            # edit by querying for 1 result using primary key (id)
+            # and then say $Q->setThis($abc)->setThat($xyz)->save();
+            # or create a new $Q object and do the same thing. YOU must provide the unique value for id
+            # (see below for how I will solve that)
+        }
+        exit;
+    }
+
 
     function testUpsertingPatients(Request $request) {
 
