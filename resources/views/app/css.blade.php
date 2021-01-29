@@ -3,7 +3,7 @@
             height: 100%;
         }
 
-        .search-modal, .patient-form-modal {
+        .search-modal, .patient-form-modal, .modals {
             display: none;
             width: 100%;
             height:90%;
@@ -81,4 +81,20 @@
         .go_link:hover {
             text-decoration: underline;
         }
+
+        /* Questionnaires */
+
+        .Qoption{
+            cursor:pointer;
+        }
+        .GreenSelect
+        {
+            background:green;
+        }
+        .RedSelect
+        {
+            background:red;
+        }
+
+
     </style>
