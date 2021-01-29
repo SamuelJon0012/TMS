@@ -430,7 +430,7 @@
 
                                     <div class="form-group row justify-content-center">
                                         <div class="col-md-6 text-center">
-                                            <button id="subBtn" type="submit" class="btn btn-primary form-control disabled">
+                                            <button id="subBtn" type="submit" onclick="return doScanner()" class="btn btn-primary form-control disabled">
                                                 {{ __('Scan Patient Barcode') }}
                                             </button>
                                         </div>
@@ -447,6 +447,16 @@
 
 
             </div>
+
+        </div>
+    </div>
+    <div class="scanner-page-modal modals">
+
+        <div class="page-modal-inner">
+
+            <div class="breadcrumbs"><span class="go_home"><- Home</span> <span class="go_search go_link"> <- Search</span> <span class="go_patient go_link"> <- Patient</span> <span class="go_questionnaire go_link"> <- Questionnaire</span></div>
+
+            <div id="page-content"></div>
 
         </div>
     </div>

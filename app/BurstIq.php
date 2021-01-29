@@ -156,6 +156,8 @@ class BurstIq
 
         $result = $this->postCurl($postFields);
 
+        // Todo: Check for
+
         $this->data = json_decode($result);
 
         switch (json_last_error()) {
@@ -191,9 +193,7 @@ class BurstIq
         }
 
         if ($this->data->status != 200) {
-
             exit($this->error($result));
-
         }
 
 
