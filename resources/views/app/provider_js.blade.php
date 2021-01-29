@@ -205,12 +205,20 @@
             $('.patient-form-modal').hide();
             $('.fvalue').html('');
             $('.provider-questionnaire-page-modal').hide();
+            $('.scanner-page-modal').hide();
 
             // Todo: Besure to hide anything else that might be on top of it.
         });
         $('.go_patient').on('click', function() {
             $('.provider-questionnaire-page-modal').hide();
+            $('.scanner-page-modal').hide();
             // Todo: Clear Questionnaire
+
+            // Todo: Besure to hide anything else that might be on top of it.
+        });
+        $('.go_questionnaire').on('click', function() {
+            $('.scanner-page-modal').hide();
+            // Todo: Clear Scanner Page
 
             // Todo: Besure to hide anything else that might be on top of it.
         });
@@ -303,4 +311,16 @@
         return false;
 
     }
+    function doScanner() {
+
+        console.log('scanner');
+
+
+        $('.scanner-page-modal modals').show();
+
+
+        return false;
+
+    }
+
 </script>
