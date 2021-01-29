@@ -159,7 +159,7 @@ class BurstIqController extends Controller
         }
         $rows = $P->array();
 
-        # ToDo
+        # ToDo - Use Abbas' new join model (see BurstIqTestController@testGettingPatientScheduleSiteQuery)
         # Make this a join in the Model, but for now I'm getting strange results when I try to use JOIN
         # SELECT * FROM patient_profile AS p
         # INNER JOIN encounter_schedule AS s ON s.patient.id=p.id WHERE p.first_name LIKE '%e%'
