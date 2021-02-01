@@ -137,18 +137,3 @@
 </div>
 
 @endsection
-
-@section('scriptJs')
-
-$(document).ready(function(){
-  $("#addVaccine").click(function(){
-    window.location.href = 'patientvaccine/create';
-  });
-
-  $("#setVaccineLocation").click(function(){
-    window.location.href = '';
-  });
-
-});
-
-@endsection
