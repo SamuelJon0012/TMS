@@ -73,7 +73,7 @@ function preloader_off() {
 // Todo: only include this if Provider
 
 function doPatientSearch(inputId) {
-    console.log('doPatientSearch');
+    //console.log('doPatientSearch');
     input = $('#' + inputId).val();
     preloader_on();
     setTimeout(function() {
@@ -102,8 +102,8 @@ function doPatientSearch(inputId) {
                         ];
                 });
 
-                console.log('dtData');
-                console.log(dtData);
+                //console.log('dtData');
+                //console.log(dtData);
 
                 // Todo: hide the #search-results div while this is taking place? mebs
 
@@ -117,8 +117,8 @@ function doPatientSearch(inputId) {
                     'scrollY': 300
 
                 });
-                console.log('DT');
-                console.log(DT);
+                //console.log('DT');
+                //console.log(DT);
                 preloader_off();
             },
             error: function() {
@@ -163,8 +163,8 @@ $(function() {
 
                 // Todo: Check for an error object (success = false) or unexpected data
 
-                console.log('o');
-                console.log(o);
+                //console.log('o');
+                //console.log(o);
 
                 // Todo: Confirm o.data[0] exists
 
@@ -203,17 +203,17 @@ function doConfirmPatient(data) {
             dateString = value[0].scheduled_time.$date;
             let date=moment(dateString).format('MM/DD/YYYY');
             let time=moment(dateString).format('h:mm a');
-            console.log(date);
-            console.log(time);
+            //console.log(date);
+            //console.log(time);
             $('#date').html(date);
             $('#time').html(time);
 
         } else if (key === 'site') {
-            console.log(value[0]);
+            //console.log(value[0]);
             $('#location').html(value[0].name);
         } else {
 
-            console.log(`${key}: ${value}`);
+            //console.log(`${key}: ${value}`);
             $('#' + key).html(value);
         }
     }

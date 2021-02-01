@@ -29,6 +29,6 @@ class TestAmazonSes extends Mailable
      */
     public function build()
     {
-        return $this->from('address_added_on_aws')->view('emails.tpl');
+        return $this->from('info@trackmysolutions.us')->view('emails.tpl');
     }
 }

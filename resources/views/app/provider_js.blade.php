@@ -129,7 +129,7 @@
     // Todo: only include this if Provider
 
     function doPatientSearch(inputId) {
-        console.log('doPatientSearch');
+        //console.log('doPatientSearch');
         input = $('#' + inputId).val();
         preloader_on();
         setTimeout(function() {
@@ -158,8 +158,8 @@
                             ];
                     });
 
-                    console.log('dtData');
-                    console.log(dtData);
+                    //console.log('dtData');
+                    //console.log(dtData);
 
                     // Todo: hide the #search-results div while this is taking place? mebs
 
@@ -173,8 +173,8 @@
                         'scrollY': 300
 
                     });
-                    console.log('DT');
-                    console.log(DT);
+                    //console.log('DT');
+                    //console.log(DT);
                     preloader_off();
                 },
                 error: function() {
@@ -234,8 +234,8 @@
 
                     // Todo: Check for an error object (success = false) or unexpected data
 
-                    console.log('o');
-                    console.log(o);
+                    //console.log('o');
+                    //console.log(o);
 
                     // Todo: Confirm o.data[0] exists
 
@@ -274,25 +274,25 @@
 
 
         for (const [key, value] of Object.entries(data)) {
-            console.log(key);
+            //console.log(key);
             if (key === 'schedule') {
                 dateString = value[0].scheduled_time.$date;
                 let date=moment(dateString).format('MM/DD/YYYY');
                 let time=moment(dateString).format('h:mm a');
-                console.log(date);
-                console.log(time);
+                //console.log(date);
+                //console.log(time);
                 $('#date').html(date);
                 $('#time').html(time);
 
             } else if (key === 'site') {
-                console.log(value[0]);
+                //console.log(value[0]);
                 $('#location').html(value[0].name);
             } else if (key === 'id') { // Todo: This becomes patient ID after implementing patient-schedule-site-query
-                console.log(value);
+                //console.log(value);
                 $('#patient_id').val(value);
             }else {
 
-                console.log(`${key}: ${value}`);
+                //console.log(`${key}: ${value}`);
                 $('#' + key).html(value);
             }
         }
@@ -313,7 +313,7 @@
     }
     function doScanner() {
 
-        console.log('scanner');
+       // console.log('scanner');
 
 
         $('.scanner-page-modal modals').show();

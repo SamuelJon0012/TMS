@@ -60,7 +60,7 @@ Route::get('/biq/test-getting-patient-schedule-site-query', 'BurstIqTestControll
 
 
 Route::get('test', function () {
-    Mail::to('erik.olson@trackmysolutions.com')->send(new TestAmazonSes('It works!'));
+    Mail::to('erikolson1965@gmail.com')->send(new TestAmazonSes('It works!'));
 });
 /*
  *
