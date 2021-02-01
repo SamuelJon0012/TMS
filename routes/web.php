@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PatientVaccineController;
 
 // use jeremykenedy\LaravelRoles\Route;
 
@@ -20,6 +21,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::resource('patientvaccine', PatientVaccineController::class);
 
 Route::get('/home', 'HomeController@index')->name('home');
 

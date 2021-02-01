@@ -12,10 +12,10 @@ class BurstIq
 {
     // Abstract BurstIq model - extend this for each asset
 
-    const BI_PUBLIC_KEY = '5e30e5d7ac277901e92dbae9f5c6d17126a8463a'; // put this in .env
-    const BI_BASE_URL = 'https://stage-trackmy.burstiq.com/trackmy/'; // ''
-    const BI_USERNAME = 'sabbaas@gmail.com'; // Todo: get this from .env
-    const BI_PASSWORD = 'TrackMy21!';
+    protected $BI_PUBLIC_KEY;
+    protected $BI_BASE_URL;
+    protected $BI_USERNAME;
+    protected $BI_PASSWORD;
 
     protected $url, $username='', $password='', $jwt='', $data, $id=0, $asset_id='';
 
@@ -38,8 +38,11 @@ class BurstIq
         # Do not instantiate this object if the user isn't logged in except for Registration, and right now we don't have this
 
         # if(user_is_logged_in)
-
         $this->jwt = session('bi_jwt', false);
+        $this->BI_PUBLIC_KEY = env('BI_PUBLIC_KEY');
+        $this->BI_BASE_URL = env('BI_BASE_URL');
+        $this->BI_USERNAME = env('BI_USERNAME');
+        $this->BI_PASSWORD = env('BI_PASSWORD');
 
         if (empty($this->jwt)) {
 
@@ -52,10 +55,10 @@ class BurstIq
                     // Todo: Login failed
 
                 }
-
             }
-
         }
+
+
     }
 
     /**
@@ -63,7 +66,7 @@ class BurstIq
      */
     function status() {
 
-        $this->url = self::BI_BASE_URL . 'util/status';
+        $this->url = $this->BI_BASE_URL . 'util/status';
 
         return $this->getCurl();
 
@@ -80,7 +83,7 @@ class BurstIq
         $this->username = $username;
         $this->password = $password;
 
-        $this->url = self::BI_BASE_URL . 'util/login';
+        $this->url = $this->BI_BASE_URL . 'util/login';
 
         $json = $this->getCurl();
 
@@ -149,9 +152,11 @@ class BurstIq
             \"queryTql\": \"$query\"
         }";
 
-        $this->url = self::BI_BASE_URL . 'query/' . $chain;
+        $this->url = $this->BI_BASE_URL . 'query/' . $chain;
 
         $result = $this->postCurl($postFields);
+
+        // Todo: Check for
 
         $this->data = json_decode($result);
 
@@ -188,9 +193,7 @@ class BurstIq
         }
 
         if ($this->data->status != 200) {
-
             exit($this->error($result));
-
         }
 
 
@@ -198,7 +201,7 @@ class BurstIq
 //
 //            // log in again
 //
-//            $this->url = self::BI_BASE_URL . 'query/' . $chain;
+//            $this->url = $this->BI_BASE_URL . 'query/' . $chain;
 //
 //            $this->login($this->username, $this->password);
 //
@@ -223,7 +226,7 @@ class BurstIq
             $postFields = json_encode($postFields);
         }
 
-        $this->url = self::BI_BASE_URL . 'upsert/' . $chain;
+        $this->url = $this->BI_BASE_URL . 'upsert/' . $chain;
 
         return $this->putCurl($postFields);
 

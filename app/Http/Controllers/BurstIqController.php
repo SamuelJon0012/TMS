@@ -15,8 +15,17 @@ use Illuminate\Http\Request;
 class BurstIqController extends Controller
 {
     // Ajax Endpoints for BurstIq IO
-    const BI_USERNAME = 'sabbaas@gmail.com'; // Todo: get this from .env
-    const BI_PASSWORD = 'TrackMy21!';
+    // const BI_USERNAME = 'sabbaas@gmail.com'; // Todo: get this from .env
+    // const BI_PASSWORD = 'TrackMy21!';
+    private $BI_USERNAME;
+    private $BI_PASSWORD;
+
+    public function __construct()
+    {
+        $this->BI_USERNAME = env('BI_USERNAME');
+        $this->BI_PASSWORD = env('BI_PASSWORD');
+    }
+
     /**
      * @return bool|string
      *
@@ -79,7 +88,7 @@ class BurstIqController extends Controller
 
         #$type = $this->getSearchType($Q);
 
-        $P = new PatientProfile(self::BI_USERNAME, self::BI_PASSWORD);
+        $P = new PatientProfile($this->BI_USERNAME,$this->BI_PASSWORD);
 
         $type = 'any'; // or allow them to specify the type?  i.e. type=ssn by searching on ssn:xxx-xx-xxxx
 
@@ -139,7 +148,7 @@ class BurstIqController extends Controller
 
             # Todo or something
         }
-        $P = new PatientProfile(self::BI_USERNAME, self::BI_PASSWORD);
+        $P = new PatientProfile($this->BI_USERNAME,$this->BI_PASSWORD);
 
         $where = "WHERE asset.id=$Q";
 
@@ -150,13 +159,13 @@ class BurstIqController extends Controller
         }
         $rows = $P->array();
 
-        # ToDo
+        # ToDo - Use Abbas' new join model (see BurstIqTestController@testGettingPatientScheduleSiteQuery)
         # Make this a join in the Model, but for now I'm getting strange results when I try to use JOIN
         # SELECT * FROM patient_profile AS p
         # INNER JOIN encounter_schedule AS s ON s.patient.id=p.id WHERE p.first_name LIKE '%e%'
         # results in no data or strangely scrambled data
 
-        //$E = new EncounterSchedule(self::BI_USERNAME, self::BI_PASSWORD);
+        //$E = new EncounterSchedule($this->BI_USERNAME,$this->BI_PASSWORD);
 
 
         $E = new EncounterSchedule(); # should reuse the login
