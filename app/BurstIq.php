@@ -83,7 +83,7 @@ class BurstIq
         $this->username = $username;
         $this->password = $password;
 
-        $this->url = $this->BI_BASE_URL . 'util/login';
+        $this->url = $this->BI_BASE_URL . 'auth/login';
 
         $json = $this->getCurl();
 
