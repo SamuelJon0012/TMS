@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\TestAmazonSes;
 use Illuminate\Support\Facades\Route;
 
 // use jeremykenedy\LaravelRoles\Route;
@@ -58,7 +59,9 @@ Route::get('/biq/test-getting-procedure-results', 'BurstIqTestController@testGet
 Route::get('/biq/test-getting-patient-schedule-site-query', 'BurstIqTestController@testGettingPatientScheduleSiteQuery')->name('test_getting_patient_schedule_site_query');
 
 
-
+Route::get('test', function () {
+    Mail::to('erik.olson@trackmysolutions.com')->send(new TestAmazonSes('It works!'));
+});
 /*
  *
  *  Actual BurstIq methods
