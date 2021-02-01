@@ -1,7 +1,5 @@
-// Todo: move this to custom.js where it can be CND'd
-
 <script type="text/javascript">
-
+  // Todo: move this to custom.js where it can be CND'd
     // Questionnaire
 
     $(document).ready(function(){

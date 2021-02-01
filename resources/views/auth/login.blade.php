@@ -95,15 +95,3 @@
     </div>
 </div>
 @endsection
-
-@section('scriptJs')
-$(function(){
- $("#sel_register").on('change', function(){
-   if($(this).val())
-   {
-     window.location.href = "{{ route('register') }}?rt="+$(this).val();
-   }
- })
-
-});
-@endsection
