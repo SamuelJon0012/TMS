@@ -315,9 +315,9 @@
                                                 {{ __('Insurance Company Name:') }}
                                             </div>
                                             <div class="col-8">
-                                                <input id="administrator_name" type="text" class="form-control @error('administrator_name') is-invalid @enderror" name="administrator_name" value="{{ old('administrator_name') }}"  autocomplete="administrator_name"  placeholder="{{ __('') }}" >
+                                                <input id="insurance_company_name" type="text" class="form-control @error('insurance_company_name') is-invalid @enderror" name="insurance_company_name" value="{{ old('insurance_company_name') }}"  autocomplete="insurance_company_name"  placeholder="{{ __('') }}" >
 
-                                                @error('administrator_name')
+                                                @error('insurance_company_name')
                                                 <span class="invalid-feedback" role="alert">
                               <strong>{{ $message }}</strong>
                           </span>
@@ -408,7 +408,7 @@
                                         <div class="form-group row justify-content-center">
 
                                             <div class="col-4 text-right">
-                                                {{ __('Relationship to Patient:') }}
+                                                {{ __('Insurance Type:') }}
                                             </div>
                                             <div class="col-8">
                                                 <select id="insurance_type" class="form-control @error('insurance_type') is-invalid @enderror" name="insurance_type" >

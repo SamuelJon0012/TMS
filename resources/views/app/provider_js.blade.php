@@ -251,6 +251,7 @@
         })
     });
 
+    var insuranceOnce = true;
 
     function doConfirmPatient(data) {
 
@@ -265,7 +266,7 @@
         // Populate the patient confirmation form
 
         for (const [key, value] of Object.entries(data)) {
-            //console.log(key);
+            console.log(key);
             if (key === 'schedule') {
                 dateString = value[0].scheduled_time.$date;
                 let date=moment(dateString).format('MM/DD/YYYY');
@@ -285,26 +286,34 @@
                 $('#hphone').html('727-555-1212');
 
             } else if (key === 'insurances') {
-                //console.log(value[0]);
-                for (const [key, ovalue] of Object.entries(value[0])) {
 
-                    // Todo: iterating once in here checks Yes on the private insurance question and opens the thing
+                console.log('insurances');
 
+                if (insuranceOnce) {
 
-                    console.log(`${key}: ${ovalue}`);
-                    if (key === 'coverage_effective_date') {
-                        console.log(ovalue);
-                        dateString = ovalue.$date;
-                        let date=moment(dateString).format('MM/DD/YYYY');
-                        let time=moment(dateString).format('h:mm a');
-                        console.log(date);
-                        console.log(time);
-                        // This goes in to questionnaire area
-                        //$('#date').html(date);
-                        //$('#time').html(time);
+                    insuranceOnce = false; // Only populate the insurance form with the primary insurance
+
+                    for (const [okey, ovalue] of Object.entries(value[0])) {
+
+                        console.log(`${okey}: ${ovalue}`);
+
+                        if (okey === 'coverage_effective_date') {
+
+                            console.log(ovalue);
+                            dateString = ovalue.$date;
+                            let date = moment(dateString).format('MM/DD/YYYY');
+                            let time = moment(dateString).format('h:mm a');
+                            console.log(date);
+                            console.log(time);
+                            $('#coverage_effective_date').val(date);
+                            
+
+                        } else {
+
+                            $('#' + okey).val(ovalue);
+                        }
 
                     }
-
                 }
 
 
@@ -321,7 +330,12 @@
 
         // Populate the Questionnaire questions from encounter_schedule
 
-            // (hard coded right now)
+            // (hard coded "No" answers right now)
+
+        $("#q1").val("No");
+        $("#q2").val("No");
+        $("#q3").val("No") ;
+        $("#q4").val("No");
 
         $("#q1Yes").removeClass( "RedSelect" );
         $("#q1No").addClass( "GreenSelect" );
@@ -332,12 +346,27 @@
         $("#q4Yes").removeClass( "RedSelect" );
         $("#q4No").addClass( "GreenSelect" );
 
-    // Populate the insurance form
+        if($("#q1").val() == "No" && $("#q2").val() == "No" && $("#q3").val() == "No" && $("#q4").val() == "No")
+        {
+            $("#subBtn").removeClass( "disabled" )
+            $("#have_insurance_no, #have_insurance_yes, #dosage_number_1, #dosage_number_2").removeAttr('disabled')
+        }
+        else
+        {
+            $("#subBtn").addClass( "disabled" )
+            $("#have_insurance_no, #have_insurance_yes, #dosage_number_1, #dosage_number_2").attr('disabled', true)
+        }
 
+        if (!insuranceOnce) {
+            // iterating once Checks Yes on the private insurance question and opens the thing
+            $("#have_insurance_yes").click(function () {
 
+                $("#insuranceSection").show();
+                $("#administrator_name, #group_id, #coverage_effective_date, #primary_cardholder, #issuer_id, #insurance_type").attr('required', true);
+            });
+            $("#have_insurance_yes").click();
 
-
-        // Todo: Break out the hphone and mphone if present
+        }
 
         preloader_off();
     }
