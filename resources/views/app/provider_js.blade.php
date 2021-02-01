@@ -116,17 +116,7 @@
         $('#search-results').html('');
         document.getElementById("search-results").appendChild(table);
     }
-    function preloader_on() {
 
-        $('#preloader').show();
-
-    }
-    function preloader_off() {
-
-        $('#preloader').hide();
-
-    }
-    // Todo: only include this if Provider
 
     function doPatientSearch(inputId) {
         //console.log('doPatientSearch');
@@ -272,6 +262,7 @@
 
         // schedule (encounter_schedule) and site (site_profile) are an array of objects which are joined with the patient
 
+        // Populate the patient confirmation form
 
         for (const [key, value] of Object.entries(data)) {
             //console.log(key);
@@ -287,6 +278,37 @@
             } else if (key === 'site') {
                 //console.log(value[0]);
                 $('#location').html(value[0].name);
+
+            } else if (key === 'phone_numbers') {
+                console.log(value[0]);
+                $('#mphone').html('727-555-1212');
+                $('#hphone').html('727-555-1212');
+
+            } else if (key === 'insurances') {
+                //console.log(value[0]);
+                for (const [key, ovalue] of Object.entries(value[0])) {
+
+                    // Todo: iterating once in here checks Yes on the private insurance question and opens the thing
+
+
+                    console.log(`${key}: ${ovalue}`);
+                    if (key === 'coverage_effective_date') {
+                        console.log(ovalue);
+                        dateString = ovalue.$date;
+                        let date=moment(dateString).format('MM/DD/YYYY');
+                        let time=moment(dateString).format('h:mm a');
+                        console.log(date);
+                        console.log(time);
+                        // This goes in to questionnaire area
+                        //$('#date').html(date);
+                        //$('#time').html(time);
+
+                    }
+
+                }
+
+
+
             } else if (key === 'id') { // Todo: This becomes patient ID after implementing patient-schedule-site-query
                 //console.log(value);
                 $('#patient_id').val(value);
@@ -296,6 +318,24 @@
                 $('#' + key).html(value);
             }
         }
+
+        // Populate the Questionnaire questions from encounter_schedule
+
+            // (hard coded right now)
+
+        $("#q1Yes").removeClass( "RedSelect" );
+        $("#q1No").addClass( "GreenSelect" );
+        $("#q2Yes").removeClass( "RedSelect" );
+        $("#q2No").addClass( "GreenSelect" );
+        $("#q3Yes").removeClass( "RedSelect" );
+        $("#q3No").addClass( "GreenSelect" );
+        $("#q4Yes").removeClass( "RedSelect" );
+        $("#q4No").addClass( "GreenSelect" );
+
+    // Populate the insurance form
+
+
+
 
         // Todo: Break out the hphone and mphone if present
 
