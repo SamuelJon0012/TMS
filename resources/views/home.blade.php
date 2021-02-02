@@ -41,7 +41,7 @@
           @if(Auth::check() && Auth::user()->hasRole('patient'))
             <div class="row">
               <div class="col-3">
-                <div id="myvaccine-button" class="homeTop-button">
+                <div  title="This feature is currently unnavailable" disabled='disabled' id="myvaccine-button" class="homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/syringe.png">
                   <br>
                   {{ __('My Vaccines') }}
@@ -49,7 +49,7 @@
               </div>
 
               <div class="col-3">
-                <div class="alert-button homeTop-button">
+                <div  title="This feature is currently unnavailable" disabled='disabled' class="alert-button homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/alert-icon.png" />
                   <br/>
                   {{ __('Alerts') }}
@@ -57,7 +57,7 @@
               </div>
 
               <div class="col-3">
-                <div class="settings-button homeTop-button">
+                <div  title="This feature is currently unnavailable" disabled='disabled' class="settings-button homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/settings-icon.png" />
                   <br/>
                   {{ __('Settings') }}
@@ -65,7 +65,7 @@
               </div>
 
               <div class="col-3">
-                <div class="help-button homeTop-button">
+                <div title="This feature is currently unnavailable" disabled='disabled' class="help-button homeTop-button">
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/help-icon.png" />
                   <br/>
                   {{ __('Help') }}
@@ -76,10 +76,10 @@
             <br/><br/><br/>
             <div class="row">
               <div class="col-6">
-                <button id="scheduleVaccineAppointment" class="btn btn-success form-control">{{ __('Schedule a Vaccine Appointment') }}</button>
+                <button id="scheduleVaccineAppointment" onclick="doPatientQuestionnaire();" class="btn btn-success form-control">{{ __('Schedule a Vaccine Appointment') }}</button>
               </div>
               <div class="col-6">
-                <button id="addVaccine" class="btn btn-success form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
+                <button id="addVaccine" disabled='disabled' class="btn btn-success form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
               </div>
             </div>
           @endif

@@ -311,7 +311,7 @@
                                 <tr>
                                     <td>
                                         <p>Hi there,</p>
-                                        <p>{{ $content }}</p>
+                                        <p>{{ $email_content }}</p>
                                     </td>
                                 </tr>
                             </table>

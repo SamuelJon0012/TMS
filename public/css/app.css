@@ -44,6 +44,30 @@
   box-sizing: border-box;
 }
 
+.dashes {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    text-align: center;
+}
+.dashes:before, .dashes:after {
+    position: absolute;
+    top: 51%;
+    overflow: hidden;
+    width: 20%;
+    height: 1px;
+    content: '\a0';
+    background-color: black;
+}
+.dashes:before {
+    margin-left: -25%;
+    text-align: right;
+}
+.dashes:after {
+    margin-left: 5%;
+    text-align: right;
+}
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
@@ -4941,8 +4965,8 @@ input[type=button].btn-block {
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 1) !important;
+  border-radius: 0.75rem !important;
 }
 
 .card > hr {
@@ -5003,7 +5027,7 @@ input[type=button].btn-block {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
   background-color: rgba(0, 0, 0, 0.03);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  border-bottom: 1px solid rgba(0, 0, 0, 1) !important;
 }
 
 .card-header:first-child {
@@ -5013,7 +5037,7 @@ input[type=button].btn-block {
 .card-footer {
   padding: 0.75rem 1.25rem;
   background-color: rgba(0, 0, 0, 0.03);
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
+  border-top: 1px solid rgba(0, 0, 0, 1) !important;
 }
 
 .card-footer:last-child {
@@ -5744,7 +5768,7 @@ a.badge-dark.focus {
   display: block;
   padding: 0.75rem 1.25rem;
   background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  border: 1px solid rgba(0, 0, 0, 1) !important;
 }
 
 .list-group-item:first-child {
@@ -10902,4 +10926,3 @@ a.text-dark:focus {
     border-color: #dee2e6;
   }
 }
-
