@@ -76,10 +76,10 @@
             <br/><br/><br/>
             <div class="row">
               <div class="col-6">
-                <button id="scheduleVaccineAppointment" onclick="doPatientQuestionnaire();" class="btn btn-success form-control">{{ __('Schedule a Vaccine Appointment') }}</button>
+                <button id="scheduleVaccineAppointment" onclick="doPatientQuestionnaire();" class="btn btn-primary form-control">{{ __('Schedule a Vaccine Appointment') }}</button>
               </div>
               <div class="col-6">
-                <button id="addVaccine" disabled='disabled' class="btn btn-success form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
+                <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
               </div>
             </div>
           @endif
@@ -121,7 +121,7 @@
             <br><br><br>
             <div class="row justify-content-center">
               <div class="col-6">
-                <button id="setVaccineLocation" class="btn btn-success form-control set-vaccine-location">{{ __('Set Vaccine Location') }}</button>
+                <button id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-location">{{ __('Set Vaccine Location') }}</button>
               </div>
             </div>
           @endif
