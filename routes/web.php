@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\TestAmazonSes;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientVaccineController;
 
@@ -60,7 +61,9 @@ Route::get('/biq/test-getting-procedure-results', 'BurstIqTestController@testGet
 Route::get('/biq/test-getting-patient-schedule-site-query', 'BurstIqTestController@testGettingPatientScheduleSiteQuery')->name('test_getting_patient_schedule_site_query');
 
 
-
+Route::get('test', function () {
+    Mail::to('erikolson1965@gmail.com')->send(new TestAmazonSes('It works!'));
+});
 /*
  *
  *  Actual BurstIq methods
@@ -84,3 +87,5 @@ Route::get('/patientquestionaire', function () {
 Route::get('/providerquestionaire', function () {
     return view('providerquestionaire');
 });
+
+Route::post('/redirect', 'BurstIqController@redirect')->name('redirect');

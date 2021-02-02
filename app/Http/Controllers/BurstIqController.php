@@ -26,6 +26,23 @@ class BurstIqController extends Controller
         $this->BI_PASSWORD = env('BI_PASSWORD');
     }
 
+    function redirect()
+    {
+
+        // Save quest form and return vsee.redirect view which redirects the person to Vsee
+
+        //$B = new BurstIq();
+
+        $data = json_encode($_POST);
+
+        file_put_contents ('/var/www/data/' . uniqid(true), $data);
+
+        return view('vsee.redirect');
+
+
+    }
+
+
     /**
      * @return bool|string
      *
