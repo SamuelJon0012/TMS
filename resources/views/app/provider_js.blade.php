@@ -212,6 +212,7 @@
 
             // Todo: Besure to hide anything else that might be on top of it.
         });
+
         $(document.body).on('click', '.seluser' ,function(){
             preloader_on();
             let id = $(this).attr('rel');
@@ -306,7 +307,7 @@
                             console.log(date);
                             console.log(time);
                             $('#coverage_effective_date').val(date);
-                            
+
 
                         } else {
 
@@ -376,7 +377,6 @@
 
         $('.provider-questionnaire-page-modal').show();
 
-
         return false;
 
     }
@@ -384,9 +384,7 @@
 
        // console.log('scanner');
 
-
-        $('.scanner-page-modal modals').show();
-
+        $('.scanner-page-modal').show();
 
         return false;
 

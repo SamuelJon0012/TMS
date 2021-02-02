@@ -2,174 +2,245 @@
 
         <div class="search-modal-inner">
 
-            <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
+            <div id="page-content">
 
-            <form name="search-form" onsubmit="return doPatientSearch('search-input');">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 text-center">
+                            <h3>{{ __('Enter the Patient\'s Information to Search') }}</h3>
+                        </div>
 
-                <input id="search-input" value="jeff" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+                        <div class="col-md-10">
+                            <div class="card-body">
 
-            </form>
 
-            <div id="search-results"></div>
+                            <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
 
+                                <form name="search-form" onsubmit="return doPatientSearch('search-input');">
+
+                                    <input id="search-input" value="jeff" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+
+                                </form>
+
+                                <div id="search-results"></div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
+
      <div class="provider-search-modal modals">
 
         <div class="provider-search-modal-inner">
 
             <-- USES THE SAME SEARCH CODE, PASS input_id TO /biq/find -->
 
-            <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
+            <div id="page-content">
 
-            <form name="provider-search-form" onsubmit="return doPatientSearch('provider-search-input');">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 text-center">
+                            <h3>{{ __('Scheduled Patients by Location') }}</h3>
+                        </div>
 
-                <input id="provider-search-input" type="search" class="form-control" name="provider-search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+                        <div class="col-md-10">
+                            <div class="card-body">
 
-            </form>
 
-            <div id="search-results"></div>
+                            <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
 
+                            <form name="provider-search-form" onsubmit="return doPatientSearch('provider-search-input');">
+
+                                <input id="provider-search-input" type="search" class="form-control" name="provider-search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+
+                            </form>
+
+                            <div id="search-results"></div>
+
+                        </div>
+
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
+     </div>
 
-    </div>
      <div class="set-vaccine-location-modal modals">
 
          <!-- SEARCH FOR SITES AND SET THE DEFAULT SITE(s?) FOR THE CURRENT USER -->
 
         <div class="set-vaccine-location-search-modal-inner">
 
-            <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
+            <div id="page-content">
 
-            <form name="vaccine-location-search-form" onsubmit="return doVaccineLocationSearch();">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 text-center">
+                            <h3>{{ __('Select Location') }}</h3>
+                        </div>
 
-                <input id="vaccine-location-search-input" type="search" class="form-control" name="vaccine-location-search-input" placeholder="{{ __('Search by Name, Address, City, Zip or County') }}" >
+                        <div class="col-md-10">
+                            <div class="card-body">
 
-            </form>
 
-            <div id="search-results"></div>
+                            <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
 
+                            <form name="vaccine-location-search-form" onsubmit="return doVaccineLocationSearch();">
+
+                                <input id="vaccine-location-search-input" type="search" class="form-control" name="vaccine-location-search-input" placeholder="{{ __('Search by Name, Address, City, Zip or County') }}" >
+
+                            </form>
+
+                            <div id="search-results"></div>
+
+                        </div>
+
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
+     </div>
 
-    </div>
     <div class="patient-form-modal modals">
 
         <div class="patient-form-modal-inner">
 
-            <div class="breadcrumbs"><span class="go_home go_link"><- Home</span> <span class="go_search go_link"> <- Search</span></div>
+            <div id="page-content">
 
-            <div id="patient-data">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 text-center">
+                            <h3>{{ __('Patient Confirmation') }}</h3>
+                        </div>
 
-                <div class="leftside">
-                    <table class="patient-show">
-                        <tr>
-                            <td colspan="2" style="text-align:center;color:blue;">Personal Data</td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">First Name</th>
-                            <td class="fvalue" id="first_name"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Last Name</th>
-                            <td class="fvalue" id="last_name"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Date of Birth</th>
-                            <td class="fvalue" id="date_of_birth"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">SSN</th>
-                            <td class="fvalue" id="ssn"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Driver's License</th>
-                            <td class="fvalue" id="dl_number"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Address Line 1</th>
-                            <td class="fvalue" id="address1"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Address Line 2</th>
-                            <td class="fvalue" id="address2"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">City</th>
-                            <td class="fvalue" id="city"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">State</th>
-                            <td class="fvalue" id="state"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Zipcode</th>
-                            <td class="fvalue" id="zipcode"></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="rightside">
-                    <table class="patient-show">
-                        <tr>
-                            <td colspan="2" style="text-align:center;color:blue;">Demographic Data</td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Email Address</th>
-                            <td class="fvalue" id="email"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Mobile Phone Number</th>
-                            <td class="fvalue" id="mphone"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Home Phone Number</th>
-                            <td class="fvalue" id="hphone"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Birth Sex</th>
-                            <td class="fvalue" id="birth_sex"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Race</th>
-                            <td class="fvalue" id="race"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Ethnicity</th>
-                            <td class="fvalue" id="ethnicity"></td>
-                        </tr>
-                    </table>
+                        <div class="col-md-10">
+                            <div class="card-body">
 
-                    <table class="patient-show">
-                        <tr>
-                            <td colspan="2" style="text-align:center;color:blue;">Vaccine Schedule</td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Location</th>
-                            <td class="fvalue" id="location"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Date</th>
-                            <td class="fvalue" id="date"></td>
-                        </tr>
-                        <tr>
-                            <th class="flabel">Time</th>
-                            <td class="fvalue" id="time"></td>
-                        </tr>
-                    </table>
+                            <div class="breadcrumbs"><span class="go_home go_link"><- Home</span> <span class="go_search go_link"> <- Search</span></div>
+
+                                <div id="patient-data">
+
+                                    <div class="leftside">
+                                        <table class="patient-show">
+                                            <tr>
+                                                <td colspan="2" style="text-align:center;color:blue;">Personal Data</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">First Name</th>
+                                                <td class="fvalue" id="first_name"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Last Name</th>
+                                                <td class="fvalue" id="last_name"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Date of Birth</th>
+                                                <td class="fvalue" id="date_of_birth"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">SSN</th>
+                                                <td class="fvalue" id="ssn"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Driver's License</th>
+                                                <td class="fvalue" id="dl_number"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Address</th>
+                                                <td class="fvalue" id="address1"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Apt / Unit</th>
+                                                <td class="fvalue" id="address2"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">City</th>
+                                                <td class="fvalue" id="city"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">State</th>
+                                                <td class="fvalue" id="state"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Zipcode</th>
+                                                <td class="fvalue" id="zipcode"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="rightside">
+                                        <table class="patient-show">
+                                            <tr>
+                                                <td colspan="2" style="text-align:center;color:blue;">Demographic Data</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Email</th>
+                                                <td class="fvalue" id="email"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Mobile Phone</th>
+                                                <td class="fvalue" id="mphone"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Home Phone</th>
+                                                <td class="fvalue" id="hphone"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Birth Sex</th>
+                                                <td class="fvalue" id="birth_sex"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Race</th>
+                                                <td class="fvalue" id="race"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Ethnicity</th>
+                                                <td class="fvalue" id="ethnicity"></td>
+                                            </tr>
+                                        </table>
+
+                                        <table class="patient-show">
+                                            <tr>
+                                                <td colspan="2" style="text-align:center;color:blue;">Vaccine Schedule</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Location</th>
+                                                <td class="fvalue" id="location"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Date</th>
+                                                <td class="fvalue" id="date"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="flabel">Time</th>
+                                                <td class="fvalue" id="time"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div style="clear:both;"></div>
+                                <form name="patient-form" onsubmit="return doProviderQuestionnaire();"><!----- CREATE THIS NEXT show & populate question modals --->
+                                    <input type="hidden" value="0" id="patient_id" name="id"><!-- not really needed but fine -->
+                                    <input type="submit" value="Confirm Patient" class="btn btn-primary">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div style="clear:both;"></div>
-            <form name="patient-form" onsubmit="return doProviderQuestionnaire();"><!----- CREATE THIS NEXT show & populate question modals --->
-                <input type="hidden" value="0" id="patient_id" name="id"><!-- not really needed but fine -->
-                <input type="submit" value="Confirm Patient" class="btn btn-primary">
-            </form>
         </div>
     </div>
+
     <div class="provider-questionnaire-page-modal modals"><!-- template -->
 
         <div class="page-modal-inner">
 
-            <div class="breadcrumbs"><span class="go_home"><- Home</span> <span class="go_search go_link"> <- Search</span> <span class="go_patient go_link"> <- Patient</span></div>
+
 
             <div id="page-content">
 
@@ -182,7 +253,7 @@
 
                         <div class="col-md-10">
                             <div class="card-body">
-
+                                <div class="breadcrumbs"><span class="go_home"><- Home</span> <span class="go_search go_link"> <- Search</span> <span class="go_patient go_link"> <- Patient</span></div>
                                 <form method="POST" action="" onsubmit="alert('Sub:');return false;">
                                     @csrf
                                     <div class="row">
@@ -315,9 +386,9 @@
                                                 {{ __('Insurance Company Name:') }}
                                             </div>
                                             <div class="col-8">
-                                                <input id="insurance_company_name" type="text" class="form-control @error('insurance_company_name') is-invalid @enderror" name="insurance_company_name" value="{{ old('insurance_company_name') }}"  autocomplete="insurance_company_name"  placeholder="{{ __('') }}" >
+                                                <input id="administrator_name" type="text" class="form-control @error('administrator_name') is-invalid @enderror" name="administrator_name" value="{{ old('administrator_name') }}"  autocomplete="administrator_name"  placeholder="{{ __('') }}" >
 
-                                                @error('insurance_company_name')
+                                                @error('administrator_name')
                                                 <span class="invalid-feedback" role="alert">
                               <strong>{{ $message }}</strong>
                           </span>
@@ -432,6 +503,7 @@
                                         <div class="col-md-6 text-center">
                                             <button id="subBtn" type="submit" onclick="return doScanner()" class="btn btn-primary form-control disabled">
                                                 {{ __('Scan Patient Barcode') }}
+                                                <!-- Todo Do not enable this button until the form is acceptable -->
                                             </button>
                                         </div>
                                     </div>
@@ -456,7 +528,34 @@
 
             <div class="breadcrumbs"><span class="go_home"><- Home</span> <span class="go_search go_link"> <- Search</span> <span class="go_patient go_link"> <- Patient</span> <span class="go_questionnaire go_link"> <- Questionnaire</span></div>
 
-            <div id="page-content"></div>
+            <div id="page-content">
+
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 text-center">
+                            <h3>{{ __('Enter the Patient\'s Information to Search') }}</h3>
+                        </div>
+
+                        <div class="col-md-10">
+
+                            <div class="card-body">
+
+                                <div class="breadcrumbs"><span class="go_home"><- Home</span> <span class="go_search go_link"> <- Search</span> <span class="go_patient go_link"> <- Patient</span>  <span class="go_questionnaire go_link"> <- Questionnaire</span></div>
+
+                                <form name="search-form" onsubmit="return doPatientSearch('search-input');">
+
+                                    <input id="search-input" value="jeff" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+
+                                </form>
+
+                                <div id="search-results"></div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>

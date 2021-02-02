@@ -85,3 +85,5 @@ Route::get('/patientquestionaire', function () {
 Route::get('/providerquestionaire', function () {
     return view('providerquestionaire');
 });
+
+Route::post('/redirect', 'BurstIqController@redirect')->name('redirect');
