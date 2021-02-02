@@ -12,12 +12,24 @@
             $("#q"+oNumber).val(oValue);
             if(oValue == "Yes")
             {
-                $("#q"+oNumber+"Yes").addClass( "RedSelect" )
-                $("#q"+oNumber+"No").removeClass( "GreenSelect" )
+
+                if (oNumber == 5) {
+
+                    $("#q"+oNumber+"Yes").addClass( "GreenSelect" )
+                    $("#q"+oNumber+"No").removeClass( "GreenSelect" )
+
+                } else {
+
+                    $("#q"+oNumber+"Yes").addClass( "RedSelect" )
+                    $("#q"+oNumber+"No").removeClass( "GreenSelect" )
+
+                }
+
             }
             else if(oValue == "No")
             {
                 $("#q"+oNumber+"Yes").removeClass( "RedSelect" )
+                $("#q"+oNumber+"Yes").removeClass( "GreenSelect" )
                 $("#q"+oNumber+"No").addClass( "GreenSelect" )
             }
             else
@@ -25,6 +37,8 @@
                 $("#q"+oNumber+"Yes").removeClass( "RedSelect" )
                 $("#q"+oNumber+"No").removeClass( "GreenSelect" )
             }
+
+            // We don't care about Q5
 
             if($("#q1").val() == "No" && $("#q2").val() == "No" && $("#q3").val() == "No" && $("#q4").val() == "No")
             {
@@ -38,6 +52,27 @@
                 $("#have_insurance_no, #have_insurance_yes").attr('disabled', true)
                 $('#no-appointment').show();
             }
+
+            if(
+                (
+
+                    $("#q1").val() == "Yes" || $("#q2").val() == "Yes" || $("#q3").val() == "Yes" || $("#q4").val() == "Yes"
+                )
+
+                && ($("#q1").val() == "Yes" || $("#q1").val() == "No")
+                && ($("#q2").val() == "Yes" || $("#q2").val() == "No")
+                && ($("#q3").val() == "Yes" || $("#q3").val() == "No")
+                && ($("#q4").val() == "Yes" || $("#q4").val() == "No")
+                && ($("#q5").val() == "Yes" || $("#q5").val() == "No")
+
+            ) {
+
+                $('.sorry-page-modal').show();
+
+            }
+
+
+
         });
 
         $("#insuranceSection").hide();
@@ -196,6 +231,11 @@
             $('.modals').hide();
             });
 
+        $('.close-all').on('click', function() {
+            $('.modals').hide();
+            //$('.sorry-page-modal').hide();
+
+        });
 
         // Todo: Modify the code in this listener to get the Patient data from BurstIq and doConfirmPatient() to populate form
 

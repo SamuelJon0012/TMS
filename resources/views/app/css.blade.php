@@ -96,5 +96,75 @@
             background:red;
         }
 
+        .sorry-page-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow:scroll;
+            text-align: center;
+        }
+        .sorry-modal-inner {
+            border: 1px solid black;
+            width: 100%;
+            opacity: 1;
+            border-radius: 12px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right:auto;
+            margin-top: 22px;
+            overflow: hidden;
+            background-color: #827F7D;
+            text-align: center;
+            min-height: 550px;
+        }
+
+        .sorry-top {
+            background-color: #174797;
+            color: white;
+            font-size: 28px
+
+        }
+        .sorry-feel {
+            color:black;
+            background-color: #B3C6E7;
+            font-size: 18px
+        }
+        .sorry-main {
+            color: white;
+            background-color: #827F7D;
+            padding: 12px;
+        }
+        .sorry-col-1, .sorry-col-2, .sorry-col-3 {
+            width: 33%;
+            padding: 12px;
+
+        }
+        .sorry-circle-1, .sorry-circle-2, .sorry-circle-3 {
+            width: 100px;
+            line-height: 100px;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 32px;
+            border: 2px solid #666;
+            background-color: #17479B;
+            color: white;
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+        .sorry-square-1, .sorry-square-2, .sorry-square-3 {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #B3C6E7;
+            text-align: left;
+            height: 170px;
+            color: black;
+
+        }
+
+
 
     </style>
