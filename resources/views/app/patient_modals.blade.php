@@ -108,6 +108,24 @@
                                     <input type="hidden" name="q4" id="q4" value="">
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-8 border border-top-0 border-dark">
+                                        {{ __('Have you been previously diagnosed with COVID-19?') }}
+                                    </div>
+                                    <div id="q5Yes" class="Qoption col-2  border-dark  border-bottom text-center" rel="Yes_5">
+                                        <br>
+                                        {{ __('YES') }}
+                                        <br><br>
+                                    </div>
+                                    <div id="q5No" class="Qoption col-2 border border-top-0 border-dark text-center" rel="No_5">
+                                        <br>
+                                        {{ __('NO') }}
+                                        <br><br>
+                                    </div>
+                                    <input type="hidden" name="q5" id="q5" value="">
+                                </div>
+
+
                                 <br><br>
                                 <div class="row">
                                     <div class="col-12 text-center">
@@ -275,5 +293,51 @@
             </div>
         </div>
     </div>
+    <div class="sorry-page-modal">
+
+        <div class="sorry-modal-inner">
+
+            <div id="page-content">
+
+                <div class="sorry-top">{{ __('THE SCREENING YOU COMPLETED INDICATES THAT YOU MAY BE AT INCREASED RISK FOR COVID-19') }}</div>
+
+                <div class="sorry-feel">{{ __('IF YOU ARE NOT FEELING WELL, WE HOPE THAT YOU FEEL BETTER SOON') }}</div>
+
+                <div class="sorry-main">
+                    <div style="width: 100%;">
+                        {{ __('Here are instructions for what to do next') }}
+                    </div>
+
+                    <div class="sorry-col-1" style="float:left;">
+                        <div class="sorry-circle-1">1</div>
+                        <div class="sorry-square-1">{{ __('If you are not already at home, please avoid contact with others and go straight home immediately') }}</div>
+                    </div>
+                    <div class="sorry-col-2" style="float:left;">
+                        <div class="sorry-circle-2">2</div>
+                        <div class="sorry-square-2">{{ __('Call your primary care provider for further instructions, including information about COVID-19 testing.') }}</div>
+                    </div>
+                    <div class="sorry-col-3" style="float:left;">
+                        <div class="sorry-circle-3">3</div>
+                        <div class="sorry-square-3">{{ __('Contact your supervisor (if you are an employee) or your contracting company (if you are a contractor) to discuss options for telework and/or leave.') }}</div>
+                    </div>
+                    <div style="clear:both"></div>
+
+
+                    {{ __('At this time we cannot allow you to schedule a COVID-19 vaccination appointment.') }}
+                    {{ __('When you can answer "No" to the first four questions, please come back and set up an appointment.') }}
+                    {{ __(' Please click the button below to return to the home page') }}
+                    <br/>
+                    <br/>
+                    <span class="btn btn-primary close-all" style="width: 300px;">Home Page</span>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
 </div>
+
 
