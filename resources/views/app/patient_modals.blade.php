@@ -125,6 +125,22 @@
                                     <input type="hidden" name="q5" id="q5" value="">
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-8 border border-top-0 border-dark">
+                                        {{ __('Do you have a vaccine allergy?') }}
+                                    </div>
+                                    <div id="q6Yes" class="Qoption col-2  border-dark  border-bottom text-center" rel="Yes_6">
+                                        <br>
+                                        {{ __('YES') }}
+                                        <br><br>
+                                    </div>
+                                    <div id="q6No" class="Qoption col-2 border border-top-0 border-dark text-center" rel="No_6">
+                                        <br>
+                                        {{ __('NO') }}
+                                        <br><br>
+                                    </div>
+                                    <input type="hidden" name="q6" id="q6" value="">
+                                </div>
 
                                 <br><br>
                                 <div class="row">
@@ -161,6 +177,47 @@
                                             @enderror
                                         </div>
                                     </div>
+
+                                    <div class="form-group row justify-content-center">
+
+                                        <div class="col-4 text-right">
+                                            {{ __('Plan Type:') }}
+                                        </div>
+                                        <div class="col-8">
+                                            <select id="plan_type" class="form-control @error('plan_type') is-invalid @enderror" name="plan_type" >
+                                                <option value=""></option>
+                                                <option value="0">{{ __('Medicare') }}</option>
+                                                <option value="1">{{ __('Medicaid') }}</option>
+                                                <option value="2">{{ __('Private Insurance') }}</option>
+                                                <option value="3">{{ __('Self Pay') }}</option>
+                                            </select>
+
+                                            @error('insurance_type')
+                                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+
+# plan ID
+                                    <div class="form-group row justify-content-center">
+
+                                        <div class="col-4 text-right">
+                                            {{ __('Plan ID:') }}
+                                        </div>
+                                        <div class="col-8">
+                                            <input id="plan_id" type="text" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id" value="{{ old('employer_name') }}"  autocomplete="employer_name"  placeholder="{{ __('') }}">
+
+                                            @error('plan_id')
+                                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
 
                                     <div class="form-group row justify-content-center">
 
@@ -245,7 +302,7 @@
                                     <div class="form-group row justify-content-center">
 
                                         <div class="col-4 text-right">
-                                            {{ __('Relationship to Patient:') }}
+                                            {{ __('Insurance Type:') }}
                                         </div>
                                         <div class="col-8">
                                             <select id="insurance_type" class="form-control @error('insurance_type') is-invalid @enderror" name="insurance_type" >
@@ -266,8 +323,32 @@
                                 </div>
 
                                 <div class="form-group row justify-content-center">
-                                    <div class="col-md-6 text-center" id="yes-appointment">
-                                        <button id="subBtn" type="submit" class="btn btn-primary form-control disabled">
+
+                                    <div class="col-4 text-right">
+                                        {{ __('Relationship to Primary Cardholder:') }}
+                                    </div>
+                                    <div class="col-8">
+                                        <select id="relationship_to_primary_cardholder" class="form-control @error('relationship_to_primary_cardholder') is-invalid @enderror" name="relationship_to_primary_cardholder" >
+                                            <option value=""></option>
+                                            <option value="0">{{ __('I am the patient') }}</option>
+                                            <option value="1">{{ __('Legal guardian of patient') }}</option>
+                                            <option value="2">{{ __('Authorized representative of patient') }}</option>
+                                        </select>
+
+                                        @error('insurance_type')
+                                        <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+
+
+
+                        <div class="form-group row justify-content-center">
+                                    <div class="col-md-6 text-center" id="yes-appointment"  title="{{ __('You must answer all 6 questions above') }}">
+                                        <button id="subBtn" type="submit" class="btn btn-primary form-control disabled" title="{{ __('Click here to proceed') }}>
                                             {{ __('Schedule Appointment') }}
                                         </button>
 
