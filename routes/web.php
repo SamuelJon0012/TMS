@@ -61,9 +61,13 @@ Route::get('/biq/test-getting-procedure-results', 'BurstIqTestController@testGet
 Route::get('/biq/test-getting-patient-schedule-site-query', 'BurstIqTestController@testGettingPatientScheduleSiteQuery')->name('test_getting_patient_schedule_site_query');
 
 
-Route::get('test', function () {
+Route::get('/email/test', function () {
     Mail::to('erikolson1965@gmail.com')->send(new TestAmazonSes('It works!'));
 });
+
+Route::get('/vsee/test', 'VSeeController@test')->name('vsee_test');
+
+
 /*
  *
  *  Actual BurstIq methods
@@ -88,4 +92,4 @@ Route::get('/providerquestionaire', function () {
     return view('providerquestionaire');
 });
 
-Route::post('/redirect', 'BurstIqController@redirect')->name('redirect');
+Route::post('/vsee/redirect', 'VSeeController@redirect')->name('redirect');

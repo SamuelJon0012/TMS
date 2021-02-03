@@ -13,7 +13,7 @@
                     <div class="col-md-10">
                         <div class="card-body">
                             <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
-                            <form method="POST" action="/redirect">
+                            <form method="POST" action="/vsee/redirect">
 
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
 
