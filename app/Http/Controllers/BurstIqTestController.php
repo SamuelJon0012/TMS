@@ -335,7 +335,9 @@ var_dump($A); exit;
 
         $P = new PatientScheduleSiteQuery($this->BI_USERNAME,$this->BI_PASSWORD);
 
+
         $where="SELECT p.asset.*, e.asset.*, s.asset.id as s_id, s.asset.name as name, s.asset.vicinity_name as vicinity_name, s.asset.address1 as site_address1, s.asset.address2 as site_address2, s.asset.city as site_city, s.asset.state as site_state, s.asset.zipcode as site_zipcode, s.asset.county as site_county FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id LEFT OUTER JOIN site_profile AS s ON s.asset.id=e.asset.site_id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
+
         $test = $P->query('patient_profile',$where );
 
         // $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)

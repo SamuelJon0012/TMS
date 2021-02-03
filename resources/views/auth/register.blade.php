@@ -391,8 +391,10 @@
                 </div>
 
                 <div class="form-group row justify-content-center">
+                   <div class="col-md-1 m-0 text-right pr-0">
 
-                    <div class="col-md-12 text-center">
+                  </div>
+                   <div class="col-md-12 text-center">
                       <select id="ethnicity" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
                           <option value="">ETHINICITY</option>
                           <option value="1">Unknown</option>
@@ -400,8 +402,6 @@
                           <option value="3">Not Hispanic or Latine</option>
                           <option value="4">Black or African American</option>
                           <option value="5">Rather not say</option>
-
-
                       </select>
                     </div>
                 </div>
@@ -447,6 +447,7 @@
 
                   <div class="col-md-12 text-center">
                     NOTICE: By clicking Register, you agree to our <a target="_blank" href="https://trackmyapp.us/files/default/terms.html">Terms</a> and that you have read our <a target="_parent" href="https://trackmyapp.us/files/default/policy.html">Privacy policy</a>.
+
                   </div>
                 </div>
 
@@ -594,8 +595,6 @@
                   </div>
                 </div>
 
-
-
               </div>
             </div>
 
@@ -608,6 +607,7 @@
                 </button>
               </div>
             </div>
+
 
           </div>
           </div>
