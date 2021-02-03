@@ -30,8 +30,8 @@
             {
                 if ((oNumber == 5) || (oNumber == 6)) {
 
-                    $("#q"+oNumber+"Yes").addClass( "GreySelect" )
-                    $("#q"+oNumber+"No").removeClass( "GreySelect" )
+                    $("#q"+oNumber+"Yes").removeClass( "GreySelect" )
+                    $("#q"+oNumber+"No").addClass( "GreySelect" )
 
                 } else {
 

@@ -1,22 +1,17 @@
-<div class="patient-questionnaire-page-modal modals"><!-- template -->
-
+<div class="patient-questionnaire-page-modal modals">
+    <!-- template -->
     <div class="page-modal-inner">
-
         <div id="page-content">
-
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-12 text-center">
                         <h3>{{ __('Patient Screening Questionaire') }}</h3>
                     </div>
-
                     <div class="col-md-10">
                         <div class="card-body">
                             <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
                             <form method="POST" action="/vsee/redirect">
-
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
-
                                 @csrf
                                 <div class="row">
                                     <div class="col-8">
@@ -26,7 +21,6 @@
                                         <h5>{{ __('Please click on the answer that applies to you') }} </h5>
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="col-8 border border-dark">
                                         {{ __('Have you experienced any of the following symptoms in the past 48 hours:') }}
@@ -54,7 +48,6 @@
                                     </div>
                                     <input type="hidden" name="q1" id="q1" value="">
                                 </div>
-
                                 <div class="row">
                                     <div class="col-8 border border-top-0 border-dark">
                                         {{ __('Within the past 14 days, have you been in close physical contact (6 feet or closer for a cumulative total of 15 minutes) with:') }}
@@ -73,7 +66,6 @@
                                     </div>
                                     <input type="hidden" name="q2" id="q2" value="">
                                 </div>
-
                                 <div class="row">
                                     <div class="col-8 border border-top-0 border-dark">
                                         {{ __('Are you isolating or quarantining because you may have been exposed to a person with COVID-19 or are worried that you may be sick with COVID-19?') }}
@@ -90,7 +82,6 @@
                                     </div>
                                     <input type="hidden" name="q3" id="q3" value="">
                                 </div>
-
                                 <div class="row">
                                     <div class="col-8 border border-top-0 border-dark">
                                         {{ __('Are you currently waiting on the result of a COVID-19 test?') }}
@@ -107,7 +98,6 @@
                                     </div>
                                     <input type="hidden" name="q4" id="q4" value="">
                                 </div>
-
                                 <div class="row">
                                     <div class="col-8 border border-top-0 border-dark">
                                         {{ __('Have you been previously diagnosed with COVID-19?') }}
@@ -124,7 +114,6 @@
                                     </div>
                                     <input type="hidden" name="q5" id="q5" value="">
                                 </div>
-
                                 <div class="row">
                                     <div class="col-8 border border-top-0 border-dark">
                                         {{ __('Do you have a vaccine allergy?') }}
@@ -141,12 +130,10 @@
                                     </div>
                                     <input type="hidden" name="q6" id="q6" value="">
                                 </div>
-
                                 <br><br>
                                 <div class="row">
                                     <div class="col-12 text-center">
                                         <h5>{{ __('Do you have personal health insurance through your employer or private health insurance you have purchased on your own?') }}</h5>
-
                                         <input type="radio" name="have_insurance" id="have_insurance_yes" value="Yes" disabled>
                                         <label for="have_insurance_yes">{{ __('Yes') }}</label>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -154,7 +141,6 @@
                                         <label for="have_insurance_no">{{ __('No') }}</label>
                                     </div>
                                 </div>
-
                                 <br><br>
                                 <div class="row" id="insuranceSection" style="display:none;">
                                     <div class="form-group row justify-content-center">
@@ -162,24 +148,20 @@
                                             <h5>{{ __('Please provide the necessary insurance information') }}</h5>
                                         </div>
                                     </div>
-
                                     <div class="form-group row justify-content-center">
                                         <div class="col-4 text-right">
                                             {{ __('Insurance Company Name:') }}
                                         </div>
                                         <div class="col-8">
                                             <input id="administrator_name" type="text" class="form-control @error('administrator_name') is-invalid @enderror" name="administrator_name" value="{{ old('administrator_name') }}"  autocomplete="administrator_name"  placeholder="{{ __('') }}" >
-
                                             @error('administrator_name')
                                             <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
+                                        <strong>{{ $message }}</strong>
+                                        </span>
                                             @enderror
                                         </div>
                                     </div>
-
                                     <div class="form-group row justify-content-center">
-
                                         <div class="col-4 text-right">
                                             {{ __('Plan Type:') }}
                                         </div>
@@ -191,116 +173,93 @@
                                                 <option value="2">{{ __('Private Insurance') }}</option>
                                                 <option value="3">{{ __('Self Pay') }}</option>
                                             </select>
-
                                             @error('insurance_type')
                                             <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
+                                        <strong>{{ $message }}</strong>
+                                        </span>
                                             @enderror
                                         </div>
                                     </div>
-
-
-# plan ID
+                                    # plan ID
                                     <div class="form-group row justify-content-center">
-
                                         <div class="col-4 text-right">
                                             {{ __('Plan ID:') }}
                                         </div>
                                         <div class="col-8">
                                             <input id="plan_id" type="text" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id" value="{{ old('employer_name') }}"  autocomplete="employer_name"  placeholder="{{ __('') }}">
-
                                             @error('plan_id')
                                             <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
+                                        <strong>{{ $message }}</strong>
+                                        </span>
                                             @enderror
                                         </div>
                                     </div>
-
-
                                     <div class="form-group row justify-content-center">
-
                                         <div class="col-4 text-right">
                                             {{ __('Employer Name:') }}
                                         </div>
                                         <div class="col-8">
                                             <input id="employer_name" type="text" class="form-control @error('employer_name') is-invalid @enderror" name="employer_name" value="{{ old('employer_name') }}"  autocomplete="employer_name"  placeholder="{{ __('') }}">
-
                                             @error('employer_name')
                                             <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
+                                        <strong>{{ $message }}</strong>
+                                        </span>
                                             @enderror
                                         </div>
                                     </div>
-
                                     <div class="form-group row justify-content-center">
-
                                         <div class="col-4 text-right">
                                             {{ __('Group id/Number:') }}
                                         </div>
                                         <div class="col-8">
                                             <input id="group_id" type="text" class="form-control @error('group_id') is-invalid @enderror" name="group_id" value="{{ old('group_id') }}"  autocomplete="group_id"  placeholder="{{ __('') }}" >
-
                                             @error('group_id')
                                             <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
+                                        <strong>{{ $message }}</strong>
+                                        </span>
                                             @enderror
                                         </div>
                                     </div>
-
                                     <div class="form-group row justify-content-center">
-
                                         <div class="col-4 text-right">
                                             {{ __('Coverage Effective Date:') }}
                                         </div>
                                         <div class="col-8">
                                             <input id="coverage_effective_date" type="date" class="form-control @error('coverage_effective_date') is-invalid @enderror" name="coverage_effective_date" value="{{ old('coverage_effective_date') }}"  autocomplete="coverage_effective_date"  placeholder="{{ __('') }}" >
-
                                             @error('coverage_effective_date')
                                             <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
+                                        <strong>{{ $message }}</strong>
+                                        </span>
                                             @enderror
                                         </div>
                                     </div>
-
                                     <div class="form-group row justify-content-center">
-
                                         <div class="col-4 text-right">
                                             {{ __('Primary Insured Name:') }}
                                         </div>
                                         <div class="col-8">
                                             <input id="primary_cardholder" type="text" class="form-control @error('primary_cardholder') is-invalid @enderror" name="primary_cardholder" value="{{ old('primary_cardholder') }}"  autocomplete="primary_cardholder"  placeholder="{{ __('') }}" >
-
                                             @error('primary_cardholder')
                                             <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
+                                        <strong>{{ $message }}</strong>
+                                        </span>
                                             @enderror
                                         </div>
                                     </div>
-
                                     <div class="form-group row justify-content-center">
-
                                         <div class="col-4 text-right">
                                             {{ __('Primary Insured ID:') }}
                                         </div>
                                         <div class="col-8">
                                             <input id="issuer_id" type="text" class="form-control @error('issuer_id') is-invalid @enderror" name="issuer_id" value="{{ old('issuer_id') }}"  autocomplete="issuer_id"  placeholder="{{ __('') }}" >
-
                                             @error('issuer_id')
                                             <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
+                                        <strong>{{ $message }}</strong>
+                                        </span>
                                             @enderror
                                         </div>
                                     </div>
-
                                     <div class="form-group row justify-content-center">
-
                                         <div class="col-4 text-right">
                                             {{ __('Insurance Type:') }}
                                         </div>
@@ -311,84 +270,68 @@
                                                 <option value="1">{{ __('Primary') }}</option>
                                                 <option value="2">{{ __('Secondary') }}</option>
                                             </select>
-
                                             @error('insurance_type')
                                             <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
+                                        <strong>{{ $message }}</strong>
+                                        </span>
                                             @enderror
                                         </div>
                                     </div>
-
+                                    <div class="form-group row justify-content-center">
+                                        <div class="col-4 text-right">
+                                            {{ __('Relationship to Primary Cardholder:') }}
+                                        </div>
+                                        <div class="col-8">
+                                            <select id="relationship_to_primary_cardholder"
+                                                    class="form-control @error('relationship_to_primary_cardholder') is-invalid @enderror"
+                                                    name="relationship_to_primary_cardholder">
+                                                <option value=""></option>
+                                                <option value="0">{{ __('I am the patient') }}</option>
+                                                <option value="1">{{ __('Legal guardian of patient') }}</option>
+                                                <option value="2">{{ __('Authorized representative of patient') }}</option>
+                                            </select>
+                                            @error('insurance_type')
+                                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                        </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
-
                                 <div class="form-group row justify-content-center">
-
-                                    <div class="col-4 text-right">
-                                        {{ __('Relationship to Primary Cardholder:') }}
-                                    </div>
-                                    <div class="col-8">
-                                        <select id="relationship_to_primary_cardholder" class="form-control @error('relationship_to_primary_cardholder') is-invalid @enderror" name="relationship_to_primary_cardholder" >
-                                            <option value=""></option>
-                                            <option value="0">{{ __('I am the patient') }}</option>
-                                            <option value="1">{{ __('Legal guardian of patient') }}</option>
-                                            <option value="2">{{ __('Authorized representative of patient') }}</option>
-                                        </select>
-
-                                        @error('insurance_type')
-                                        <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-
-
-
-                        <div class="form-group row justify-content-center">
                                     <div class="col-md-6 text-center" id="yes-appointment"  title="{{ __('You must answer all 6 questions above') }}">
-                                        <button id="subBtn" type="submit" class="btn btn-primary form-control disabled" title="{{ __('Click here to proceed') }}>
+                                        <button id="subBtn" type="submit" class="btn btn-primary form-control disabled" title="{{ __('Click here to proceed') }}">
                                             {{ __('Schedule Appointment') }}
                                         </button>
-
                                     </div>
-{{--                                    <br/>--}}
-{{--                                    <div class="col-md-6 text-center" id="no-appointment" style="display:none;">--}}
-{{--                                        <button id="subBtn" type="submit" class="btn btn-primary form-control">--}}
-{{--                                            {{ __('Save Information') }}--}}
-{{--                                        </button>--}}
-{{--                                        We are unable to schedule you vaccination a this time, however you can save your--}}
-{{--                                        insurance information and try back another time.--}}
-{{--                                    </div>--}}
-
+                                    {{--                                    <br/>--}}
+                                    {{--
+                                    <div class="col-md-6 text-center" id="no-appointment" style="display:none;">--}}
+                                    {{--                                        <button id="subBtn" type="submit" class="btn btn-primary form-control">--}}
+                                    {{--                                            {{ __('Save Information') }}--}}
+                                    {{--                                        </button>--}}
+                                    {{--                                        We are unable to schedule you vaccination a this time, however you can save your--}}
+                                    {{--                                        insurance information and try back another time.--}}
+                                    {{--
                                 </div>
-
-
+                                --}}
+                                </div>
                             </form>
-
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="sorry-page-modal">
-
         <div class="sorry-modal-inner">
-
             <div id="page-content">
-
                 <div class="sorry-top">{{ __('THE SCREENING YOU COMPLETED INDICATES THAT YOU MAY BE AT INCREASED RISK FOR COVID-19') }}</div>
-
                 <div class="sorry-feel">{{ __('IF YOU ARE NOT FEELING WELL, WE HOPE THAT YOU FEEL BETTER SOON') }}</div>
-
                 <div class="sorry-main">
                     <div style="width: 100%;">
                         {{ __('Here are instructions for what to do next') }}
                     </div>
-
                     <div class="sorry-col-1" style="float:left;">
                         <div class="sorry-circle-1">1</div>
                         <div class="sorry-square-1">{{ __('If you are not already at home, please avoid contact with others and go straight home immediately') }}</div>
@@ -402,23 +345,15 @@
                         <div class="sorry-square-3">{{ __('Contact your supervisor (if you are an employee) or your contracting company (if you are a contractor) to discuss options for telework and/or leave.') }}</div>
                     </div>
                     <div style="clear:both"></div>
-
-
                     {{ __('At this time we cannot allow you to schedule a COVID-19 vaccination appointment.') }}
                     {{ __('When you can answer "No" to the first four questions, please come back and set up an appointment.') }}
                     {{ __(' Please click the button below to return to the home page') }}
                     <br/>
                     <br/>
                     <span class="btn btn-primary close-all" style="width: 300px;">Home Page</span>
-
                 </div>
-
-
-
             </div>
-
         </div>
     </div>
 </div>
-
 
