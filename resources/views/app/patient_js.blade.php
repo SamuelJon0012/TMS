@@ -13,10 +13,10 @@
             if(oValue == "Yes")
             {
 
-                if (oNumber == 5) {
+                if ((oNumber == 5) || (oNumber == 6)) {
 
-                    $("#q"+oNumber+"Yes").addClass( "GreenSelect" )
-                    $("#q"+oNumber+"No").removeClass( "GreenSelect" )
+                    $("#q"+oNumber+"Yes").addClass( "GreySelect" )
+                    $("#q"+oNumber+"No").removeClass( "GreySelect" )
 
                 } else {
 
@@ -28,9 +28,17 @@
             }
             else if(oValue == "No")
             {
-                $("#q"+oNumber+"Yes").removeClass( "RedSelect" )
-                $("#q"+oNumber+"Yes").removeClass( "GreenSelect" )
-                $("#q"+oNumber+"No").addClass( "GreenSelect" )
+                if ((oNumber == 5) || (oNumber == 6)) {
+
+                    $("#q"+oNumber+"Yes").removeClass( "GreySelect" )
+                    $("#q"+oNumber+"No").addClass( "GreySelect" )
+
+                } else {
+
+                    $("#q"+oNumber+"Yes").removeClass( "RedSelect" )
+                    $("#q"+oNumber+"No").addClass( "GreenSelect" )
+
+                }
             }
             else
             {
@@ -59,11 +67,14 @@
                     $("#q1").val() == "Yes" || $("#q2").val() == "Yes" || $("#q3").val() == "Yes" || $("#q4").val() == "Yes"
                 )
 
+                // If there's a yes in 1-5 AND every Q has an A
+
                 && ($("#q1").val() == "Yes" || $("#q1").val() == "No")
                 && ($("#q2").val() == "Yes" || $("#q2").val() == "No")
                 && ($("#q3").val() == "Yes" || $("#q3").val() == "No")
                 && ($("#q4").val() == "Yes" || $("#q4").val() == "No")
                 && ($("#q5").val() == "Yes" || $("#q5").val() == "No")
+                && ($("#q6").val() == "Yes" || $("#q6").val() == "No")
 
             ) {
 
@@ -71,11 +82,11 @@
 
             }
 
-
-
         });
 
         $("#insuranceSection").hide();
+
+        // Todo: @here add plan_id, relationship_to_primary_cardholder, plan_type
 
         $("#have_insurance_no").click(function(){
             $("#insuranceSection").hide();

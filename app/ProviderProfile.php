@@ -25,7 +25,26 @@ class ProviderProfile extends BurstIq
     private $is_nurse_practitioner;
     private $user_id;
     private $npi;
+    private $vsee_clinic_id;
     private $sites = [];
+
+    /**
+     * @return mixed
+     */
+    public function getVseeClinicId()
+    {
+        return $this->vsee_clinic_id;
+    }
+
+    /**
+     * @param mixed $vsee_clinic_id
+     * @return ProviderProfile
+     */
+    public function setVseeClinicId($vsee_clinic_id)
+    {
+        $this->vsee_clinic_id = $vsee_clinic_id;
+        return $this;
+    }
 
     # Generate fluent getters and setters here
 
@@ -156,6 +175,7 @@ class ProviderProfile extends BurstIq
         #Todo $this->user_id = $asset->user_id; ?? not in collection?
         $this->npi = $asset->npi;
         $this->sites = $asset->sites;
+        $this->vsee_clinic_id = $asset->vsee_clinic_id;
 
         # make a useful array of this row
 
@@ -168,6 +188,7 @@ class ProviderProfile extends BurstIq
             #Todo see above 'user_id' => $asset->user_id,
             'npi' => $asset->npi,
             'sites' => $asset->sites,
+            'vsee_clinic_id' => $asset->vsee_clinic_id,
 
         ];
 

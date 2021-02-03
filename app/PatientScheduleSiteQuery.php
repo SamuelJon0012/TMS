@@ -50,7 +50,7 @@ class PatientScheduleSiteQuery extends BurstIq
 
     ###Site
     private $site_name;
-    private $site_vacinity_name;
+    private $site_vicinity_name;
     private $site_address1;
     private $site_address2;
     private $site_city;
@@ -298,9 +298,9 @@ class PatientScheduleSiteQuery extends BurstIq
     /**
      * @return mixed
      */
-    public function getSiteVacinityName()
+    public function getSiteVicinityName()
     {
-        return $this->site_vacinity_name;
+        return $this->site_vicinity_name;
     }
 
     /**
@@ -390,7 +390,7 @@ class PatientScheduleSiteQuery extends BurstIq
         $this->reminder = $asset->reminder;
         ###Site
         $this->site_name = $asset->site_name;
-        $this->site_vacinity_name = $asset->vacinity_name;
+        $this->site_vicinity_name = $asset->vicinity_name;
         $this->site_address1 = $asset->site_address1;
         $this->site_address2 = $asset->site_address2;
         $this->site_city = $asset->site_city;
@@ -434,7 +434,7 @@ class PatientScheduleSiteQuery extends BurstIq
             'reminder' => $asset->reminder,
             ###Site
             'site_name' => $asset->site_name,
-            'site_vacinity_name' => $asset->site_vacinity_name,
+            'site_vicinity_name' => $asset->site_vicinity_name,
             'site_address1' => $asset->site_address1,
             'site_address2' => $asset->site_address2,
             'site_city' => $asset->site_city,
