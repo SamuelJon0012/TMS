@@ -257,13 +257,13 @@
                         @enderror
                         <div class="row">
                           <div class="col-4">
-                            <input type="radio" name="phone_type1" id="Mobile1" value="Mobile" checked> <label for ="Mobile1">{{ __('Mobile') }}</label>
+                            <input type="radio" name="phone_type1" id="Mobile1" value="2" checked> <label for ="Mobile1">{{ __('Mobile') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type1" id="Home1" value="Home"> <label for ="Home1">{{ __('Home') }}</label>
+                            <input type="radio" name="phone_type1" id="Home1" value="0"> <label for ="Home1">{{ __('Home') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type1" id="Work1" value="Work"> <label for ="Work1">{{ __('Work') }}</label>
+                            <input type="radio" name="phone_type1" id="Work1" value="1"> <label for ="Work1">{{ __('Work') }}</label>
                           </div>
                         </div>
                     </div>
@@ -348,13 +348,12 @@
                 <div class="form-group row justify-content-center">
                     <div class="col-md-12 text-center">
                       <select id="ethnicity" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
-                        <option value="">ETHINICITY</option>
-                        <option value="American Indian or Alaska Native">American Indian or Alaska Native.</option>
-                        <option value="Asian">Asian</option>
-                        <option value="Black or African American">Black or African American</option>
-                        <option value="Hispanic or Latino">Hispanic or Latino</option>
-                        <option value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</option>
-                        <option value="White">White</option>
+                          <option value="">ETHINICITY</option>
+                          <option value="1">Unknown</option>
+                          <option value="2">Hispanic or Latino</option>
+                          <option value="3">Not Hispanic or Latine</option>
+                          <option value="4">Black or African American</option>
+                          <option value="5">Rather not say</option>
 
                       </select>
                     </div>
@@ -364,16 +363,29 @@
                     <div class="col-md-12 text-center">
                       <select id="race" class="form-control @error('race') is-invalid @enderror" name="race" placeholder="{{ __('RACE') }}">
                         <option value="">RACE</option>
-                        <option value="American Indian or Alaska Native">American Indian or Alaska Native.</option>
-                        <option value="Asian">Asian</option>
-                        <option value="Black or African American">Black or African American</option>
-                        <option value="Hispanic or Latino">Hispanic or Latino</option>
-                        <option value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</option>
-                        <option value="White">White</option>
+
+                          <option value="1">American Indian or Alaska Native</option>
+                          <option value="2">Asian</option>
+                          <option value="3">Black or African American</option>
+                          <option value="4">Native Hawaiian or Other Pacific Islander</option>
+                          <option value="7">White</option>
+                          <option value="5">Other</option>
+                          <option value="6">Rather not say</option>
                       </select>
                     </div>
                 </div>
+                <div class="form-group row justify-content-center">
+                    <div class="col-md-12 text-center">
+                      <select id="birth_sex" class="form-control @error('birth_sex') is-invalid @enderror" name="birth_sex" placeholder="{{ __('BIRTH SEX') }}">
+                          <option value="">BIRTH SEX</option>
 
+                          <option value="1">Male</option>
+                          <option value="2">Female</option>
+                          <option value="0">Other</option>
+
+                      </select>
+                    </div>
+                </div>
                 <div class="form-group row justify-content-center">
                   <div class="col-md-12 text-center">
 
@@ -383,7 +395,7 @@
 
                 <div class="form-group row justify-content-center">
                   <div class="col-md-12 text-center">
-                    NOTICE: By clicking Register, you agree to our <a href="#">Terms</a> and that you have read our <a href="#">Privacy policy</a>.
+                    NOTICE: By clicking Register, you agree to our <a target="_blank" href="https://trackmyapp.us/files/default/terms.html">Terms</a> and that you have read our <a target="_parent" href="https://trackmyapp.us/files/default/policy.html">Privacy policy</a>.
                   </div>
                 </div>
 

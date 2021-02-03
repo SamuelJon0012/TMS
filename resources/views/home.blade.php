@@ -87,7 +87,7 @@
           @if(Auth::check() && Auth::user()->hasRole('provider'))
             <div class="row">
               <div class="col-3">
-                <div class="patient-button homeTop-button">
+                <div class="patient-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled' >
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/magnifyingglass-icon.png">
                   <br>
                   {{ __('Search For Patient') }}
@@ -95,7 +95,7 @@
               </div>
 
               <div class="col-3">
-                <div class="provider-button homeTop-button">
+                <div class="provider-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/friend-icon.png" />
                   <br/>
                   {{ __('Scheduled Patients by Location') }}
@@ -103,7 +103,7 @@
               </div>
 
               <div class="col-3">
-                <div class="settings-button homeTop-button">
+                <div class="settings-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/settings-icon.png" />
                   <br/>
                   {{ __('Settings') }}
@@ -111,7 +111,7 @@
               </div>
 
               <div class="col-3">
-                <div class="help-button homeTop-button">
+                <div class="help-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
                   <img class="button-image" src="https://djdev.trackmyapp.us/images/help-icon.png" />
                   <br/>
                   {{ __('Help') }}
