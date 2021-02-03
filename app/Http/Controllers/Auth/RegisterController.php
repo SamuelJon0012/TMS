@@ -78,11 +78,13 @@ class RegisterController extends Controller
         $user = config('roles.models.defaultUser')::create([
             'name' => $data['first_name']." ".$data['last_name'],
             'email' => $data['email'],
-            // 'dob' => $data['dob'],
-            // 'phone' => $data['phone'],
-            // 'power' => $data['power'],
+            'json' => json_encode($data),
+            'dob' => $data['date_of_birth'],
             'password' => bcrypt($data['password']),
         ]);
+
+        // backup spool
+        file_put_contents('/var/www/data/' . $data['email'], json_encode($data));
 
         if($data['r_type']) {
           $role = config('roles.models.role')::where('slug', '=', $data['r_type'])->first();  //choose the default role upon user creation.

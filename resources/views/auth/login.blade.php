@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="text-center">
-      <img src = "https://trackmyapp.us/images/trackmysolutionslogoregtm-web.jpg">
+      <img src = "{{ asset('images/trackmysolutionslogoregtm-web.jpg') }}">
     </div>
     <br><br>
 
@@ -22,7 +22,7 @@
                             <!-- <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label> -->
 
                             <div class="col-md-10">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{ __('Email Address') }}">
+                                <input id="email" type="email" class="form-control-blue @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{ __('Email Address') }}">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -45,7 +45,7 @@
                                   </div>
                                 @endif
 
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="{{ __('Password') }}">
+                                <input id="password" type="password" class="form-control-blue @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="{{ __('Password') }}">
 
                                 @error('password')
                                   <span class="invalid-feedback" role="alert">
