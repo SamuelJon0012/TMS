@@ -42,7 +42,7 @@
             <div class="row">
               <div class="col-3">
                 <div  title="This feature is currently unnavailable" disabled='disabled' id="myvaccine-button" class="homeTop-button">
-                  <img class="button-image" src="https://djdev.trackmyapp.us/images/syringe.png">
+                  <img class="button-image" src="{{ asset('images/syringe.png') }}">
                   <br>
                   {{ __('My Vaccines') }}
                 </div>
@@ -50,7 +50,7 @@
 
               <div class="col-3">
                 <div  title="This feature is currently unnavailable" disabled='disabled' class="alert-button homeTop-button">
-                  <img class="button-image" src="https://djdev.trackmyapp.us/images/alert-icon.png" />
+                  <img class="button-image" src="{{ asset('images/alert-icon.png') }}" />
                   <br/>
                   {{ __('Alerts') }}
                 </div>
@@ -58,7 +58,7 @@
 
               <div class="col-3">
                 <div  title="This feature is currently unnavailable" disabled='disabled' class="settings-button homeTop-button">
-                  <img class="button-image" src="https://djdev.trackmyapp.us/images/settings-icon.png" />
+                  <img class="button-image" src="{{ asset('images/settings-icon.png') }}" />
                   <br/>
                   {{ __('Settings') }}
                 </div>
@@ -66,7 +66,7 @@
 
               <div class="col-3">
                 <div title="This feature is currently unnavailable" disabled='disabled' class="help-button homeTop-button">
-                  <img class="button-image" src="https://djdev.trackmyapp.us/images/help-icon.png" />
+                  <img class="button-image" src="{{ asset('images/help-icon.png') }}" />
                   <br/>
                   {{ __('Help') }}
                 </div>
@@ -87,8 +87,8 @@
           @if(Auth::check() && Auth::user()->hasRole('provider'))
             <div class="row">
               <div class="col-3">
-                <div class="patient-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled' >
-                  <img class="button-image" src="https://djdev.trackmyapp.us/images/magnifyingglass-icon.png">
+                <div class="patient-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
+                  <img class="button-image" src="{{ asset('images/magnifyingglass-icon.png') }}">
                   <br>
                   {{ __('Search For Patient') }}
                 </div>
@@ -96,7 +96,7 @@
 
               <div class="col-3">
                 <div class="provider-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
-                  <img class="button-image" src="https://djdev.trackmyapp.us/images/friend-icon.png" />
+                  <img class="button-image" src="{{ asset('images/friend-icon.png') }}" />
                   <br/>
                   {{ __('Scheduled Patients by Location') }}
                 </div>
@@ -104,7 +104,7 @@
 
               <div class="col-3">
                 <div class="settings-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
-                  <img class="button-image" src="https://djdev.trackmyapp.us/images/settings-icon.png" />
+                  <img class="button-image" src="{{ asset('images/settings-icon.png') }}" />
                   <br/>
                   {{ __('Settings') }}
                 </div>
@@ -112,7 +112,7 @@
 
               <div class="col-3">
                 <div class="help-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
-                  <img class="button-image" src="https://djdev.trackmyapp.us/images/help-icon.png" />
+                  <img class="button-image" src="{{ asset('images/help-icon.png') }}" />
                   <br/>
                   {{ __('Help') }}
                 </div>
@@ -129,26 +129,11 @@
           <br/><br/>
           <div class="row">
             <div class="col-12 text-center">
-              <img src = "https://djdev.trackmyapp.us/images/trackmysolutionslogoregtm-web.jpg">
+              <img src = "{{ asset('images/trackmysolutionslogoregtm-web.jpg') }}">
             </div>
           </div>
         </div>
     </div>
 </div>
-
-@endsection
-
-@section('scriptJs')
-
-$(document).ready(function(){
-  $("#addVaccine").click(function(){
-    window.location.href = 'patientvaccine/create';
-  });
-
-  $("#setVaccineLocation").click(function(){
-    window.location.href = '';
-  });
-
-});
 
 @endsection
