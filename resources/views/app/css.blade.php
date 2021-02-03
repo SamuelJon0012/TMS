@@ -18,7 +18,7 @@
         .patient-form-modal {
             display: none;
         }
-        .search-modal-inner, .patient-form-modal-inner {
+        .search-modal-inner, .patient-form-modal-inner, modals-inner {
 
             margin-left: auto;
             margin-right: auto;
@@ -95,7 +95,10 @@
         {
             background:red;
         }
-
+        .GreySelect
+        {
+            background:grey;
+        }
         .sorry-page-modal {
             display: none;
             position: fixed;

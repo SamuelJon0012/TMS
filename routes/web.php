@@ -32,6 +32,8 @@ Route::get('/home', 'HomeController@index')->name('home');
  *
  */
 
+Route::get('/biq/test-private', 'BurstIqTestController@private')->name('test_private');
+Route::get('/biq/test-lookups', 'BurstIqTestController@lookups')->name('test_lookups');
 Route::get('/biq/test-status', 'BurstIqTestController@status')->name('test_status');
 Route::get('/biq/test-login', 'BurstIqTestController@login')->name('test_login');
 
@@ -92,4 +94,5 @@ Route::get('/providerquestionaire', function () {
     return view('providerquestionaire');
 });
 
-Route::post('/vsee/redirect', 'VSeeController@redirect')->name('redirect');
+Route::post('/vsee/redirect', 'VSeeController@redirect')->name('vsee_redirect');
+Route::post('/vsee/webhook', 'VSeeController@webhook')->name('vsee_webhook');

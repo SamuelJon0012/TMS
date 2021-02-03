@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 /*
  * site_profile
 name
-vacinity_name
+vicinity_name
 address1
 address2
 city
@@ -32,7 +32,7 @@ class SiteProfile extends BurstIq
     # List all of the private vars here (id and other common ones are in the base class
 
     private $name;
-    private $vacinity_name;
+    private $vicinity_name;
     private $address1;
     private $address2;
     private $city;
@@ -61,18 +61,18 @@ class SiteProfile extends BurstIq
     /**
      * @return mixed
      */
-    public function getVacinityName()
+    public function getVicinityName()
     {
-        return $this->vacinity_name;
+        return $this->vicinity_name;
     }
 
     /**
-     * @param mixed $vacinity_name
+     * @param mixed $vicinity_name
      * @return SiteProfile
      */
-    public function setVacinityName($vacinity_name)
+    public function setVicinityName($vicinity_name)
     {
-        $this->vacinity_name = $vacinity_name;
+        $this->vicinity_name = $vicinity_name;
         return $this;
     }
 
@@ -202,7 +202,7 @@ class SiteProfile extends BurstIq
 
         $this->id = $asset->id;
         $this->name = $asset->name;
-        $this->vacinity_name = $asset->vacinity_name;
+        $this->vicinity_name = $asset->vicinity_name;
         $this->address1 = $asset->address1;
         $this->address2 = $asset->address2;
         $this->city = $asset->city;
@@ -218,7 +218,7 @@ class SiteProfile extends BurstIq
 
             'id' => $asset->id,
             'name' => $asset->name,
-            'vacinity_name' => $asset->vacinity_name,
+            'vicinity_name' => $asset->vicinity_name,
             'address1' => $asset->address1,
             'address2' => $asset->address2,
             'city' => $asset->city,
