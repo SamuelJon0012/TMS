@@ -33,14 +33,30 @@ class BurstIqTestController extends Controller
         return $B->status();
     }
 
-    function login(Request $request) {
+    function private() {
 
         $B = new BurstIq();
 
-        if ($B->login($this->BI_USERNAME,$this->BI_PASSWORD) === false) {
-            // Todo: Login failed
+        return $B->status();
+    }
 
-        }
+
+    function lookups() {
+
+        $B = new BurstIq();
+
+        return $B->lookups();
+    }
+
+
+    function login(Request $request) {
+
+//        $B = new BurstIq();
+//
+//        if ($B->login($this->BI_USERNAME,$this->BI_PASSWORD) === false) {
+//            // Todo: Login failed
+//
+//        }
     }
 
     function testGettingAChain(Request $request) {
@@ -56,22 +72,21 @@ class BurstIqTestController extends Controller
 
         #$where = "SELECT p.id AS id, e.patient_id AS pid FROM patient_profile AS p JOIN encounter_schedule AS e ON e.patient_id=p.id WHERE (p.first_name ILIKE '%jeff%' OR p.last_name ILIKE '%jeff%') AND e.site_id=1";
         #$where = "SELECT * FROM patient_profile AS p WHERE asset.first_name ILIKE '%jeff%'";
-        #$where = "SELECT * FROM patient_profile WHERE asset.first_name ILIKE '%jeff%'";
 
         ###$where="SELECT p.asset.id AS id, e.asset.patient_id AS pid, e.asset.site_id as sid FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
         ##$where="SELECT p.asset.*, e.asset.* FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
         #$where="SELECT p.asset.*, e.asset.*, s.asset.* FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id LEFT OUTER JOIN site_profile AS s ON s.asset.id=e.asset.site_id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
         //$where="SELECT p.asset.id AS id, e.asset.patient_id AS pid, e.asset.site_id as sid FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%') AND e.asset.site_id=1";
-        $where="SELECT p.asset.*, e.asset.*, s.asset.* FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id LEFT OUTER JOIN site_profile AS s ON s.asset.id=e.asset.site_id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
+        #$where="SELECT p.asset.*, e.asset.*, s.asset.* FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id LEFT OUTER JOIN site_profile AS s ON s.asset.id=e.asset.site_id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
 
 
-//        $A .= "\n\n" . $B->query('patient_profile',"WHERE asset.id >= 0");
+        $A = $B->query('patient_profile',"WHERE asset.id >= 0");
 //        $A .= "\n\n" . $B->query('provider_profile',"WHERE asset.id >= 0");
 //        $A .= "\n\n" . $B->query('site_profile',"WHERE asset.id >= 0");
 //        $A .= "\n\n" . $B->query('drug_profile',"WHERE asset.id >= 0");
 //        $A .= "\n\n" . $B->query('question_profile',"WHERE asset.id = asset_id");
-#        $A = $B->query('patient_profile',$where );
-        $A = $B->query('site_profile',"WHERE asset.id >= 0" );
+        //$A = $B->query('patient_profile',$where );
+        //$A = $B->query('site_profile',"WHERE asset.id >= 0" );
 //        $A .= "\n\n" . $B->query('encounter',"WHERE asset.id >= 0");
 //        $A .= "\n\n" . $B->query('procedure_results',"WHERE asset.id != 10");
 //        $A .= "\n\n" . $B->query('user',"WHERE asset.id >= 0");
@@ -169,16 +184,18 @@ var_dump($A); exit;
         $dl_number = "S425212652970";
         $dl_state = "NY";
         $email = "Jack@sprat.com";
-        $ethnicity = "Q";
-        $race = "X";
-        $relationship_to_owner = "self";
+        $ethnicity = "0";
+        $race = "0";
+        $relationship_to_owner = "0";
+        $vsee_clinic_id = "trackmysolutions";
         $ssn = "123456789";
 
         # instantiate a BurstIq class with optional username & password or use login() method later
 
         $P = new PatientProfile($this->BI_USERNAME, $this->BI_PASSWORD);
 
-        $P->setAddress1($address1)
+        $P->setId(0)
+            ->setAddress1($address2)
             ->setAddress2($address2)
             ->setCity($city)
             ->setDateOfBirth($date_of_birth)
@@ -191,6 +208,8 @@ var_dump($A); exit;
             ->setRace($race)
             ->setRelationshipToOwner($relationship_to_owner)
             ->setSsn($ssn)
+            ->setBirthSex(0)
+            ->setVSeeClinicId($vsee_clinic_id)
             ->setState($state)
             ->setZipcode($zipcode);
 
@@ -199,12 +218,12 @@ var_dump($A); exit;
             $phone_numbers= [
                 [
                     "is_primary" => "1",
-                    "phone_type" => "M",
+                    "phone_type" => "2",
                     "phone_number" => "2125551212"
                 ],
                 [
                     "is_primary" => "0",
-                    "phone_type" => "W",
+                    "phone_type" => "0",
                     "phone_number" => "2125553434"
                 ]
 
@@ -217,8 +236,10 @@ var_dump($A); exit;
                 "coverage_effective_date" =>"1/1/2021",
                 "issuer_id" =>"654321",
                 "primary_cardholder" =>"CLOUSEAU, JACQUES",
-                "patient_profile_id" =>"123",
-                "insurance_type" => 1
+                "relationship_to_primary_cardholder" => 0,
+                "insurance_type" => 2,
+                "plan_type" => 2,
+                "plan_id" => "",
                 ]];
 
 
@@ -315,7 +336,8 @@ var_dump($A); exit;
         $P = new PatientScheduleSiteQuery($this->BI_USERNAME,$this->BI_PASSWORD);
 
 
-        $where="SELECT p.asset.*, e.asset.*, s.asset.id as s_id, s.asset.name as name, s.asset.vacinity_name as vacinity_name, s.asset.address1 as site_address1, s.asset.address2 as site_address2, s.asset.city as site_city, s.asset.state as site_state, s.asset.zipcode as site_zipcode, s.asset.county as site_county FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id LEFT OUTER JOIN site_profile AS s ON s.asset.id=e.asset.site_id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
+        $where="SELECT p.asset.*, e.asset.*, s.asset.id as s_id, s.asset.name as name, s.asset.vicinity_name as vicinity_name, s.asset.address1 as site_address1, s.asset.address2 as site_address2, s.asset.city as site_city, s.asset.state as site_state, s.asset.zipcode as site_zipcode, s.asset.county as site_county FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id LEFT OUTER JOIN site_profile AS s ON s.asset.id=e.asset.site_id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
+
         $test = $P->query('patient_profile',$where );
 
         // $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
@@ -380,6 +402,7 @@ var_dump($A); exit;
         $ethnicity = $row[$ctr++];
         $race = $row[$ctr++];
 
+
         # instantiate a BurstIq class with optional username & password or use login() method later
 
         $P = new PatientProfile($this->BI_USERNAME, $this->BI_PASSWORD);
@@ -391,12 +414,13 @@ var_dump($A); exit;
             ->setDlNumber($dl_number)
             ->setDlState($dl_state)
             ->setEmail($email)
-            ->setBirthSex($birth_sex)
-            ->setEthnicity($ethnicity)
+            ->setBirthSex(0)
+            ->setEthnicity(0)
             ->setFirstName($first_name)
             ->setLastName($last_name)
-            ->setRace($race)
-            ->setRelationshipToOwner($relationship_to_owner)
+            ->setRace(0)
+            ->setVSeeClinicId('trackmysolutions')
+            ->setRelationshipToOwner(0)
             ->setSsn($ssn)
             ->setState($state)
             ->setZipcode($zipcode)
@@ -409,12 +433,12 @@ var_dump($A); exit;
         $phone_numbers= [
             [
                 "is_primary" => "1",
-                "phone_type" => "M",
+                "phone_type" => "1",
                 "phone_number" => $phone_number
             ],
             [
                 "is_primary" => "0",
-                "phone_type" => "W",
+                "phone_type" => "2",
                 "phone_number" => "8002822882"
             ]
 
@@ -427,8 +451,11 @@ var_dump($A); exit;
             "coverage_effective_date" =>"1/1/2021",
             "issuer_id" =>"654321",
             "primary_cardholder" =>"$last_name, $first_name",
-            "patient_profile_id" =>"$id",
-            "insurance_type" => 1
+            "insurance_type" => 1,
+            "relationship_to_primary_cardholder" => 0,
+            "plan_type" => 2,
+            "plan_id" => "",
+
         ]];
 
 
@@ -529,7 +556,7 @@ var_dump($A); exit;
 
         $id = $row[$ctr++];
         $name = $row[$ctr++];
-        $vacinity_name = $row[$ctr++];
+        $vicinity_name = $row[$ctr++];
         $address1 = $row[$ctr++];
         $address2 = $row[$ctr++];
         $city = $row[$ctr++];
@@ -545,7 +572,7 @@ var_dump($A); exit;
         $result = $P->setAddress1($address1)
             ->setAddress2($address2)
             ->setCity($city)
-            ->setVacinityName($vacinity_name)
+            ->setVicinityName($vicinity_name)
             ->setCounty($county)
             ->setName($name)
             ->setState($state)

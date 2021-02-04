@@ -75,4 +75,20 @@ class VSeeController extends Controller
 
 
     }
+    function webhook()
+    {
+
+        //$B = new BurstIq();
+
+        $data = json_encode($_POST);
+
+        // Spool pq = patient questionnaire, vs = vsee
+
+        file_put_contents ('/var/www/data/vswh' . uniqid(true), $data);
+
+        return response('OK', 200)
+            ->header('Content-Type', 'text/plain');
+
+
+    }
 }

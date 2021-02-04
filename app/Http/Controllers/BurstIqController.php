@@ -69,12 +69,12 @@ class BurstIqController extends Controller
     function login(Request $request)
     {
 
-        $B = new BurstIq();
-
-        if ($B->login($request->get('username'), $request->get('password')) === false) {
-            // Todo: Login failed
-
-        }
+//        $B = new BurstIq();
+//
+//        if ($B->login($request->get('username'), $request->get('password')) === false) {
+//            // Todo: Login failed
+//
+//        }
     }
 
     function find(Request $request)

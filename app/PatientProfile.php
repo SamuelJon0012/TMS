@@ -33,8 +33,27 @@ class PatientProfile extends BurstIq
     private $dl_number;
     private $ethnicity;
     private $race;
+    private $vsee_clinic_id;
     private $phone_numbers; # Array of arrays [ is_primary / phone_type / phone_number ]
-    private $insurances; # Array of arrays:
+    private $insurances;
+
+    /**
+     * @return mixed
+     */
+    public function getVseeClinicId()
+    {
+        return $this->vsee_clinic_id;
+    }
+
+    /**
+     * @param mixed $vsee_clinic_id
+     * @return PatientProfile
+     */
+    public function setVseeClinicId($vsee_clinic_id)
+    {
+        $this->vsee_clinic_id = $vsee_clinic_id;
+        return $this;
+    } # Array of arrays:
     /*
         administrator_name
         group_id
@@ -444,13 +463,15 @@ class PatientProfile extends BurstIq
                     'coverage_effective_date' => $insurance['coverage_effective_date'],
                     'issuer_id' => $insurance['issuer_id'],
                     'primary_cardholder' => $insurance['primary_cardholder'],
-                    'patient_profile_id' => $insurance['patient_profile_id'],
+                    'relationship_to_primary_cardholder' => $insurance['relationship_to_primary_cardholder'],
                     'insurance_type' => $insurance['insurance_type'],
+                    'plan_type' => $insurance['plan_type'],
+                    'plan_id' => $insurance['plan_id'],
                 ];
             }
         } catch (\Exception $e) {
 
-            throw new \Exception('Invalid insurances passed to setInsurances in PatientProfile. Parameter must be a string or an array of insirance objects');
+            throw new \Exception('Invalid insurances passed to setInsurances in PatientProfile. Parameter must be a string or an array of insurance objects');
         }
 
         $this->insurances = $insurances_array;
@@ -465,7 +486,7 @@ class PatientProfile extends BurstIq
 
         $this->id = $asset->id;
         $this->email = $asset->email;
-        $this->relationship_to_owner = $asset->   relationship_to_owner;
+        $this->relationship_to_owner = $asset->relationship_to_owner;
         $this->first_name = $asset->first_name;
         $this->last_name = $asset->last_name;
 
@@ -482,6 +503,7 @@ class PatientProfile extends BurstIq
         $this->dl_number = $asset->dl_number;
         $this->ethnicity = $asset->ethnicity;
         $this->race = $asset->race;
+        $this->vsee_clinic_id = $asset->vsee_clinic_id;
         $this->phone_numbers = $asset->phone_numbers;
         $this->insurances = $asset->insurance;
 
@@ -506,6 +528,7 @@ class PatientProfile extends BurstIq
             'dl_number' => $asset->dl_number,
             'ethnicity' => $asset->ethnicity,
             'race' => $asset->race,
+            'vsee_clinic_id' => $asset->vsee_clinic_id,
             'phone_numbers' => $asset->phone_numbers,
             'insurances' => $asset->insurance
 
