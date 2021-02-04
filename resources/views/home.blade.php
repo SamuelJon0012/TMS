@@ -95,7 +95,9 @@
               </div>
 
               <div class="col-3">
+
                 <div class="provider-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
+
                   <img class="button-image" src="{{ asset('images/friend-icon.png') }}" />
                   <br/>
                   {{ __('Scheduled Patients by Location') }}
@@ -103,7 +105,9 @@
               </div>
 
               <div class="col-3">
+
                 <div class="settings-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
+
                   <img class="button-image" src="{{ asset('images/settings-icon.png') }}" />
                   <br/>
                   {{ __('Settings') }}
@@ -111,7 +115,9 @@
               </div>
 
               <div class="col-3">
+
                 <div class="help-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
+
                   <img class="button-image" src="{{ asset('images/help-icon.png') }}" />
                   <br/>
                   {{ __('Help') }}
