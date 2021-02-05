@@ -67,23 +67,21 @@ class VSeeController extends Controller
 
         $file = '/var/www/tokens/' . $id;
 
-        if (false) { // (file_exists($file)) {
+        $V = new VSee();
 
-               $token = file_get_contents($file);
+        $result = $V->getSSOToken($first, $last, $dob, $email);
 
-        } else {
+        $token = $result->data->token->token;
 
-            $V = new VSee();
+        $id = $result->data->id;
 
-            $result = $V->getSSOToken($first, $last, $dob, $email);
+        if (!file_exists($file)) {
 
-            $token = $result->data->token->token;
+            file_put_contents($file, $id);
 
         }
 
         $url = "https://trackmysolutions.vsee.me/auth?sso_token=$token&next=/";
-
-        file_put_contents($file, $token);
 
         return redirect($url);
 
@@ -92,17 +90,41 @@ class VSeeController extends Controller
     function return()
     {
 
+        // Save questionnaire and return vsee.redirect view which redirects the person to Vsee
+
+        //$B = new BurstIq();
+
+        $data = json_encode($_POST);
+
+        // Spool pq = patient questionnaire, vs = vsee
+
+        file_put_contents ('/var/www/data/pq' . uniqid(true), $data);
+
+        $name = explode(' ', Auth::user()->name . ' Nosurname');
+
+        $first = $name[0];
+
+        $last = $name[1];
+
+        $dob = Auth::user()->dob;
+
+        $email = Auth::user()->email;
+
         $id = Auth::id();
 
         $file = '/var/www/tokens/' . $id;
 
-        if (file_exists($file)) {
+        $V = new VSee();
 
-            $token = file_get_contents($file);
+        $result = $V->getSSOToken($first, $last, $dob, $email);
 
-        } else {
+        $token = $result->data->token->token;
 
-            return redirect('/home?v');
+        $id = $result->data->id;
+
+        if (!file_exists($file)) {
+
+            file_put_contents($file, $id);
 
         }
 
