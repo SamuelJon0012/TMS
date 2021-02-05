@@ -25,6 +25,9 @@ Auth::routes();
 Route::resource('patientvaccine', PatientVaccineController::class);
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/vaccine', 'CoverController@vaccineGet')->name('vaccine_get');
+Route::post('/vaccine', 'CoverController@vaccinePost')->name('vaccine_post');
+Route::post('/affirm', 'CoverController@vaccinePostAffirm')->name('vaccine_post_affirm');
 
 /*
  *

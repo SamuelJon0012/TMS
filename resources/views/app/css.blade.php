@@ -3,6 +3,10 @@
             height: 100%;
         }
 
+        .page-modal-inner {
+            padding: 0 5% 0 5%;
+        }
+
         .search-modal, .patient-form-modal, .modals {
             display: none;
             width: 100%;
