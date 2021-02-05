@@ -31,6 +31,12 @@
 
 <div class="container">
     <div class="row justify-content-center">
+        @if($v == '1')
+
+            <div style="vsee-error">There was a problem connecting to the appointment system.  Please try again later.</div>
+
+        @endif
+
         <div class="col-md-8">
           @if(session()->get('success'))
             <div class="alert alert-success">
