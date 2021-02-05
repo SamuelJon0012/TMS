@@ -33,7 +33,7 @@
     <div class="row justify-content-center">
         @if($v == '1')
 
-            <div style="vsee-error">There was a problem connecting to the appointment system.  Please try again later.</div>
+            <div class="vsee-error">There was a problem connecting to the appointment system.  Please try again later.</div>
 
         @endif
 
@@ -71,7 +71,7 @@
               </div>
 
               <div class="col-3">
-                <div title="This feature is currently unnavailable" disabled='disabled' class="help-button homeTop-button">
+                <div class="help-button homeTop-button" onclick="$('.help-page-modal').show()">
                   <img class="button-image" src="{{ asset('images/help-icon.png') }}" />
                   <br/>
                   {{ __('Help') }}
