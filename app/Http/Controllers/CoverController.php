@@ -103,7 +103,7 @@ class CoverController extends Controller
 
         } else
 
-            return view('auth.cover', [ 'message' => '<u>Please enter the email address with which you received this link</u>'] );
+            return view('auth.cover', [ 'message' => '<u>Please enter your email on which you received this link</u>'] );
 
 
 
