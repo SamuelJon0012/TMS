@@ -14,6 +14,6 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'api/xcelerateudi',
         'logout',
-        'vsee/webook'
+        'vsee/webhook'
     ];
 }
