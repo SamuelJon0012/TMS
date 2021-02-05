@@ -98,5 +98,6 @@ Route::get('/providerquestionaire', function () {
 });
 
 Route::post('/vsee/redirect', 'VSeeController@redirect')->name('vsee_redirect');
+Route::get('/vsee/return', 'VSeeController@return')->name('vsee_return');
 Route::post('/vsee/webhook', 'VSeeController@webhook')->name('vsee_webhook');
 Route::get('/vsee/webhook', 'VSeeController@webhook')->name('vsee_webhook');

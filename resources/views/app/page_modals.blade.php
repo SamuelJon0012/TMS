@@ -102,12 +102,13 @@
 
             <div style="text-align:center; width: 100%;">
                 <center>
-                    <B>{{ $message ?? '' }}</B><br/>
-                 <form method="POST" action = '/affirm'>
+                    <B>{!! $message ?? '' !!}</B><br/>
+                 <form id='affirm-form' target="_blank" method="POST" action = '/affirm'>
                      @csrf
                 <input style="width:400px;" name='email' id="affirm-email" type="email" class="form-control-blue" required autocomplete="email" autofocus placeholder="{{ __('EMail') }}">
+                     <input type="hidden" name="affirmed" id="affirmed" value="Yes">
                 <br/>
-                     <input type="submit" class="btn btn-primary affirm" value="I can affirm"> <span class="btn btn-warning" onclick="$('.cover-page-modal').hide()">I cannot affirm</span></form>
+                     <input type="submit" class="btn btn-primary affirm" value="I can affirm"> <span class="btn btn-warning" onclick="$('#affirmed').val('No');$('#affirm-form').submit()">I cannot affirm</span></form>
                 </center>
             </div>
 

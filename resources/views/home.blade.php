@@ -75,12 +75,27 @@
             </div>
             <br/><br/><br/>
             <div class="row">
-              <div class="col-6">
-                <button id="scheduleVaccineAppointment" onclick="doPatientQuestionnaire();" class="btn btn-primary form-control">{{ __('Schedule a Vaccine Appointment') }}</button>
-              </div>
-              <div class="col-6">
-                <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
-              </div>
+
+                @if($token == '0')
+
+                    <div class="col-6">
+                    <button id="scheduleVaccineAppointment" onclick="doPatientQuestionnaire();" class="btn btn-primary form-control">{{ __('Schedule a Vaccine Appointment') }}</button>
+                    </div>
+                    <div class="col-6">
+                        <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
+                    </div>
+
+                @else
+
+                    <div class="col-6">
+                        <a target = "_blank" href="/vsee/return" class="btn btn-primary form-control">{{ __('Go to Appointments') }}</a>
+                    </div>
+                    <div class="col-6">
+                        <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
+                    </div>
+
+                @endif
+
             </div>
           @endif
 

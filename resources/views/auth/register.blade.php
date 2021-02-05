@@ -410,8 +410,8 @@
                   <div class="col-md-1 m-0 text-right pr-0">
 
                   </div>
-                  <div class="col-md-11 text-center m-0 pl-0">
-                      <select id="race" class="form-control-blue @error('race') is-invalid @enderror" name="race" placeholder="{{ __('RACE') }}">
+                  <div class="col-md-12 text-center">
+                      <select id="race" class="form-control @error('race') is-invalid @enderror" name="race" placeholder="{{ __('RACE') }}">
                         <option value="">RACE</option>
 
                           <option value="1">American Indian or Alaska Native</option>
