@@ -100,8 +100,15 @@
 
             <br>
 
-            <div style="text-align:center;">
-                <span class="btn btn-primary">I can affirm</span> <span class="btn btn-primary">I cannot affirm</span>
+            <div style="text-align:center; width: 100%;">
+                <center>
+                    <B>{{ $message ?? '' }}</B><br/>
+                 <form method="POST" action = '/affirm'>
+                     @csrf
+                <input style="width:400px;" name='email' id="affirm-email" type="email" class="form-control-blue" required autocomplete="email" autofocus placeholder="{{ __('EMail') }}">
+                <br/>
+                     <input type="submit" class="btn btn-primary affirm" value="I can affirm"> <span class="btn btn-warning" onclick="$('.cover-page-modal').hide()">I cannot affirm</span></form>
+                </center>
             </div>
 
 {{--            <span id='cover-continue' onclick="$('.cover-page-modal').hide();">Continue</span>--}}
@@ -110,6 +117,7 @@
 
     </div>
 </div>
+
 <div class="xxx-page-modal modals"><!-- template -->
 
     <div class="page-modal-inner modals-inner">
