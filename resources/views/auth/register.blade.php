@@ -399,7 +399,7 @@
                           <option value="">ETHINICITY</option>
                           <option value="1">Unknown</option>
                           <option value="2">Hispanic or Latino</option>
-                          <option value="3">Not Hispanic or Latine</option>
+                          <option value="3">Not Hispanic or Latino</option>
                           <option value="4">Black or African American</option>
                           <option value="5">Rather not say</option>
                       </select>
