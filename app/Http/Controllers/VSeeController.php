@@ -113,12 +113,12 @@ class VSeeController extends Controller
     }
 
 
-    function webhook()
+    function webhook(Request $request)
     {
 
         //$B = new BurstIq();
 
-        $data = json_encode($_REQUEST);
+        $data = json_encode($request->getContent());
 
         // Spool pq = patient questionnaire, vs = vsee
 
