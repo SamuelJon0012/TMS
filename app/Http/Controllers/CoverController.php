@@ -64,17 +64,46 @@ class CoverController extends Controller
 
         if (!empty($msg)) { exit($msg);}
 
+        $email = $request->get('email');
 
-         echo $request->get('email');
+        $valid = in_array(strtolower($email), $data);
+
+        if ($valid) {
+
+            $VALID = 'Yes';
+
+        } else {
+
+            $VALID = 'No';
+
+        }
+
+         //echo $request->get('email');
         //var_dump($data);exit;
 
-        if (in_array(strtolower($request->get('email')), $data)) {
+        $yorn = $request->get('affirmed');
 
-            return redirect('/register?rt=patient' );
+        if (!file_exists('affirm.csv')) {
+            file_put_contents('affirm.csv', "email,valid,affirmed\n");
+        }
+
+        file_put_contents('affirm.csv', "$email,$VALID,$yorn\n", FILE_APPEND);
+
+        if ($valid) {
+
+            if ($yorn == 'Yes') {
+
+                return redirect('/register?rt=patient');
+
+            } else {
+
+                return view('vsee.redirect');
+
+            }
 
         } else
 
-            return view('auth.cover', [ 'message' => 'Please enter the email address with which you received this link'] );
+            return view('auth.cover', [ 'message' => '<u>Please enter the email address with which you received this link</u>'] );
 
 
 

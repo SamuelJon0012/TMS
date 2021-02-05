@@ -53,8 +53,6 @@ class VSeeController extends Controller
 
         file_put_contents ('/var/www/data/pq' . uniqid(true), $data);
 
-        $V = new VSee();
-
         $name = explode(' ', Auth::user()->name . ' Nosurname');
 
         $first = $name[0];
@@ -65,16 +63,56 @@ class VSeeController extends Controller
 
         $email = Auth::user()->email;
 
-        $result = $V->getSSOToken($first, $last, $dob, $email);
+        $id = Auth::id();
 
-        $token = $result->data->token->token;
+        $file = '/var/www/tokens/' . $id;
+
+        if (file_exists($file)) {
+
+               $token = file_get_contents($file);
+
+        } else {
+
+            $V = new VSee();
+
+            $result = $V->getSSOToken($first, $last, $dob, $email);
+
+            $token = $result->data->token->token;
+
+        }
+
+        $url = "https://trackmysolutions.vsee.me/auth?sso_token=$token&next=/";
+
+        file_put_contents($file, $token);
+
+        return redirect($url);
+
+    }
+
+    function return()
+    {
+
+        $id = Auth::id();
+
+        $file = '/var/www/tokens/' . $id;
+
+        if (file_exists($file)) {
+
+            $token = file_get_contents($file);
+
+        } else {
+
+            return redirect('/home?v');
+
+        }
 
         $url = "https://trackmysolutions.vsee.me/auth?sso_token=$token&next=/";
 
         return redirect($url);
 
-
     }
+
+
     function webhook()
     {
 

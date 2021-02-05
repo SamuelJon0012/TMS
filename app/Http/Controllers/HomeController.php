@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        $id = Auth::id();
+
+        $file = '/var/www/tokens/' . $id;
+
+        if (file_exists($file)) {
+            $token = file_get_contents($file);
+        } else {
+            $token = '0';
+        }
+
+            return view('home', ['token' => $token, 'id' => $id]);
     }
 }
