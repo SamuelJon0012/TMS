@@ -67,7 +67,7 @@ class VSeeController extends Controller
 
         $file = '/var/www/tokens/' . $id;
 
-        if (file_exists($file)) {
+        if (false) { // (file_exists($file)) {
 
                $token = file_get_contents($file);
 
