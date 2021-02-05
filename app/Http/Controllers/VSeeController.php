@@ -53,7 +53,14 @@ class VSeeController extends Controller
 
         file_put_contents ('/var/www/data/pq' . uniqid(true), $data);
 
-        $name = explode(' ', Auth::user()->name . ' Nosurname');
+        try {
+
+            $name = explode(' ', Auth::user()->name . ' Nosurname');
+
+        } catch (\Exception $e) {
+
+            return redirect('/home?v=1');
+        }
 
         $first = $name[0];
 
@@ -108,7 +115,14 @@ class VSeeController extends Controller
 
         file_put_contents ('/var/www/data/pq' . uniqid(true), $data);
 
-        $name = explode(' ', Auth::user()->name . ' Nosurname');
+        try {
+
+            $name = explode(' ', Auth::user()->name . ' Nosurname');
+
+        } catch (\Exception $e) {
+
+            return redirect('/home?v=1');
+        }
 
         $first = $name[0];
 
