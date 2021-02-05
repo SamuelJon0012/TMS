@@ -80,7 +80,7 @@ class VSeeController extends Controller
 
         //$B = new BurstIq();
 
-        $data = json_encode($_POST);
+        $data = json_encode($_REQUEST);
 
         // Spool pq = patient questionnaire, vs = vsee
 
