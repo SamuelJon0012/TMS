@@ -140,7 +140,15 @@ class VSeeController extends Controller
 
         $result = $V->getSSOToken($first, $last, $dob, $email);
 
-        $token = $result->data->token->token;
+        if (isset($result->data->token->token)) {
+
+            $token = $result->data->token->token;
+
+        } else {
+
+            return redirect('/home?v=1');
+
+        }
 
         $id = $result->data->id;
 
