@@ -22,10 +22,12 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
 
         $id = Auth::id();
+
+        $v = $request->get('v');
 
         $file = '/var/www/tokens/' . $id;
 
@@ -35,6 +37,6 @@ class HomeController extends Controller
             $token = '0';
         }
 
-            return view('home', ['token' => $token, 'id' => $id]);
+            return view('home', ['token' => $token, 'id' => $id, 'v' => $v]);
     }
 }
