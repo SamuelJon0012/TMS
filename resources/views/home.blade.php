@@ -33,7 +33,13 @@
     <div class="row justify-content-center">
         @if($v == '1')
 
-            <div class="vsee-error">There was a problem connecting to the appointment system.  Please try again later.</div>
+            <div style="text-align:center; color:#f60;">There was a problem connecting to the appointment system.  Please try again later or contact support.
+
+                <br>
+
+                Info: {!! $m ?? '' !!}
+
+            </div>
 
         @endif
 

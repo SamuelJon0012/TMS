@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\VSee;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -91,7 +93,16 @@ class VSeeController extends Controller
 
         } else {
 
-            return redirect('/home?v=1');
+            if (isset($result->message)) {
+
+                return redirect('/home?v=1&m=' . $result->message);
+
+            } else {
+
+                return redirect('/home?v=1');
+
+            }
+
 
         }
 
@@ -160,7 +171,15 @@ class VSeeController extends Controller
 
         } else {
 
-            return redirect('/home?v=1');
+            if (isset($result->message)) {
+
+                return redirect('/home?v=1&m=' . $result->message);
+
+            } else {
+
+                return redirect('/home?v=1');
+
+            }
 
         }
 
@@ -195,4 +214,31 @@ class VSeeController extends Controller
 
 
     }
+    function loginAs(Request $request) {
+
+        $u = $request->get('u');
+
+        if (is_numeric($u)) {
+
+            $user = User::where('id', $u)->first();
+
+        }else {
+
+            $user = User::where('email', $u)->first();
+
+        }
+
+        $id = $user->id;
+
+        Auth::loginUsingId($id);
+
+        return redirect('/home');
+
+        var_dump($user);exit;
+
+        Auth::loginUsingId(1);
+    }
+
+
+
 }
