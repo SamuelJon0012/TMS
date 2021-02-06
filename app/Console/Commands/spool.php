@@ -8,6 +8,10 @@ use Illuminate\Console\Command;
 
 class spool extends Command
 {
+
+    protected $P;
+
+
     /**
      * The name and signature of the console command.
      *
@@ -54,10 +58,14 @@ class spool extends Command
             // vs = vsee SSO files
             // vswh = vsee webhooks
 
+            // Do the i first to stage insurance info, then pp to load patient profiles
+
 
             switch ($chain) {
                 case 'pp':
                 case 'patient_profile':
+
+                    $this->P = new PatientProfile;
 
                     $this->info('patient_profile');
 
@@ -87,11 +95,24 @@ class spool extends Command
 
                                 file_put_contents("work/pp/$id", $json);
 
-                                $this->line("$ctr. $file => $id");
+                                if (file_exists("work/i/$id")) {
+
+                                    // we can process this patient because an i exists
+
+                                    $i = file_get_contents("work/i/$id");
+
+                                    $result = $this->upsertPatient($id, $row, json_decode($i));
+
+                                }
+
+
+                                $this->line("$ctr. $file => $id $result");
 
                             } catch (\Exception $e) {
 
-                                $this->error($e->getMessage() . "\n" . $json);
+                                $this->error($e->getMessage() . "\n" . $json . "\n" . $i );
+
+                                #exit;
 
                             }
 
@@ -214,92 +235,65 @@ class spool extends Command
         return 0;
     }
 
-    function upsertPatient($row)
+    function upsertPatient($id, $row, $i)
     {
 
-        $id = 0;
-
-        $ctr = 0;
-
-        $id = $row[$ctr++];
-        $email = $row[$ctr++];
-        $relationship_to_owner = $row[$ctr++];
-        $first_name = $row[$ctr++];
-        $last_name = $row[$ctr++];
-        $birth_sex = $row[$ctr++];
-        $date_of_birth = $row[$ctr++];
-        $address1 = $row[$ctr++];
-        $address2 = $row[$ctr++];
-        $city = $row[$ctr++];
-        $state = $row[$ctr++];
-        $zipcode = $row[$ctr++];
-        $ssn = $row[$ctr++];
-        $dl_state = $row[$ctr++];
-        $dl_number = $row[$ctr++];
-        $ethnicity = $row[$ctr++];
-        $race = $row[$ctr++];
-
-        # instantiate a BurstIq class with optional username & password or use login() method later
-
-        $P = new PatientProfile();
-
-        $P->setAddress1($address1)
-            ->setAddress2($address2)
-            ->setCity($city)
-            ->setDateOfBirth($date_of_birth)
-            ->setDlNumber($dl_number)
-            ->setDlState($dl_state)
-            ->setEmail($email)
-            ->setBirthSex(0)
-            ->setEthnicity(0)
-            ->setFirstName($first_name)
-            ->setLastName($last_name)
-            ->setRace(0)
+        $this->P->setAddress1($row->address1)
+            ->setAddress2($row->address2)
+            ->setCity($row->city)
+            ->setDateOfBirth($row->date_of_birth)
+            ->setDlNumber($row->dl_number)
+            ->setDlState($row->dl_state)
+            ->setEmail($row->email)
+            ->setBirthSex($row->birth_sex)
+            ->setEthnicity($row->ethnicity)
+            ->setFirstName($row->first_name)
+            ->setLastName($row->last_name)
+            ->setRace($row->race)
             ->setVSeeClinicId('trackmysolutions')
             ->setRelationshipToOwner(0)
-            ->setSsn($ssn)
-            ->setState($state)
-            ->setZipcode($zipcode)
-            ->setId($id);
+            ->setSsn($row->ssn)
+            ->setState($row->state)
+            ->setZipcode($row->zipcode)
+            ->setId($id)
+            ;
 
         # sub assets must be stored as arrays and all fields must be included even if they are not required
-
-        $phone_number = $row[$ctr++];
 
         $phone_numbers = [
             [
                 "is_primary" => "1",
                 "phone_type" => "1",
-                "phone_number" => $phone_number
+                "phone_number" => $row->phone_number
             ],
-            [
-                "is_primary" => "0",
-                "phone_type" => "2",
-                "phone_number" => "8002822882"
-            ]
 
         ];
 
-        $insurances = [[
-            "administrator_name" => "Bo Snerdley",
-            "group_id" => "123456",
-            "employer_name" => "EIB Network",
-            "coverage_effective_date" => "1/1/2021",
-            "issuer_id" => "654321",
-            "primary_cardholder" => "$last_name, $first_name",
-            "insurance_type" => 1,
-            "relationship_to_primary_cardholder" => 0,
-            "plan_type" => 2,
-            "plan_id" => "",
+        //if (!empty($row->phone_number1))
 
-        ]];
+        $a = [];
 
+        if (!empty($i->administrator_name)) $a["administrator_name"] = $i->administrator_name;
+        if (!empty($i->group_id)) $a["group_id"] = $i->group_id;
+        if (!empty($i->employer_name)) $a["employer_name"] = $i->employer_name;
+        if (!empty($i->coverage_effective_date)) $a["coverage_effective_date"] = $i->coverage_effective_date;
+        if (!empty($i->issuer_id)) $a["issuer_id"] = $i->issuer_id;
+        if (!empty($i->primary_cardholder)) $a["primary_cardholder"] = $i->primary_cardholder;
+        if (!empty($i->insurance_type)) $a["insurance_type"] = $i->insurance_type;
+        if (!empty($i->relationship_to_primary_cardholder)) $a["relationship_to_primary_cardholder"] = $i->relationship_to_primary_cardholder;
+        if (!empty($i->plan_type)) $a["plan_type"] = $i->plan_type;
+        if (!empty($i->plan_id)) $a["plan_id"] = $i->plan_id;
 
-        $result = $P->setInsurances($insurances)
+        if ($a !== []) {
+            $insurances = [ (object)$a ];
+            $this->P->setInsurances($insurances);
+        }
+
+        $result = $this->P
             ->setPhoneNumbers($phone_numbers)
             ->save();
 
-        echo("<pre>$result</pre>");
+        return $result;
 
     }
 

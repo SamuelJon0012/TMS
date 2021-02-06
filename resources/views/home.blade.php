@@ -114,7 +114,7 @@
           @if(Auth::check() && Auth::user()->hasRole('provider'))
             <div class="row">
               <div class="col-3">
-                <div class="patient-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
+                <div class="patient-button homeTop-button">
                   <img class="button-image" src="{{ asset('images/magnifyingglass-icon.png') }}">
                   <br>
                   {{ __('Search For Patient') }}

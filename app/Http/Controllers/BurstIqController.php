@@ -185,15 +185,15 @@ class BurstIqController extends Controller
         //$E = new EncounterSchedule($this->BI_USERNAME,$this->BI_PASSWORD);
 
 
-        $E = new EncounterSchedule(); # should reuse the login
-        $where = "WHERE asset.patient_id=$Q";
-        $dummy = $E->find($where);
-        $rows[0]['schedule'] = $E->array();
-
-        $where = "WHERE asset.id=" . $E->getSiteId();
-        $S = new SiteProfile();
-        $dummy = $S->find($where);
-        $rows[0]['site'] = $S->array();
+//        $E = new EncounterSchedule(); # should reuse the login
+//        $where = "WHERE asset.patient_id=$Q";
+//        $dummy = $E->find($where);
+//        $rows[0]['schedule'] = $E->array();
+//
+//        $where = "WHERE asset.id=" . $E->getSiteId();
+//        $S = new SiteProfile();
+//        $dummy = $S->find($where);
+//        $rows[0]['site'] = $S->array();
         return $this->success($rows);
     }
 

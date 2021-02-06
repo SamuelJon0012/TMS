@@ -447,7 +447,7 @@ class PatientProfile extends BurstIq
         $insurances_array = [];
 
 
-        try {
+        try {var_dump($insurances);
 
             foreach ($insurances as $insurance) {
 
@@ -457,21 +457,21 @@ class PatientProfile extends BurstIq
 
                 $insurances_array[] =
                 [
-                    'administrator_name' => $insurance['administrator_name'],
-                    'group_id' => $insurance['group_id'],
-                    'employer_name' => $insurance['employer_name'],
-                    'coverage_effective_date' => $insurance['coverage_effective_date'],
-                    'issuer_id' => $insurance['issuer_id'],
-                    'primary_cardholder' => $insurance['primary_cardholder'],
-                    'relationship_to_primary_cardholder' => $insurance['relationship_to_primary_cardholder'],
-                    'insurance_type' => $insurance['insurance_type'],
-                    'plan_type' => $insurance['plan_type'],
-                    'plan_id' => $insurance['plan_id'],
+                    'administrator_name' => $insurance['administrator_name'] ?? '',
+                    'group_id' => $insurance['group_id'] ?? '',
+                    'employer_name' => $insurance['employer_name'] ?? '',
+                    'coverage_effective_date' => $insurance['coverage_effective_date'] ?? '',
+                    'issuer_id' => $insurance['issuer_id'] ?? '',
+                    'primary_cardholder' => $insurance['primary_cardholder'] ?? '',
+                    'relationship_to_primary_cardholder' => $insurance['relationship_to_primary_cardholder']  ?? '',
+                    'insurance_type' => $insurance['insurance_type'] ?? '',
+                    'plan_type' => $insurance['plan_type'] ?? '',
+                    'plan_id' => $insurance['plan_id'] ?? '',
                 ];
             }
         } catch (\Exception $e) {
 
-            throw new \Exception('Invalid insurances passed to setInsurances in PatientProfile. Parameter must be a string or an array of insurance objects');
+            throw new \Exception('Invalid insurances passed to setInsurances in PatientProfile. Parameter must be a string or an array of insurance objects: ' . $e->getMessage());
         }
 
         $this->insurances = $insurances_array;
