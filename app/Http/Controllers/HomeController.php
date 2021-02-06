@@ -29,6 +29,8 @@ class HomeController extends Controller
 
         $v = $request->get('v');
 
+        $m = $request->get('m');
+
         $file = '/var/www/tokens/' . $id;
 
         if (file_exists($file)) {
@@ -37,6 +39,6 @@ class HomeController extends Controller
             $token = '0';
         }
 
-            return view('home', ['token' => $token, 'id' => $id, 'v' => $v]);
+            return view('home', ['token' => $token, 'id' => $id, 'v' => $v, 'm' => $m]);
     }
 }

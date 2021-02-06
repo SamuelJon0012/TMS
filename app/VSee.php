@@ -2,6 +2,7 @@
 
 namespace App;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -60,7 +61,9 @@ class VSee
 
         $json = $this->postCurl($postFields);
 
-        file_put_contents ('/var/www/data/vs' . uniqid(true), $json);
+        $id = Auth::id();
+
+        file_put_contents ('/var/www/data/vs' . $id . '_' . uniqid(true), $json);
 
         $data = json_decode($json);
 
