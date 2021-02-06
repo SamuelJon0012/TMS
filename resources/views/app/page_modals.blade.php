@@ -137,7 +137,9 @@
                         <p>At TrackMy we are focused on the Double E, Double I of Healthcare - E²i² (Engage, Educate, Inform, Involve), thus anything we can do to assist you with
                             scheduling your vaccine appointment or ensuring your vaccination data is readily available to you, please do not hesitate to reach out.</p>
 
-                        <h2>Patient Call Center:  1-844-552-5952</h2>
+                            <h2>Please check back in a few minutes for the call center phone number</h2>
+
+{{--                        <h2>Patient Call Center:  1-844-552-5952</h2>--}}
 
                     </div>
                 </main>
