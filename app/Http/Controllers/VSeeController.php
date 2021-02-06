@@ -59,6 +59,13 @@ class VSeeController extends Controller
 
         } catch (\Exception $e) {
 
+            $E = [];
+
+            $E['spot'] = 'VSC1';
+            $E['error'] = $e->getMessage();
+            $E['user'] = Auth::id();
+            file_put_contents('/var/www/errors/er' . uniqid(true), json_encode($E));
+
             return redirect('/home?v=1');
         }
 
@@ -120,6 +127,13 @@ class VSeeController extends Controller
             $name = explode(' ', Auth::user()->name . ' Nosurname');
 
         } catch (\Exception $e) {
+
+            $E = [];
+
+            $E['spot'] = 'VSC2';
+            $E['error'] = $e->getMessage();
+            $E['user'] = Auth::id();
+            file_put_contents('/var/www/errors/er' . uniqid(true), json_encode($E));
 
             return redirect('/home?v=1');
         }
