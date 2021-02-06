@@ -123,16 +123,6 @@ class VSeeController extends Controller
     function return()
     {
 
-        // Save questionnaire and return vsee.redirect view which redirects the person to Vsee
-
-        //$B = new BurstIq();
-
-        $data = json_encode($_POST);
-
-        // Spool pq = patient questionnaire, vs = vsee
-
-        file_put_contents ('/var/www/data/pq' . uniqid(true), $data);
-
         try {
 
             $name = explode(' ', Auth::user()->name . ' Nosurname');

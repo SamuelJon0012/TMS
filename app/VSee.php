@@ -43,7 +43,7 @@ class VSee
             'dob' => $dob,
             'email' => $email,
             'code' => $email,
-            'disable_emails' => '1'
+            'disable_emails' => '0'
         ];
 
         if ($username) {
