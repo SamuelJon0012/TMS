@@ -50,13 +50,23 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            <div class="code">
-                @yield('code')
-            </div>
-
+{{--            <div class="code">--}}
+{{--                @yield('code')--}}
+{{--            </div>--}}
             <div class="message" style="padding: 10px;">
-                @yield('message')
+                @yield('code') - @yield('message')
+                <br/>
+                <br/>
+                Please try going <a href="/home">back to the dashboard</a>, or <a href="/login">log in again</a>. If the problem persists please contact support.
+                <br/>
+                <br/>
+                <h4>Patient Call Center: 1-844-522-5952</h4>
+                <br/>
+                <br/>
+                9am-5pm 7 days a week EST
             </div>
         </div>
+
     </body>
+
 </html>
