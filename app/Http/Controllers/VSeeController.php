@@ -95,7 +95,7 @@ class VSeeController extends Controller
 
             if (isset($result->message)) {
 
-                return redirect('/home?v=1&m=' . $result->message);
+                return redirect('/home?v=1&m=(token)' . $result->message);
 
             } else {
 
@@ -229,6 +229,14 @@ class VSeeController extends Controller
         Auth::loginUsingId(1);
     }
 
+    function visits() {
 
+        $V = new VSee;
+
+        $result = $V->getVisits();
+
+
+
+    }
 
 }

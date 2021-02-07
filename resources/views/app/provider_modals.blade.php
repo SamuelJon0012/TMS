@@ -18,7 +18,7 @@
 
                                 <form name="search-form" onsubmit="return doPatientSearch('search-input');">
 
-                                    <input id="search-input" value="jeff" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+                                    <input id="search-input" value="CANDERSON@CBSD.ORG" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
 
                                 </form>
 
@@ -123,111 +123,194 @@
                             <div class="card-body">
 
                             <div class="breadcrumbs"><span class="go_home go_link"><- Home</span> <span class="go_search go_link"> <- Search</span></div>
-
+<br/>
+<br/>
+<br/>
                                 <div id="patient-data">
 
-                                    <div class="leftside">
-                                        <table class="patient-show">
-                                            <tr>
-                                                <td colspan="2" style="text-align:center;color:blue;">Personal Data</td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">First Name</th>
-                                                <td class="fvalue" id="first_name"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Last Name</th>
-                                                <td class="fvalue" id="last_name"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Date of Birth</th>
-                                                <td class="fvalue" id="date_of_birth"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">SSN</th>
-                                                <td class="fvalue" id="ssn"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Driver's License</th>
-                                                <td class="fvalue" id="dl_number"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Address</th>
-                                                <td class="fvalue" id="address1"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Apt / Unit</th>
-                                                <td class="fvalue" id="address2"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">City</th>
-                                                <td class="fvalue" id="city"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">State</th>
-                                                <td class="fvalue" id="state"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Zipcode</th>
-                                                <td class="fvalue" id="zipcode"></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="rightside">
-                                        <table class="patient-show">
-                                            <tr>
-                                                <td colspan="2" style="text-align:center;color:blue;">Demographic Data</td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Email</th>
-                                                <td class="fvalue" id="email"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Mobile Phone</th>
-                                                <td class="fvalue" id="mphone"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Home Phone</th>
-                                                <td class="fvalue" id="hphone"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Birth Sex</th>
-                                                <td class="fvalue" id="birth_sex"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Race</th>
-                                                <td class="fvalue" id="race"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Ethnicity</th>
-                                                <td class="fvalue" id="ethnicity"></td>
-                                            </tr>
-                                        </table>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="form-reg-header">
+                                                    {{ __('Personal Data') }}
+                                                </div>
+                                                <div class="card-body text-center">
+                                                    <br>
+                                                    {{ __('Please confirm the identity of your visitor and the information on this page, then proceed to the next step.') }}
+                                                    <br><br>
+                                                    <table class="patient-show"><!-- mebe -->
+                                                        <tr>
+                                                            <td colspan="2" style="text-align:center;color:blue;">
+                                                                Personal Data
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">First Name</th>
+                                                            <td class="fvalue" id="first_name"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Last Name</th>
+                                                            <td class="fvalue" id="last_name"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Date of Birth</th>
+                                                            <td class="fvalue" id="date_of_birth"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">SSN</th>
+                                                            <td class="fvalue" id="ssn"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Driver's License</th>
+                                                            <td class="fvalue" id="dl_number"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Address</th>
+                                                            <td class="fvalue" id="address1"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Apt / Unit</th>
+                                                            <td class="fvalue" id="address2"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">City</th>
+                                                            <td class="fvalue" id="city"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">State</th>
+                                                            <td class="fvalue" id="state"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Zipcode</th>
+                                                            <td class="fvalue" id="zipcode"></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <br/>
+                                            <form name="patient-form" onsubmit="return doProviderQuestionnaire();"><!----- CREATE THIS NEXT show & populate question modals --->
+                                                <input type="hidden" value="0" id="patient_id" name="id"><!-- not really needed but fine -->
+                                                <input type="submit" value="Confirm Patient" class="btn btn-primary">
+                                            </form>
+                                        </div>
 
-                                        <table class="patient-show">
-                                            <tr>
-                                                <td colspan="2" style="text-align:center;color:blue;">Vaccine Schedule</td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Location</th>
-                                                <td class="fvalue" id="location"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Date</th>
-                                                <td class="fvalue" id="date"></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="flabel">Time</th>
-                                                <td class="fvalue" id="time"></td>
-                                            </tr>
-                                        </table>
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="form-reg-header">
+                                                    {{ __('Personal Data') }}
+                                                </div>
+                                                <div class="card-body text-center">
+{{--                                                    <br>--}}
+{{--                                                    {{ __('Please confirm....') }}--}}
+{{--                                                    <br><br>--}}
+
+                                                    <table class="patient-show">
+                                                        <tr>
+                                                            <td colspan="2" style="text-align:center;color:blue;">
+                                                                Demographic Data
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Email</th>
+                                                            <td class="fvalue" id="email"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Mobile Phone</th>
+                                                            <td class="fvalue" id="mphone"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Home Phone</th>
+                                                            <td class="fvalue" id="hphone"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Birth Sex</th>
+                                                            <td class="fvalue" id="birth_sex"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Race</th>
+                                                            <td class="fvalue" id="race"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Ethnicity</th>
+                                                            <td class="fvalue" id="ethnicity"></td>
+                                                        </tr>
+                                                    </table>
+
+                                                    <table class="patient-show">
+                                                        <tr>
+                                                            <td colspan="2" style="text-align:center;color:blue;">
+                                                                Vaccine Schedule
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Location</th>
+                                                            <td class="fvalue" id="location">location</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Date</th>
+                                                            <td class="fvalue" id="date"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Time</th>
+                                                            <td class="fvalue" id="time"></td>
+                                                        </tr>
+                                                    </table>
+                                                    <table class="patient-show" id="schedule2">
+                                                        <tr>
+                                                            <td colspan="2" style="text-align:center;color:blue;">
+                                                                Vaccine Schedule #2
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Location</th>
+                                                            <td class="fvalue" id="location2">location2</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Date</th>
+                                                            <td class="fvalue" id="date2"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Time</th>
+                                                            <td class="fvalue" id="time2"></td>
+                                                        </tr>
+                                                    </table>
+                                                    <table class="patient-show" id="schedule3">
+                                                        <tr>
+                                                            <td colspan="2" style="text-align:center;color:blue;">
+                                                                Vaccine Schedule #3
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Location</th>
+                                                            <td class="fvalue" id="location3">location3</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Date</th>
+                                                            <td class="fvalue" id="date3"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Time</th>
+                                                            <td class="fvalue" id="time3"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">Total</th>
+                                                            <td class="fvalue" id="total_count"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="flabel">More</th>
+                                                            <td class="fvalue" id="more"></td>
+                                                        </tr>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div style="clear:both;"></div>
-                                <form name="patient-form" onsubmit="return doProviderQuestionnaire();"><!----- CREATE THIS NEXT show & populate question modals --->
-                                    <input type="hidden" value="0" id="patient_id" name="id"><!-- not really needed but fine -->
-                                    <input type="submit" value="Confirm Patient" class="btn btn-primary">
-                                </form>
+                            </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -503,7 +586,7 @@
                                         <div class="col-md-6 text-center">
                                             <button id="subBtn" type="submit" onclick="return doScanner()" class="btn btn-primary form-control disabled">
                                                 {{ __('Scan Patient Barcode') }}
-                                                <!-- Todo Do not enable this button until the form is acceptable -->
+
                                             </button>
                                         </div>
                                     </div>
@@ -533,7 +616,7 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-md-12 text-center">
-                            <h3>{{ __('Enter the Patient\'s Information to Search') }}</h3>
+                            <h3>{{ __('Scan Barcode into this form') }}</h3>
                         </div>
 
                         <div class="col-md-10">
@@ -542,13 +625,8 @@
 
                                 <div class="breadcrumbs"><span class="go_home"><- Home</span> <span class="go_search go_link"> <- Search</span> <span class="go_patient go_link"> <- Patient</span>  <span class="go_questionnaire go_link"> <- Questionnaire</span></div>
 
-                                <form name="search-form" onsubmit="return doPatientSearch('search-input');">
-
-                                    <input id="search-input" value="jeff" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
-
-                                </form>
-
-                                <div id="search-results"></div>
+                                <input oninput="doHandleBarcode()" id="barcode-input" value="" type="text" class="form-control" name="search-input" placeholder="{{ __('Scan Barcode Here') }}" >
+                                <div id="barcode-results"></div>
 
                             </div>
 

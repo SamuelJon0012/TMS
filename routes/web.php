@@ -79,8 +79,9 @@ Route::get('/vsee/test', 'VSeeController@test')->name('vsee_test');
  *
  */
 
-Route::get('/biq/status', 'BurstIqController@status')->name('biq-status');
+Route::get('/biq/barcode', 'BurstIqController@barcode')->name('biq-barcode');
 Route::get('/biq/login', 'BurstIqController@login')->name('biq-login');
+
 
 
 #Route::webhooks('api/xcelerateudi');
@@ -102,3 +103,4 @@ Route::get('/vsee/return', 'VSeeController@return')->name('vsee_return');
 Route::post('/vsee/webhook', 'VSeeController@webhook')->name('vsee_webhook');
 Route::get('/vsee/webhook', 'VSeeController@webhook')->name('vsee_webhook');
 Route::get('/vsee/loginas', 'VSeeController@loginAs')->name('vsee_loginas');
+Route::get('/vsee/visits', 'VSeeController@Visits')->name('vsee_visits');

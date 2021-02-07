@@ -6,6 +6,7 @@ use App\BurstIq;
 use App\EncounterSchedule;
 use App\PatientProfile;
 use App\SiteProfile;
+use App\VSee;
 use Illuminate\Http\Request;
 
 /**
@@ -46,15 +47,27 @@ class BurstIqController extends Controller
     /**
      * @return bool|string
      *
-     * This is a simple health-check on the API
+     * This is the barcode from the scanner
      *
      */
-    function status()
+    function barcode()
     {
 
-        $B = new BurstIq();
+        $data=json_encode($_REQUEST);
 
-        return $B->status();
+        $patient_id = $_REQUEST['patient_id'];
+        $barcode = $_REQUEST['barcode'];
+
+        file_put_contents ('/var/www/data/bc' . uniqid(true), $data);
+
+        $html = "<br/>
+<b>Administration Site</b><br/><select name='admin-site'>
+<option>Forehead</option>
+<option>Kneecaps</option>
+</select><br/><button class='btn btn-primary' onclick=\"$('#barcode-results').html('Saved');\">Save</button>";
+
+        exit("Stored barcode $barcode for Patient ID $patient_id" . $html);
+
     }
 
     /**
@@ -165,7 +178,7 @@ class BurstIqController extends Controller
 
             # Todo or something
         }
-        $P = new PatientProfile($this->BI_USERNAME,$this->BI_PASSWORD);
+        $P = new PatientProfile();
 
         $where = "WHERE asset.id=$Q";
 
@@ -182,15 +195,114 @@ class BurstIqController extends Controller
         # INNER JOIN encounter_schedule AS s ON s.patient.id=p.id WHERE p.first_name LIKE '%e%'
         # results in no data or strangely scrambled data
 
-        //$E = new EncounterSchedule($this->BI_USERNAME,$this->BI_PASSWORD);
-
-
-//        $E = new EncounterSchedule(); # should reuse the login
+//        $E = new EncounterSchedule();
+//
 //        $where = "WHERE asset.patient_id=$Q";
 //        $dummy = $E->find($where);
 //        $rows[0]['schedule'] = $E->array();
-//
-//        $where = "WHERE asset.id=" . $E->getSiteId();
+
+        $V = new VSee();
+
+        $first = $rows[0]['first_name'];
+        $last = $rows[0]['last_name'];
+        $dob = (array)$rows[0]['date_of_birth'];
+
+        $dob = $dob['$date'];
+        $dob = substr($dob,0,10);
+        $email = $rows[0]['email'];
+
+        $data = $V->getVisits($first, $last, $dob, $email);
+
+        if ($data === false) {
+
+            $rows[0]['schedule1'] = [
+                'date' => '',
+                'time' => '',
+                'location' => 'Appt Not Set'
+            ];
+
+
+        } else {
+
+            $data = json_decode($data);
+
+            if (isset($data->data[0]->start)) {
+
+                $timestamp = $data->data[0]->start;
+
+                $gmdate = gmdate("Y-m-d\TH:i:s\Z", $timestamp);
+                $date = gmdate("Y-m-d", $timestamp);
+                $time = gmdate("H:i", $timestamp);
+                $location = $data->data[0]->room->name;
+
+                $rows[0]['schedule1'] = [
+
+                    'date' => $date,
+                    'time' => $time,
+                    'location' => $location
+
+                ];
+
+            } else {
+                {
+
+                    $rows[0]['schedule1'] = [
+                        'date' => '',
+                        'time' => '',
+                        'location' => 'Bad Data'
+                    ];
+
+                }
+            }
+
+            if (isset($data->data[1]->start)) {
+
+                $timestamp = $data->data[1]->start;
+
+                $gmdate = gmdate("Y-m-d\TH:i:s\Z", $timestamp);
+                $date = gmdate("Y-m-d", $timestamp);
+                $time = gmdate("H:i", $timestamp);
+                $location = $data->data[1]->room->name;
+
+                $rows[0]['schedule2'] = [
+
+                    'date' => $date,
+                    'time' => $time,
+                    'location' => $location
+
+                ];
+
+            }
+
+            if (isset($data->data[2]->start)) {
+
+                $timestamp = $data->data[2]->start;
+
+                $gmdate = gmdate("Y-m-d\TH:i:s\Z", $timestamp);
+                $date = gmdate("Y-m-d", $timestamp);
+                $time = gmdate("H:i", $timestamp);
+                $location = $data->data[2]->room->name;
+
+                $rows[0]['schedule3'] = [
+
+                    'date' => $date,
+                    'time' => $time,
+                    'location' => $location,
+                    'total_count' => $data->total_count,
+                    'more' => $data->total_count - 3,
+
+                ];
+
+
+
+            }
+
+
+
+        }
+
+        #$where = "WHERE asset.id=" . $E->getSiteId();
+//        $where = "WHERE asset.id=1";
 //        $S = new SiteProfile();
 //        $dummy = $S->find($where);
 //        $rows[0]['site'] = $S->array();

@@ -19,13 +19,9 @@ class VSee
     const VSEE_API_X_API_KEY = 'c3ed07a763df970b698d952a8959b344'; // TrackMy
     const VSEE_API_X_API_SECRET = '3fc6cccfeee05c3decc5577239da49f5';
 
-    protected $url, $username='', $password='', $jwt='', $data, $id=0, $asset_id='';
+    protected $url, $username='', $password='', $data, $id=0, $asset_id='';
 
     protected $get=[], $first, $array=[];
-
-    # Put a wrapper around queries to attempt to re-login if jwt is expired?  Or logout the user <-- this
-
-
 
     /**
      * VSee constructor.
@@ -110,26 +106,42 @@ class VSee
         return $msg;
     }
 
+    function getVisits($first='Jillian', $last='Raisman', $dob='1991-01-15', $email='jraisman@bucksiu.org') {
+
+        $result = $this->getSSOToken($first, $last, $dob, $email);
+
+        if (isset($result->data->token->token)) {
+
+            $token = $result->data->token->token;
+
+        } else {
+
+            return false;
+        }
+
+        $this->url = 'https://api-trackmysolutions.vsee.me/api_v3/visits.json';
+
+        $response = $this->getCurl($token);
+
+        return $response;
+
+    }
 
     /**
      * @return bool|string
      */
-    function getCurl() {
+    function getCurl($token) {
 
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
             CURLOPT_URL => $this->url,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Basic ' . base64_encode($this->username . ':' . $this->password)
-            ),
+                'X-ApiToken: ' . $token,
+                'Content-Type: application/x-www-form-urlencoded'
+            )
         ));
 
         $response = curl_exec($curl);

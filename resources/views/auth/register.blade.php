@@ -561,7 +561,7 @@
                     <img src="{{ asset('images/user-circle-icon.png') }}" border=0 alt="ImageIcon" width="32px">
                   </div>
                   <div class="col-md-11 text-center m-0 pl-0">
-                        <input id="npi" type="text" class="form-control-reg @error('npi') is-invalid @enderror" name="npi" value="{{ old('npi') }}" required autocomplete="npi" placeholder="{{ __('NATIONAL PROVIDER IDENTIFIER (NPI)') }}">
+                        <input id="npi" type="text" class="form-control-reg @error('npi') is-invalid @enderror" name="npi" value="{{ old('npi') }}" autocomplete="npi" placeholder="{{ __('NATIONAL PROVIDER IDENTIFIER (NPI) (Optional)') }}">
 
                         @error('npi')
                             <span class="invalid-feedback" role="alert">
@@ -575,7 +575,7 @@
                     <div class="col-md-12 text-left form-reg-color ">
                         {{ __('SELECT ALL THAT APPLY:') }}
                         <div class="row">
-                          <div class="col-4 text-right">
+                          <div class="col-4 text-left">
                             <input type="checkbox" name="is_doctor" id="is_doctor" value="1" > <label for ="is_doctor">{{ __('Doctor') }}</label>
                           </div>
                           <div class="col-4 text-center">
@@ -585,6 +585,18 @@
                             <input type="checkbox" name="is_nurse_practioner" id="is_nurse_practioner" value="1"> <label for ="is_nurse_practioner">{{ __('Nurse Practioner') }}</label>
                           </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-6 text-left">
+                                <input type="checkbox" name="is_cna" id="is_cna" value="1"> <label for ="is_cna">{{ __('Certified Nurse Assistant') }}</label>
+                            </div>
+                            <div class="col-6 text-right">
+                                <input type="checkbox" name="is_pa" id="is_pa" value="1"> <label for ="is_pa">{{ __('Physicians Assistance') }}</label>
+                            </div>
+                        </div>
+
+
+
                     </div>
                 </div>
 

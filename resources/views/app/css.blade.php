@@ -27,8 +27,8 @@
             margin-left: auto;
             margin-right: auto;
             width: 100%;
-            max-width: 900px;
-            min-height:400px;
+            max-width: 1200px;
+            min-height:500px;
             background-color: #fff;
             text-align: center;
         }
@@ -40,23 +40,22 @@
             width: 100%;
         }
         .patient-show {
-            border: 1px solid black;
-            border-radius: 10px;
             margin: 10px;
             padding: 10px;
-            width: 300px;
+            /*width: 300px;*/
+
         }
         .patient-show th {
             text-align: right;
             padding-right: 6px;
-            max-width: 200px;
+            /*max-width: 300px;*/
 
         }
         .patient-show td {
             text-align: left;
             padding-left: 6px;
             overflow: hidden;
-            max-width: 200px;
+            /*max-width: 300px;*/
 
         }
         .rightside, .leftside {

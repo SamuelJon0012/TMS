@@ -94,7 +94,8 @@
                         var btn = document.createElement('button');
                         btn.innerHTML = "+";
                         btn.setAttribute('rel', cellData);
-                        btn.setAttribute('class', 'seluser');
+                        btn.setAttribute('class', 'seluser btn-success');
+
                         cell.appendChild(btn);
                         first = false;
                     } else {
@@ -275,9 +276,52 @@
                 $('#date').html(date);
                 $('#time').html(time);
 
-            } else if (key === 'site') {
+            } else if (key === 'schedule1') {
+                console.log(value);
+                let date = value.date;
+                let time = value.time;
+                let location = value.location;
+
+                $('#schedule2').hide(); // show it later if we have one
+                $('#schedule3').hide(); // show it later if we have one
+
+                $('#date').html(date);
+                $('#time').html(time);
+                $('#location').html(location);
+
+            } else if (key === 'schedule2') {
+
+                console.log(value);
+                let date = value.date;
+                let time = value.time;
+                let location = value.location;
+
+                $('#schedule2').show();
+
+                $('#date2').html(date);
+                $('#time2').html(time);
+                $('#location2').html(location);
+
+            } else if (key === 'schedule3') {
+
+                let date = value.date;
+                let time = value.time;
+                let location = value.location;
+                let total_count = value.total_count;
+                let more = value.more;
+
+                $('#schedule3').show();
+
+                $('#date3').html(date);
+                $('#time3').html(time);
+                $('#location3').html(location);
+                $('#total_count').html(total_count);
+                $('#more').html(more);
+
+//            } else if (key === 'site') {
                 //console.log(value[0]);
-                $('#location').html(value[0].name);
+                //$('#location').html(value[0].name);
+                //console.log(value[0]);
 
             } else if (key === 'phone_numbers') {
                 console.log(value[0]);
@@ -384,8 +428,48 @@
 
         $('.scanner-page-modal').show();
 
+        $('#barcode-input').focus();
+
         return false;
 
     }
 
+    var BCTIMEOUT=0;
+
+    function doHandleBarcode() {
+
+        $('#barcode-results').html('...');
+
+        if (BCTIMEOUT > 0) {
+            clearTimeout(BCTIMEOUT);
+        }
+
+        BCTIMEOUT = setTimeout(function() {
+
+            let barcode = $('#barcode-input').val();
+
+            $('#barcode-results').html('>>>');
+
+            $.ajax({
+                url: '/biq/barcode',
+                data: 'barcode=' + barcode + '&patient_id=' + $('#patient_id').val(),
+                dataType: 'text',
+                success: function(o) {
+
+                    $('#barcode-results').html(o);
+                    $('#barcode-input').val('').focus();
+
+                },
+                error: function() {
+                    preloader_off();
+                    // Todo: handle this more elegantly
+                    alert('An error has occurred');
+                },
+            });
+
+
+        },2000);
+
+
+  }
 </script>

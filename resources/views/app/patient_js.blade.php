@@ -129,10 +129,36 @@
                 //console.log(time);
                 $('#date').html(date);
                 $('#time').html(time);
+                $('#location').html(time);
+
+            } else if (key === 'schedule1') {
+
+
+                let date = value.date;
+                let time = value.time;
+                let location = value.location;
+
+                $('#schedule2').hide(); // show it later if we have one
+
+                $('#date').html(date);
+                $('#time').html(time);
+                $('#location').html(time);
+
+            } else if (key === 'schedule2') {
+
+                let date = value.date;
+                let time = value.time;
+                let location = value.location;
+
+                $('#schedule2').show();
+
+                $('#date2').html(date);
+                $('#time2').html(time);
+                $('#location2').html(time);
 
             } else if (key === 'site') {
                 //console.log(value[0]);
-                $('#location').html(value[0].name);
+                //$('#location').html(value[0].name);
 
             } else if (key === 'phone_numbers') {
                 console.log(value[0]);
