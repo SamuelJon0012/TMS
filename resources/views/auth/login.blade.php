@@ -81,8 +81,7 @@
                                 <select id="sel_register" name="sel_register" class="form-control border border-primary" style="text-align-last:center;">
                                   <option value="">{{ __('Register') }}</option>
                                   <option value="patient">{{ __('I am a Patient') }}</option>
-                                    <!-- Todo Put this back -->
-{{--                                  <option value="provider">{{ __('I am a Provider') }}</option>--}}
+                                  <option value="provider">{{ __('I am a Provider') }}</option>
                                 </select>
                             </div>
                         </div>
