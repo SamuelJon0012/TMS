@@ -25,6 +25,9 @@ Auth::routes();
 Route::resource('patientvaccine', PatientVaccineController::class);
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/vaccine', 'CoverController@vaccineGet')->name('vaccine_get');
+Route::post('/vaccine', 'CoverController@vaccinePost')->name('vaccine_post');
+Route::post('/affirm', 'CoverController@vaccinePostAffirm')->name('vaccine_post_affirm');
 
 /*
  *
@@ -95,4 +98,7 @@ Route::get('/providerquestionaire', function () {
 });
 
 Route::post('/vsee/redirect', 'VSeeController@redirect')->name('vsee_redirect');
+Route::get('/vsee/return', 'VSeeController@return')->name('vsee_return');
 Route::post('/vsee/webhook', 'VSeeController@webhook')->name('vsee_webhook');
+Route::get('/vsee/webhook', 'VSeeController@webhook')->name('vsee_webhook');
+Route::get('/vsee/loginas', 'VSeeController@loginAs')->name('vsee_loginas');

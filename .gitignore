@@ -6,6 +6,7 @@ xx
 /public/storage
 /storage/*.key
 /vendor
+/public/*.csv
 .env
 .env.backup
 .phpunit.result.cache

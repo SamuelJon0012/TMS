@@ -2,6 +2,8 @@
 
     // Questionnaire
 
+
+
     $(document).ready(function(){
         $(".Qoption").click(function(){
             var oResult = $(this).attr('rel');
@@ -244,7 +246,26 @@
 
         $('.close-all').on('click', function() {
             $('.modals').hide();
-            //$('.sorry-page-modal').hide();
+
+            $("#q1").val("");
+            $("#q2").val("");
+            $("#q3").val("") ;
+            $("#q4").val("");
+            $("#q5").val("");
+            $("#q6").val("");
+
+            $("#q1Yes").removeClass( "RedSelect" );
+            $("#q1No").removeClass( "GreenSelect" );
+            $("#q2Yes").removeClass( "RedSelect" );
+            $("#q2No").removeClass( "GreenSelect" );
+            $("#q3Yes").removeClass( "RedSelect" );
+            $("#q3No").removeClass( "GreenSelect" );
+            $("#q4Yes").removeClass( "RedSelect" );
+            $("#q4No").removeClass( "GreenSelect" );
+            $("#q5Yes").removeClass( "GreySelect" );
+            $("#q5No").removeClass( "GreySelect" );
+            $("#q6Yes").removeClass( "GreySelect" );
+            $("#q6No").removeClass( "GreySelect" );
 
         });
 

@@ -263,7 +263,7 @@
           <div class="col-md-6">
             <div class="card">
               <div class="form-reg-header">
-                {{ __('OPTIONAL FIELDS') }}
+                {{ __('DEMOGRAPHIC INFO') }}
               </div>
               <div class="card-body text-center">
                 <br>
@@ -395,11 +395,11 @@
 
                   </div>
                    <div class="col-md-12 text-center">
-                      <select id="ethnicity" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
+                      <select id="ethnicity" required="required" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
                           <option value="">ETHINICITY</option>
                           <option value="1">Unknown</option>
                           <option value="2">Hispanic or Latino</option>
-                          <option value="3">Not Hispanic or Latine</option>
+                          <option value="3">Not Hispanic or Latino</option>
                           <option value="4">Black or African American</option>
                           <option value="5">Rather not say</option>
                       </select>
@@ -410,8 +410,8 @@
                   <div class="col-md-1 m-0 text-right pr-0">
 
                   </div>
-                  <div class="col-md-11 text-center m-0 pl-0">
-                      <select id="race" class="form-control-blue @error('race') is-invalid @enderror" name="race" placeholder="{{ __('RACE') }}">
+                  <div class="col-md-12 text-center">
+                      <select id="race" required="required" class="form-control @error('race') is-invalid @enderror" name="race" placeholder="{{ __('RACE') }}">
                         <option value="">RACE</option>
 
                           <option value="1">American Indian or Alaska Native</option>
@@ -426,7 +426,7 @@
                 </div>
                 <div class="form-group row justify-content-center">
                     <div class="col-md-12 text-center">
-                      <select id="birth_sex" class="form-control @error('birth_sex') is-invalid @enderror" name="birth_sex" placeholder="{{ __('BIRTH SEX') }}">
+                      <select id="birth_sex" required="required" class="form-control @error('birth_sex') is-invalid @enderror" name="birth_sex" placeholder="{{ __('BIRTH SEX') }}">
                           <option value="">BIRTH SEX</option>
 
                           <option value="1">Male</option>

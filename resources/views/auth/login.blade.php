@@ -2,10 +2,6 @@
 
 @section('content')
 <div class="container">
-    <div class="text-center">
-      <img src = "{{ asset('images/trackmysolutionslogoregtm-web.jpg') }}">
-    </div>
-    <br><br>
 
     <div class="row justify-content-center">
 
@@ -85,8 +81,7 @@
                                 <select id="sel_register" name="sel_register" class="form-control border border-primary" style="text-align-last:center;">
                                   <option value="">{{ __('Register') }}</option>
                                   <option value="patient">{{ __('I am a Patient') }}</option>
-                                    <!-- Todo Put this back -->
-{{--                                  <option value="provider">{{ __('I am a Provider') }}</option>--}}
+                                  <option value="provider">{{ __('I am a Provider') }}</option>
                                 </select>
                             </div>
                         </div>
@@ -97,6 +92,17 @@
                 <br><br>
             </div>
         </div>
+
+    </div>
+    <br/>
+    <div class="text-center">
+        <img src = "{{ asset('images/trackmysolutionslogoregtm-web.jpg') }}">
+        <br/>
+        [
+        <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Terms</a>
+        |
+        <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Privacy policy</a>
+        ]
 
     </div>
 </div>

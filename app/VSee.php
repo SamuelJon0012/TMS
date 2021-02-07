@@ -2,6 +2,7 @@
 
 namespace App;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -42,7 +43,7 @@ class VSee
             'dob' => $dob,
             'email' => $email,
             'code' => $email,
-            'disable_emails' => '1'
+            'disable_emails' => '0'
         ];
 
         if ($username) {
@@ -60,7 +61,9 @@ class VSee
 
         $json = $this->postCurl($postFields);
 
-        file_put_contents ('/var/www/data/vs' . uniqid(true), $json);
+        $id = Auth::id();
+
+        file_put_contents ('/var/www/data/vs' . $id . '_' . uniqid(true), $json);
 
         $data = json_decode($json);
 
