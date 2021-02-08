@@ -138,11 +138,6 @@
                                                     <br>
                                                     <table class="patient-show"><!-- mebe -->
                                                         <tr>
-                                                            <td colspan="2" style="text-align:center;color:blue;">
-                                                                Personal Data
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
                                                             <th class="flabel">First Name</th>
                                                             <td class="fvalue" id="first_name"></td>
                                                         </tr>
@@ -204,11 +199,6 @@
 {{--                                                    <br><br>--}}
 
                                                     <table class="patient-show">
-                                                        <tr>
-                                                            <td colspan="2" style="text-align:center;color:blue;">
-                                                                Demographic Data
-                                                            </td>
-                                                        </tr>
                                                         <tr>
                                                             <th class="flabel">Email</th>
                                                             <td class="fvalue" id="email"></td>
