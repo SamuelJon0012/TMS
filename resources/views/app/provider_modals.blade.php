@@ -597,8 +597,6 @@
 
         <div class="page-modal-inner">
 
-            <div class="breadcrumbs"><span class="go_home"><- Home</span> <span class="go_search go_link"> <- Search</span> <span class="go_patient go_link"> <- Patient</span> <span class="go_questionnaire go_link"> <- Questionnaire</span></div>
-
             <div id="page-content">
 
                 <div class="container">
