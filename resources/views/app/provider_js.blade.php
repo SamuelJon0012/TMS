@@ -422,7 +422,9 @@
 
         try {
 
-            var Q = $.get('https://erik.trackmyvaccine.com/work/i/' + $('#patient_id').val());
+            var file = 'https://erik.trackmyvaccine.com/work/i/' + $('#patient_id').val();
+
+            var Q = file;
 
             var q = JSON.parse(Q);
 
