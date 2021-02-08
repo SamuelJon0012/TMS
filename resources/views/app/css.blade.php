@@ -174,6 +174,8 @@
 
         margin: 3px 8px 0 0;
     }
-
+    #patient-data .card {
+        min-height: 360px;
+    }
 
 </style>
