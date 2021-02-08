@@ -60,21 +60,7 @@ class BurstIqController extends Controller
 
         file_put_contents ('/var/www/data/bc' . uniqid(true), $data);
 
-        $html = "<br/>
-
-<b>Administration Site</b><br/><select name='admin-site'>
-<option value=\"0\">RA-Right Arm</option>
-<option value=\"1\">BU-Buttock</option>
-<option value=\"2\">LA-Left Arm</option>
-<option value=\"3\">RT-Right Thigh</option>
-<option value=\"4\">LT-Left Thigh</option>
-<option value=\"5\">LUA-Left Upper Arm</option>
-<option value=\"6\">RUA-Right Upper Arm</option>
-</select><br/><br/><button class='btn btn-primary' onclick=\"$('#barcode-results').html('Saved');\">Save Administration Site</button>";
-
-
-
-        exit("Stored barcode $barcode for Patient ID $patient_id" . $html);
+        exit("Stored barcode $barcode for Patient ID $patient_id");
 
     }
 

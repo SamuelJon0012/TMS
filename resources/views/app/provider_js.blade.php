@@ -197,7 +197,7 @@
         $.noConflict();
 
         $('.go_home').on('click', function() {
-            $('.modals').hide();
+            $('.modals').hide(); $('#barcode-go-home').hide();$('#barcode-go-results').hide();
             $('.fvalue').html('');
             if (DT !== false) {
                 DT.destroy(true);
@@ -208,19 +208,19 @@
             $('.patient-form-modal').hide();
             $('.fvalue').html('');
             $('.provider-questionnaire-page-modal').hide();
-            $('.scanner-page-modal').hide();
+            $('.scanner-page-modal').hide(); $('#barcode-go-home').hide();$('#barcode-go-results').hide();
 
             // Todo: Besure to hide anything else that might be on top of it.
         });
         $('.go_patient').on('click', function() {
             $('.provider-questionnaire-page-modal').hide();
-            $('.scanner-page-modal').hide();
+            $('.scanner-page-modal').hide(); $('#barcode-go-home').hide();$('#barcode-go-results').hide();
             // Todo: Clear Questionnaire
 
             // Todo: Besure to hide anything else that might be on top of it.
         });
         $('.go_questionnaire').on('click', function() {
-            $('.scanner-page-modal').hide();
+            $('.scanner-page-modal').hide(); $('#barcode-go-home').hide();$('#barcode-go-results').hide();
             // Todo: Clear Scanner Page
 
             // Todo: Besure to hide anything else that might be on top of it.
@@ -483,37 +483,30 @@
 
     function doHandleBarcode() {
 
-        $('#barcode-results').html('...');
+        let barcode = $('#barcode-input').val();
+        let adminsite = $('#admin-site').val();
 
-        if (BCTIMEOUT > 0) {
-            clearTimeout(BCTIMEOUT);
-        }
+        $.ajax({
+            url: '/biq/barcode',
+            data: 'adminsite=' + adminsite + '&barcode=' + barcode + '&patient_id=' + $('#patient_id').val(),
+            dataType: 'text',
+            success: function(o) {
 
-        BCTIMEOUT = setTimeout(function() {
-
-            let barcode = $('#barcode-input').val();
-
-            $('#barcode-results').html('>>>');
-
-            $.ajax({
-                url: '/biq/barcode',
-                data: 'barcode=' + barcode + '&patient_id=' + $('#patient_id').val(),
-                dataType: 'text',
-                success: function(o) {
-
-                    $('#barcode-results').html(o);
-                    $('#barcode-input').val('').focus();
-
-                },
-                error: function() {
-                    preloader_off();
-                    // Todo: handle this more elegantly
-                    alert('An error has occurred');
-                },
-            });
+                $('#barcode-results').html(o);
+                $('#barcode-input').val('').focus();
+                $('#barcode-form').hide();
 
 
-        },2000);
+            },
+            error: function() {
+                preloader_off();
+                // Todo: handle this more elegantly
+                alert('An error has occurred');
+            },
+        });
+
+
+
 
 
   }

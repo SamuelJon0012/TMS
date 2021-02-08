@@ -10,7 +10,7 @@
     .search-modal, .patient-form-modal, .modals {
         display: none;
         width: 100%;
-        height:90%;
+        height:100%;
         position: fixed;
         margin-top: 85px;
         top: 0; left: 0;

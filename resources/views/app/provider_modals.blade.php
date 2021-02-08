@@ -196,7 +196,7 @@
                                         <div class="col-md-6">
                                             <div class="card">
                                                 <div class="form-reg-header">
-                                                    {{ __('Demographic Data') }}
+                                                    {{ __('Demographics') }}
                                                 </div>
                                                 <div class="card-body text-center">
 {{--                                                    <br>--}}
@@ -622,9 +622,37 @@
                             <div class="card-body">
 
                                 <div class="breadcrumbs"><span class="go_home"><- Home</span> <span class="go_search go_link"> <- Search</span> <span class="go_patient go_link"> <- Patient</span>  <span class="go_questionnaire go_link"> <- Questionnaire</span></div>
+<div id="barcode-form">
+                                <input id="barcode-input" value="" type="text" class="form-control" name="search-input" placeholder="{{ __('Scan Barcode Here') }}" >
 
-                                <input oninput="doHandleBarcode()" id="barcode-input" value="" type="text" class="form-control" name="search-input" placeholder="{{ __('Scan Barcode Here') }}" >
+                                <br/>
+
+                                <b>Administration Site</b>
+                                <br/>
+                                <select id='admin-site' name='admin-site'>
+                                    <option value="0">RA-Right Arm</option>
+                                    <option value="1">BU-Buttock</option>
+                                    <option value="2">LA-Left Arm</option>
+                                    <option value="3">RT-Right Thigh</option>
+                                    <option value="4">LT-Left Thigh</option>
+                                    <option value="5">LUA-Left Upper Arm</option>
+                                    <option value="6">RUA-Right Upper Arm</option>
+                                </select>
+                                <br/><br/>
+
+                                <button onclick="doHandleBarcode()" class='btn btn-primary save-barcode-form'>Save Administration Site</button>
+
+                                </div>
                                 <div id="barcode-results"></div>
+                                <div id="barcode-go-home" style="display:none;">
+                                    <span class="go_search btn btn-primary">Back to Search Form</span>
+                                    <br/>
+                                    <span class="btn btn-link"
+
+                                          onclick="$('#barcode-form').show();$('#barcode-input').val('').focus();">Scan Again</span>
+
+                                </div>
+
 
                             </div>
 
