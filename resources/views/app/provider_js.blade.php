@@ -68,6 +68,8 @@
 
         let row;
 
+        let rel;
+
         tableData.forEach(function(rowData) {
 
             let first=true;
@@ -91,12 +93,23 @@
                     var cell = document.createElement('td');
 
                     if (first) {
-                        var btn = document.createElement('button');
-                        btn.innerHTML = "+";
-                        btn.setAttribute('rel', cellData);
-                        btn.setAttribute('class', 'seluser btn-success');
 
+                        var btn = document.createElement('button');
+                        btn.innerHTML = "check-in";
+                        btn.setAttribute('rel', cellData);
+                        rel = cellData;
+                        btn.setAttribute('class', 'seluser btn-success toolb');
                         cell.appendChild(btn);
+
+                        var btn = document.createElement('button');
+                        btn.innerHTML = "scan"
+
+                        btn.setAttribute('rel', cellData);
+                        rel = cellData;
+                        btn.setAttribute('class', 'seluser-barcode btn-primary toolb');
+                        cell.appendChild(btn);
+
+
                         first = false;
                     } else {
                         cell.appendChild(document.createTextNode(cellData));
@@ -105,6 +118,7 @@
 
                     row.appendChild(cell);
                 });
+
 
                 tableBody.appendChild(row);
             }
@@ -211,7 +225,6 @@
 
             // Todo: Besure to hide anything else that might be on top of it.
         });
-
         $(document.body).on('click', '.seluser' ,function(){
             preloader_on();
             let id = $(this).attr('rel');
@@ -230,6 +243,36 @@
                     // Todo: Confirm o.data[0] exists
 
                     doConfirmPatient(o.data[0]);
+
+                },
+                error: function() {
+                    preloader_off();
+                    // Todo: handle this more elegantly
+                    alert('An error has occurred');
+                },
+            });
+
+        });
+        $(document.body).on('click', '.seluser-barcode' ,function(){
+            preloader_on();
+            let id = $(this).attr('rel');
+
+            $.ajax({
+                url: '/biq/get',
+                data: 'q=' + id,
+                dataType: 'json',
+                success: function(o) {
+
+                    // Todo: Check for an error object (success = false) or unexpected data
+
+                    //console.log('o');
+                    //console.log(o);
+
+                    // Todo: Confirm o.data[0] exists
+
+                    doConfirmPatient(o.data[0]);
+                    doProviderQuestionnaire();
+                    doScanner();
 
                 },
                 error: function() {

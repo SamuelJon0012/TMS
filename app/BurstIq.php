@@ -21,6 +21,9 @@ class BurstIq
 
     protected $get=[], $first, $array=[];
 
+    // Get this from db
+
+    public $lookup;
     # Put a wrapper around queries to attempt to re-login if jwt is expired?  Or logout the user <-- this
 
     /**
@@ -34,6 +37,8 @@ class BurstIq
      *
      */
     public function __construct($username=false, $password=false) {
+
+        $this->lookup = (array)json_decode(file_get_contents('/var/www/lookup.json'));
 
         # Do not instantiate this object if the user isn't logged in except for Registration, and right now we don't have this
 
@@ -55,6 +60,11 @@ class BurstIq
 //        }
 
 
+    }
+
+    public static function __callStatic($name, $arguments)
+    {
+        // TODO: Implement __callStatic() method.
     }
 
     /**
@@ -526,6 +536,13 @@ class BurstIq
             'message' => $msg,
         ]);
     }
+
+function enum($key, $val) {
+
+        return $this->lookup[$key][$val];
+
+
+}
 
 
 }

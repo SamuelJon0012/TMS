@@ -135,7 +135,7 @@
                                                 <div class="card-body text-center">
                                                     <br>
                                                     {{ __('Please confirm the identity of your visitor and the information on this page, then proceed to the next step.') }}
-                                                    <br><br>
+                                                    <br>
                                                     <table class="patient-show"><!-- mebe -->
                                                         <tr>
                                                             <td colspan="2" style="text-align:center;color:blue;">
@@ -196,7 +196,7 @@
                                         <div class="col-md-6">
                                             <div class="card">
                                                 <div class="form-reg-header">
-                                                    {{ __('Personal Data') }}
+                                                    {{ __('Demographic Data') }}
                                                 </div>
                                                 <div class="card-body text-center">
 {{--                                                    <br>--}}

@@ -61,10 +61,18 @@ class BurstIqController extends Controller
         file_put_contents ('/var/www/data/bc' . uniqid(true), $data);
 
         $html = "<br/>
+
 <b>Administration Site</b><br/><select name='admin-site'>
-<option>Forehead</option>
-<option>Kneecaps</option>
-</select><br/><button class='btn btn-primary' onclick=\"$('#barcode-results').html('Saved');\">Save</button>";
+<option value=\"0\">RA-Right Arm</option>
+<option value=\"1\">BU-Buttock</option>
+<option value=\"2\">LA-Left Arm</option>
+<option value=\"3\">RT-Right Thigh</option>
+<option value=\"4\">LT-Left Thigh</option>
+<option value=\"5\">LUA-Left Upper Arm</option>
+<option value=\"6\">RUA-Right Upper Arm</option>
+</select><br/><br/><button class='btn btn-primary' onclick=\"$('#barcode-results').html('Saved');\">Save Administration Site</button>";
+
+
 
         exit("Stored barcode $barcode for Patient ID $patient_id" . $html);
 
@@ -187,7 +195,7 @@ class BurstIqController extends Controller
             return $this->error('Search produced an error');
 
         }
-        $rows = $P->array();
+        $rows = $P->array(); // Get Patient Data for Display Only (Enumerations converted, joins, etc)
 
         # ToDo - Use Abbas' new join model (see BurstIqTestController@testGettingPatientScheduleSiteQuery)
         # Make this a join in the Model, but for now I'm getting strange results when I try to use JOIN
@@ -195,7 +203,11 @@ class BurstIqController extends Controller
         # INNER JOIN encounter_schedule AS s ON s.patient.id=p.id WHERE p.first_name LIKE '%e%'
         # results in no data or strangely scrambled data
 
-//        $E = new EncounterSchedule();
+        # ^ Belay that order, Ensign
+
+
+
+//        $E = new EncounterSchedule(); <----- This needs to be reconsidered
 //
 //        $where = "WHERE asset.patient_id=$Q";
 //        $dummy = $E->find($where);
@@ -220,7 +232,6 @@ class BurstIqController extends Controller
                 'time' => '',
                 'location' => 'Appt Not Set'
             ];
-
 
         } else {
 
