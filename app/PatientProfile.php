@@ -490,7 +490,7 @@ class PatientProfile extends BurstIq
         $this->first_name = $asset->first_name;
         $this->last_name = $asset->last_name;
 
-        $this->birth_sex = '01/01/2000'; // $asset->birth_sex; #Todo not getting this
+        $this->birth_sex = $asset->birth_sex; #Todo not getting this
 
         $this->date_of_birth = $asset->date_of_birth;
         $this->address1 = $asset->address1;
@@ -516,7 +516,7 @@ class PatientProfile extends BurstIq
             'relationship_to_owner' => $asset->   relationship_to_owner,
             'first_name' => $asset->first_name,
             'last_name' => $asset->last_name,
-            'birth_sex' => '01/01/2000', //  $asset->birth_sex, # Todo: not getting this
+            'birth_sex' => $asset->birth_sex, # Todo: not getting this
             'date_of_birth' => $asset->date_of_birth,
             'address1' => $asset->address1,
             'address2' => $asset->address2,

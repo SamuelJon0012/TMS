@@ -72,6 +72,10 @@ class BurstIq
    b. store this private id in the users login/credential attributes
    c. call upsert of patient_profile with that new private id, by setting this header
       Authorization = ID xxxxxxxxxxx
+
+    stag ID ef9718dadf578ef7
+    prd ID b67afe2ec35e80bb
+
  */
 
     }
@@ -212,21 +216,6 @@ class BurstIq
             exit($this->error($result));
         }
 
-
-//        if (strpos($result, 'Forbidden') > 0) {
-//
-//            // log in again
-//
-//            $this->url = $this->BI_BASE_URL . 'query/' . $chain;
-//
-//            $this->login($this->username, $this->password);
-//
-//            # Todo -- make sure login was successful
-//
-//            $result = $this->postCurl($postFields);
-//
-//        }
-
         return $this->data;
 
     }
@@ -265,7 +254,7 @@ class BurstIq
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: ID ef9718dadf578ef7',
+                'Authorization: ID b67afe2ec35e80bb',
             ),
         ));
 
@@ -295,7 +284,7 @@ class BurstIq
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => $postFields,
             CURLOPT_HTTPHEADER => array(
-                'Authorization: ID ef9718dadf578ef7',
+                'Authorization: ID b67afe2ec35e80bb',
                 'Content-Type: application/json'
             ),
         ));
@@ -325,7 +314,7 @@ class BurstIq
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_POSTFIELDS => $postFields,
             CURLOPT_HTTPHEADER => array(
-                'Authorization: ID ef9718dadf578ef7',
+                'Authorization: ID b67afe2ec35e80bb',
                 'Content-Type: application/json'
             ),
         ));

@@ -325,8 +325,10 @@
 
             } else if (key === 'phone_numbers') {
                 console.log(value[0]);
-                $('#mphone').html('727-555-1212');
-                $('#hphone').html('727-555-1212');
+
+
+                $('#mphone').html('(Todo))'); // Todo parse phone numbers
+                $('#hphone').html('(Todo)');
 
             } else if (key === 'insurances') {
 

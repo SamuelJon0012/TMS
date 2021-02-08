@@ -591,7 +591,7 @@
                                 <input type="checkbox" name="is_cna" id="is_cna" value="1"> <label for ="is_cna">{{ __('Certified Nurse Assistant') }}</label>
                             </div>
                             <div class="col-6 text-right">
-                                <input type="checkbox" name="is_pa" id="is_pa" value="1"> <label for ="is_pa">{{ __('Physicians Assistance') }}</label>
+                                <input type="checkbox" name="is_pa" id="is_pa" value="1"> <label for ="is_pa">{{ __('Physicians Assistant') }}</label>
                             </div>
                         </div>
 

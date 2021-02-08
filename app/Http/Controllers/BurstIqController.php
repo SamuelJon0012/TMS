@@ -23,8 +23,8 @@ class BurstIqController extends Controller
 
     public function __construct()
     {
-        $this->BI_USERNAME = env('BI_USERNAME');
-        $this->BI_PASSWORD = env('BI_PASSWORD');
+//        $this->BI_USERNAME = env('BI_USERNAME');
+//        $this->BI_PASSWORD = env('BI_PASSWORD');
     }
 
     function redirect()

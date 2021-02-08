@@ -18,14 +18,12 @@
 
                                 <form name="search-form" onsubmit="return doPatientSearch('search-input');">
 
-                                    <input id="search-input" value="CANDERSON@CBSD.ORG" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+                                    <input id="search-input" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by Name, Email or Phone Number') }}" >
 
                                 </form>
 
                                 <div id="search-results"></div>
-
                             </div>
-
                         </div>
                     </div>
                 </div>
