@@ -418,12 +418,27 @@
 
         // Populate the Questionnaire questions from encounter_schedule
 
-            // (hard coded "No" answers right now)
+        // Using the raw data right now
+
+        try {
+
+            var Q = $.get('https://erik.trackmyvaccine.com/work/i/' + $('#patient_id').val());
+
+            var q = JSON.parse(Q);
+
+            console.log(q);
+
+            // POPULATE QUESTIONNAIRE AND SHOW WARNING ON SCANNER PAGE IF ALLERGIES
+
+
+        } catch {console.log('no Q');}
 
         $("#q1").val("No");
         $("#q2").val("No");
         $("#q3").val("No") ;
         $("#q4").val("No");
+        $("#q5").val("No");
+        $("#q6").val("No");
 
         $("#q1Yes").removeClass( "RedSelect" );
         $("#q1No").addClass( "GreenSelect" );
@@ -472,8 +487,10 @@
        // console.log('scanner');
 
         $('.scanner-page-modal').show();
-
-        $('#barcode-input').focus();
+        $('#barcode-results').html('');
+        $('#barcode-input').val('').focus();
+        $('#barcode-form').show();
+        $('#barcode-go-home').hide();
 
         return false;
 
@@ -495,6 +512,7 @@
                 $('#barcode-results').html(o);
                 $('#barcode-input').val('').focus();
                 $('#barcode-form').hide();
+                $('#barcode-go-home').show();
 
 
             },

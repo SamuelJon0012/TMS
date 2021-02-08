@@ -69,8 +69,6 @@ class spool extends Command
 
                     $this->info('patient_profile');
 
-                    $bar = $this->output->createProgressBar(10);
-
                     $files = glob('/var/www/data/*');
 
                     $ctr = 0;
@@ -156,6 +154,8 @@ class spool extends Command
                     }
 
                     break;
+
+
 
                 case 'vswh':
                 case 'vsee_webhook':

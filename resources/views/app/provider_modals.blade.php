@@ -573,6 +573,8 @@
                                     <div class="form-group row justify-content-center">
                                         <div class="col-md-6 text-center">
                                             <button id="subBtn" type="submit" onclick="return doScanner()" class="btn btn-primary form-control disabled">
+
+
                                                 {{ __('Scan Patient Barcode') }}
 
                                             </button>
