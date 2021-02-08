@@ -587,12 +587,16 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-6 text-left">
-                                <input type="checkbox" name="is_cna" id="is_cna" value="1"> <label for ="is_cna">{{ __('Certified Nurse Assistant') }}</label>
+                            <div class="col-4 text-left">
+                                <input type="checkbox" name="is_cna" id="is_cna" value="1"> <label for ="is_cna">{{ __('CNAt') }}</label>
                             </div>
-                            <div class="col-6 text-right">
+                            <div class="col-4 text-center">
                                 <input type="checkbox" name="is_pa" id="is_pa" value="1"> <label for ="is_pa">{{ __('Physicians Assistant') }}</label>
                             </div>
+                            <div class="col-4 text-right">
+                                <input type="checkbox" name="is_emto" id="is_emto" value="1"> <label for ="is_emto">{{ __('EMT / Other') }}</label>
+                            </div>
+
                         </div>
 
 
