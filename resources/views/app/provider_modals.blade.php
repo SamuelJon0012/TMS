@@ -18,7 +18,7 @@
 
                                 <form name="search-form" onsubmit="return doPatientSearch('search-input');">
 
-                                    <input id="search-input" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by Name, Email or Phone Number') }}" >
+                                    <input id="search-input" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by Last Name, Email or Phone Number') }}" >
 
                                 </form>
 
@@ -53,7 +53,7 @@
 
                             <form name="provider-search-form" onsubmit="return doPatientSearch('provider-search-input');">
 
-                                <input id="provider-search-input" type="search" class="form-control" name="provider-search-input" placeholder="{{ __('Search by name, Email or phone number') }}" >
+                                <input id="provider-search-input" type="search" class="form-control" name="provider-search-input" placeholder="{{ __('Search by Last Name, Email or phone number') }}" >
 
                             </form>
 
