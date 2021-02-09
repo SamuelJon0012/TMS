@@ -326,7 +326,7 @@
                         <div class="col-md-10">
                             <div class="card-body">
                                 <div class="breadcrumbs"><span class="go_home"><- Home</span> <span class="go_search go_link"> <- Search</span> <span class="go_patient go_link"> <- Patient</span></div>
-                                <form method="POST" action="" onsubmit="alert('Sub:');return false;">
+                                <form method="POST" action="/vsee/saveonly">
                                     @csrf
                                     <div class="row">
                                         <div class="col-8">
@@ -601,15 +601,21 @@
                                         </div>
 
                                     </div>
-
+                                    <input type="hidden" name="provider_id" id="provider_id" value="{{ Auth::user()->id }}">
+                                    <input type="hidden" name="q_patient_id" id="q_patient_id" value="">
                                     <div class="form-group row justify-content-center">
                                         <div class="col-md-6 text-center">
-                                            <button id="subBtn" type="submit" onclick="return doScanner()" class="btn btn-primary form-control disabled">
-
-
-                                                {{ __('Scan Patient Barcode') }}
-
+                                            <button id="save-btn" type="submit" class="btn btn-primary form-control ">
+                                                {{ __('Save') }}
                                             </button>
+                                            <span id="scan-btn" type="submit" onclick="return doScanner()" class="btn btn-primary form-control ">
+                                                {{ __('Scan') }}
+                                            </span>
+                                            <span id="back-btn" type="submit" onclick="$('.go_patient').click()" class="btn btn-primary form-control ">
+                                                {{ __('Back') }}
+                                            </span>
+
+
                                         </div>
                                     </div>
 
@@ -661,6 +667,8 @@
                                     <option value="6">RUA-Right Upper Arm</option>
                                 </select>
                                 <br/><br/>
+
+                                <input type="hidden" name="provider_id" id="provider_id" value="{{ Auth::user()->id }}">
 
                                 <button onclick="doHandleBarcode()" class='btn btn-primary save-barcode-form'>Save Administration Site</button>
 

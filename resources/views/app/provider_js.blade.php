@@ -3,56 +3,48 @@
 
     var QA;
 
-  // Todo: move this to custom.js where it can be CND'd
+    // Todo: move this to custom.js where it can be CND'd
     // Questionnaire
 
-    $(document).ready(function(){
+    $(document).ready(function () {
 
         $('.search-modal').show();
 
-        $(".Qoption").click(function(){
+        $(".Qoption").click(function () {
             var oResult = $(this).attr('rel');
             var oResultArr = oResult.split("_");
             var oNumber = oResultArr[1]
             var oValue = oResultArr[0]
 
-            $("#q"+oNumber).val(oValue);
-            if(oValue == "Yes")
-            {
-                $("#q"+oNumber+"Yes").addClass( "RedSelect" )
-                $("#q"+oNumber+"No").removeClass( "GreenSelect" )
-            }
-            else if(oValue == "No")
-            {
-                $("#q"+oNumber+"Yes").removeClass( "RedSelect" )
-                $("#q"+oNumber+"No").addClass( "GreenSelect" )
-            }
-            else
-            {
-                $("#q"+oNumber+"Yes").removeClass( "RedSelect" )
-                $("#q"+oNumber+"No").removeClass( "GreenSelect" )
+            $("#q" + oNumber).val(oValue);
+            if (oValue == "Yes") {
+                $("#q" + oNumber + "Yes").addClass("RedSelect")
+                $("#q" + oNumber + "No").removeClass("GreenSelect")
+            } else if (oValue == "No") {
+                $("#q" + oNumber + "Yes").removeClass("RedSelect")
+                $("#q" + oNumber + "No").addClass("GreenSelect")
+            } else {
+                $("#q" + oNumber + "Yes").removeClass("RedSelect")
+                $("#q" + oNumber + "No").removeClass("GreenSelect")
             }
 
-            if($("#q1").val() == "No" && $("#q2").val() == "No" && $("#q3").val() == "No" && $("#q4").val() == "No")
-            {
-                $("#subBtn").removeClass( "disabled" )
+            if ($("#q1").val() == "No" && $("#q2").val() == "No" && $("#q3").val() == "No" && $("#q4").val() == "No") {
+                $("#subBtn").removeClass("disabled")
                 $("#have_insurance_no, #have_insurance_yes, #dosage_number_1, #dosage_number_2").removeAttr('disabled')
-            }
-            else
-            {
-                $("#subBtn").addClass( "disabled" )
+            } else {
+                $("#subBtn").addClass("disabled")
                 $("#have_insurance_no, #have_insurance_yes, #dosage_number_1, #dosage_number_2").attr('disabled', true)
             }
         });
 
         $("#insuranceSection").hide();
 
-        $("#have_insurance_no").click(function(){
+        $("#have_insurance_no").click(function () {
             $("#insuranceSection").hide();
             $("#administrator_name, #group_id, #coverage_effective_date, #primary_cardholder, #issuer_id, #insurance_type").removeAttr('required');
         });
 
-        $("#have_insurance_yes").click(function(){
+        $("#have_insurance_yes").click(function () {
             $("#insuranceSection").show();
             $("#administrator_name, #group_id, #coverage_effective_date, #primary_cardholder, #issuer_id, #insurance_type").attr('required', true);
         });
@@ -63,7 +55,8 @@
     // End Questionnaire
 
 
-    var input, dtData = [], DT=false;
+    var input, dtData = [], DT = false;
+
     function doCreateTable(tableData) {
         var table = document.createElement('table');
         table.setAttribute("id", "search-table");
@@ -77,9 +70,9 @@
 
         let rel;
 
-        tableData.forEach(function(rowData) {
+        tableData.forEach(function (rowData) {
 
-            let first=true;
+            let first = true;
 
             if (once) {
                 row = document.createElement('tr');
@@ -91,7 +84,7 @@
                 });
 
                 tableHead.appendChild(row);
-                once=false;
+                once = false;
 
             } else {
 
@@ -142,12 +135,12 @@
         //console.log('doPatientSearch');
         input = $('#' + inputId).val();
         preloader_on();
-        setTimeout(function() {
+        setTimeout(function () {
             $.ajax({
                 url: '/biq/find',
                 data: 'i=' + inputId + '&q=' + input,
                 dataType: 'json',
-                success: function(o) {
+                success: function (o) {
 
                     // Todo: Check for an error object (success = false) or unexpected data
 
@@ -155,14 +148,14 @@
 
                     let row, btn;
 
-                    dtData = [['','Patient Name', 'Date of Birth', 'Patient Email', 'Patient Phone']] ;
+                    dtData = [['', 'Patient Name', 'Date of Birth', 'Patient Email', 'Patient Phone']];
 
-                    data.forEach(function(row) {
+                    data.forEach(function (row) {
 
                         dtData[dtData.length] =
                             [
                                 row.id, row.first_name + ' ' + row.last_name,
-                                row.date_of_birth.$date.replace('T00:00:00.000Z',''),
+                                row.date_of_birth.$date.replace('T00:00:00.000Z', ''),
                                 row.email,
                                 row.phone_numbers[0].phone_number
                             ];
@@ -187,7 +180,7 @@
                     //console.log(DT);
                     preloader_off();
                 },
-                error: function() {
+                error: function () {
                     preloader_off();
 
                     // Todo: handle this more elegantly
@@ -196,43 +189,52 @@
                 },
 
             });
-        },100);
+        }, 100);
         return false;
     }
+
     //setTimeout(function() {
-    $(function() {
+    $(function () {
         $.noConflict();
 
-        $('.go_home').on('click', function() {
-            $('.modals').hide(); $('#barcode-go-home').hide();$('#barcode-go-results').hide();
+        $('.go_home').on('click', function () {
+            $('.modals').hide();
+            $('#barcode-go-home').hide();
+            $('#barcode-go-results').hide();
             $('.fvalue').html('');
             if (DT !== false) {
                 DT.destroy(true);
             }
 
         });
-        $('.go_search').on('click', function() {
+        $('.go_search').on('click', function () {
             $('.patient-form-modal').hide();
             $('.fvalue').html('');
             $('.provider-questionnaire-page-modal').hide();
-            $('.scanner-page-modal').hide(); $('#barcode-go-home').hide();$('#barcode-go-results').hide();
+            $('.scanner-page-modal').hide();
+            $('#barcode-go-home').hide();
+            $('#barcode-go-results').hide();
 
             // Todo: Besure to hide anything else that might be on top of it.
         });
-        $('.go_patient').on('click', function() {
+        $('.go_patient').on('click', function () {
             $('.provider-questionnaire-page-modal').hide();
-            $('.scanner-page-modal').hide(); $('#barcode-go-home').hide();$('#barcode-go-results').hide();
+            $('.scanner-page-modal').hide();
+            $('#barcode-go-home').hide();
+            $('#barcode-go-results').hide();
             // Todo: Clear Questionnaire
 
             // Todo: Besure to hide anything else that might be on top of it.
         });
-        $('.go_questionnaire').on('click', function() {
-            $('.scanner-page-modal').hide(); $('#barcode-go-home').hide();$('#barcode-go-results').hide();
+        $('.go_questionnaire').on('click', function () {
+            $('.scanner-page-modal').hide();
+            $('#barcode-go-home').hide();
+            $('#barcode-go-results').hide();
             // Todo: Clear Scanner Page
 
             // Todo: Besure to hide anything else that might be on top of it.
         });
-        $(document.body).on('click', '.seluser' ,function(){
+        $(document.body).on('click', '.seluser', function () {
             preloader_on();
             let id = $(this).attr('rel');
 
@@ -240,7 +242,7 @@
                 url: '/biq/get',
                 data: 'q=' + id,
                 dataType: 'json',
-                success: function(o) {
+                success: function (o) {
 
                     // Todo: Check for an error object (success = false) or unexpected data
 
@@ -252,7 +254,7 @@
                     doConfirmPatient(o.data[0]);
 
                 },
-                error: function() {
+                error: function () {
                     preloader_off();
                     // Todo: handle this more elegantly
                     alert('An error has occurred');
@@ -260,7 +262,7 @@
             });
 
         });
-        $(document.body).on('click', '.seluser-barcode' ,function(){
+        $(document.body).on('click', '.seluser-barcode', function () {
             preloader_on();
             let id = $(this).attr('rel');
 
@@ -268,7 +270,7 @@
                 url: '/biq/get',
                 data: 'q=' + id,
                 dataType: 'json',
-                success: function(o) {
+                success: function (o) {
 
                     // Todo: Check for an error object (success = false) or unexpected data
 
@@ -282,7 +284,7 @@
                     doScanner();
 
                 },
-                error: function() {
+                error: function () {
                     preloader_off();
                     // Todo: handle this more elegantly
                     alert('An error has occurred');
@@ -290,13 +292,13 @@
             });
 
         });
-        $('.patient-button').on('click', function() {
+        $('.patient-button').on('click', function () {
             $('.search-modal').show();
         });
-        $('.provider-search').on('click', function() {
+        $('.provider-search').on('click', function () {
             $('.provider-search-modal').show();
         })
-        $('.set-vaccine-location').on('click', function() {
+        $('.set-vaccine-location').on('click', function () {
             $('.set-vaccine-location-modal').show();
         })
     });
@@ -320,8 +322,8 @@
             console.log(value);
             if (key === 'schedule') {
                 dateString = value[0].scheduled_time.$date;
-                let date=moment(dateString).format('MM/DD/YYYY');
-                let time=moment(dateString).format('h:mm a');
+                let date = moment(dateString).format('MM/DD/YYYY');
+                let time = moment(dateString).format('h:mm a');
                 //console.log(date);
                 //console.log(time);
                 $('#date').html(date);
@@ -377,9 +379,10 @@
             } else if (key === 'phone_numbers') {
 
 
-                value.forEach(function(phone) { console.log(phone);
+                value.forEach(function (phone) {
+                    console.log(phone);
 
-                    if (phone.phone_type === 0 ) {
+                    if (phone.phone_type === 0) {
 
                         // Home
 
@@ -433,11 +436,11 @@
                 }
 
 
-
-            } else if (key === 'id') { // Todo: This becomes patient ID after implementing patient-schedule-site-query
+            } else if (key === 'id') { // Todo: This becomes patient ID after implementing patient-schedule-site-query <-- Not gonna do it
                 //console.log(value);
                 $('#patient_id').val(value);
-            }else {
+                $('#q_patient_id').val(value);
+            } else {
 
                 //console.log(`${key}: ${value}`);
                 $('#' + key).html(value);
@@ -448,28 +451,28 @@
 
         // Using the raw data right now
 
-       // try {
+        // try {
 
-            var strFile = 'https://erik.trackmyvaccine.com/work/i/' + $('#patient_id').val();
+        var strFile = 'https://erik.trackmyvaccine.com/work/i/' + $('#patient_id').val();
 
-            console.log(strFile);
+        console.log(strFile);
 
         $.ajax({
             url: strFile,
             type: 'GET',
             dataType: 'json', // added data type
-            success: function(q) {
+            success: function (q) {
                 //console.log(q);
 
                 QA = q;
 
-             }
+            }
         });
 
-            // POPULATE QUESTIONNAIRE AND SHOW WARNING ON SCANNER PAGE IF ALLERGIES
+        // POPULATE QUESTIONNAIRE AND SHOW WARNING ON SCANNER PAGE IF ALLERGIES
 
 
-       // } catch {console.log('no Q');}
+        // } catch {console.log('no Q');}
 
         // $("#q1").val("No");
         // $("#q2").val("No");
@@ -487,14 +490,11 @@
         // $("#q4Yes").removeClass( "RedSelect" );
         // $("#q4No").addClass( "GreenSelect" );
 
-        if($("#q1").val() == "No" && $("#q2").val() == "No" && $("#q3").val() == "No" && $("#q4").val() == "No")
-        {
-            $("#subBtn").removeClass( "disabled" )
+        if ($("#q1").val() == "No" && $("#q2").val() == "No" && $("#q3").val() == "No" && $("#q4").val() == "No") {
+            $("#subBtn").removeClass("disabled")
             $("#have_insurance_no, #have_insurance_yes, #dosage_number_1, #dosage_number_2").removeAttr('disabled')
-        }
-        else
-        {
-            $("#subBtn").addClass( "disabled" )
+        } else {
+            $("#subBtn").addClass("disabled")
             $("#have_insurance_no, #have_insurance_yes, #dosage_number_1, #dosage_number_2").attr('disabled', true)
         }
 
@@ -511,6 +511,7 @@
 
         preloader_off();
     }
+
     function doProviderQuestionnaire() {
 
         // populate the questionnaire during the business above
@@ -520,9 +521,10 @@
         return false;
 
     }
+
     function doScanner() {
 
-       // console.log('scanner');
+        // console.log('scanner');
 
         $('.scanner-page-modal').show();
         $('#barcode-results').html('');
@@ -543,18 +545,25 @@
 
     }
 
-    var BCTIMEOUT=0;
-
     function doHandleBarcode() {
+
+        try {
+
+            doHandleBarcodePost();
+
+        } catch {
+        }
+
 
         let barcode = $('#barcode-input').val();
         let adminsite = $('#admin-site').val();
+        let provider = $('#provider_id').val();
 
         $.ajax({
             url: '/biq/barcode',
-            data: 'adminsite=' + adminsite + '&barcode=' + barcode + '&patient_id=' + $('#patient_id').val(),
+            data: 'adminsite=' + adminsite + '&barcode=' + barcode + '&patient_id=' + $('#patient_id').val() + '&provider_id=' + provider,
             dataType: 'text',
-            success: function(o) {
+            success: function (o) {
 
                 $('#barcode-results').html(o);
                 $('#barcode-input').val('').focus();
@@ -563,18 +572,37 @@
 
 
             },
-            error: function() {
+            error: function () {
                 preloader_off();
                 // Todo: handle this more elegantly
                 alert('An error has occurred');
             },
         });
+    }
 
-
-
-
-
-  }
+    // function doHandleBarcodePost() {
+    //
+    //     let barcode = $('#barcode-input').val();
+    //     let adminsite = $('#admin-site').val();
+    //
+    //     $.ajax({
+    //         url: '/biq/barcode',
+    //         type: 'POST',
+    //         data: {
+    //             'adminsite': $('#admin-site').val(),
+    //             'barcode': $('#barcode-input').val(),
+    //             'patient_id': $('#patient_id').val(),
+    //             'provider_id': $('#provider_id').val()
+    //          },
+    //         dataType: 'text',
+    //         success: function(o) {
+    //
+    //         },
+    //         error: function() {
+    //
+    //         },
+    //     });
+    // }
 
     function formatPhoneNumber(phoneNumberString) {
         var cleaned = ('' + phoneNumberString).replace(/\D/g, '')

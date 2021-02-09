@@ -238,5 +238,20 @@ class VSeeController extends Controller
 
 
     }
+    function saveonly()
+    {
+
+        // Save questionnaire and redirect to home (saved by provider)
+
+        $data = json_encode($_POST);
+
+        // IF Q6 IS YES, SET FLAG IN /var/www/flags/q6 ELSE DELETE FLAG IF EXISTS
+
+        file_put_contents ('/var/www/data/prq' . uniqid(true), $data);
+
+        return redirect('/home');
+
+    }
+
 
 }

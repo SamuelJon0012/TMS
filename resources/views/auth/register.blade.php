@@ -1,7 +1,4 @@
 @extends('layouts.app')
-Registration is temporarily disabled...
-<script>location.href = '/login';</script>
-@php return @endphp
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
