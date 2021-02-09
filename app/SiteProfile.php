@@ -39,6 +39,25 @@ class SiteProfile extends BurstIq
     private $state;
     private $zipcode;
     private $county;
+    private $vsee_clinic_id;
+
+    /**
+     * @return mixed
+     */
+    public function getVseeClinicId()
+    {
+        return $this->vsee_clinic_id;
+    }
+
+    /**
+     * @param mixed $vsee_clinic_id
+     * @return SiteProfile
+     */
+    public function setVseeClinicId($vsee_clinic_id)
+    {
+        $this->vsee_clinic_id = $vsee_clinic_id;
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -204,11 +223,12 @@ class SiteProfile extends BurstIq
         $this->name = $asset->name;
         $this->vicinity_name = $asset->vicinity_name;
         $this->address1 = $asset->address1;
-        $this->address2 = $asset->address2;
+        //$this->address2 = $asset->address2;
         $this->city = $asset->city;
         $this->state = $asset->state;
         $this->zipcode = $asset->zipcode;
         $this->county = $asset->county;
+        $this->vsee_clinic_id = $asset->vsee_clinic_id;
 
 
 
@@ -220,11 +240,12 @@ class SiteProfile extends BurstIq
             'name' => $asset->name,
             'vicinity_name' => $asset->vicinity_name,
             'address1' => $asset->address1,
-            'address2' => $asset->address2,
+            //'address2' => $asset->address2,
             'city' => $asset->city,
             'state' => $asset->state,
             'zipcode' => $asset->zipcode,
             'county' => $asset->county,
+            'vsee_clinic_id' => $asset->vsee_clinic_id,
 
         ];
 

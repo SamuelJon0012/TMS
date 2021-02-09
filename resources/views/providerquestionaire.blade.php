@@ -335,7 +335,7 @@ $(document).ready(function(){
 
   $("#have_insurance_yes").click(function(){
     $("#insuranceSection").show();
-    $("#administrator_name, #group_id, #coverage_effective_date, #primary_cardholder, #issuer_id, #insurance_type").attr('required', true);
+    $("#administrator_name, #group_id, #x-``coverage_effective_date, #primary_cardholder, #issuer_id, #insurance_type").attr('required', true);
   });
 
 

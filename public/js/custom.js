@@ -1,15 +1,5 @@
 (function () {
 
-    $('.set-vaccine-location').on('click', function() {
-
-
-
-    });
-    $('.patient-button').on('click', function() {
-
-
-    });
-
     //for login
     $("#sel_register").on('change', function(){
       if($(this).val())
@@ -21,10 +11,6 @@
     //for Dashboard
     $("#addVaccine").click(function(){
       window.location.href = 'addvaccine';
-    });
-
-    $("#setVaccineLocation").click(function(){
-      window.location.href = '';
     });
 
 

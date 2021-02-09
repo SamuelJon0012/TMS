@@ -21,6 +21,9 @@ class BurstIq
 
     protected $get=[], $first, $array=[];
 
+    // Get this from db
+
+    public $lookup;
     # Put a wrapper around queries to attempt to re-login if jwt is expired?  Or logout the user <-- this
 
     /**
@@ -34,6 +37,8 @@ class BurstIq
      *
      */
     public function __construct($username=false, $password=false) {
+
+        $this->lookup = (array)json_decode(file_get_contents('/var/www/lookup.json'));
 
         # Do not instantiate this object if the user isn't logged in except for Registration, and right now we don't have this
 
@@ -57,6 +62,11 @@ class BurstIq
 
     }
 
+    public static function __callStatic($name, $arguments)
+    {
+        // TODO: Implement __callStatic() method.
+    }
+
     /**
      * @return bool|string
      */
@@ -72,6 +82,10 @@ class BurstIq
    b. store this private id in the users login/credential attributes
    c. call upsert of patient_profile with that new private id, by setting this header
       Authorization = ID xxxxxxxxxxx
+
+    stag ID ef9718dadf578ef7
+    prd ID b67afe2ec35e80bb
+
  */
 
     }
@@ -212,21 +226,6 @@ class BurstIq
             exit($this->error($result));
         }
 
-
-//        if (strpos($result, 'Forbidden') > 0) {
-//
-//            // log in again
-//
-//            $this->url = $this->BI_BASE_URL . 'query/' . $chain;
-//
-//            $this->login($this->username, $this->password);
-//
-//            # Todo -- make sure login was successful
-//
-//            $result = $this->postCurl($postFields);
-//
-//        }
-
         return $this->data;
 
     }
@@ -265,7 +264,7 @@ class BurstIq
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: ID ef9718dadf578ef7',
+                'Authorization: ID b67afe2ec35e80bb',
             ),
         ));
 
@@ -295,7 +294,7 @@ class BurstIq
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => $postFields,
             CURLOPT_HTTPHEADER => array(
-                'Authorization: ID ef9718dadf578ef7',
+                'Authorization: ID b67afe2ec35e80bb',
                 'Content-Type: application/json'
             ),
         ));
@@ -325,7 +324,7 @@ class BurstIq
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_POSTFIELDS => $postFields,
             CURLOPT_HTTPHEADER => array(
-                'Authorization: ID ef9718dadf578ef7',
+                'Authorization: ID b67afe2ec35e80bb',
                 'Content-Type: application/json'
             ),
         ));
@@ -537,6 +536,13 @@ class BurstIq
             'message' => $msg,
         ]);
     }
+
+function enum($key, $val) {
+
+        return $this->lookup[$key][$val];
+
+
+}
 
 
 }

@@ -69,8 +69,6 @@ class spool extends Command
 
                     $this->info('patient_profile');
 
-                    $bar = $this->output->createProgressBar(10);
-
                     $files = glob('/var/www/data/*');
 
                     $ctr = 0;
@@ -145,6 +143,17 @@ class spool extends Command
 
                             file_put_contents("work/i/$id", $json);
 
+                            if ($row->q6 == 'Yes') {
+
+                                $this->info('ALLERGIES!!!!!');
+
+                                file_put_contents("/var/www/app/public/flags/q6/$id", $json);
+                                file_put_contents("/var/www/erik/public/flags/q6/$id", $json);
+                                file_put_contents("/var/www/dev/public/flags/q6/$id", $json);
+
+
+                            }
+
                             $this->line("$ctr. $file => $id");
 
                         } catch (\Exception $e) {
@@ -156,6 +165,8 @@ class spool extends Command
                     }
 
                     break;
+
+
 
                 case 'vswh':
                 case 'vsee_webhook':

@@ -20,11 +20,15 @@ use App\Http\Controllers\PatientVaccineController;
 Route::get('/', function () {
     return redirect(route('login'));//return view('welcome');
 });
+//Route::get('/vaccine', function () {
+//    return redirect(route('login'));
+//});
 
 Auth::routes();
 Route::resource('patientvaccine', PatientVaccineController::class);
 
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::get('/vaccine', 'CoverController@vaccineGet')->name('vaccine_get');
 Route::post('/vaccine', 'CoverController@vaccinePost')->name('vaccine_post');
 Route::post('/affirm', 'CoverController@vaccinePostAffirm')->name('vaccine_post_affirm');
@@ -79,8 +83,10 @@ Route::get('/vsee/test', 'VSeeController@test')->name('vsee_test');
  *
  */
 
-Route::get('/biq/status', 'BurstIqController@status')->name('biq-status');
-Route::get('/biq/login', 'BurstIqController@login')->name('biq-login');
+Route::get('/biq/barcode', 'BurstIqController@barcode')->name('biq-barcode');
+Route::post('/biq/barcode', 'BurstIqController@barcode')->name('biq-barcode');
+// defunct Route::get('/biq/login', 'BurstIqController@login')->name('biq-login');
+
 
 
 #Route::webhooks('api/xcelerateudi');
@@ -102,3 +108,6 @@ Route::get('/vsee/return', 'VSeeController@return')->name('vsee_return');
 Route::post('/vsee/webhook', 'VSeeController@webhook')->name('vsee_webhook');
 Route::get('/vsee/webhook', 'VSeeController@webhook')->name('vsee_webhook');
 Route::get('/vsee/loginas', 'VSeeController@loginAs')->name('vsee_loginas');
+Route::get('/vsee/visits', 'VSeeController@Visits')->name('vsee_visits');
+
+Route::post('/vsee/saveonly', 'VSeeController@saveonly')->name('vsee_saveonly');

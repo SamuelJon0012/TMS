@@ -79,7 +79,7 @@ class RegisterController extends Controller
             'name' => $data['first_name']." ".$data['last_name'],
             'email' => $data['email'],
             'json' => json_encode($data),
-            'dob' => $data['date_of_birth'],
+            'dob' => $data['date_of_birth'] ?? '',
             'password' => bcrypt($data['password']),
         ]);
 

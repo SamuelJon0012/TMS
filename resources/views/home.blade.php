@@ -152,9 +152,9 @@
               </div>
             </div>
             <br><br><br>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center"  title="This feature is currently unnavailable" >
               <div class="col-6">
-                <button id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-location">{{ __('Set Vaccine Location') }}</button>
+                <button disabled='disabled' id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-location">{{ __('Set Vaccine Location') }}</button>
               </div>
             </div>
           @endif
