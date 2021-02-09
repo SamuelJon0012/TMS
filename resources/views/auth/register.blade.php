@@ -397,11 +397,21 @@
                    <div class="col-md-12 text-center">
                       <select id="ethnicity" required="required" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
                           <option value="">ETHINICITY</option>
-                          <option value="1">Unknown</option>
-                          <option value="2">Hispanic or Latino</option>
-                          <option value="3">Not Hispanic or Latino</option>
-                          <option value="4">Black or African American</option>
-                          <option value="5">Rather not say</option>
+                          <option value="0">Unknown</option>
+                          <option value="1">Hispanic or Latino</option>
+                          <option value="2">Not Hispanic or Latino</option>
+                          <option value="3">Black or African American</option>
+                          <option value="4">Rather not say</option>
+                          <option value="5">White or Caucasian</option>
+                                {{--Old wrong choices--}}
+{{--                          <option value="1">Unknown</option>--}}
+{{--                          <option value="2">Hispanic or Latino</option>--}}
+{{--                          <option value="3">Not Hispanic or Latino</option>--}}
+{{--                          <option value="4">Black or African American</option>--}}
+{{--                          <option value="5">Rather not say</option>--}}
+
+
+
                       </select>
                     </div>
                 </div>

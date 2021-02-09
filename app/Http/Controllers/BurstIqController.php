@@ -241,15 +241,14 @@ class BurstIqController extends Controller
                 ];
 
             } else {
-                {
 
                     $rows[0]['schedule1'] = [
                         'date' => '',
                         'time' => '',
-                        'location' => 'Bad Data'
+                        'location' => 'No Appointment Data'
                     ];
 
-                }
+
             }
 
             if (isset($data->data[1]->start)) {

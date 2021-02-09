@@ -7,6 +7,9 @@
     // Questionnaire
 
     $(document).ready(function(){
+
+        $('.search-modal').show();
+
         $(".Qoption").click(function(){
             var oResult = $(this).attr('rel');
             var oResultArr = oResult.split("_");

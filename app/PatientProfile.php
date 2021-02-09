@@ -526,8 +526,8 @@ class PatientProfile extends BurstIq
             'ssn' => $asset->ssn,
             'dl_state' => $asset->dl_state,
             'dl_number' => $asset->dl_number,
-            //'ethnicity' => $this->lookup['ethnicity'][$asset->ethnicity] . '(' . $asset->ethnicity . ')',
-            'race' => $this->lookup['race'][$asset->race] . '(' . $asset->race . ')',
+            //'ethnicity' => $this->lookup['ethnicity'][$asset->ethnicity],
+            'race' => $this->lookup['race'][$asset->race],
             'vsee_clinic_id' => $asset->vsee_clinic_id,
             'phone_numbers' => $asset->phone_numbers,
             'insurances' => $asset->insurance
