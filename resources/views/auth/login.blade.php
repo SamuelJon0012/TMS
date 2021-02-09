@@ -70,21 +70,23 @@
                             </div>
                         </div>
 
-                        <div class="form-group row justify-content-center">
-                            <div class="col-md-10 text-center dashes">
-                                {{ __("Haven't created an account yet?  ") }}
-                            </div>
-                        </div>
+TrackMyVaccines is closed for new registrations at this time.  We will reopen soon.
 
-                        <div class="form-group row justify-content-center">
-                            <div class="col-md-10 text-center">
-                                <select id="sel_register" name="sel_register" class="form-control border border-primary" style="text-align-last:center;">
-                                  <option value="">{{ __('Register') }}</option>
-                                  <option value="patient">{{ __('I am a Patient') }}</option>
-                                  <option value="provider">{{ __('I am a Provider') }}</option>
-                                </select>
-                            </div>
-                        </div>
+{{--                        <div class="form-group row justify-content-center">--}}
+{{--                            <div class="col-md-10 text-center dashes">--}}
+{{--                                {{ __("Haven't created an account yet?  ") }}--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+
+{{--                        <div class="form-group row justify-content-center">--}}
+{{--                            <div class="col-md-10 text-center">--}}
+{{--                                <select id="sel_register" name="sel_register" class="form-control border border-primary" style="text-align-last:center;">--}}
+{{--                                  <option value="">{{ __('Register') }}</option>--}}
+{{--                                  <option value="patient">{{ __('I am a Patient') }}</option>--}}
+{{--                                  <option value="provider">{{ __('I am a Provider') }}</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
                     </form>
                 </div>

@@ -375,11 +375,31 @@
                 //console.log(value[0]);
 
             } else if (key === 'phone_numbers') {
-                console.log(value[0]);
 
 
-                // $('#mphone').html('(Todo))'); // Todo parse phone numbers
-                // $('#hphone').html('(Todo)');
+                value.forEach(function(phone) { console.log(phone);
+
+                    if (phone.phone_type === 0 ) {
+
+                        // Home
+
+                        $('#hphone').html(formatPhoneNumber(phone.phone_number));
+
+                    } else if (phone.phone_type === 1) {
+
+                        $('#mphone').html(formatPhoneNumber(phone.phone_number));
+
+                    } else {
+
+                        // mobile
+
+                        $('#mphone').html(formatPhoneNumber(phone.phone_number));
+
+                    }
+
+
+                });
+
 
             } else if (key === 'insurances') {
 
@@ -555,4 +575,13 @@
 
 
   }
+
+    function formatPhoneNumber(phoneNumberString) {
+        var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+        var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+        if (match) {
+            return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+        }
+        return null
+    }
 </script>
