@@ -219,10 +219,11 @@
                                                             <th class="flabel">Race</th>
                                                             <td class="fvalue" id="race"></td>
                                                         </tr>
-                                                        <tr>
-                                                            <th class="flabel">Ethnicity</th>
-                                                            <td class="fvalue" id="ethnicity"></td>
-                                                        </tr>
+<!-- Todo: Ethnicity is wrong in registration form, will need to convert in spooler -->
+                                                        {{--                                                        <tr>--}}
+{{--                                                            <th class="flabel">Ethnicity</th>--}}
+{{--                                                            <td class="fvalue" id="ethnicity"></td>--}}
+{{--                                                        </tr>--}}
                                                     </table>
 
                                                     <table class="patient-show">

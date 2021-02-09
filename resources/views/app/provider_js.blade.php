@@ -314,6 +314,7 @@
 
         for (const [key, value] of Object.entries(data)) {
             console.log(key);
+            console.log(value);
             if (key === 'schedule') {
                 dateString = value[0].scheduled_time.$date;
                 let date=moment(dateString).format('MM/DD/YYYY');
