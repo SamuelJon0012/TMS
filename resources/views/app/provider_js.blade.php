@@ -8,6 +8,8 @@
 
     $(document).ready(function () {
 
+
+
         $('.search-modal').show();
 
         $(".Qoption").click(function () {
@@ -440,6 +442,26 @@
                 //console.log(value);
                 $('#patient_id').val(value);
                 $('#q_patient_id').val(value);
+
+                var strFile = 'https://erik.trackmyvaccine.com/work/i/' + $('#patient_id').val();
+
+                console.log('QAAAAAAAA');
+
+                console.log(strFile);
+
+                $.ajax({
+                    url: strFile,
+                    type: 'GET',
+                    dataType: 'json', // added data type
+                    success: function (q) {
+                        console.log(q);
+
+                        QA = q;
+
+                    }
+                });
+
+
             } else {
 
                 //console.log(`${key}: ${value}`);
@@ -452,22 +474,6 @@
         // Using the raw data right now
 
         // try {
-
-        var strFile = 'https://erik.trackmyvaccine.com/work/i/' + $('#patient_id').val();
-
-        console.log(strFile);
-
-        $.ajax({
-            url: strFile,
-            type: 'GET',
-            dataType: 'json', // added data type
-            success: function (q) {
-                //console.log(q);
-
-                QA = q;
-
-            }
-        });
 
         // POPULATE QUESTIONNAIRE AND SHOW WARNING ON SCANNER PAGE IF ALLERGIES
 
@@ -525,20 +531,53 @@
     function doScanner() {
 
         // console.log('scanner');
+        $('#barcode-allergy').hide();
 
         $('.scanner-page-modal').show();
         $('#barcode-results').html('');
         $('#barcode-input').val('').focus();
         $('#barcode-form').show();
         $('#barcode-go-home').hide();
+        $('#barcode-allergy').hide();
+
+        console.log(QA);
+
+        if (QA === undefined) {
+
+            QA = {};
+
+            QA.q6 = 'No';
+        }
 
         if (QA.q6 == 'Yes') {
 
             $('#barcode-allergy').show();
 
         } else {
-            $('#barcode-allergy').hide();
+
+            var strFile = '/flags/q6/' + $('#patient_id').val();
+
+            $.ajax({
+                url: strFile,
+                type: 'GET',
+                dataType: 'text', // added data type
+                success: function (q) {
+                    $('#barcode-allergy').show();
+
+                },
+                error: function () {
+
+                    // nothing
+
+
+                }
+
+            });
+
+
+
         }
+
 
 
         return false;

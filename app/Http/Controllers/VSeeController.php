@@ -238,16 +238,35 @@ class VSeeController extends Controller
 
 
     }
-    function saveonly()
+    function saveonly(Request $request)
     {
 
         // Save questionnaire and redirect to home (saved by provider)
 
         $data = json_encode($_POST);
 
-        // IF Q6 IS YES, SET FLAG IN /var/www/flags/q6 ELSE DELETE FLAG IF EXISTS
-
         file_put_contents ('/var/www/data/prq' . uniqid(true), $data);
+
+        $q6 = $request->get('q6');
+
+        $q_patient_id = $request->get('q_patient_id');
+
+        if (!empty($q_patient_id)) {
+
+            $file = 'flags/q6/' . $q_patient_id;
+
+            if ($q6 == 'Yes') {
+                file_put_contents($file, $data);
+            }
+            if ($q6 == 'No') {
+                if (file_exists($file)) {
+
+                    unlink($file);
+
+                }
+            }
+
+        }
 
         return redirect('/home');
 

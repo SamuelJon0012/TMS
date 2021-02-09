@@ -531,21 +531,21 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group row justify-content-center">
+{{--                                        <div class="form-group row justify-content-center">--}}
 
-                                            <div class="col-4 text-right">
-                                                {{ __('Coverage Effective Date:') }}
-                                            </div>
-                                            <div class="col-8">
-                                                <input id="coverage_effective_date" type="date" class="form-control @error('coverage_effective_date') is-invalid @enderror" name="coverage_effective_date" value="{{ old('coverage_effective_date') }}"  autocomplete="coverage_effective_date"  placeholder="{{ __('') }}" >
+{{--                                            <div class="col-4 text-right">--}}
+{{--                                                {{ __('Coverage Effective Date:') }}--}}
+{{--                                            </div>--}}
+{{--                                            <div class="col-8">--}}
+{{--                                                <input id="coverage_effective_date" type="date" class="form-control @error('coverage_effective_date') is-invalid @enderror" name="coverage_effective_date" value="{{ old('coverage_effective_date') }}"  autocomplete="coverage_effective_date"  placeholder="{{ __('') }}" >--}}
 
-                                                @error('coverage_effective_date')
-                                                <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
-                                                @enderror
-                                            </div>
-                                        </div>
+{{--                                                @error('coverage_effective_date')--}}
+{{--                                                <span class="invalid-feedback" role="alert">--}}
+{{--                              <strong>{{ $message }}</strong>--}}
+{{--                          </span>--}}
+{{--                                                @enderror--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
                                         <div class="form-group row justify-content-center">
 
@@ -604,16 +604,22 @@
                                     <input type="hidden" name="provider_id" id="provider_id" value="{{ Auth::user()->id }}">
                                     <input type="hidden" name="q_patient_id" id="q_patient_id" value="">
                                     <div class="form-group row justify-content-center">
-                                        <div class="col-md-6 text-center">
+                                        <div class="col-md-4 text-center">
                                             <button id="save-btn" type="submit" class="btn btn-primary form-control ">
                                                 {{ __('Save') }}
                                             </button>
+                                        </div>
+                                        <div class="col-md-4 text-center">
                                             <span id="scan-btn" type="submit" onclick="return doScanner()" class="btn btn-primary form-control ">
                                                 {{ __('Scan') }}
                                             </span>
+                                        </div>
+                                        <div class="col-md-4 text-center">
                                             <span id="back-btn" type="submit" onclick="$('.go_patient').click()" class="btn btn-primary form-control ">
                                                 {{ __('Back') }}
                                             </span>
+                                        </div>
+
 
 
                                         </div>
@@ -684,7 +690,7 @@
                                 </div>
                                 <br/>
                                 <br/>
-                                <div id="barcode-allergy">Patient Has a Prior Allergy - Ask to stay 30 minutes in observation area</div>
+                                <div style='display:none' id="barcode-allergy">Patient Has a Prior Allergy - Ask to stay 30 minutes in observation area</div>
 
                             </div>
 

@@ -447,7 +447,7 @@ class PatientProfile extends BurstIq
         $insurances_array = [];
 
 
-        try {var_dump($insurances);
+        try {
 
             foreach ($insurances as $insurance) {
 
