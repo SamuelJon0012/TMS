@@ -177,5 +177,12 @@
     #patient-data .card {
         min-height: 360px;
     }
+    #barcode-allergy {
+        border: 1px solid #000;
+        background-color: #ff9966;
+        color: black;
+        padding: 10px;
+        width: 160px;
+    }
 
 </style>

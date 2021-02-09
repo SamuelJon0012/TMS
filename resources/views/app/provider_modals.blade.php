@@ -416,7 +416,38 @@
                                         </div>
                                         <input type="hidden" name="q4" id="q4" value="">
                                     </div>
-
+                                    <div class="row">
+                                        <div class="col-8 border border-top-0 border-dark">
+                                            {{ __('Have you been previously diagnosed with COVID-19?') }}
+                                        </div>
+                                        <div id="q5Yes" class="Qoption col-2  border-dark  border-bottom text-center" rel="Yes_5">
+                                            <br>
+                                            {{ __('YES') }}
+                                            <br><br>
+                                        </div>
+                                        <div id="q5No" class="Qoption col-2 border border-top-0 border-dark text-center" rel="No_5">
+                                            <br>
+                                            {{ __('NO') }}
+                                            <br><br>
+                                        </div>
+                                        <input type="hidden" name="q5" id="q5" value="">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-8 border border-top-0 border-dark">
+                                            {{ __('Do you have a vaccine allergy?') }}
+                                        </div>
+                                        <div id="q6Yes" class="Qoption col-2  border-dark  border-bottom text-center" rel="Yes_6">
+                                            <br>
+                                            {{ __('YES') }}
+                                            <br><br>
+                                        </div>
+                                        <div id="q6No" class="Qoption col-2 border border-top-0 border-dark text-center" rel="No_6">
+                                            <br>
+                                            {{ __('NO') }}
+                                            <br><br>
+                                        </div>
+                                        <input type="hidden" name="q6" id="q6" value="">
+                                    </div>
                                     <br><br>
                                     <div class="row">
                                         <div class="col-8">
@@ -642,7 +673,9 @@
                                           onclick="$('#barcode-form').show();$('#barcode-input').val('').focus();">Scan Again</span>
 
                                 </div>
-
+                                <br/>
+                                <br/>
+                                <div id="barcode-allergy">Patient Has a Prior Allergy - Ask to stay 30 minutes in observation area</div>
 
                             </div>
 

@@ -1,4 +1,8 @@
 <script type="text/javascript">
+
+
+    var QA;
+
   // Todo: move this to custom.js where it can be CND'd
     // Questionnaire
 
@@ -370,8 +374,8 @@
                 console.log(value[0]);
 
 
-                $('#mphone').html('(Todo))'); // Todo parse phone numbers
-                $('#hphone').html('(Todo)');
+                // $('#mphone').html('(Todo))'); // Todo parse phone numbers
+                // $('#hphone').html('(Todo)');
 
             } else if (key === 'insurances') {
 
@@ -420,36 +424,44 @@
 
         // Using the raw data right now
 
-        try {
+       // try {
 
-            var file = 'https://erik.trackmyvaccine.com/work/i/' + $('#patient_id').val();
+            var strFile = 'https://erik.trackmyvaccine.com/work/i/' + $('#patient_id').val();
 
-            var Q = file;
+            console.log(strFile);
 
-            var q = JSON.parse(Q);
+        $.ajax({
+            url: strFile,
+            type: 'GET',
+            dataType: 'json', // added data type
+            success: function(q) {
+                //console.log(q);
 
-            console.log(q);
+                QA = q;
+
+             }
+        });
 
             // POPULATE QUESTIONNAIRE AND SHOW WARNING ON SCANNER PAGE IF ALLERGIES
 
 
-        } catch {console.log('no Q');}
+       // } catch {console.log('no Q');}
 
-        $("#q1").val("No");
-        $("#q2").val("No");
-        $("#q3").val("No") ;
-        $("#q4").val("No");
-        $("#q5").val("No");
-        $("#q6").val("No");
+        // $("#q1").val("No");
+        // $("#q2").val("No");
+        // $("#q3").val("No") ;
+        // $("#q4").val("No");
+        // $("#q5").val("No");
+        // $("#q6").val("No");
 
-        $("#q1Yes").removeClass( "RedSelect" );
-        $("#q1No").addClass( "GreenSelect" );
-        $("#q2Yes").removeClass( "RedSelect" );
-        $("#q2No").addClass( "GreenSelect" );
-        $("#q3Yes").removeClass( "RedSelect" );
-        $("#q3No").addClass( "GreenSelect" );
-        $("#q4Yes").removeClass( "RedSelect" );
-        $("#q4No").addClass( "GreenSelect" );
+        // $("#q1Yes").removeClass( "RedSelect" );
+        // $("#q1No").addClass( "GreenSelect" );
+        // $("#q2Yes").removeClass( "RedSelect" );
+        // $("#q2No").addClass( "GreenSelect" );
+        // $("#q3Yes").removeClass( "RedSelect" );
+        // $("#q3No").addClass( "GreenSelect" );
+        // $("#q4Yes").removeClass( "RedSelect" );
+        // $("#q4No").addClass( "GreenSelect" );
 
         if($("#q1").val() == "No" && $("#q2").val() == "No" && $("#q3").val() == "No" && $("#q4").val() == "No")
         {
@@ -493,6 +505,15 @@
         $('#barcode-input').val('').focus();
         $('#barcode-form').show();
         $('#barcode-go-home').hide();
+
+        if (QA.q6 == 'Yes') {
+
+            $('#barcode-allergy').show();
+
+        } else {
+            $('#barcode-allergy').hide();
+        }
+
 
         return false;
 
