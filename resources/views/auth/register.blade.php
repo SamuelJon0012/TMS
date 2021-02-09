@@ -11,6 +11,7 @@
 
         <form method="POST" action="{{ route('register') }}">
           @csrf
+            <input type="hidden" name="version" value="2">
           <div class="row">
           <div class="col-md-6">
             <div class="card">
