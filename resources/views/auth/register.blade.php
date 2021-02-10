@@ -270,20 +270,20 @@
                 {{ __('Please fill out the fields below to provide additional information and to ensure proper identification during the testing and vaccination process.') }}
                 <br><br>
 
-                <div class="form-group row justify-content-center">
-                  <div class="col-md-1 m-0 text-right pr-0">
+{{--                <div class="form-group row justify-content-center">--}}
+{{--                  <div class="col-md-1 m-0 text-right pr-0">--}}
 
-                  </div>
-                  <div class="col-md-11 text-center m-0 pl-0">
-                        <input id="ssn" type="text" class="form-control-reg @error('ssn') is-invalid @enderror" name="ssn" value="{{ old('ssn') }}"  autocomplete="ssn" placeholder="{{ __('SOCIAL SECURITY NUMBER') }}">
+{{--                  </div>--}}
+{{--                  <div class="col-md-11 text-center m-0 pl-0">--}}
+{{--                        <input id="ssn" type="text" class="form-control-reg @error('ssn') is-invalid @enderror" name="ssn" value="{{ old('ssn') }}"  autocomplete="ssn" placeholder="{{ __('SOCIAL SECURITY NUMBER') }}">--}}
 
-                        @error('ssn')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
+{{--                        @error('ssn')--}}
+{{--                            <span class="invalid-feedback" role="alert">--}}
+{{--                                <strong>{{ $message }}</strong>--}}
+{{--                            </span>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 <div class="form-group row justify-content-center">
                   <div class="col-md-1 m-0 text-right pr-0">
@@ -396,7 +396,7 @@
                   </div>
                    <div class="col-md-12 text-center">
                       <select id="ethnicity" required="required" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
-                          <option value="">ETHINICITY</option>
+                          <option value="">ETHNICITY</option>
                           <option value="0">Unknown</option>
                           <option value="1">Hispanic or Latino</option>
                           <option value="2">Not Hispanic or Latino</option>

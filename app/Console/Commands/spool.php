@@ -77,9 +77,11 @@ class spool extends Command
 
                         if (strpos($file, '@')) {
 
+                        //if ($file == '/var/www/data/cmcochran@cbsd.org') {
+
                             $ctr++;
 
-                            try {
+                           try {
 
                                 $json = file_get_contents($file);
 
@@ -90,6 +92,8 @@ class spool extends Command
                                 $user = User::where('email', $em)->first();
 
                                 $id = $user->id;
+
+                                #if ($id != 133) continue;
 
                                 file_put_contents("work/pp/$id", $json);
 
@@ -283,6 +287,10 @@ class spool extends Command
         //if (!empty($row->phone_number1))
 
         $a = [];
+
+        if (empty($i->coverage_effective_date)) {
+            $i->coverage_effective_date = '2021-01-01';
+        }
 
         if (!empty($i->administrator_name)) $a["administrator_name"] = $i->administrator_name;
         if (!empty($i->group_id)) $a["group_id"] = $i->group_id;
