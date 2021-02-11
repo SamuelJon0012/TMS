@@ -16,6 +16,7 @@
 @endsection
 
 @section('content')
+    @admin
     <div class="container">
         @if(config('laravelusers.enablePackageBootstapAlerts'))
             <div class="row">
@@ -158,7 +159,7 @@
     </div>
 
     @include('laravelusers::modals.modal-delete')
-
+@endadmin
 @endsection
 
 @section('template_scripts')

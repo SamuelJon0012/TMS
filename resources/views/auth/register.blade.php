@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -11,6 +10,7 @@
 
         <form method="POST" action="{{ route('register') }}">
           @csrf
+            <input type="hidden" name="version" value="2">
           <div class="row">
           <div class="col-md-6">
             <div class="card">
@@ -263,34 +263,34 @@
           <div class="col-md-6">
             <div class="card">
               <div class="form-reg-header">
-                {{ __('OPTIONAL FIELDS') }}
+                {{ __('DEMOGRAPHIC INFO') }}
               </div>
               <div class="card-body text-center">
                 <br>
                 {{ __('Please fill out the fields below to provide additional information and to ensure proper identification during the testing and vaccination process.') }}
                 <br><br>
 
+{{--                <div class="form-group row justify-content-center">--}}
+{{--                  <div class="col-md-1 m-0 text-right pr-0">--}}
+
+{{--                  </div>--}}
+{{--                  <div class="col-md-11 text-center m-0 pl-0">--}}
+{{--                        <input id="ssn" type="text" class="form-control-reg @error('ssn') is-invalid @enderror" name="ssn" value="{{ old('ssn') }}"  autocomplete="ssn" placeholder="{{ __('SOCIAL SECURITY NUMBER') }}">--}}
+
+{{--                        @error('ssn')--}}
+{{--                            <span class="invalid-feedback" role="alert">--}}
+{{--                                <strong>{{ $message }}</strong>--}}
+{{--                            </span>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+
                 <div class="form-group row justify-content-center">
                   <div class="col-md-1 m-0 text-right pr-0">
 
                   </div>
                   <div class="col-md-11 text-center m-0 pl-0">
-                        <input id="ssn" type="text" class="form-control-reg @error('ssn') is-invalid @enderror" name="ssn" value="{{ old('ssn') }}"  autocomplete="ssn" placeholder="{{ __('SOCIAL SECURITY NUMBER') }}">
-
-                        @error('ssn')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="form-group row justify-content-center">
-                  <div class="col-md-1 m-0 text-right pr-0">
-
-                  </div>
-                  <div class="col-md-11 text-center m-0 pl-0">
-                        <input id="phone_number1" type="text" class="form-control-reg @error('phone_number1') is-invalid @enderror" name="phone_number1" value="{{ old('phone_number1') }}"  autocomplete="phone_number1"  placeholder="{{ __('SECONDARY PHONE NUMBER') }}">
+                        <input id="phone_number1" type="text" class="form-control-reg @error('phone_number1') is-invalid @enderror" name="phone_number1" value="{{ old('phone_number1') }}"  autocomplete="phone_number1"  placeholder="{{ __('SECONDARY PHONE NUMBER (optional)') }}">
 
                         @error('phone_number1')
                           <span class="invalid-feedback" role="alert">
@@ -316,8 +316,8 @@
 
                   </div>
                     <div class="col-md-4 text-center m-0 pl-0">
-                        <select id="dl_state" class="form-control-blue @error('dl_state') is-invalid @enderror" name="dl_state" placeholder="{{ __('STATE') }}">
-                          <option value="">STATE</option>
+                        <select id="dl_state" class="form-control-blue @error('dl_state') is-invalid @enderror" name="dl_state" placeholder="{{ __('STATE (optional)') }}">
+                          <option value="">STATE (optional)</option>
                           <option value="AL">Alabama</option>
                         	<option value="AK">Alaska</option>
                         	<option value="AZ">Arizona</option>
@@ -379,7 +379,7 @@
                     </div>
 
                     <div class="col-md-7 text-center">
-                        <input id="dl_number" type="text" class="form-control-reg @error('dl_number') is-invalid @enderror" name="dl_number" value="{{ old('dl_number') }}"  autocomplete="dl_number"  placeholder="{{ __('DRIVER LICENSE NUMBER') }}">
+                        <input id="dl_number" type="text" class="form-control-reg @error('dl_number') is-invalid @enderror" name="dl_number" value="{{ old('dl_number') }}"  autocomplete="dl_number"  placeholder="{{ __('DRIVER LICENSE NUMBER (optional)') }}">
 
                         @error('dl_number')
                             <span class="invalid-feedback" role="alert">
@@ -395,13 +395,23 @@
 
                   </div>
                    <div class="col-md-12 text-center">
-                      <select id="ethnicity" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
-                          <option value="">ETHINICITY</option>
-                          <option value="1">Unknown</option>
-                          <option value="2">Hispanic or Latino</option>
-                          <option value="3">Not Hispanic or Latine</option>
-                          <option value="4">Black or African American</option>
-                          <option value="5">Rather not say</option>
+                      <select id="ethnicity" required="required" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
+                          <option value="">ETHNICITY</option>
+                          <option value="0">Unknown</option>
+                          <option value="1">Hispanic or Latino</option>
+                          <option value="2">Not Hispanic or Latino</option>
+                          <option value="3">Black or African American</option>
+                          <option value="4">Rather not say</option>
+                          <option value="5">White or Caucasian</option>
+                                {{--Old wrong choices--}}
+{{--                          <option value="1">Unknown</option>--}}
+{{--                          <option value="2">Hispanic or Latino</option>--}}
+{{--                          <option value="3">Not Hispanic or Latino</option>--}}
+{{--                          <option value="4">Black or African American</option>--}}
+{{--                          <option value="5">Rather not say</option>--}}
+
+
+
                       </select>
                     </div>
                 </div>
@@ -410,8 +420,8 @@
                   <div class="col-md-1 m-0 text-right pr-0">
 
                   </div>
-                  <div class="col-md-11 text-center m-0 pl-0">
-                      <select id="race" class="form-control-blue @error('race') is-invalid @enderror" name="race" placeholder="{{ __('RACE') }}">
+                  <div class="col-md-12 text-center">
+                      <select id="race" required="required" class="form-control @error('race') is-invalid @enderror" name="race" placeholder="{{ __('RACE') }}">
                         <option value="">RACE</option>
 
                           <option value="1">American Indian or Alaska Native</option>
@@ -426,7 +436,7 @@
                 </div>
                 <div class="form-group row justify-content-center">
                     <div class="col-md-12 text-center">
-                      <select id="birth_sex" class="form-control @error('birth_sex') is-invalid @enderror" name="birth_sex" placeholder="{{ __('BIRTH SEX') }}">
+                      <select id="birth_sex" required="required" class="form-control @error('birth_sex') is-invalid @enderror" name="birth_sex" placeholder="{{ __('BIRTH SEX') }}">
                           <option value="">BIRTH SEX</option>
 
                           <option value="1">Male</option>
@@ -561,7 +571,7 @@
                     <img src="{{ asset('images/user-circle-icon.png') }}" border=0 alt="ImageIcon" width="32px">
                   </div>
                   <div class="col-md-11 text-center m-0 pl-0">
-                        <input id="npi" type="text" class="form-control-reg @error('npi') is-invalid @enderror" name="npi" value="{{ old('npi') }}" required autocomplete="npi" placeholder="{{ __('NATIONAL PROVIDER IDENTIFIER (NPI)') }}">
+                        <input id="npi" type="text" class="form-control-reg @error('npi') is-invalid @enderror" name="npi" value="{{ old('npi') }}" autocomplete="npi" placeholder="{{ __('NATIONAL PROVIDER IDENTIFIER (NPI) (Optional)') }}">
 
                         @error('npi')
                             <span class="invalid-feedback" role="alert">
@@ -575,7 +585,7 @@
                     <div class="col-md-12 text-left form-reg-color ">
                         {{ __('SELECT ALL THAT APPLY:') }}
                         <div class="row">
-                          <div class="col-4 text-right">
+                          <div class="col-4 text-left">
                             <input type="checkbox" name="is_doctor" id="is_doctor" value="1" > <label for ="is_doctor">{{ __('Doctor') }}</label>
                           </div>
                           <div class="col-4 text-center">
@@ -585,6 +595,22 @@
                             <input type="checkbox" name="is_nurse_practioner" id="is_nurse_practioner" value="1"> <label for ="is_nurse_practioner">{{ __('Nurse Practioner') }}</label>
                           </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-4 text-left">
+                                <input type="checkbox" name="is_cna" id="is_cna" value="1"> <label for ="is_cna">{{ __('CNAt') }}</label>
+                            </div>
+                            <div class="col-4 text-center">
+                                <input type="checkbox" name="is_pa" id="is_pa" value="1"> <label for ="is_pa">{{ __('Physicians Assistant') }}</label>
+                            </div>
+                            <div class="col-4 text-right">
+                                <input type="checkbox" name="is_emto" id="is_emto" value="1"> <label for ="is_emto">{{ __('EMT / Other') }}</label>
+                            </div>
+
+                        </div>
+
+
+
                     </div>
                 </div>
 

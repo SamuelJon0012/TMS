@@ -323,7 +323,7 @@
             </div>
         </div>
     </div>
-    <div class="sorry-page-modal">
+    <div class="sorry-page-modal modals">
         <div class="sorry-modal-inner">
             <div id="page-content">
                 <div class="sorry-top">{{ __('THE SCREENING YOU COMPLETED INDICATES THAT YOU MAY BE AT INCREASED RISK FOR COVID-19') }}</div>

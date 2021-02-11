@@ -2,6 +2,8 @@
 
     // Questionnaire
 
+
+
     $(document).ready(function(){
         $(".Qoption").click(function(){
             var oResult = $(this).attr('rel');
@@ -127,10 +129,36 @@
                 //console.log(time);
                 $('#date').html(date);
                 $('#time').html(time);
+                $('#location').html(time);
+
+            } else if (key === 'schedule1') {
+
+
+                let date = value.date;
+                let time = value.time;
+                let location = value.location;
+
+                $('#schedule2').hide(); // show it later if we have one
+
+                $('#date').html(date);
+                $('#time').html(time);
+                $('#location').html(time);
+
+            } else if (key === 'schedule2') {
+
+                let date = value.date;
+                let time = value.time;
+                let location = value.location;
+
+                $('#schedule2').show();
+
+                $('#date2').html(date);
+                $('#time2').html(time);
+                $('#location2').html(time);
 
             } else if (key === 'site') {
                 //console.log(value[0]);
-                $('#location').html(value[0].name);
+                //$('#location').html(value[0].name);
 
             } else if (key === 'phone_numbers') {
                 console.log(value[0]);
@@ -244,7 +272,26 @@
 
         $('.close-all').on('click', function() {
             $('.modals').hide();
-            //$('.sorry-page-modal').hide();
+
+            $("#q1").val("");
+            $("#q2").val("");
+            $("#q3").val("") ;
+            $("#q4").val("");
+            $("#q5").val("");
+            $("#q6").val("");
+
+            $("#q1Yes").removeClass( "RedSelect" );
+            $("#q1No").removeClass( "GreenSelect" );
+            $("#q2Yes").removeClass( "RedSelect" );
+            $("#q2No").removeClass( "GreenSelect" );
+            $("#q3Yes").removeClass( "RedSelect" );
+            $("#q3No").removeClass( "GreenSelect" );
+            $("#q4Yes").removeClass( "RedSelect" );
+            $("#q4No").removeClass( "GreenSelect" );
+            $("#q5Yes").removeClass( "GreySelect" );
+            $("#q5No").removeClass( "GreySelect" );
+            $("#q6Yes").removeClass( "GreySelect" );
+            $("#q6No").removeClass( "GreySelect" );
 
         });
 
