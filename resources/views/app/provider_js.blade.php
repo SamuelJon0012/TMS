@@ -585,16 +585,23 @@
     }
 
     function doHandleBarcode() {
+        //
+        // try {
+        //
+        //     doHandleBarcodePost();
+        //
+        // } catch {
+        // }
 
-        try {
-
-            doHandleBarcodePost();
-
-        } catch {
-        }
 
 
         let barcode = $('#barcode-input').val();
+
+        if (barcode.trim() === '') {
+            alert('Barcode is required');
+            return;
+        }
+
         let adminsite = $('#admin-site').val();
         let provider = $('#provider_id').val();
 
