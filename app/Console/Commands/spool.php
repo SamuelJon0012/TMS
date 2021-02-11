@@ -64,9 +64,107 @@ class spool extends Command
             # Then archive the file in lake/users/
 
             switch ($chain) {
+
+
+
+                case 'vs':
+                case 'vs2':
+                case 'vsee':
+
+                    $conn = mysqli_connect(
+                        'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
+                        'admin',
+                        '4rfvBGT%6yhn',
+                        'tms'
+                    );
+
+                    $this->info('vsee');
+
+                    # do this after moving files into lake folder
+
+                    if ($chain == 'vs2') { # <------------ this is cron
+
+                        $files = glob('/var/www/data/vs*'); // This is going to include vswh (Webhook)
+
+                    } else {
+
+                        $files = glob('/var/www/lake/vs/*'); // This is to recap everything
+                    }
+
+                    $ctr = 0;
+
+                    $sql =
+                    "INSERT INTO vsee SET vs_id = %s,
+                        user_id = %s,
+                        status = %s,
+                        subtype = %s,
+                        code = %s,
+                        first_name = '%s',
+                        last_name = '%s',
+                        full_name = '%s',
+                        username = '%s',
+                        vseeid = '%s',
+                        dob = '%s',
+                        email = '%s',
+                        timezone = '%s',
+                        accountcode = '%s',
+                        token_token = '%s',
+                        token_user_type = '%s',
+                        rooms = '%s',
+                        preference = '%s',
+                        token = '%s'
+                        ON DUPLICATE KEY UPDATE token_token = '%s', token='%s';";
+
+
+                    foreach ($files as $file) {
+
+                        if(strpos($file, '@') != false) continue;
+                        if(strpos($file, '/vswh') > 0) continue; // don't do the webhooks
+
+                        $ctr++;
+
+                        try {
+
+                            $json = file_get_contents($file);
+
+                            $row = json_decode($json);
+
+                            if (!isset($row->data->vseeid)) {
+                                $this->error('No Vsee Id!');
+                                continue;
+                            }
+
+                            $result = mysqli_query($conn,sprintf($sql,
+                                $row->XXX,
+                                $row->XXX,
+                                $row->XXX,
+                                $row->XXX
+
+                            ));
+
+                            $this->line("$ctr. $file");
+
+                            $copy = str_replace('/var/www/data/', '/var/www/lake/vs/', $file);
+
+                            rename($file, $copy);
+
+                        } catch (\Exception $e) {
+
+                            $this->error($e->getMessage() . "\n" . $json . "\n");
+
+                            #exit;
+
+                        }
+                    }
+
+                    break;
+
+
+
                 case 'bc':
                 case 'bc2':
                 case 'barcodes':
+                case 'barcode':
                     $conn = mysqli_connect(
                         'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
                         'admin',
@@ -78,22 +176,21 @@ class spool extends Command
 
                     # do this after moving files into lake folder
 
-                    # Todo: then Archive the lake folder
-
-                    if ($chain == 'bc2') {
+                    if ($chain == 'bc2') { # <------------ this is cron
 
                         $files = glob('/var/www/data/bc*');
 
                     } else {
 
-                        $files = glob('/var/www/lake/bc/*');
+                        $files = glob('/var/www/lake/bc/*'); # <-- no, this retries all
                     }
 
                     $ctr = 0;
-# Todo make this a stored procedure or use PDO prepared stmt ... Don't use entities / models for performance
-$sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id=%s, uniq_id = '%s', barcode = '%s', timestamp = '%s'";
+# Todo make this a stored procedure or prepared stmt ... but Don't use entities / models for performance
+$sql =
+"INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id=%s, uniq_id = '%s', barcode = '%s', timestamp = '%s'";
 
-                    foreach ($files as $file) {
+                    foreach ($files as $file) { if(strpos($file, '@') != false) continue;
 
                         $ctr++;
 
@@ -127,6 +224,10 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
                             $this->line("$ctr. $file");
 
+                            $copy = str_replace('/var/www/data/', '/var/www/lake/bc/', $file);
+
+                            rename($file, $copy);
+
                         } catch (\Exception $e) {
 
                             $this->error($e->getMessage() . "\n" . $json . "\n");
@@ -134,13 +235,10 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
                             #exit;
 
                         }
-
-
                     }
 
                     break;
 
-                    break;
                 case 'e':
                 case 'encounter':
                     $this->info('encounter');
@@ -368,9 +466,9 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
                                     $result = $this->upsertPatient($id, $row, json_decode($i));
 
-                                    $copy = str_replace('/var/www/data/', '/var/www/lake/pq/', $file);
+                                    $copy = str_replace('/var/www/data/', '/var/www/lake/users/', $file);
 
-                                    copy($file, $copy);
+                                    rename($file, $copy);
 
                                 }
 
@@ -408,17 +506,13 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
                     $ctr = 0;
 
-                    foreach ($files as $file) {
+                    foreach ($files as $file) { if(strpos($file, '@') != false) continue;
 
                         $ctr++;
 
                         try {
 
                             $json = file_get_contents($file);
-
-                            $copy = str_replace('/var/www/data/', '/var/www/lake/pq/', $file);
-
-                            copy($file, $copy);
 
                             $row = json_decode($json);
 
@@ -436,6 +530,11 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
 
                             }
+
+                            $copy = str_replace('/var/www/data/', '/var/www/lake/pq/', $file);
+
+                            rename($file, $copy);
+
 
                             $this->line("$ctr. $file => $id");
 
@@ -467,7 +566,7 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
                     $ctr = 0;
 
-                    foreach ($files as $file) {
+                    foreach ($files as $file) { if(strpos($file, '@') != false) continue;
 
                         $ctr++;
 
