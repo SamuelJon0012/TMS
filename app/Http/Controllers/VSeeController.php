@@ -57,6 +57,8 @@ class VSeeController extends Controller
 
         try {
 
+            # Todo Oh God No
+
             $name = explode(' ', Auth::user()->name . ' Nosurname');
 
         } catch (\Exception $e) {
@@ -124,6 +126,8 @@ class VSeeController extends Controller
     {
 
         try {
+
+            # Todo Oh God No
 
             $name = explode(' ', Auth::user()->name . ' Nosurname');
 

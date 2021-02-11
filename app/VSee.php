@@ -23,6 +23,11 @@ class VSee
 
     protected $get=[], $first, $array=[];
 
+    protected $token;
+
+    protected $first_name, $last_name, $dob, $email;
+
+
     /**
      * VSee constructor.
      *
@@ -32,6 +37,8 @@ class VSee
 //    }
 
     function getSSOToken($first, $last, $dob, $email, $username = false) {
+
+        $last = str_replace('’', '\'', $last); // how are these getting in here?
 
         $params = [
             'first_name' => $first,
@@ -106,13 +113,33 @@ class VSee
         return $msg;
     }
 
-    function getVisits($first='Jillian', $last='Raisman', $dob='1991-01-15', $email='jraisman@bucksiu.org') {
+
+    public function getVisit($id) {
+
+        // token for same previously searched patient
+
+        $this->url = "https://api-trackmysolutions.vsee.me/api_v3/visits/$id.json";
+
+        echo "\n$this->url\n";
+
+        $response = $this->getCurl($this->token);
+
+        return $response;
+
+    }
+
+    public function getVisits($first='Jillian', $last='Raisman', $dob='1991-01-15', $email='jraisman@bucksiu.org') {
+
+        $this->first_name = $first;
+        $this->last_name = $last;
+        $this->dob = $dob;
+        $this->email = $email;
 
         $result = $this->getSSOToken($first, $last, $dob, $email);
 
         if (isset($result->data->token->token)) {
 
-            $token = $result->data->token->token;
+            $this->token = $result->data->token->token;
 
         } else {
 
@@ -121,7 +148,7 @@ class VSee
 
         $this->url = 'https://api-trackmysolutions.vsee.me/api_v3/visits.json';
 
-        $response = $this->getCurl($token);
+        $response = $this->getCurl($this->token);
 
         return $response;
 
