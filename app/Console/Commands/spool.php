@@ -69,6 +69,8 @@ class spool extends Command
                 case 'vs2':
                 case 'vsee':
 
+                    # NOT DONE YET ! ! !
+
                     $conn = mysqli_connect(
                         'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
                         'admin',
@@ -224,7 +226,9 @@ $sql =
 
                             $copy = str_replace('/var/www/data/', '/var/www/lake/bc/', $file);
 
-                            #rename($file, $copy);
+                            $this->line("copy $file to $copy");
+
+                            rename($file, $copy);
 
                         } catch (\Exception $e) {
 
@@ -252,8 +256,9 @@ $sql =
 
                     #1. Get the patient from user table (foreach that not has encounter(s)) MEMEME
 
-                    #$sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != ''";
                     $sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != ''";
+
+                    #$sql = "SELECT * FROM users WHERE id > 39 AND ifnull(dob, '') != ''";
                     # Todo: Update visits with open status (10, 20) close visits with barcodes
 
                     $rows = mysqli_query($conn, $sql);
@@ -403,6 +408,12 @@ $sql =
                                 exit;
                             }
 
+                            mysqli_query($conn, "
+                                update users u
+                                left join visits v on v.user_id = u.id
+                                set u.encounter=v.status
+                            ");
+
                         }
                     }
                 } catch (\Exception $e) {
@@ -430,8 +441,8 @@ $sql =
 
                     $this->info('patient_profile');
 
-                    #$files = glob('/var/www/data/*');
-                    $files = glob('/var/www/lake/users/*');
+                    $files = glob('/var/www/data/*');
+                    #$files = glob('/var/www/lake/users/*');
 
                     $ctr = 0;
 
@@ -473,10 +484,14 @@ $sql =
 
                                     $this->line("Move $file to $copy");
 
-                                    #rename($file, $copy);
+                                    rename($file, $copy);
 
-                                } else {
+                                                                    } else {
+
                                     $this->line('*** No questionnaire file yet');
+
+                                    // qmake it, then it'll get picked up next time Todo
+
                                 }
 
 
@@ -540,7 +555,9 @@ $sql =
 
                             $copy = str_replace('/var/www/data/', '/var/www/lake/pq/', $file);
 
-                            #rename($file, $copy);
+                            $this->line('rename $file as $copy');
+
+                            rename($file, $copy);
 
 
                             $this->line("$ctr. $file => $id");
@@ -646,7 +663,7 @@ $sql =
     function upsertPatient($id, $row, $i)
     {
 
-        $this->P->setAddress1($row->address1)
+        $this->P->setAddress1($row->address1) // errors out here when it's a provider ... meh that's fine
             ->setAddress2($row->address2)
             ->setCity($row->city)
             ->setDateOfBirth($row->date_of_birth)
