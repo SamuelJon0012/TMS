@@ -502,10 +502,12 @@ class BurstIq
     public function save() {
 
         $json = view($this->view)->with(['data' => $this])->render();
-//exit($json);
+
+        //echo($json);
+
         $results = $this->upsert($this->chain, $json);
 
-        //var_dump($results);
+        var_dump($results);
 
         return $results;
 

@@ -65,8 +65,6 @@ class spool extends Command
 
             switch ($chain) {
 
-
-
                 case 'vs':
                 case 'vs2':
                 case 'vsee':
@@ -146,7 +144,7 @@ class spool extends Command
 
                             $copy = str_replace('/var/www/data/', '/var/www/lake/vs/', $file);
 
-                            rename($file, $copy);
+                            #rename($file, $copy);
 
                         } catch (\Exception $e) {
 
@@ -226,7 +224,7 @@ $sql =
 
                             $copy = str_replace('/var/www/data/', '/var/www/lake/bc/', $file);
 
-                            rename($file, $copy);
+                            #rename($file, $copy);
 
                         } catch (\Exception $e) {
 
@@ -252,9 +250,11 @@ $sql =
 
                     # done -1 Make table from barcodes (insert ignore)
 
-                    #1. Get the patient from user table (foreach that not has encounter(s))
+                    #1. Get the patient from user table (foreach that not has encounter(s)) MEMEME
 
+                    #$sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != ''";
                     $sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != ''";
+                    # Todo: Update visits with open status (10, 20) close visits with barcodes
 
                     $rows = mysqli_query($conn, $sql);
 
@@ -430,7 +430,8 @@ $sql =
 
                     $this->info('patient_profile');
 
-                    $files = glob('/var/www/data/*');
+                    #$files = glob('/var/www/data/*');
+                    $files = glob('/var/www/lake/users/*');
 
                     $ctr = 0;
 
@@ -442,7 +443,9 @@ $sql =
 
                             $ctr++;
 
-//                            try {
+                            try {
+
+                                $i = '!!!!!!!!!!!';
 
                                 $json = file_get_contents($file);
 
@@ -454,7 +457,7 @@ $sql =
 
                                 $id = $user->id;
 
-                                #if ($id != 133) continue;
+                                #if ($id != 510) continue;
 
                                 file_put_contents("work/pp/$id", $json);
 
@@ -468,20 +471,24 @@ $sql =
 
                                     $copy = str_replace('/var/www/data/', '/var/www/lake/users/', $file);
 
-                                    rename($file, $copy);
+                                    $this->line("Move $file to $copy");
 
+                                    #rename($file, $copy);
+
+                                } else {
+                                    $this->line('*** No questionnaire file yet');
                                 }
 
 
                                 $this->line("$ctr. $file => $id");
 
-//                            } catch (\Exception $e) {
-//
-//                                $this->error($e->getMessage() . "\n" . $json . "\n" . $i);
-//
-//                                #exit;
-//
-//                            }
+                            } catch (\Exception $e) {
+
+                                $this->error($e->getMessage() . "\n" . $json . "\n" . $i);
+
+                                #exit;
+
+                            }
 
                         }
 
@@ -533,7 +540,7 @@ $sql =
 
                             $copy = str_replace('/var/www/data/', '/var/www/lake/pq/', $file);
 
-                            rename($file, $copy);
+                            #rename($file, $copy);
 
 
                             $this->line("$ctr. $file => $id");

@@ -453,14 +453,12 @@ class PatientProfile extends BurstIq
 
                 $insurance = (array) $insurance;
 
-                # cause an exception if any of these do not exist
-
                 $insurances_array[] =
                 [
                     'administrator_name' => $insurance['administrator_name'] ?? '',
                     'group_id' => $insurance['group_id'] ?? '',
                     'employer_name' => $insurance['employer_name'] ?? '',
-                    'coverage_effective_date' => $insurance['coverage_effective_date'] ?? '',
+                    'coverage_effective_date' => '2021-01-01', // '$insurance['coverage_effective_date'] ?? '',
                     'issuer_id' => $insurance['issuer_id'] ?? '',
                     'primary_cardholder' => $insurance['primary_cardholder'] ?? '',
                     'relationship_to_primary_cardholder' => $insurance['relationship_to_primary_cardholder']  ?? '',
