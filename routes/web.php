@@ -46,6 +46,7 @@ Route::get('/biq/test-login', 'BurstIqTestController@login')->name('test_login')
 
 Route::get('/biq/find', 'BurstIqController@find')->name('biq_find');
 Route::get('/biq/get', 'BurstIqController@get')->name('biq_get');
+Route::get('/biq/encounters', 'BurstIqController@encounters')->name('biq_encounters');
 
 Route::get('/biq/test-getting-a-chain', 'BurstIqTestController@testGettingAChain')->name('test_getting_a_chain');
 /*
