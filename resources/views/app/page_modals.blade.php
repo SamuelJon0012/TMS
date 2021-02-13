@@ -58,7 +58,7 @@
 
             <h1>Affirmation Statement</h1>
             <div>
-                I affirm that I work with low incidence students and I meet one the of the 1A criteria listed below
+                I affirm that I meet one of the 1A criteria listed below
             </div>
 
             <div>
