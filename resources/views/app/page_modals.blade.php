@@ -4,7 +4,14 @@
 
         <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
 
-        <div id="page-content"></div>
+        <div id="page-content">
+
+            <h1>My Vaccines</h1>
+
+            <div id="my-vaccine-info"></div>
+
+        </div>
+
 
     </div>
 </div>
