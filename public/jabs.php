@@ -47,7 +47,7 @@ $SQL = "
         u.email,
            ifnull(v.room_name,'') as room_name,
            b.barcode,
-           CONVERT_TZ(b.`timestamp`, '+00:00', '-06:00') as timestamp,
+           CONVERT_TZ(b.`timestamp`, '+00:00', '-05:00') as timestamp,
            p.name as provider,
            ifnull(v.status,0) as status
 

@@ -64,9 +64,107 @@ class spool extends Command
             # Then archive the file in lake/users/
 
             switch ($chain) {
+
+                case 'vs':
+                case 'vs2':
+                case 'vsee':
+
+                    # NOT DONE YET ! ! !
+
+                    $conn = mysqli_connect(
+                        'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
+                        'admin',
+                        '4rfvBGT%6yhn',
+                        'tms'
+                    );
+
+                    $this->info('vsee');
+
+                    # do this after moving files into lake folder
+
+                    if ($chain == 'vs2') { # <------------ this is cron
+
+                        $files = glob('/var/www/data/vs*'); // This is going to include vswh (Webhook)
+
+                    } else {
+
+                        $files = glob('/var/www/lake/vs/*'); // This is to recap everything
+                    }
+
+                    $ctr = 0;
+
+                    $sql =
+                    "INSERT INTO vsee SET vs_id = %s,
+                        user_id = %s,
+                        status = %s,
+                        subtype = %s,
+                        code = %s,
+                        first_name = '%s',
+                        last_name = '%s',
+                        full_name = '%s',
+                        username = '%s',
+                        vseeid = '%s',
+                        dob = '%s',
+                        email = '%s',
+                        timezone = '%s',
+                        accountcode = '%s',
+                        token_token = '%s',
+                        token_user_type = '%s',
+                        rooms = '%s',
+                        preference = '%s',
+                        token = '%s'
+                        ON DUPLICATE KEY UPDATE token_token = '%s', token='%s';";
+
+
+                    foreach ($files as $file) {
+
+                        if(strpos($file, '@') != false) continue;
+                        if(strpos($file, '/vswh') > 0) continue; // don't do the webhooks
+
+                        $ctr++;
+
+                        try {
+
+                            $json = file_get_contents($file);
+
+                            $row = json_decode($json);
+
+                            if (!isset($row->data->vseeid)) {
+                                $this->error('No Vsee Id!');
+                                continue;
+                            }
+
+                            $result = mysqli_query($conn,sprintf($sql,
+                                $row->XXX,
+                                $row->XXX,
+                                $row->XXX,
+                                $row->XXX
+
+                            ));
+
+                            $this->line("$ctr. $file");
+
+                            $copy = str_replace('/var/www/data/', '/var/www/lake/vs/', $file);
+
+                            #rename($file, $copy);
+
+                        } catch (\Exception $e) {
+
+                            $this->error($e->getMessage() . "\n" . $json . "\n");
+
+                            #exit;
+
+                        }
+                    }
+
+                    break;
+
+
+
                 case 'bc':
                 case 'bc2':
                 case 'barcodes':
+                case 'barcode':
                     $conn = mysqli_connect(
                         'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
                         'admin',
@@ -78,22 +176,21 @@ class spool extends Command
 
                     # do this after moving files into lake folder
 
-                    # Todo: then Archive the lake folder
-
-                    if ($chain == 'bc2') {
+                    if ($chain == 'bc2') { # <------------ this is cron
 
                         $files = glob('/var/www/data/bc*');
 
                     } else {
 
-                        $files = glob('/var/www/lake/bc/*');
+                        $files = glob('/var/www/lake/bc/*'); # <-- no, this retries all
                     }
 
                     $ctr = 0;
-# Todo make this a stored procedure or use PDO prepared stmt ... Don't use entities / models for performance
-$sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id=%s, uniq_id = '%s', barcode = '%s', timestamp = '%s'";
+# Todo make this a stored procedure or prepared stmt ... but Don't use entities / models for performance
+$sql =
+"INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id=%s, uniq_id = '%s', barcode = '%s', timestamp = '%s'";
 
-                    foreach ($files as $file) {
+                    foreach ($files as $file) { if(strpos($file, '@') != false) continue;
 
                         $ctr++;
 
@@ -127,6 +224,12 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
                             $this->line("$ctr. $file");
 
+                            $copy = str_replace('/var/www/data/', '/var/www/lake/bc/', $file);
+
+                            $this->line("copy $file to $copy");
+
+                            rename($file, $copy);
+
                         } catch (\Exception $e) {
 
                             $this->error($e->getMessage() . "\n" . $json . "\n");
@@ -134,13 +237,10 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
                             #exit;
 
                         }
-
-
                     }
 
                     break;
 
-                    break;
                 case 'e':
                 case 'encounter':
                     $this->info('encounter');
@@ -154,9 +254,12 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
                     # done -1 Make table from barcodes (insert ignore)
 
-                    #1. Get the patient from user table (foreach that not has encounter(s))
+                    #1. Get the patient from user table (foreach that not has encounter(s)) MEMEME
 
                     $sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != ''";
+
+                    #$sql = "SELECT * FROM users WHERE id > 39 AND ifnull(dob, '') != ''";
+                    # Todo: Update visits with open status (10, 20) close visits with barcodes
 
                     $rows = mysqli_query($conn, $sql);
 
@@ -305,6 +408,12 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
                                 exit;
                             }
 
+                            mysqli_query($conn, "
+                                update users u
+                                left join visits v on v.user_id = u.id
+                                set u.encounter=v.status
+                            ");
+
                         }
                     }
                 } catch (\Exception $e) {
@@ -333,6 +442,7 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
                     $this->info('patient_profile');
 
                     $files = glob('/var/www/data/*');
+                    #$files = glob('/var/www/lake/users/*');
 
                     $ctr = 0;
 
@@ -344,7 +454,9 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
                             $ctr++;
 
-//                            try {
+                            try {
+
+                                $i = '!!!!!!!!!!!';
 
                                 $json = file_get_contents($file);
 
@@ -356,7 +468,7 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
                                 $id = $user->id;
 
-                                #if ($id != 133) continue;
+                                #if ($id != 510) continue;
 
                                 file_put_contents("work/pp/$id", $json);
 
@@ -368,22 +480,30 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
                                     $result = $this->upsertPatient($id, $row, json_decode($i));
 
-                                    $copy = str_replace('/var/www/data/', '/var/www/lake/pq/', $file);
+                                    $copy = str_replace('/var/www/data/', '/var/www/lake/users/', $file);
 
-                                    copy($file, $copy);
+                                    $this->line("Move $file to $copy");
+
+                                    rename($file, $copy);
+
+                                                                    } else {
+
+                                    $this->line('*** No questionnaire file yet');
+
+                                    // qmake it, then it'll get picked up next time Todo
 
                                 }
 
 
                                 $this->line("$ctr. $file => $id");
 
-//                            } catch (\Exception $e) {
-//
-//                                $this->error($e->getMessage() . "\n" . $json . "\n" . $i);
-//
-//                                #exit;
-//
-//                            }
+                            } catch (\Exception $e) {
+
+                                $this->error($e->getMessage() . "\n" . $json . "\n" . $i);
+
+                                #exit;
+
+                            }
 
                         }
 
@@ -408,17 +528,13 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
                     $ctr = 0;
 
-                    foreach ($files as $file) {
+                    foreach ($files as $file) { if(strpos($file, '@') != false) continue;
 
                         $ctr++;
 
                         try {
 
                             $json = file_get_contents($file);
-
-                            $copy = str_replace('/var/www/data/', '/var/www/lake/pq/', $file);
-
-                            copy($file, $copy);
 
                             $row = json_decode($json);
 
@@ -436,6 +552,13 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
 
                             }
+
+                            $copy = str_replace('/var/www/data/', '/var/www/lake/pq/', $file);
+
+                            $this->line('rename $file as $copy');
+
+                            rename($file, $copy);
+
 
                             $this->line("$ctr. $file => $id");
 
@@ -467,7 +590,7 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
 
                     $ctr = 0;
 
-                    foreach ($files as $file) {
+                    foreach ($files as $file) { if(strpos($file, '@') != false) continue;
 
                         $ctr++;
 
@@ -540,7 +663,7 @@ $sql = "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id
     function upsertPatient($id, $row, $i)
     {
 
-        $this->P->setAddress1($row->address1)
+        $this->P->setAddress1($row->address1) // errors out here when it's a provider ... meh that's fine
             ->setAddress2($row->address2)
             ->setCity($row->city)
             ->setDateOfBirth($row->date_of_birth)

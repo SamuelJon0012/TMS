@@ -66,7 +66,7 @@ class VSee
 
         $id = Auth::id();
 
-        file_put_contents ('/var/www/data/vs' . $id . '_' . uniqid(true), $json);
+        file_put_contents ('/var/www/data/vs_' . $id . '_' . uniqid(true), $json);
 
         $data = json_decode($json);
 
