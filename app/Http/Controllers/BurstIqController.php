@@ -170,15 +170,23 @@ class BurstIqController extends Controller
         # Todo: sanitize Q to prevent hackery
         #$Q = $this->sanitize($Q);
 
-
-
-
         if (empty($Q)) {
 
             # Todo or something
         }
 
-        $result = Encounters::where('patient_id', $Q)->first()->toArray();
+        if ($Q < 40) {
+            $Q = 111;
+        }
+
+        $result = Encounters::where('patient_id', $Q)->first();
+
+
+        if (empty($result)) {
+            exit("Vaccination data for Patient has not been posted");
+        }
+
+        $result = $result->toArray();
 
         return view('app.my_vaccines', $result);
 
