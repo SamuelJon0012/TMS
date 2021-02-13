@@ -78,6 +78,8 @@ class CoverController extends Controller
 
         }
 
+        $VALID='Yes';
+
          //echo $request->get('email');
         //var_dump($data);exit;
 
