@@ -26,6 +26,7 @@
     <style type="text/css">
     @yield('styleCss')
     </style>
+    @stack('pageHeader')
 </head>
 <body>
     <div id="app">
@@ -119,6 +120,7 @@
 
     </div>
 
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+
 </body>
 </html>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>

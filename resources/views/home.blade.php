@@ -25,6 +25,14 @@
     max-height:50%;
   }
 
+  @media(max-width: 24pc){
+    .col-collapse{
+      display: block;
+      margin: 0.5pc auto;
+      width: 90%;
+    }
+  }
+
 @endsection
 
 @section('content')
@@ -51,58 +59,56 @@
           @endif
 
           @if(Auth::check() && Auth::user()->hasRole('patient'))
-            <div class="row">
-              <div class="col-3">
-                <div  title="This feature is currently unnavailable" disabled='disabled' id="myvaccine-button" class="homeTop-button">
-                  <img class="button-image" src="{{ asset('images/syringe.png') }}">
-                  <br>
-                  {{ __('My Vaccines') }}
-                </div>
-              </div>
+            <?php
+              $items = [
+                [
+                  'id'=>'myvaccine-button',
+                  'image'=>asset('images/syringe.png'),
+                  'caption'=>__('My Vaccines'),
+                  'hint'=>'This feature is currently unavailable',
+                ],
+                [
+                  'id'=>'',
+                  'image'=>asset('images/alert-icon.png'),
+                  'caption'=>__('Alerts'),
+                  'hint'=>'This feature is currently unavailable',
+                  'classnames'=>'alert-button',
+                ],
+                [
+                  'id'=>'',
+                  'image'=>asset('images/settings-icon.png'),
+                  'caption'=>__('Settings'),
+                  'hint'=>'This feature is currently unavailable',
+                  'classnames'=>'settings-button',
+                ],
+                [
+                  'id'=>'',
+                  'image'=>asset('images/help-icon.png'),
+                  'caption'=>__('Help'),
+                  'onclick'=>"$('.help-page-modal').show()",
+                ],
+              ];
+            ?>
+            @include('controls.large_flow_buttons', ['items'=>$items])
 
-              <div class="col-3">
-                <div  title="This feature is currently unnavailable" disabled='disabled' class="alert-button homeTop-button">
-                  <img class="button-image" src="{{ asset('images/alert-icon.png') }}" />
-                  <br/>
-                  {{ __('Alerts') }}
-                </div>
-              </div>
-
-              <div class="col-3">
-                <div  title="This feature is currently unnavailable" disabled='disabled' class="settings-button homeTop-button">
-                  <img class="button-image" src="{{ asset('images/settings-icon.png') }}" />
-                  <br/>
-                  {{ __('Settings') }}
-                </div>
-              </div>
-
-              <div class="col-3">
-                <div class="help-button homeTop-button" onclick="$('.help-page-modal').show()">
-                  <img class="button-image" src="{{ asset('images/help-icon.png') }}" />
-                  <br/>
-                  {{ __('Help') }}
-                </div>
-              </div>
-
-            </div>
             <br/><br/><br/>
             <div class="row">
 
                 @if($token == '0')
 
-                    <div class="col-6">
+                    <div class="col-6 col-collapse">
                     <button id="scheduleVaccineAppointment" onclick="doPatientQuestionnaire();" class="btn btn-primary form-control">{{ __('Schedule a Vaccine Appointment') }}</button>
                     </div>
-                    <div class="col-6">
+                    <div class="col-6 col-collapse">
                         <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
                     </div>
 
                 @else
 
-                    <div class="col-6">
+                    <div class="col-6 col-collapse">
                         <a target = "_blank" href="/vsee/return" class="btn btn-primary form-control">{{ __('Go to Appointments') }}</a>
                     </div>
-                    <div class="col-6">
+                    <div class="col-6 col-collapse">
                         <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
                     </div>
 
@@ -112,48 +118,37 @@
           @endif
 
           @if(Auth::check() && Auth::user()->hasRole('provider'))
-            <div class="row">
-              <div class="col-3">
-                <div class="patient-button homeTop-button">
-                  <img class="button-image" src="{{ asset('images/magnifyingglass-icon.png') }}">
-                  <br>
-                  {{ __('Search For Patient') }}
-                </div>
-              </div>
+            @include('controls.large_flow_buttons', ['items'=>[
+              [
+                'image'=>asset('images/magnifyingglass-icon.png'),
+                'caption'=>__('Search For Patient'),
+                'hint'=>'This feature is currently unavailable',
+                'classnames'=>'patient-button',
+              ],
+              [
+                'image'=>asset('images/friend-icon.png'),
+                'caption'=>__('Scheduled Patients by Location'),
+                'hint'=>'This feature is currently unavailable',
+                'classnames'=>'provider-button',
+              ],
+              [
+                'image'=>asset('images/settings-icon.png'),
+                'caption'=>__('Settings'),
+                'hint'=>'This feature is currently unavailable',
+                'classnames'=>'settings-button',
+              ],
+              [
+                'image'=>asset('images/help-icon.png'),
+                'caption'=>__('Help'),
+                'hint'=>'This feature is currently unavailable',
+                'classnames'=>'help-button',
+              ],
 
-              <div class="col-3">
+            ]])
 
-                <div class="provider-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
-
-                  <img class="button-image" src="{{ asset('images/friend-icon.png') }}" />
-                  <br/>
-                  {{ __('Scheduled Patients by Location') }}
-                </div>
-              </div>
-
-              <div class="col-3">
-
-                <div class="settings-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
-
-                  <img class="button-image" src="{{ asset('images/settings-icon.png') }}" />
-                  <br/>
-                  {{ __('Settings') }}
-                </div>
-              </div>
-
-              <div class="col-3">
-
-                <div class="help-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
-
-                  <img class="button-image" src="{{ asset('images/help-icon.png') }}" />
-                  <br/>
-                  {{ __('Help') }}
-                </div>
-              </div>
-            </div>
             <br><br><br>
             <div class="row justify-content-center"  title="This feature is currently unnavailable" >
-              <div class="col-6">
+              <div class="col-6 col-collapse">
                 <button disabled='disabled' id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-location">{{ __('Set Vaccine Location') }}</button>
               </div>
             </div>
@@ -162,7 +157,7 @@
           <br/><br/>
           <div class="row">
             <div class="col-12 text-center">
-              <img src = "{{ asset('images/trackmysolutionslogoregtm-web.jpg') }}">
+              <img src = "{{ asset('images/trackmysolutionslogoregtm-web.jpg') }}" style="max-width: 100%">
                <br/>
                 [
                 <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Terms</a>
@@ -176,3 +171,14 @@
 </div>
 
 @endsection
+
+@push('pageHeader')
+  <script src="{{ asset('js/noBacksies.js') }}"></script>
+  <script>
+      noBacksies.onBack = function(){
+        var lst = document.getElementsByClassName('modals');
+        for (var i = 0; i < lst.length; i++)
+          lst[i].style.display = 'none';
+      }
+  </script>
+@endpush
