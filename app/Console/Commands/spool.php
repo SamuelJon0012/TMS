@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\PatientProfile;
 use App\User;
+use App\VSee;
 use Illuminate\Console\Command;
 
 class spool extends Command
@@ -60,8 +61,379 @@ class spool extends Command
 
             // Do the i first to stage insurance info, then pp to load patient profiles
 
+            # Then archive the file in lake/users/
 
             switch ($chain) {
+
+                case 'vs':
+                case 'vs2':
+                case 'vsee':
+
+                    # NOT DONE YET ! ! !
+
+                    $conn = mysqli_connect(
+                        'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
+                        'admin',
+                        '4rfvBGT%6yhn',
+                        'tms'
+                    );
+
+                    $this->info('vsee');
+
+                    # do this after moving files into lake folder
+
+                    if ($chain == 'vs2') { # <------------ this is cron
+
+                        $files = glob('/var/www/data/vs*'); // This is going to include vswh (Webhook)
+
+                    } else {
+
+                        $files = glob('/var/www/lake/vs/*'); // This is to recap everything
+                    }
+
+                    $ctr = 0;
+
+                    $sql =
+                    "INSERT INTO vsee SET vs_id = %s,
+                        user_id = %s,
+                        status = %s,
+                        subtype = %s,
+                        code = %s,
+                        first_name = '%s',
+                        last_name = '%s',
+                        full_name = '%s',
+                        username = '%s',
+                        vseeid = '%s',
+                        dob = '%s',
+                        email = '%s',
+                        timezone = '%s',
+                        accountcode = '%s',
+                        token_token = '%s',
+                        token_user_type = '%s',
+                        rooms = '%s',
+                        preference = '%s',
+                        token = '%s'
+                        ON DUPLICATE KEY UPDATE token_token = '%s', token='%s';";
+
+
+                    foreach ($files as $file) {
+
+                        if(strpos($file, '@') != false) continue;
+                        if(strpos($file, '/vswh') > 0) continue; // don't do the webhooks
+
+                        $ctr++;
+
+                        try {
+
+                            $json = file_get_contents($file);
+
+                            $row = json_decode($json);
+
+                            if (!isset($row->data->vseeid)) {
+                                $this->error('No Vsee Id!');
+                                continue;
+                            }
+
+                            $result = mysqli_query($conn,sprintf($sql,
+                                $row->XXX,
+                                $row->XXX,
+                                $row->XXX,
+                                $row->XXX
+
+                            ));
+
+                            $this->line("$ctr. $file");
+
+                            $copy = str_replace('/var/www/data/', '/var/www/lake/vs/', $file);
+
+                            #rename($file, $copy);
+
+                        } catch (\Exception $e) {
+
+                            $this->error($e->getMessage() . "\n" . $json . "\n");
+
+                            #exit;
+
+                        }
+                    }
+
+                    break;
+
+
+
+                case 'bc':
+                case 'bc2':
+                case 'barcodes':
+                case 'barcode':
+                    $conn = mysqli_connect(
+                        'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
+                        'admin',
+                        '4rfvBGT%6yhn',
+                        'tms'
+                    );
+
+                    $this->info('barcodes');
+
+                    # do this after moving files into lake folder
+
+                    if ($chain == 'bc2') { # <------------ this is cron
+
+                        $files = glob('/var/www/data/bc*');
+
+                    } else {
+
+                        $files = glob('/var/www/lake/bc/*'); # <-- no, this retries all
+                    }
+
+                    $ctr = 0;
+# Todo make this a stored procedure or prepared stmt ... but Don't use entities / models for performance
+$sql =
+"INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id=%s, uniq_id = '%s', barcode = '%s', timestamp = '%s'";
+
+                    foreach ($files as $file) { if(strpos($file, '@') != false) continue;
+
+                        $ctr++;
+
+                        try {
+
+                            $json = file_get_contents($file);
+
+                            $row = json_decode($json);
+
+                        if (!isset($row->adminsite)) {
+                            continue;
+                        }
+
+
+                        $timestamp = date('Y-m-d H:i:s',filemtime($file));
+
+                            $uniq_id = basename($file);
+
+                            if (!isset($row->provider_id)) {
+                                $row->provider_id = 0;
+                            }
+
+                            $result = mysqli_query($conn,sprintf($sql,
+                                $row->adminsite,
+                                $row->patient_id,
+                                $row->provider_id,
+                                $uniq_id,
+                                $row->barcode,
+                                $timestamp
+                            ));
+
+                            $this->line("$ctr. $file");
+
+                            $copy = str_replace('/var/www/data/', '/var/www/lake/bc/', $file);
+
+                            $this->line("copy $file to $copy");
+
+                            rename($file, $copy);
+
+                        } catch (\Exception $e) {
+
+                            $this->error($e->getMessage() . "\n" . $json . "\n");
+
+                            #exit;
+
+                        }
+                    }
+
+                    break;
+
+                case 'e':
+                case 'encounter':
+                    $this->info('encounter');
+
+                    $conn = mysqli_connect(
+                        'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
+                        'admin',
+                        '4rfvBGT%6yhn',
+                        'tms'
+                    );
+
+                    # done -1 Make table from barcodes (insert ignore)
+
+                    #1. Get the patient from user table (foreach that not has encounter(s)) MEMEME
+
+                    $sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != ''";
+
+                    #$sql = "SELECT * FROM users WHERE id > 39 AND ifnull(dob, '') != ''";
+                    # Todo: Update visits with open status (10, 20) close visits with barcodes
+
+                    $rows = mysqli_query($conn, $sql);
+
+                $sql = "INSERT INTO visits SET
+                    visit_id=%s,
+                    user_id=%s,
+                    member_id=%s,
+                    provider_id=%s,
+                    account_code='%s',
+                    code='%s',
+                    start='%s',
+                    end='%s',
+                    actual_start='%s',
+                    actual_end='%s',
+                    specialty_id='%s',
+                    type=%s,
+                    status=%s,
+                    completed_by='%s',
+                    room_id=%s,
+                    room_code='%s',
+                    provider_subtype='%s',
+                    provider_fullname='%s',
+                    provider_title='%s',
+                    provider_suffix='%s',
+                    provider_email='%s',
+                    provider_vsee_id='%s',
+                    provider_first_name='%s',
+                    provider_last_name='%s',
+                    member_full_name='%s',
+                    member_email='%s',
+                    member_vseeid='%s',
+                    member_first_name='%s',
+                    member_last_name='%s',
+                    payment_description='%s',
+                    room_name='%s',
+                    room_slug='%s',
+                    room_domain='%s' ON DUPLICATE KEY UPDATE
+                        start='%s',
+                        end='%s',
+                        actual_start='%s',
+                        actual_end='%s',
+                        specialty_id='%s',
+                        type=%s,
+                        status=%s,
+                        completed_by='%s'
+
+                        ";
+
+
+                try {
+
+                    while ($row = mysqli_fetch_object($rows)) {
+
+                        # Todo Oh God No
+
+                        $name = explode(' ', $row->name . ' Nosurname');
+
+                        $first = $name[0];
+
+                        $last = $name[1];
+
+                        #2. Get their appointments from Vsee
+
+                        $V = new VSee;
+
+                        $visits_json = $V->getVisits($first, $last, $row->dob, $row->email);
+
+                        if (!$visits_json) {
+                            $this->error("No Visit for " . $row->name);
+                            continue;
+                        }
+
+                        $this->info($visits_json);
+
+                        $visits = json_decode($visits_json);
+
+                        # Ignore status 40
+
+                        $user_id = $row->id;
+
+                        foreach ($visits->data as $visit) {
+
+                            if ($visit->status == 40) {
+                                $this->line('-- ignoring cancel --');
+                                continue;
+                            }
+
+                            $this->line("($user_id = $row->id) " . $visit->member->full_name);
+
+                            #2a. Drill down into the visit.  There is more useful data in there.
+
+                            $viz = $V->getVisit($visit->id);
+
+                            $viz = json_decode($viz);
+
+                            $this->line(' sts' . $visit->status . ' viz sys ' . $viz->data->status
+                                . ' s ' . date('Y-m-d H:i:s',$viz->data->start) . ' e ' . date('Y-m-d H:i:s',$viz->data->end) . ' as '
+                                . date('Y-m-d H:i:s',$viz->data->actual_start) . ' ae ' . date('Y-m-d H:i:s',$viz->data->actual_end));
+
+                            $result = mysqli_query($conn, sprintf($sql,
+                                $visit->id,
+                                $user_id,
+                                $visit->member_id,
+                                $visit->provider_id,
+                                $visit->account_code,
+                                $visit->code,
+                                date('Y-m-d H:i:s',$viz->data->start),            #<--- These are the only
+                                date('Y-m-d H:i:s',$viz->data->end),              #<--- Useful things we get
+                                date('Y-m-d H:i:s',$viz->data->actual_start),     #<--- From pulling the actual
+                                date('Y-m-d H:i:s',$viz->data->actual_end),       #<--- Visit data by ID above
+                                $visit->specialty_id,
+                                $visit->type,
+                                $visit->status,
+                                $visit->completed_by,
+                                $visit->room->id,
+                                $visit->room->code,
+                                $visit->provider->subtype,
+                                mysqli_real_escape_string($conn, $visit->provider->full_name),
+                                mysqli_real_escape_string($conn, $visit->provider->title),
+                                mysqli_real_escape_string($conn, $visit->provider->suffix),
+                                mysqli_real_escape_string($conn, $visit->provider->email),
+                                mysqli_real_escape_string($conn, $visit->provider->id),
+                                mysqli_real_escape_string($conn, $visit->provider->first_name),
+                                mysqli_real_escape_string($conn, $visit->provider->last_name),
+                                mysqli_real_escape_string($conn, $visit->member->full_name),
+                                mysqli_real_escape_string($conn, $visit->member->email),
+                                mysqli_real_escape_string($conn, $visit->member->id),
+                                mysqli_real_escape_string($conn, $visit->member->first_name),
+                                mysqli_real_escape_string($conn, $visit->member->last_name),
+                                mysqli_real_escape_string($conn, $visit->payment->description),
+                                mysqli_real_escape_string($conn, $visit->room->name),
+                                mysqli_real_escape_string($conn, $visit->room->slug),
+                                mysqli_real_escape_string($conn, $visit->room->domain),
+
+                                date('Y-m-d H:i:s',$viz->data->start),            #<--- These are the only
+                                date('Y-m-d H:i:s',$viz->data->end),              #<--- Useful things we get
+                                date('Y-m-d H:i:s',$viz->data->actual_start),     #<--- From pulling the actual
+                                date('Y-m-d H:i:s',$viz->data->actual_end),       #<--- Visit data by ID above
+                                $visit->specialty_id,
+                                $visit->type,
+                                $visit->status,
+                                $visit->completed_by));
+
+                            if (!$result) {
+                                $this->error($conn->error);
+                                exit;
+                            }
+
+                            mysqli_query($conn, "
+                                update users u
+                                left join visits v on v.user_id = u.id
+                                set u.encounter=v.status
+                            ");
+
+                        }
+                    }
+                } catch (\Exception $e) {
+
+                    $this->error($e->getMessage());
+                    echo($visits_json);
+
+                }
+
+                #3. Foreach appointment from Vsee
+                # find site and provider (ids are in barcodes table)
+                # see how we find site id
+                # type vaccine right now
+                # rendering provider?
+                # unique id of encounter (the appointment id from vsee)
+
+                #4. Upsert this shit
+
+                    break;
+
                 case 'pp':
                 case 'patient_profile':
 
@@ -70,6 +442,7 @@ class spool extends Command
                     $this->info('patient_profile');
 
                     $files = glob('/var/www/data/*');
+                    #$files = glob('/var/www/lake/users/*');
 
                     $ctr = 0;
 
@@ -77,9 +450,13 @@ class spool extends Command
 
                         if (strpos($file, '@')) {
 
+                            //if ($file == '/var/www/data/cmcochran@cbsd.org') {
+
                             $ctr++;
 
                             try {
+
+                                $i = '!!!!!!!!!!!';
 
                                 $json = file_get_contents($file);
 
@@ -91,6 +468,8 @@ class spool extends Command
 
                                 $id = $user->id;
 
+                                #if ($id != 510) continue;
+
                                 file_put_contents("work/pp/$id", $json);
 
                                 if (file_exists("work/i/$id")) {
@@ -101,14 +480,26 @@ class spool extends Command
 
                                     $result = $this->upsertPatient($id, $row, json_decode($i));
 
+                                    $copy = str_replace('/var/www/data/', '/var/www/lake/users/', $file);
+
+                                    $this->line("Move $file to $copy");
+
+                                    rename($file, $copy);
+
+                                                                    } else {
+
+                                    $this->line('*** No questionnaire file yet');
+
+                                    // qmake it, then it'll get picked up next time Todo
+
                                 }
 
 
-                                $this->line("$ctr. $file => $id $result");
+                                $this->line("$ctr. $file => $id");
 
                             } catch (\Exception $e) {
 
-                                $this->error($e->getMessage() . "\n" . $json . "\n" . $i );
+                                $this->error($e->getMessage() . "\n" . $json . "\n" . $i);
 
                                 #exit;
 
@@ -123,13 +514,21 @@ class spool extends Command
                 case 'i':
                 case 'insurance':
 
+                    # Just get the insurance info from the questionnaire and copy it to temp files for merging into patient_profile
+
+                    # And put a copy in /var/www/erik/public/flags/i/<id> as a temporary way of being able to flag people who
+                    # answered Yes on Q6 for the allergy warning
+
+                    # Then archive the file in lake/pq/
+
+
                     $this->info('insurance');
 
                     $files = glob('/var/www/data/pq*');
 
                     $ctr = 0;
 
-                    foreach ($files as $file) {
+                    foreach ($files as $file) { if(strpos($file, '@') != false) continue;
 
                         $ctr++;
 
@@ -154,6 +553,13 @@ class spool extends Command
 
                             }
 
+                            $copy = str_replace('/var/www/data/', '/var/www/lake/pq/', $file);
+
+                            $this->line('rename $file as $copy');
+
+                            rename($file, $copy);
+
+
                             $this->line("$ctr. $file => $id");
 
                         } catch (\Exception $e) {
@@ -167,12 +573,16 @@ class spool extends Command
                     break;
 
 
-
                 case 'vswh':
                 case 'vsee_webhook':
 
                     # There is going to be multiple webhooks for each patient.  Not sure how we want to approach this
                     # data.  There could be cancel / rebook / cancel / rebook etc
+
+                    # so this process is essentially useless
+
+                    # Then archive the file in lake/vswh/
+
 
                     $this->info('vsee_webhook');
 
@@ -180,13 +590,17 @@ class spool extends Command
 
                     $ctr = 0;
 
-                    foreach ($files as $file) {
+                    foreach ($files as $file) { if(strpos($file, '@') != false) continue;
 
                         $ctr++;
 
                         try {
 
                             $json = file_get_contents($file);
+
+                            $copy = str_replace('/var/www/data/', '/var/www/lake/vswh/', $file);
+
+                            copy($file, $copy);
 
                             $json = (json_decode($json));
 
@@ -249,7 +663,7 @@ class spool extends Command
     function upsertPatient($id, $row, $i)
     {
 
-        $this->P->setAddress1($row->address1)
+        $this->P->setAddress1($row->address1) // errors out here when it's a provider ... meh that's fine
             ->setAddress2($row->address2)
             ->setCity($row->city)
             ->setDateOfBirth($row->date_of_birth)
@@ -263,11 +677,10 @@ class spool extends Command
             ->setRace($row->race)
             ->setVSeeClinicId('trackmysolutions')
             ->setRelationshipToOwner(0)
-            ->setSsn($row->ssn)
+            ->setSsn('0000')
             ->setState($row->state)
             ->setZipcode($row->zipcode)
-            ->setId($id)
-            ;
+            ->setId($id);
 
         # sub assets must be stored as arrays and all fields must be included even if they are not required
 
@@ -284,6 +697,10 @@ class spool extends Command
 
         $a = [];
 
+        if (empty($i->coverage_effective_date)) {
+            $i->coverage_effective_date = '2021-01-01';
+        }
+
         if (!empty($i->administrator_name)) $a["administrator_name"] = $i->administrator_name;
         if (!empty($i->group_id)) $a["group_id"] = $i->group_id;
         if (!empty($i->employer_name)) $a["employer_name"] = $i->employer_name;
@@ -296,7 +713,7 @@ class spool extends Command
         if (!empty($i->plan_id)) $a["plan_id"] = $i->plan_id;
 
         if ($a !== []) {
-            $insurances = [ (object)$a ];
+            $insurances = [(object)$a];
             $this->P->setInsurances($insurances);
         }
 

@@ -58,6 +58,7 @@ Route::get('/biq/test-upserting-patients', 'BurstIqTestController@testUpsertingP
 Route::get('/biq/test-upserting-providers', 'BurstIqTestController@testUpsertingProviders')->name('test_upserting_providers');
 Route::get('/biq/test-upserting-sites', 'BurstIqTestController@testUpsertingSites')->name('test_upserting_sites');
 Route::get('/biq/test-upserting-schedules', 'BurstIqTestController@testUpsertingSchedules')->name('test_upserting_schedules');
+Route::get('/biq/test-upserting-encounters', 'BurstIqTestController@testUpsertingEncounters')->name('test_upserting_encounters');
 
 Route::get('/biq/test-getting-a-patient', 'BurstIqTestController@testGettingAPatient')->name('test_getting_a_patient');
 Route::get('/biq/test-getting-a-provider', 'BurstIqTestController@testGettingAProvider')->name('test_getting_a_provider');

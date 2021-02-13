@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\BurstIq;
 use App\DrugProfile;
 use App\Encounter;
+use App\Encounters;
 use App\EncounterSchedule;
 use App\PatientProfile;
 use App\ProcedureResults;
@@ -669,5 +670,54 @@ var_dump($A); exit;
 
     }
 
+
+    function testUpsertingEncounters(Request $request) {
+
+        $rows = Encounters::all();
+
+        foreach ($rows as $row) {
+
+            $this->upsertEncounter($row);
+
+        }
+    }
+
+    function upsertEncounter($row) {
+
+        $patient_questions = [
+            [ 'question_id' => $row->question_1_id, 'patient_response' => $row->question_1_answer ],
+            [ 'question_id' => $row->question_2_id, 'patient_response' => $row->question_2_answer ],
+            [ 'question_id' => $row->question_3_id, 'patient_response' => $row->question_3_answer ],
+            [ 'question_id' => $row->question_4_id, 'patient_response' => $row->question_4_answer ],
+            [ 'question_id' => $row->question_5_id, 'patient_response' => $row->question_5_answer ],
+            [ 'question_id' => $row->question_6_id, 'patient_response' => $row->question_6_answer ]
+        ];
+        $procedures = [
+            'id' => $row->proc_1_id,
+            'rendering_provider_id' => $row->proc_1_rpid,
+            'vendor' => $row->vendor,
+            'manufacturer' => $row->manufacturer,
+            'lot_number' => $row->lot_number,
+            'dose_number' => $row->dose_number,
+            'dose_date' => $row->dose_date,
+            'size' => $row->size
+        ];
+
+        $P = new Encounter();
+
+        $result = $P->setId($row->id)
+            ->setPatientId($row->patient_id)
+            ->setProviderId($row->provider_id)
+            ->setSiteId($row->site_id)
+            ->setDateTime($row->datetime)
+            ->setType($row->type)
+            ->setPatientQuestionResponses($patient_questions)
+            ->setProcedures($procedures)
+
+            ->save();
+
+        echo("<pre>$result</pre>");
+
+    }
 
 }

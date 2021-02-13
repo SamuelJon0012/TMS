@@ -503,9 +503,9 @@ class BurstIq
 
         $json = view($this->view)->with(['data' => $this])->render();
 
-        $results = $this->upsert($this->chain, $json);
+        echo($json);
 
-        //var_dump($results);
+        $results = $this->upsert($this->chain, $json);
 
         return $results;
 

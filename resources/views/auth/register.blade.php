@@ -270,27 +270,27 @@
                 {{ __('Please fill out the fields below to provide additional information and to ensure proper identification during the testing and vaccination process.') }}
                 <br><br>
 
+{{--                <div class="form-group row justify-content-center">--}}
+{{--                  <div class="col-md-1 m-0 text-right pr-0">--}}
+
+{{--                  </div>--}}
+{{--                  <div class="col-md-11 text-center m-0 pl-0">--}}
+{{--                        <input id="ssn" type="text" class="form-control-reg @error('ssn') is-invalid @enderror" name="ssn" value="{{ old('ssn') }}"  autocomplete="ssn" placeholder="{{ __('SOCIAL SECURITY NUMBER') }}">--}}
+
+{{--                        @error('ssn')--}}
+{{--                            <span class="invalid-feedback" role="alert">--}}
+{{--                                <strong>{{ $message }}</strong>--}}
+{{--                            </span>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+
                 <div class="form-group row justify-content-center">
                   <div class="col-md-1 m-0 text-right pr-0">
 
                   </div>
                   <div class="col-md-11 text-center m-0 pl-0">
-                        <input id="ssn" type="text" class="form-control-reg @error('ssn') is-invalid @enderror" name="ssn" value="{{ old('ssn') }}"  autocomplete="ssn" placeholder="{{ __('SOCIAL SECURITY NUMBER') }}">
-
-                        @error('ssn')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="form-group row justify-content-center">
-                  <div class="col-md-1 m-0 text-right pr-0">
-
-                  </div>
-                  <div class="col-md-11 text-center m-0 pl-0">
-                        <input id="phone_number1" type="text" class="form-control-reg @error('phone_number1') is-invalid @enderror" name="phone_number1" value="{{ old('phone_number1') }}"  autocomplete="phone_number1"  placeholder="{{ __('SECONDARY PHONE NUMBER') }}">
+                        <input id="phone_number1" type="text" class="form-control-reg @error('phone_number1') is-invalid @enderror" name="phone_number1" value="{{ old('phone_number1') }}"  autocomplete="phone_number1"  placeholder="{{ __('SECONDARY PHONE NUMBER (optional)') }}">
 
                         @error('phone_number1')
                           <span class="invalid-feedback" role="alert">
@@ -316,8 +316,8 @@
 
                   </div>
                     <div class="col-md-4 text-center m-0 pl-0">
-                        <select id="dl_state" class="form-control-blue @error('dl_state') is-invalid @enderror" name="dl_state" placeholder="{{ __('STATE') }}">
-                          <option value="">STATE</option>
+                        <select id="dl_state" class="form-control-blue @error('dl_state') is-invalid @enderror" name="dl_state" placeholder="{{ __('STATE (optional)') }}">
+                          <option value="">STATE (optional)</option>
                           <option value="AL">Alabama</option>
                         	<option value="AK">Alaska</option>
                         	<option value="AZ">Arizona</option>
@@ -379,7 +379,7 @@
                     </div>
 
                     <div class="col-md-7 text-center">
-                        <input id="dl_number" type="text" class="form-control-reg @error('dl_number') is-invalid @enderror" name="dl_number" value="{{ old('dl_number') }}"  autocomplete="dl_number"  placeholder="{{ __('DRIVER LICENSE NUMBER') }}">
+                        <input id="dl_number" type="text" class="form-control-reg @error('dl_number') is-invalid @enderror" name="dl_number" value="{{ old('dl_number') }}"  autocomplete="dl_number"  placeholder="{{ __('DRIVER LICENSE NUMBER (optional)') }}">
 
                         @error('dl_number')
                             <span class="invalid-feedback" role="alert">
@@ -396,7 +396,7 @@
                   </div>
                    <div class="col-md-12 text-center">
                       <select id="ethnicity" required="required" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
-                          <option value="">ETHINICITY</option>
+                          <option value="">ETHNICITY</option>
                           <option value="0">Unknown</option>
                           <option value="1">Hispanic or Latino</option>
                           <option value="2">Not Hispanic or Latino</option>
