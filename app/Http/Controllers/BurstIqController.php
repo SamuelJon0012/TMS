@@ -178,7 +178,7 @@ class BurstIqController extends Controller
             # Todo or something
         }
 
-        $result = Encounters::where('patient_id', 111)->first()->toArray();
+        $result = Encounters::where('patient_id', $Q)->first()->toArray();
 
         return view('app.my_vaccines', $result);
 
