@@ -482,53 +482,53 @@ class PatientProfile extends BurstIq
 
         $asset = $record->asset;
 
-        $this->id = $asset->id;
-        $this->email = $asset->email;
-        $this->relationship_to_owner = $asset->relationship_to_owner;
-        $this->first_name = $asset->first_name;
-        $this->last_name = $asset->last_name;
+        $this->id = $asset->id ?? '?';
+        $this->email = $asset->email ?? '?';
+        $this->relationship_to_owner = $asset->relationship_to_owner ?? '?';
+        $this->first_name = $asset->first_name ?? '?';
+        $this->last_name = $asset->last_name ?? '?';
 
-        $this->birth_sex = $asset->birth_sex; #Todo not getting this
+        $this->birth_sex = $asset->birth_sex ?? '?'; #Todo not getting this
 
-        $this->date_of_birth = $asset->date_of_birth;
-        $this->address1 = $asset->address1;
-        $this->address2 = $asset->address2;
-        $this->city = $asset->city;
-        $this->state = $asset->state;
-        $this->zipcode = $asset->zipcode;
-        $this->ssn = $asset->ssn;
-        $this->dl_state = $asset->dl_state;
-        $this->dl_number = $asset->dl_number;
-        $this->ethnicity = $asset->ethnicity;
-        $this->race = $asset->race;
-        $this->vsee_clinic_id = $asset->vsee_clinic_id;
-        $this->phone_numbers = $asset->phone_numbers;
-        $this->insurances = $asset->insurance;
+        $this->date_of_birth = $asset->date_of_birth ?? '?';
+        $this->address1 = $asset->address1 ?? '?';
+        $this->address2 = $asset->address2 ?? '?';
+        $this->city = $asset->city ?? '?';
+        $this->state = $asset->state ?? '?';
+        $this->zipcode = $asset->zipcode ?? '?';
+        $this->ssn = $asset->ssn ?? '?';
+        $this->dl_state = $asset->dl_state ?? '?';
+        $this->dl_number = $asset->dl_number ?? '?';
+        $this->ethnicity = $asset->ethnicity ?? '?';
+        $this->race = $asset->race ?? '?';
+        $this->vsee_clinic_id = $asset->vsee_clinic_id ?? '?';
+        $this->phone_numbers = $asset->phone_numbers ?? '?';
+        $this->insurances = $asset->insurance ?? '?';
 
         # make a useful array of this row
 
         $array = [
 
             'id' => $asset->id,
-            'email' => $asset->email,
-            'relationship_to_owner' => $asset->   relationship_to_owner,
-            'first_name' => $asset->first_name,
-            'last_name' => $asset->last_name,
-            'birth_sex' => $this->lookup['birth_sex'][$asset->birth_sex],
-            'date_of_birth' => $asset->date_of_birth,
-            'address1' => $asset->address1,
-            'address2' => $asset->address2,
-            'city' => $asset->city,
-            'state' => $asset->state,
-            'zipcode' => $asset->zipcode,
-            'ssn' => $asset->ssn,
-            'dl_state' => $asset->dl_state,
-            'dl_number' => $asset->dl_number,
-            //'ethnicity' => $this->lookup['ethnicity'][$asset->ethnicity],
-            'race' => $this->lookup['race'][$asset->race],
-            'vsee_clinic_id' => $asset->vsee_clinic_id,
-            'phone_numbers' => $asset->phone_numbers,
-            'insurances' => $asset->insurance
+            'email' => $asset->email ?? '?',
+            'relationship_to_owner' => $asset->   relationship_to_owner ?? '?',
+            'first_name' => $asset->first_name ?? '?',
+            'last_name' => $asset->last_name ?? '?',
+            'birth_sex' => $this->lookup['birth_sex'][$asset->birth_sex] ?? '?',
+            'date_of_birth' => $asset->date_of_birth ?? '?',
+            'address1' => $asset->address1 ?? '?',
+            'address2' => $asset->address2 ?? '?',
+            'city' => $asset->city ?? '?',
+            'state' => $asset->state ?? '?',
+            'zipcode' => $asset->zipcode ?? '?',
+            'ssn' => $asset->ssn ?? '?',
+            'dl_state' => $asset->dl_state ?? '?',
+            'dl_number' => $asset->dl_number ?? '?',
+            //'ethnicity' => $this->lookup['ethnicity'][$asset->ethnicity] ?? '?',
+            'race' => $this->lookup['race'][$asset->race] ?? '?',
+            'vsee_clinic_id' => $asset->vsee_clinic_id ?? '?',
+            'phone_numbers' => $asset->phone_numbers ?? '?',
+            'insurances' => $asset->insurance ?? '?'
 
         ];
 
