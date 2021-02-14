@@ -168,6 +168,9 @@ class spool extends Command
                         'tms'
                     );
                     $sql = "UPDATE users SET dob = STR_TO_DATE(dob,'%m/%d/%Y') where dob like '%/%' and id > 4600";
+
+                    mysqli_query($conn, $sql);
+
                     break;
 
                 case 'bc':
@@ -515,7 +518,7 @@ $sql =
 
                                     chmod($fn, 0777);
 
-                                    
+
 
                                 }
 

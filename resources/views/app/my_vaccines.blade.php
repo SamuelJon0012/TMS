@@ -21,7 +21,7 @@
         <th>Manufacturer</th>
         <th>Dose Date</th>
         <th>Clinical Site</th>
-        <th></th>
+{{--        <th></th>--}}
     </tr>
     <tr>
         <td>COVID-19</td>
@@ -33,7 +33,9 @@
         <td>{{ $manufacturer }}</td>
         <td>{{ $dose_date }}</td>
         <td>{{ $room_name }}</td>
-        <td><span class="btn btn-sm btn-small btn-warning adverse-event" onclick="alert('This feature is not currently available');">Adverse Event</span></td>
+{{--        <td>--}}
+{{--            <span class="btn btn-sm btn-small btn-warning adverse-event" onclick="alert('This feature is not currently available');">Adverse Event</span>--}}
+{{--        </td>--}}
     </tr>
 </table>
 </div>
