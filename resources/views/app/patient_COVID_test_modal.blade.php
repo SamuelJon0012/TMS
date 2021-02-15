@@ -10,11 +10,17 @@ $(function(){
 
     frmTestQuestions.valuesForCheckBoxes = function(control){
         var res = [];
-        for(e of control){
+        for(var e of control){
             if (e.checked)
               res.push(e.value);
         }
         return res;
+    }
+
+    frmTestQuestions.setCheckBoxes = function(control, list){
+        for(var e of control){
+            e.checked = (list.indexOf(e.value) != -1);
+        }
     }
 
     frmTestQuestions.symptoms.asArray = function(){
@@ -135,12 +141,79 @@ $(function(){
         return (jumpTo == null);
     }
 
+    frmTestQuestions.getData = function(){
+        var frm = frmTestQuestions;
+        var res = {};
+        res._token = frm._token.value;
+        res.isSelfTesting = (frm.isSelfTesting.value == 'yes');
+        res.hasSevereSymptoms = (frm.hasSevereSymptoms.value == 'yes');
+        res.hasCloseContact = frm.hasCloseContact.value;
+        res.wasInfected = (frm.wasInfected.value == 'yes');
+        res.symptoms = frm.symptoms.asArray();
+        res.issues = frm.issues.asArray();
+        res.phoneMessage = (frm.phoneMessage.value == 'yes');
+        res.heightFeet = parseInt(frm.heightFeet.value);
+        res.heightInch = parseInt(frm.heightInch.value);
+        res.weight = parseInt(frm.weight.value);
+        res.consent = frm.consent.checked;
+        return res;
+    }
+
+    frmTestQuestions.setData = function(obj){
+        if (typeof obj == 'string')
+          obj = JSON.parse(obj);
+
+        var frm = frmTestQuestions;
+
+        frm.isSelfTesting.value = obj.isSelfTesting;
+        frm.hasSevereSymptoms.value = (obj.hasSevereSymptoms) ? 'yes' : 'no';
+        frm.hasCloseContact.value = obj.hasCloseContact;
+        frm.wasInfected.value = (obj.wasInfected) ? 'yes' : 'no';
+        frm.setCheckBoxes(frm.symptoms, obj.symptoms);
+        frm.setCheckBoxes(frm.issues, obj.issues);
+        frm.phoneMessage.value = (obj.phoneMessage) ? 'yes' : 'no';
+        frm.heightFeet.value = obj.heightFeet;
+        frm.heightInch.value = obj.heightInch;
+        frm.weight.value = obj.weight;
+        frm.consent.checked = obj.consent;
+
+        frm.validate();
+    }
+
     frmTestQuestions.send = function(){
         if (!frmTestQuestions.validate())
             return;
-        
-        /* TODO Store form and only if successful continue */
-        Modals.show('patient-COVID-test3-modal');
+        preloader_on();
+        frmTestQuestions.btnSubmit.disabled = true;
+        $.ajax({
+            type: "POST",
+            url:'/patient-test',
+            data: JSON.stringify(frmTestQuestions.getData()),
+            processData: false,
+            contentType: 'application/json',
+
+        })
+        .then(function(data){
+            if (typeof data != 'object'){     /* TODO test for some reference to the stored record */
+                alert('Failed to send your details');
+                return;
+            }
+            frmTestQuestions.setData(data);   /* TODO remove when we have a reference / id / token */
+            Modals.show('patient-COVID-test3-modal');
+        })
+        .always(function(){
+            preloader_off();
+            frmTestQuestions.btnSubmit.disabled = false;
+        })
+        .fail(function(xhr){
+            console.log(xhr);
+            var txt = '('+xhr.status+') ';
+            if ((xhr.responseJSON) && (xhr.responseJSON.message))
+              txt += xhr.responseJSON.message;
+            else
+              txt += xhr.statusText
+            alert(txt);
+        });
     }
 });
 </script>

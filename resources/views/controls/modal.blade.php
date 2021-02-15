@@ -76,6 +76,9 @@ Parameters:
         border: 1px solid #ddd;
         border-radius: 1pc 0 0 1pc;
     }
+    body #preloader {
+        z-index: 10;
+    }
 </style>
 @endpush
 @endonce
