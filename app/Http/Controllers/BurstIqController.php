@@ -188,6 +188,14 @@ class BurstIqController extends Controller
 
         $result = $result->toArray();
 
+        $barcode = $result['barcode'];
+
+        $barray = explode('_', $barcode . '_not scanned');
+
+        $ndc = $barray[1];
+
+        $result['ndc'] = $ndc;
+
         return view('app.my_vaccines', $result);
 
         // IDK why the below isn't working
