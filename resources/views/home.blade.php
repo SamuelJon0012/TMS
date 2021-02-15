@@ -11,7 +11,7 @@
       height: 200px;
       cursor:pointer;
       border-radius: 12px;
-      border: 1px solid #007dc3;
+      border: 1px solid var(--blue);
   }
 
   .homeTop-button:hover {
@@ -25,17 +25,24 @@
     max-height:50%;
   }
 
+  .col-collapse{
+    margin-top: 1pc;
+  }
+
   @media(max-width: 24pc){
     .col-collapse{
       display: block;
-      margin: 0.5pc auto;
       width: 90%;
+      margin: 0.5pc auto;
     }
   }
 
 @endsection
 
 @section('content')
+
+@include('app.patient_help_modal')
+@include('app.patient_COVID_test_modal')
 
 <div class="container">
     <div class="row justify-content-center">
@@ -62,6 +69,12 @@
             <?php
               $items = [
                 [
+                  'id'=>'lab-results-button',
+                  'image'=>asset('images/lab-icon.png'),
+                  'caption'=>__('My Lab Results'),
+                  'hint'=>'This feature is currently unavailable',
+                ],
+                [
                   'id'=>'myvaccine-button',
                   'image'=>asset('images/syringe.png'),
                   'caption'=>__('My Vaccines'),
@@ -76,16 +89,9 @@
                 ],
                 [
                   'id'=>'',
-                  'image'=>asset('images/settings-icon.png'),
-                  'caption'=>__('Settings'),
-                  'hint'=>'This feature is currently unavailable',
-                  'classnames'=>'settings-button',
-                ],
-                [
-                  'id'=>'',
                   'image'=>asset('images/help-icon.png'),
                   'caption'=>__('Help'),
-                  'onclick'=>"$('.help-page-modal').show()",
+                  'onclick'=>"Modals.show('patient-help-modal')",
                 ],
               ];
             ?>
@@ -100,7 +106,7 @@
                     <button id="scheduleVaccineAppointment" onclick="doPatientQuestionnaire();" class="btn btn-primary form-control">{{ __('Schedule a Vaccine Appointment') }}</button>
                     </div>
                     <div class="col-6 col-collapse">
-                        <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
+                        <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control">{{ __('Add a Vaccine') }}</button>
                     </div>
 
                 @else
@@ -109,7 +115,10 @@
                         <a target = "_blank" href="/vsee/return" class="btn btn-primary form-control">{{ __('Go to Appointments') }}</a>
                     </div>
                     <div class="col-6 col-collapse">
-                        <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
+                        <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control">{{ __('Add a Vaccine') }}</button>
+                    </div>
+                    <div class="col-6 col-collapse">
+                        <button id="startCOVIDTest" class="btn btn-primary form-control" onclick="Modals.show('patient-COVID-test1-modal')">{{ __('Start COVID Test') }}</button>
                     </div>
 
                 @endif
@@ -171,14 +180,3 @@
 </div>
 
 @endsection
-
-@push('pageHeader')
-  <script src="{{ asset('js/noBacksies.js') }}"></script>
-  <script>
-      noBacksies.onBack = function(){
-        var lst = document.getElementsByClassName('modals');
-        for (var i = 0; i < lst.length; i++)
-          lst[i].style.display = 'none';
-      }
-  </script>
-@endpush

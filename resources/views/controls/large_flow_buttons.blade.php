@@ -29,13 +29,13 @@ Parameters:
         height: 12pc;
         cursor: pointer;
         border-radius: 12px;
-        border: 1px solid #007dc3;
+        border: 1px solid var(--blue);
         flex: 1;
         margin: 0.5pc;
         min-width: 6pc;
     }
     .large-flow-button-outer:hover{
-        background-color: #ddeeff;
+        background-color: #ddeeff; 
     }
     
     .large-flow-button-caption{
