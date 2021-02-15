@@ -76,13 +76,13 @@
                         <li>Nurses</li>
                         <li>Physicians</li>
                         <li>Dentists</li>
-                        <li>Dental hygenists</li>
+                        <li>Dental hygienists</li>
                         <li>Chiropractors</li>
                         <li>Therapists</li>
                         <li>Phlebotomists</li>
                         <li>Pharmacists</li>
                         <li>Technicians</li>
-                        <li>Pharamacy technicians</li>
+                        <li>Pharmacy technicians</li>
                         <li>Health professions students and trainees</li>
                         <li>Direct support professionals</li>
                         <li>Clinical personnel in school settings or correctional facilities</li>

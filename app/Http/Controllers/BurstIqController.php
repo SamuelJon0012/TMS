@@ -196,6 +196,8 @@ class BurstIqController extends Controller
 
         $result['ndc'] = $ndc;
 
+        #var_dump($result);exit; // Todo adjust datetime to local timezone
+
         return view('app.my_vaccines', $result);
 
         // IDK why the below isn't working

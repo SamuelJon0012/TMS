@@ -15,6 +15,8 @@ class VerifyCsrfToken extends Middleware
         'api/xcelerateudi',
         'logout',
         'vsee/webhook',
-        'affirm'
+        'affirm',
+        'biq/bulkadd',
+        'biq/bulkaddbarcode'
     ];
 }
