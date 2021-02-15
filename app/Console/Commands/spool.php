@@ -171,6 +171,13 @@ class spool extends Command
 
                     mysqli_query($conn, $sql);
 
+                    # Todo make this a trigger, and split barcode on '_'
+
+                    $sql = "update barcodes set lot = left(fixed_barcode,7) where lot = ''";
+
+                    mysqli_query($conn, $sql);
+
+
                     break;
 
                 case 'bc':
@@ -270,12 +277,15 @@ $sql =
 
                     $sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != ''";
 
+                    #The Robert Higginses (no Visit found)
+                    #$sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != '' and id in (2515,2512)";
+
                     #$sql = "SELECT * FROM users WHERE id > 39 AND ifnull(dob, '') != ''";
                     # Todo: Update visits with open status (10, 20) close visits with barcodes
 
                     $rows = mysqli_query($conn, $sql);
 
-                $sql = "INSERT INTO visits SET
+                    $sql = "INSERT INTO visits SET
                     visit_id=%s,
                     user_id=%s,
                     member_id=%s,
