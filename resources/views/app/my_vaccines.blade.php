@@ -28,7 +28,7 @@
         <td>1</td>
         <td>{{ $vendor }}</td>
         <td>{{ $size }}</td>
-        <td>{{ $barcode }}</td>
+        <td>{{ $ndc }}</td>
         <td>{{ $lot_number }}</td>
         <td>{{ $manufacturer }}</td>
         <td>{{ $dose_date }}</td>
