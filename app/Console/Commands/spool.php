@@ -159,7 +159,26 @@ class spool extends Command
 
                     break;
 
+                case 'fix':
 
+                    $conn = mysqli_connect(
+                        'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
+                        'admin',
+                        '4rfvBGT%6yhn',
+                        'tms'
+                    );
+                    $sql = "UPDATE users SET dob = STR_TO_DATE(dob,'%m/%d/%Y') where dob like '%/%' and id > 4600";
+
+                    mysqli_query($conn, $sql);
+
+                    # Todo make this a trigger, and split barcode on '_'
+
+                    $sql = "update barcodes set lot = left(fixed_barcode,7) where lot = ''";
+
+                    mysqli_query($conn, $sql);
+
+
+                    break;
 
                 case 'bc':
                 case 'bc2':
@@ -258,12 +277,15 @@ $sql =
 
                     $sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != ''";
 
+                    #The Robert Higginses (no Visit found)
+                    #$sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != '' and id in (2515,2512)";
+
                     #$sql = "SELECT * FROM users WHERE id > 39 AND ifnull(dob, '') != ''";
                     # Todo: Update visits with open status (10, 20) close visits with barcodes
 
                     $rows = mysqli_query($conn, $sql);
 
-                $sql = "INSERT INTO visits SET
+                    $sql = "INSERT INTO visits SET
                     visit_id=%s,
                     user_id=%s,
                     member_id=%s,
@@ -486,11 +508,27 @@ $sql =
 
                                     rename($file, $copy);
 
-                                                                    } else {
+                                } else {
 
                                     $this->line('*** No questionnaire file yet');
 
                                     // qmake it, then it'll get picked up next time Todo
+
+                                    $json = '{"user_id":"%s","_token":"lCxiYEUBdClmKU5ciBlydAbL6f0ebbjHoHuHnIgv","q1":"No","q2":"No","q3":"No","q4":"No","q5":"No","q6":"No","have_insurance":"No","administrator_name":"","plan_type":"","plan_id":"","employer_name":"","group_id":"","coverage_effective_date":"","primary_cardholder":"","issuer_id":"","insurance_type":"","relationship_to_primary_cardholder":""}';
+
+                                    $fn = "/var/www/erik/work/i/$id";
+
+                                    $json = sprintf($json, $id);
+
+                                    if (file_Exists($fn)) {
+                                        exit("\nFile already exists\n");
+                                    }
+
+                                    file_put_contents($fn, $json);
+
+                                    chmod($fn, 0777);
+
+
 
                                 }
 

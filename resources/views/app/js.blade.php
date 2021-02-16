@@ -17,7 +17,6 @@
 
 
 
-
 function preloader_on() {
 
     $('#preloader').show();

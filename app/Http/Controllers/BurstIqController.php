@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\BurstIq;
+use App\Encounter;
+use App\Encounters;
 use App\EncounterSchedule;
 use App\PatientProfile;
 use App\SiteProfile;
+use App\Visits;
 use App\VSee;
 use Illuminate\Http\Request;
 
@@ -158,6 +161,59 @@ class BurstIqController extends Controller
         $rows = $P->array();
 
         return $this->success($rows);
+    }
+
+    function encounters(Request $request) {
+
+        $Q = $request->get('q');
+
+        # Todo: sanitize Q to prevent hackery
+        #$Q = $this->sanitize($Q);
+
+        if (empty($Q)) {
+
+            # Todo or something
+        }
+
+        if ($Q < 40) {
+            $Q = 111;
+        }
+
+        $result = Encounters::where('patient_id', $Q)->first();
+
+
+        if (empty($result)) {
+            exit("Vaccination data for Patient has not been posted");
+        }
+
+        $result = $result->toArray();
+
+        $barcode = $result['barcode'];
+
+        $barray = explode('_', $barcode . '_not scanned');
+
+        $ndc = $barray[1];
+
+        $result['ndc'] = $ndc;
+
+        #var_dump($result);exit; // Todo adjust datetime to local timezone
+
+        return view('app.my_vaccines', $result);
+
+        // IDK why the below isn't working
+
+        $E = new Encounter();
+
+        $where = "WHERE asset.patient_id=$Q";
+
+        if (!$E->find($where)) {
+            return $this->error('Vaccination data for Patient $Q has not been posted');
+        } else {
+            $rows = $E->array();
+            var_dump($rows);
+        }
+
+
     }
 
     function get(Request $request)
