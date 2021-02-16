@@ -112,3 +112,6 @@ Route::get('/vsee/loginas', 'VSeeController@loginAs')->name('vsee_loginas');
 Route::get('/vsee/visits', 'VSeeController@Visits')->name('vsee_visits');
 
 Route::post('/vsee/saveonly', 'VSeeController@saveonly')->name('vsee_saveonly');
+
+Route::get('profile/{user}',  ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
+Route::patch('profile/{user}',  ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
