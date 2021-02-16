@@ -268,7 +268,8 @@
 
         $('.go_home').on('click', function() {
             $('.modals').hide();
-            });
+            $('.modals.initial-modal').fadeIn();
+        });
 
         $('.close-all').on('click', function() {
             $('.modals').hide();

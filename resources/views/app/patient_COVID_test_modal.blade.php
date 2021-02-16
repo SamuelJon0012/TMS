@@ -191,14 +191,13 @@ $(function(){
             data: JSON.stringify(frmTestQuestions.getData()),
             processData: false,
             contentType: 'application/json',
-
         })
         .then(function(data){
             if (typeof data != 'object'){     /* TODO test for some reference to the stored record */
                 alert('Failed to send your details');
                 return;
             }
-            frmTestQuestions.setData(data);   /* TODO remove when we have a reference / id / token */
+            frmTestQuestions.setData(data);
             Modals.show('patient-COVID-test3-modal');
         })
         .always(function(){
@@ -206,7 +205,6 @@ $(function(){
             frmTestQuestions.btnSubmit.disabled = false;
         })
         .fail(function(xhr){
-            console.log(xhr);
             var txt = '('+xhr.status+') ';
             if ((xhr.responseJSON) && (xhr.responseJSON.message))
               txt += xhr.responseJSON.message;
