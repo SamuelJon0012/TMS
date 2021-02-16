@@ -17,7 +17,6 @@
         background-color: #fff;
         overflow:scroll;
         padding:22px;
-        z-index: 1;
 
     }
     .patient-form-modal {

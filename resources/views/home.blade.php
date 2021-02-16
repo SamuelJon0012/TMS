@@ -29,7 +29,7 @@
     margin-top: 1pc;
   }
 
-  @media(max-width: 24pc){
+  @media(max-width: 32pc){
     .col-collapse{
       display: block;
       width: 90%;
@@ -43,6 +43,12 @@
 
 @include('app.patient_help_modal')
 @include('app.patient_COVID_test_modal')
+
+@component('controls.modal', [
+    'id'=>'home-modal',
+    'isHome'=>true,
+    'breadCrumbs'=>[]
+])
 
 <div class="container">
     <div class="row justify-content-center">
@@ -178,5 +184,6 @@
         </div>
     </div>
 </div>
+@endcomponent
 
 @endsection

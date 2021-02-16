@@ -97,12 +97,12 @@ $(function(){
         }
 
         if (frm.symptoms.asArray().length == 0){
-            frm.setError('symptoms_error', '<?=__('Please select one')?>');
+            frm.setError('symptoms_error', '<?=__('Please select at least None')?>');
             jumpTo = jumpTo || frm.symptoms;
         }
 
         if (frm.issues.asArray().length == 0){
-            frm.setError('issues_error', '<?=__('Please select one')?>');
+            frm.setError('issues_error', '<?=__('Please select at least None')?>');
             jumpTo = jumpTo || frm.issues;
         }
 
@@ -456,57 +456,59 @@ $(function(){
             <div id="symptoms_error"></div>
         </div>
 
-        <div class="patient-COVID-test-lastRow">
-            <div class="form-group" id="frmTestQuestions_issues">{{-- Left Side --}}
-                <b>Medical issues</b>
-                <?php
-                MakeCheckBoxGroup('issues', [
-                    'aids'=>'AIDS',
-                    'autoimmune'=>'Autoimmune',
-                    'cancer'=>'Cancer',
-                    'cancerTreatment'=>'Cancer Treatment (Currently)',
-                    'diabetes'=>'Diabetes',
-                    'heartDisease'=>'Hart Disease',
-                    'hiv'=>'HIV',
-                    'lungDisease'=>'Lung Disease (COPD. Asthma)',
-                    'liverDisease'=>'Liver Disease',
-                    'pregnant'=>'Pregnant',
-                    'smoker'=>'Smoker',
-                    'otherChronic'=>'Other Chronic Disease such as Chronic Kidney Disease',
-                    'none'=>'None'
-                ]);
-                ?>
-                <div id="issues_error"></div>
-            </div>
 
-            <div class="form-group">{{-- Right Side --}}
-                <b>May we leave a message on your phone?</b>
-                <?php
-                MakeRadioGroup('phoneMessage',[
-                    'yes'=>'Yes',
-                    'no'=>'No'
-                ]);
-                ?>
-                <div id="phoneMessage_error"></div>
-                <table>
-                    <tr>
-                        <td>Height: </td>
-                        <td><input name="heightFeet" type="number" placeholder="Feet" min="0" max="20"/> </td>
-                        <td>&nbsp;</td>
-                        <td><input name="heightInch" type="number" placeholder="Inches" min="0" max="11"/></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td id="heightFeet_error"></td>
-                        <td></td>
-                        <td id="heightInch_error"></td>
-                    </tr>
-                    <tr>
-                        <td>Weight: </td>
-                        <td><input name="weight" type="number" placeholder="Pounds" min="10" max="1000"/></td>
-                    </tr>
-                </table>
-            </div>
+        <div class="form-group" id="frmTestQuestions_issues">
+            <b>Medical issues</b>
+            <?php
+            MakeCheckBoxGroup('issues', [
+                'aids'=>'AIDS',
+                'autoimmune'=>'Autoimmune',
+                'cancer'=>'Cancer',
+                'cancerTreatment'=>'Cancer Treatment (Currently)',
+                'diabetes'=>'Diabetes',
+                'heartDisease'=>'Hart Disease',
+                'hiv'=>'HIV',
+                'lungDisease'=>'Lung Disease (COPD. Asthma)',
+                'liverDisease'=>'Liver Disease',
+                'pregnant'=>'Pregnant',
+                'smoker'=>'Smoker',
+                'otherChronic'=>'Other Chronic Disease such as Chronic Kidney Disease',
+                'none'=>'None'
+            ]);
+            ?>
+            <div id="issues_error"></div>
+        </div>
+
+        <div class="form-group">
+            <b>May we leave a message on your phone?</b>
+            <?php
+            MakeRadioGroup('phoneMessage',[
+                'yes'=>'Yes',
+                'no'=>'No'
+            ]);
+            ?>
+            <div id="phoneMessage_error"></div>
+
+            <br/>
+            <p><strong>Please provide your Height and Weight?</strong></p>
+            <table>
+                <tr>
+                    <td>Height: </td>
+                    <td><input name="heightFeet" type="number" placeholder="Feet" min="0" max="20"/> </td>
+                    <td>&nbsp;</td>
+                    <td><input name="heightInch" type="number" placeholder="Inches" min="0" max="11"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td id="heightFeet_error"></td>
+                    <td></td>
+                    <td id="heightInch_error"></td>
+                </tr>
+                <tr>
+                    <td>Weight: </td>
+                    <td><input name="weight" type="number" placeholder="Pounds" min="10" max="1000"/></td>
+                </tr>
+            </table>
         </div>
 
         <div class="form-group">
