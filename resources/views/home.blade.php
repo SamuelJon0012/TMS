@@ -52,7 +52,7 @@
 
           @if(Auth::check() && Auth::user()->hasRole('patient'))
             <div class="row">
-              <div class="col-3">
+              <div class="col-md-3 col-sm-6 mb-2">
                 <div id="myvaccine-button" class="homeTop-button">
                   <img class="button-image" src="{{ asset('images/syringe.png') }}">
                   <br>
@@ -60,7 +60,7 @@
                 </div>
               </div>
 
-              <div class="col-3">
+              <div class="col-md-3 col-sm-6 mb-2">
                 <div  title="This feature is currently unnavailable" disabled='disabled' class="alert-button homeTop-button">
                   <img class="button-image" src="{{ asset('images/alert-icon.png') }}" />
                   <br/>
@@ -68,7 +68,7 @@
                 </div>
               </div>
 
-              <div class="col-3">
+              <div class="col-md-3 col-sm-6 mb-2">
                 <div  title="This feature is currently unnavailable" disabled='disabled' class="settings-button homeTop-button">
                   <img class="button-image" src="{{ asset('images/settings-icon.png') }}" />
                   <br/>
@@ -76,7 +76,7 @@
                 </div>
               </div>
 
-              <div class="col-3">
+              <div class="col-md-3 col-sm-6 mb-2">
                 <div class="help-button homeTop-button" onclick="$('.help-page-modal').show()">
                   <img class="button-image" src="{{ asset('images/help-icon.png') }}" />
                   <br/>
@@ -90,19 +90,19 @@
 
                 @if($token == '0')
 
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12 mb-2">
                     <button id="scheduleVaccineAppointment" onclick="doPatientQuestionnaire();" class="btn btn-primary form-control">{{ __('Schedule a Vaccine Appointment') }}</button>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12 mb-2">
                         <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
                     </div>
 
                 @else
 
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12 mb-2">
                         <a target = "_blank" href="/vsee/return" class="btn btn-primary form-control">{{ __('Go to Appointments') }}</a>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-sm-12 mb-2">
                         <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
                     </div>
 
@@ -113,7 +113,7 @@
 
           @if(Auth::check() && Auth::user()->hasRole('provider'))
             <div class="row">
-              <div class="col-3">
+              <div class="col-md-3 col-sm-6 mb-2">
                 <div class="patient-button homeTop-button">
                   <img class="button-image" src="{{ asset('images/magnifyingglass-icon.png') }}">
                   <br>
@@ -121,7 +121,7 @@
                 </div>
               </div>
 
-              <div class="col-3">
+              <div class="col-md-3 col-sm-6 mb-2">
 
                 <div class="provider-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
 
@@ -131,7 +131,7 @@
                 </div>
               </div>
 
-              <div class="col-3">
+              <div class="col-md-3 col-sm-6 mb-2">
 
                 <div class="settings-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
 
@@ -141,7 +141,7 @@
                 </div>
               </div>
 
-              <div class="col-3">
+              <div class="col-md-3 col-sm-6 mb-2">
 
                 <div class="help-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
 
@@ -153,7 +153,7 @@
             </div>
             <br><br><br>
             <div class="row justify-content-center"  title="This feature is currently unnavailable" >
-              <div class="col-6">
+              <div class="col-md-6 col-sm-12 mb-2">
                 <button disabled='disabled' id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-location">{{ __('Set Vaccine Location') }}</button>
               </div>
             </div>
