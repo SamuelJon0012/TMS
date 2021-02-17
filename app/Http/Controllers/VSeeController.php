@@ -53,9 +53,15 @@ class VSeeController extends Controller
 
         // Spool pq = patient questionnaire, vs = vsee
 
-        file_put_contents ('/var/www/data/pq' . uniqid(true), $data);
+        if ($data != '[]') {
+
+            file_put_contents('/var/www/data/pq' . uniqid(true), $data);
+
+        }
 
         try {
+
+            # Todo Oh God No
 
             $name = explode(' ', Auth::user()->name . ' Nosurname');
 
@@ -124,6 +130,8 @@ class VSeeController extends Controller
     {
 
         try {
+
+            # Todo Oh God No
 
             $name = explode(' ', Auth::user()->name . ' Nosurname');
 

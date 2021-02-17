@@ -78,9 +78,6 @@ class CoverController extends Controller
 
         }
 
-         //echo $request->get('email');
-        //var_dump($data);exit;
-
         $yorn = $request->get('affirmed');
 
         if (!file_exists('affirm.csv')) {

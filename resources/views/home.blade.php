@@ -53,7 +53,7 @@
           @if(Auth::check() && Auth::user()->hasRole('patient'))
             <div class="row">
               <div class="col-3">
-                <div  title="This feature is currently unnavailable" disabled='disabled' id="myvaccine-button" class="homeTop-button">
+                <div id="myvaccine-button" class="homeTop-button">
                   <img class="button-image" src="{{ asset('images/syringe.png') }}">
                   <br>
                   {{ __('My Vaccines') }}

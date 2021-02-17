@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\barcodes;
 use App\BurstIq;
 use App\DrugProfile;
 use App\Encounter;
+use App\Encounters;
 use App\EncounterSchedule;
 use App\PatientProfile;
 use App\ProcedureResults;
@@ -12,6 +14,7 @@ use App\ProviderProfile;
 use App\QuestionProfile;
 use App\SiteProfile;
 use App\PatientScheduleSiteQuery;
+use App\User;
 use Illuminate\Http\Request;
 
 class BurstIqTestController extends Controller
@@ -667,6 +670,216 @@ var_dump($A); exit;
 
         echo("<pre>$result</pre>");
 
+    }
+
+
+    function testUpsertingEncounters(Request $request) {
+
+        $rows = Encounters::all();
+
+        foreach ($rows as $row) {
+
+            $this->upsertEncounter($row);
+
+        }
+    }
+
+    function upsertEncounter($row) {
+
+        $patient_questions = [
+            [ 'question_id' => $row->question_1_id, 'patient_response' => $row->question_1_answer ],
+            [ 'question_id' => $row->question_2_id, 'patient_response' => $row->question_2_answer ],
+            [ 'question_id' => $row->question_3_id, 'patient_response' => $row->question_3_answer ],
+            [ 'question_id' => $row->question_4_id, 'patient_response' => $row->question_4_answer ],
+            [ 'question_id' => $row->question_5_id, 'patient_response' => $row->question_5_answer ],
+            [ 'question_id' => $row->question_6_id, 'patient_response' => $row->question_6_answer ]
+        ];
+        $procedures = [
+            'id' => $row->proc_1_id,
+            'rendering_provider_id' => $row->proc_1_rpid,
+            'vendor' => $row->vendor,
+            'manufacturer' => $row->manufacturer,
+            'lot_number' => $row->lot_number,
+            'dose_number' => $row->dose_number,
+            'dose_date' => $row->dose_date,
+            'size' => $row->size
+        ];
+
+        $P = new Encounter();
+
+        $result = $P->setId($row->id)
+            ->setPatientId($row->patient_id)
+            ->setProviderId($row->provider_id)
+            ->setSiteId($row->site_id)
+            ->setDateTime($row->datetime)
+            ->setType($row->type)
+            ->setPatientQuestionResponses($patient_questions)
+            ->setProcedures($procedures)
+
+            ->save();
+
+        echo("<pre>$result</pre>");
+
+    }
+
+
+    function bulkAdd(Request $request) {
+
+
+// Submit First Name, LastName, Email, DOB & more,
+// Get back what was submitted plus user ID
+
+        if (isset($_REQUEST['bulk'])) {
+
+            $data['address1']='123 Unknown Ave';
+            $data['address2']='';
+            $data['birth_sex']=0;
+            $data['city']='Springfield';
+            $data['dl_number']='';
+            $data['dl_state']='';
+            $data['ethnicity']='0';
+            $data['password']='TrackMy17!!';
+            $data['password_confirm']='TrackMy17!!';
+            $data['phone_number']='1111111111';
+            $data['phone_number1']='1111111111';
+            $data['phone_type']='0';
+            $data['phone_type1']='0';
+            $data['race']='0';
+            $data['state']='PA';
+            $data['zipcode']='00000';
+
+            $bulk = $_REQUEST['bulk'];
+
+            $bulks = explode("\n", $bulk);
+
+            foreach ($bulks as $row) {
+
+                $fields = explode("\t", $row);
+
+                $data['first_name']=$fields[0];
+                $data['last_name']=$fields[1];
+                $data['email']=$fields[2];
+                $dob=$fields[3];
+
+                $data['date_of_birth'] = date("Y-m-d", strtotime($dob));
+
+                try {
+
+                    $user = config('roles.models.defaultUser')::create([
+                        'name' => $data['first_name'] . " " . $data['last_name'],
+                        'email' => $data['email'],
+                        'json' => json_encode($data),
+                        'dob' => $data['date_of_birth'] ?? '',
+                        'password' => bcrypt($data['password']),
+                    ]);
+
+
+                } catch (\Exception $e) {
+                    echo "<br/><span style='color:red'>" . $e->getMessage() . "</span>";
+                }
+
+                file_put_contents('/var/www/data/' . $data['email'], json_encode($data));
+                $role = config('roles.models.role')::where('slug', '=', 'patient')->first();
+                $user->attachRole($role);
+
+
+            }
+
+        }
+
+
+        ?>
+            <form action='/biq/bulkadd' method='post'>
+            <textarea name='bulk' style='width:100%; height:600px;'></textarea>
+            <input type='submit'>
+            </form>
+        <?php
+    }
+
+    function bulkAddBarcode(Request $request) {
+
+        if (isset($_REQUEST['bulk'])) {
+
+            $bulk = $_REQUEST['bulk'];
+
+            $bulks = explode("\n", $bulk);
+
+            foreach ($bulks as $row) {
+
+                if (empty($row)) {
+                    continue;
+                }
+
+                // Email, DOB, Lot, NPI, Adm Site (LUA/RUA/LA/RA
+
+                $fields = explode("\t", $row);
+
+                $email =trim($fields[0],chr(1). chr(13));
+                $lot   = trim($fields[2],chr(10). chr(13));
+                $npi   = trim($fields[3],chr(10). chr(13));
+                $adm   = trim($fields[4],chr(10). chr(13));
+
+                //echo("<pre>/$adm/</pre>");
+
+                switch ($adm) {
+                    case 'RA':
+                        $adm = 0;
+                        break;
+                    case 'BU':
+                        $adm = 1;
+                        break;
+                    case 'LA':
+                        $adm = 2;
+                        break;
+                    case 'RT':
+                        $adm = 3;
+                        break;
+                    case 'LT':
+                        $adm = 4;
+                        break;
+                    case 'LUA':
+                        $adm = 5;
+                        break;
+                    case 'RUA':
+                        $adm = 6;
+                        break;
+                    default:
+                        $adm = 6;
+
+                }
+
+                $user = User::where('email', $email)->first();
+
+                $uid = $user->id;
+
+                $bc = Barcodes::where('patient_id', $uid)->first();
+
+                var_dump($bc);
+
+                $json = sprintf('{"adminsite":"%s","barcode":"%s_%s","patient_id":"%s","provider_id":"0"}',
+
+                $adm,
+                $lot,
+                $npi,
+                $uid
+
+                );
+
+                file_put_contents('/var/www/temp/bc' . uniqid(true), $json);
+
+                echo "<br/>$json<br/>";
+
+            }
+
+        }
+
+
+        ?>
+        <form action='/biq/bulkaddbarcode' method='post'>
+            <textarea name='bulk' style='width:100%; height:600px;'></textarea>
+            <input type='submit'>
+        </form>
+        <?php
     }
 
 

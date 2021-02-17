@@ -4,7 +4,14 @@
 
         <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
 
-        <div id="page-content"></div>
+        <div id="page-content">
+
+            <h1>My Vaccines</h1>
+
+            <div id="my-vaccine-info"></div>
+
+        </div>
+
 
     </div>
 </div>
@@ -58,7 +65,7 @@
 
             <h1>Affirmation Statement</h1>
             <div>
-                I affirm that I work with low incidence students and I meet one the of the 1A criteria listed below
+                I affirm that I meet one of the 1A criteria listed below
             </div>
 
             <div>
@@ -69,13 +76,13 @@
                         <li>Nurses</li>
                         <li>Physicians</li>
                         <li>Dentists</li>
-                        <li>Dental hygenists</li>
+                        <li>Dental hygienists</li>
                         <li>Chiropractors</li>
                         <li>Therapists</li>
                         <li>Phlebotomists</li>
                         <li>Pharmacists</li>
                         <li>Technicians</li>
-                        <li>Pharamacy technicians</li>
+                        <li>Pharmacy technicians</li>
                         <li>Health professions students and trainees</li>
                         <li>Direct support professionals</li>
                         <li>Clinical personnel in school settings or correctional facilities</li>
