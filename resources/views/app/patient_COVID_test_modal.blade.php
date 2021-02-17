@@ -193,7 +193,7 @@ $(function(){
             contentType: 'application/json',
         })
         .then(function(data){
-            if (typeof data != 'object'){     /* TODO test for some reference to the stored record */
+            if (typeof data != 'object'){     /* TODO: test for some reference to the stored record */
                 alert('Failed to send your details');
                 return;
             }

@@ -33,7 +33,7 @@ class PatientCOVIDTestController extends Controller
 
         $encounter = new \App\Encounter();
         
-        //TODO populate with real values
+        //TODO: populate with real values
         /*
         $encounter
             ->setPatientId(123)
@@ -56,7 +56,7 @@ class PatientCOVIDTestController extends Controller
             ->setProcedures(null);
         */
         
-        //TODO Store the data
+        //TODO: Store the data
         //$encounter->...;
 
         return $data;

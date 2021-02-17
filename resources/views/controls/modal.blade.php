@@ -16,9 +16,7 @@ Parameters:
 <script>
     window.Modals = {
         hideAll: function(){
-            $('.modals').each(function(){
-                $(this).hide();
-            });
+            $('.modals').hide();
         },
         show: function(element){
             Modals.hideAll();
@@ -30,9 +28,7 @@ Parameters:
         },
         showHome: function(){
             Modals.hideAll();
-            $('.modals.initial-modal').each(function(){
-                $(this).fadeIn();
-            });
+            $('.modals.initial-modal').fadeIn();
         },
         getVisible: function(){
             var e = null;

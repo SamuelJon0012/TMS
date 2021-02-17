@@ -1,5 +1,12 @@
 "use strict";
-
+/**
+ * @file
+ * Defines the global object noBacksies
+ * This object prevents the user from leaving the current page by hitting back on the browser or mobile.
+ * 
+ * If the user presses back on the browser or mobile the function pointed to by onBack is called 
+ * allowing the content to be updated programmatically.
+ */
 
 window.noBacksies = {
   _hash: "|",
