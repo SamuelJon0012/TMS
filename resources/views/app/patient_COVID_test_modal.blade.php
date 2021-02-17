@@ -197,8 +197,13 @@ $(function(){
                 alert('Failed to send your details');
                 return;
             }
-            frmTestQuestions.setData(data);
-            Modals.show('patient-COVID-test3-modal');
+            //check for BurstIq specific errors
+            if ((data.success != undefined) && (data.success == false)){
+                alert(data.message);
+            } else {
+                frmTestQuestions.setData(data);
+                Modals.show('patient-COVID-test3-modal');
+            }
         })
         .always(function(){
             preloader_off();
