@@ -20,6 +20,7 @@ class BurstIq
     protected $url, $username='', $password='', $jwt='', $data, $id=0, $asset_id='';
 
     protected $get=[], $first, $array=[];
+    protected $lastCurlError = null;
 
     // Get this from db
 
@@ -65,6 +66,48 @@ class BurstIq
     public static function __callStatic($name, $arguments)
     {
         // TODO: Implement __callStatic() method.
+    }
+
+    /**
+     * @return string|bool Error message or false
+     */
+    function getJsonError(){
+        switch(\json_last_error()){
+            case JSON_ERROR_NONE: return false;
+            case JSON_ERROR_DEPTH: return 'Maximum stack depth exceeded';
+            case JSON_ERROR_STATE_MISMATCH: return 'Underflow or the modes mismatch';
+            case JSON_ERROR_CTRL_CHAR: return 'Unexpected control character found';
+            case JSON_ERROR_SYNTAX: return 'Syntax error, malformed JSON';
+            case JSON_ERROR_UTF8: return 'Malformed UTF-8 characters, possibly incorrectly encoded';
+            default: return \json_last_error_msg();
+        }
+    }
+
+    /**
+     * Check for the curl error before populating $this->data by parsing the returned JSON
+     * @param string|null $data json returned by curl call
+     * @return string|bool returns error message or false
+     */
+    function checkCurl($data){
+        if ($this->lastCurlError){
+            if (env('APP_ENV') == 'development') error_log('Curl error - '.$this->lastCurlError);
+            return 'Failed to communicate with BurstIq';
+        }
+
+        if (!$obj = \json_decode($data)){
+            $msg = $this->getJsonError();
+            if (env('APP_ENV') == 'development') error_log("Json error - $msg");
+            return $msg;
+        }
+
+        if (!isset($obj->status)) 
+            return $this->error($data);
+
+        if ($obj->status != 200) 
+            return $this->error($data);
+
+        $this->data = $obj;
+        return false;
     }
 
     /**
@@ -115,53 +158,8 @@ class BurstIq
 
         $this->url = $this->BI_BASE_URL . 'auth/login';
 
-        $json = $this->getCurl();
-
-        $this->data = json_decode($json);
-
-        # Todo: Make a json_decoder method because this is repetetetive :)  (See the one I made in Vsee.php)
-
-        # And Log errors - have a realtime notifier
-
-        switch (json_last_error()) {
-            case JSON_ERROR_NONE:
-                $msg = false;
-                break;
-            case JSON_ERROR_DEPTH:
-                $msg =  ' - Maximum stack depth exceeded';
-                break;
-            case JSON_ERROR_STATE_MISMATCH:
-                $msg =  ' - Underflow or the modes mismatch';
-                break;
-            case JSON_ERROR_CTRL_CHAR:
-                $msg =  ' - Unexpected control character found';
-                break;
-            case JSON_ERROR_SYNTAX:
-                $msg =  ' - Syntax error, malformed JSON';
-                break;
-            case JSON_ERROR_UTF8:
-                $msg =  ' - Malformed UTF-8 characters, possibly incorrectly encoded';
-                break;
-            default:
-                $msg =  ' - Unknown error';
-                break;
-        }
-
-        if ($msg !== false) {
-            #exit($this->error($msg . "\n\n" . $json));
+        if ($err = $this->checkCurl($this->getCurl()))
             return false;
-        }
-
-        if (!isset($this->data->status)) {
-            #exit($this->error($json));
-            return false;
-        }
-
-        if ($this->data->status != 200) {
-
-            #exit($this->error($json));
-            return false;
-        }
 
         $this->jwt = $this->data->token;
 
@@ -184,50 +182,10 @@ class BurstIq
 
         $this->url = $this->BI_BASE_URL . 'query/' . $chain;
 
-        $result = $this->postCurl($postFields);
-
-        // Todo: Check for
-
-        $this->data = json_decode($result);
-
-        switch (json_last_error()) {
-            case JSON_ERROR_NONE:
-                $msg = false;
-                break;
-            case JSON_ERROR_DEPTH:
-                $msg =  ' - Maximum stack depth exceeded';
-                break;
-            case JSON_ERROR_STATE_MISMATCH:
-                $msg =  ' - Underflow or the modes mismatch';
-                break;
-            case JSON_ERROR_CTRL_CHAR:
-                $msg =  ' - Unexpected control character found';
-                break;
-            case JSON_ERROR_SYNTAX:
-                $msg =  ' - Syntax error, malformed JSON';
-                break;
-            case JSON_ERROR_UTF8:
-                $msg =  ' - Malformed UTF-8 characters, possibly incorrectly encoded';
-                break;
-            default:
-                $msg =  ' - Unknown error';
-                break;
-        }
-
-        if ($msg !== false) {
-            exit($this->error($msg . "\n\n" . $result));
-        }
-
-        if (!isset($this->data->status)) {
-            exit($this->error($result));
-        }
-
-        if ($this->data->status != 200) {
-            exit($this->error($result));
-        }
+        if ($err = $this->checkCurl($this->postCurl($postFields)))
+            exit($this->error($err));
 
         return $this->data;
-
     }
 
     /**
@@ -243,8 +201,10 @@ class BurstIq
 
         $this->url = $this->BI_BASE_URL . 'upsert/' . $chain;
 
-        return $this->putCurl($postFields);
+        if ($err = $this->checkCurl($this->putCurl($postFields)))
+            exit($this->error($err));
 
+        return $this->data;
     }
 
     /**
@@ -269,6 +229,7 @@ class BurstIq
         ));
 
         $response = curl_exec($curl);
+        $this->lastCurlError = ($response !== null) ? null : '('.\curl_errno($curl).') '.\curl_error($curl);
 
         curl_close($curl);
         return $response;
@@ -300,6 +261,7 @@ class BurstIq
         ));
 
         $response = curl_exec($curl);
+        $this->lastCurlError = ($response !== null) ? null : '('.\curl_errno($curl).') '.\curl_error($curl);
 
         curl_close($curl);
         return $response;
@@ -330,6 +292,7 @@ class BurstIq
         ));
 
         $response = curl_exec($curl);
+        $this->lastCurlError = ($response !== null) ? null : '('.\curl_errno($curl).') '.\curl_error($curl);
 
         curl_close($curl);
         return $response;
