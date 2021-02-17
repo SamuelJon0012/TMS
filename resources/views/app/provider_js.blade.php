@@ -154,10 +154,19 @@
 
                     data.forEach(function (row) {
 
+                        let xdate_of_birth = '1970-01-01';
+
+                        try {
+                            xdate_of_birth = row.date_of_birth.$date.replace('T00:00:00.000Z', '');
+
+                        } catch {
+                            xdate_of_birth = '1970-01-01';
+                        }
+
                         dtData[dtData.length] =
                             [
                                 row.id, row.first_name + ' ' + row.last_name,
-                                row.date_of_birth.$date.replace('T00:00:00.000Z', ''),
+                                xdate_of_birth,
                                 row.email,
                                 row.phone_numbers[0].phone_number
                             ];
@@ -321,8 +330,8 @@
         // Populate the patient confirmation form
 
         for (const [key, value] of Object.entries(data)) {
-            console.log(key);
-            console.log(value);
+            //console.log(key);
+            //console.log(value);
             if (key === 'schedule') {
                 dateString = value[0].scheduled_time.$date;
                 let date = moment(dateString).format('MM/DD/YYYY');
@@ -333,7 +342,7 @@
                 $('#time').html(time);
 
             } else if (key === 'schedule1') {
-                console.log(value);
+                //console.log(value);
                 let date = value.date;
                 let time = value.time;
                 let location = value.location;
@@ -347,7 +356,7 @@
 
             } else if (key === 'schedule2') {
 
-                console.log(value);
+                //console.log(value);
                 let date = value.date;
                 let time = value.time;
                 let location = value.location;
@@ -383,7 +392,7 @@
 
 
                 value.forEach(function (phone) {
-                    console.log(phone);
+                    //console.log(phone);
 
                     if (phone.phone_type === 0) {
 
@@ -409,7 +418,7 @@
 
             } else if (key === 'insurances') {
 
-                console.log('insurances');
+                //console.log('insurances');
 
                 if (insuranceOnce) {
 
@@ -417,16 +426,16 @@
 
                     for (const [okey, ovalue] of Object.entries(value[0])) {
 
-                        console.log(`${okey}: ${ovalue}`);
+                        //console.log(`${okey}: ${ovalue}`);
 
                         if (okey === 'coverage_effective_date') {
 
-                            console.log(ovalue);
+                            //console.log(ovalue);
                             dateString = ovalue.$date;
                             let date = moment(dateString).format('MM/DD/YYYY');
                             let time = moment(dateString).format('h:mm a');
-                            console.log(date);
-                            console.log(time);
+                            //console.log(date);
+                            //console.log(time);
                             $('#coverage_effective_date').val(date);
 
 
@@ -446,16 +455,16 @@
 
                 var strFile = 'https://erik.trackmyvaccine.com/work/i/' + $('#patient_id').val();
 
-                console.log('QAAAAAAAA');
+                //console.log('QAAAAAAAA');
 
-                console.log(strFile);
+                //console.log(strFile);
 
                 $.ajax({
                     url: strFile,
                     type: 'GET',
                     dataType: 'json', // added data type
                     success: function (q) {
-                        console.log(q);
+                        //console.log(q);
 
                         QA = q;
 
@@ -541,7 +550,7 @@
         $('#barcode-go-home').hide();
         $('#barcode-allergy').hide();
 
-        console.log(QA);
+        //console.log(QA);
 
         if (QA === undefined) {
 
@@ -586,16 +595,23 @@
     }
 
     function doHandleBarcode() {
+        //
+        // try {
+        //
+        //     doHandleBarcodePost();
+        //
+        // } catch {
+        // }
 
-        try {
-
-            doHandleBarcodePost();
-
-        } catch {
-        }
 
 
         let barcode = $('#barcode-input').val();
+
+        if (barcode.trim() === '') {
+            alert('Barcode is required');
+            return;
+        }
+
         let adminsite = $('#admin-site').val();
         let provider = $('#provider_id').val();
 

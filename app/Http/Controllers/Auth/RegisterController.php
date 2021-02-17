@@ -74,6 +74,12 @@ class RegisterController extends Controller
         ]);*/
 
         // dd($data);
+        $dob = $data['date_of_birth'] ?? '';
+        if (!empty($dob)) {
+
+            $data['date_of_birth'] = date("Y-m-d", strtotime($dob));
+
+        }
 
         $user = config('roles.models.defaultUser')::create([
             'name' => $data['first_name']." ".$data['last_name'],

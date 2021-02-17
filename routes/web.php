@@ -49,6 +49,12 @@ Route::get('/biq/test-login', 'BurstIqTestController@login')->name('test_login')
 
 Route::get('/biq/find', 'BurstIqController@find')->name('biq_find');
 Route::get('/biq/get', 'BurstIqController@get')->name('biq_get');
+Route::get('/biq/get', 'BurstIqController@get')->name('biq_get');
+Route::get('/biq/bulkadd', 'BurstIqTestController@bulkAdd')->name('biq_bulkadd');
+Route::post('/biq/bulkadd', 'BurstIqTestController@bulkAdd')->name('biq_bulkadd');
+Route::get('/biq/bulkaddbarcode', 'BurstIqTestController@bulkAddBarcode')->name('biq_bulkaddbarcode');
+Route::post('/biq/bulkaddbarcode', 'BurstIqTestController@bulkAddBarcode')->name('biq_bulkaddbarcode');
+Route::get('/biq/encounters', 'BurstIqController@encounters')->name('biq_encounters');
 
 Route::get('/biq/test-getting-a-chain', 'BurstIqTestController@testGettingAChain')->name('test_getting_a_chain');
 /*
@@ -61,6 +67,7 @@ Route::get('/biq/test-upserting-patients', 'BurstIqTestController@testUpsertingP
 Route::get('/biq/test-upserting-providers', 'BurstIqTestController@testUpsertingProviders')->name('test_upserting_providers');
 Route::get('/biq/test-upserting-sites', 'BurstIqTestController@testUpsertingSites')->name('test_upserting_sites');
 Route::get('/biq/test-upserting-schedules', 'BurstIqTestController@testUpsertingSchedules')->name('test_upserting_schedules');
+Route::get('/biq/test-upserting-encounters', 'BurstIqTestController@testUpsertingEncounters')->name('test_upserting_encounters');
 
 Route::get('/biq/test-getting-a-patient', 'BurstIqTestController@testGettingAPatient')->name('test_getting_a_patient');
 Route::get('/biq/test-getting-a-provider', 'BurstIqTestController@testGettingAProvider')->name('test_getting_a_provider');
@@ -114,3 +121,6 @@ Route::get('/vsee/loginas', 'VSeeController@loginAs')->name('vsee_loginas');
 Route::get('/vsee/visits', 'VSeeController@Visits')->name('vsee_visits');
 
 Route::post('/vsee/saveonly', 'VSeeController@saveonly')->name('vsee_saveonly');
+
+Route::get('profile/{user}',  ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
+Route::patch('profile/{user}',  ['as' => 'profile.update', 'uses' => 'ProfileController@update']);

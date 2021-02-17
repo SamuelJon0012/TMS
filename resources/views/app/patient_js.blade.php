@@ -5,6 +5,43 @@
 
 
     $(document).ready(function(){
+
+        $('#myvaccine-button').on('click', function() {
+
+            preloader_on();
+
+            $.ajax({
+                url: '/biq/encounters',
+                data: 'q=' + {{ Auth::user()->id }},
+                dataType: 'text',
+                success: function(o) {
+                    preloader_off();
+
+                    $('#my-vaccine-info').html(o);
+                    $('.my-vaccine-page-modal').show();
+
+                },
+                error: function() {
+                    preloader_off();
+                    // Todo: handle this more elegantly
+                    alert('An error has occurred');
+                },
+            });
+
+
+            $('.adverse-event').on('click', function() {
+                alert('This feature is not currently available');
+            })
+
+
+
+
+
+
+
+        });
+
+
         $(".Qoption").click(function(){
             var oResult = $(this).attr('rel');
             var oResultArr = oResult.split("_");

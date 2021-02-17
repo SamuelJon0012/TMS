@@ -465,10 +465,10 @@ class BurstIq
     public function save() {
 
         $json = view($this->view)->with(['data' => $this])->render();
-//exit($json);
-        $results = $this->upsert($this->chain, $json);
 
-        //var_dump($results);
+        echo($json);
+
+        $results = $this->upsert($this->chain, $json);
 
         return $results;
 
