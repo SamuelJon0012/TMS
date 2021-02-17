@@ -27,6 +27,9 @@ class BurstIqTestController extends Controller
     {
         $this->BI_USERNAME = env('BI_USERNAME');
         $this->BI_PASSWORD = env('BI_PASSWORD');
+
+        set_time_limit(9999);
+
     }
 
     function status() {
@@ -754,12 +757,18 @@ var_dump($A); exit;
 
             foreach ($bulks as $row) {
 
+                if (empty($row)) {
+                    continue;
+                }
+
                 $fields = explode("\t", $row);
 
                 $data['first_name']=$fields[0];
                 $data['last_name']=$fields[1];
-                $data['email']=$fields[2];
                 $dob=$fields[3];
+                $data['email']=$fields[2];
+
+
 
                 $data['date_of_birth'] = date("Y-m-d", strtotime($dob));
 
@@ -778,9 +787,19 @@ var_dump($A); exit;
                     echo "<br/><span style='color:red'>" . $e->getMessage() . "</span>";
                 }
 
-                file_put_contents('/var/www/data/' . $data['email'], json_encode($data));
-                $role = config('roles.models.role')::where('slug', '=', 'patient')->first();
-                $user->attachRole($role);
+                try {
+
+                    file_put_contents('/var/www/data/' . $data['email'], json_encode($data));
+
+                    echo "\n<br/>\n<br/>*********** file_put_contents('/var/www/data/'" . $data['email'] . "\n<br/>\n<br/>" . json_encode($data). "\n<br/>\n<br/>";
+
+                    $role = config('roles.models.role')::where('slug', '=', 'patient')->first();
+
+                    $user->attachRole($role);
+
+                } catch (\Exception $e) {
+                    echo "\n<b>" . $e->getMessage() . "</b>\n";
+                }
 
 
             }
@@ -815,9 +834,12 @@ var_dump($A); exit;
                 $fields = explode("\t", $row);
 
                 $email =trim($fields[0],chr(1). chr(13));
-                $lot   = trim($fields[2],chr(10). chr(13));
-                $npi   = trim($fields[3],chr(10). chr(13));
-                $adm   = trim($fields[4],chr(10). chr(13));
+                $lot   = trim($fields[1],chr(10). chr(13));
+                $npi   = trim($fields[2],chr(10). chr(13));
+                $dte   = trim($fields[3],chr(10). chr(13));
+                #$adm   = trim($fields[4],chr(10). chr(13));
+
+                $adm = "RUA";
 
                 //echo("<pre>/$adm/</pre>");
 
@@ -856,12 +878,13 @@ var_dump($A); exit;
 
                 var_dump($bc);
 
-                $json = sprintf('{"adminsite":"%s","barcode":"%s_%s","patient_id":"%s","provider_id":"0"}',
+                $json = sprintf('{"adminsite":"%s","barcode":"%s_%s","patient_id":"%s","provider_id":"0", "timestamp":"%s"}',
 
                 $adm,
                 $lot,
                 $npi,
-                $uid
+                $uid,
+                $dte
 
                 );
 
