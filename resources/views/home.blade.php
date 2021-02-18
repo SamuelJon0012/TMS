@@ -41,7 +41,6 @@
 
 @section('content')
 
-@include('app.patient_help_modal')
 @include('app.patient_COVID_test_modal')
 
 @component('controls.modal', [

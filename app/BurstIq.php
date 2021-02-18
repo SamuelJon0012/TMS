@@ -94,16 +94,12 @@ class BurstIq
             return 'Failed to communicate with BurstIq';
         }
 
-        if (!$obj = \json_decode($data)){
-            $msg = $this->getJsonError();
+        if ((!$obj = \json_decode($data)) and ($msg = $this->getJsonError())){
             if (env('APP_ENV') == 'development') error_log("Json error - $msg");
             return $msg;
         }
 
-        if (!isset($obj->status)) 
-            return $this->error($data);
-
-        if ($obj->status != 200) 
+        if ((!isset($obj->status)) or ($obj->status != 200))
             return $this->error($data);
 
         $this->data = $obj;
@@ -500,12 +496,21 @@ class BurstIq
         ]);
     }
 
-function enum($key, $val) {
+    function enum($key, $val) {
 
-        return $this->lookup[$key][$val];
+            return $this->lookup[$key][$val];
 
 
-}
+    }
+
+    /**
+     * sanitize plain text adding escape encoding to avoid an injection hack
+     * @param string @txt
+     * @return string
+     */
+    static function escapeString($txt){
+        return addslashes($txt); //TODO: establish if this will be acceptable
+    }
 
 
 }
