@@ -893,9 +893,7 @@ var_dump($A); exit;
                 echo "<br/>$json<br/>";
 
             }
-
         }
-
 
         ?>
         <form action='/biq/bulkaddbarcode' method='post'>
