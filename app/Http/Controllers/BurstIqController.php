@@ -18,17 +18,6 @@ use Illuminate\Http\Request;
  */
 class BurstIqController extends Controller
 {
-    // Ajax Endpoints for BurstIq IO
-    // const BI_USERNAME = 'sabbaas@gmail.com'; // Todo: get this from .env
-    // const BI_PASSWORD = 'TrackMy21!';
-    private $BI_USERNAME;
-    private $BI_PASSWORD;
-
-    public function __construct()
-    {
-//        $this->BI_USERNAME = env('BI_USERNAME');
-//        $this->BI_PASSWORD = env('BI_PASSWORD');
-    }
 
     function redirect()
     {
@@ -67,35 +56,12 @@ class BurstIqController extends Controller
 
     }
 
-    /**
-     * @param Request $request
-     * @return mixed
-     *
-     * expects username and password parameters
-     *
-     * returns JWT (it's also kept in session)
-     *
-     */
-    function login(Request $request)
-    {
-
-//        $B = new BurstIq();
-//
-//        if ($B->login($request->get('username'), $request->get('password')) === false) {
-//            // Todo: Login failed
-//
-//        }
-    }
-
     function find(Request $request)
     {
 
-        $Q = $request->get('q');
+        $Q = BurstIq::escapeString($request->get('q'));
 
         $I = $request->get('i'); // which input element was used (search-input, provider-search-input, ...)
-
-        # Todo: sanitize Q to prevent hackery
-        #$Q = $this->sanitize($Q);
 
         if (empty($Q)) {
 
@@ -103,23 +69,12 @@ class BurstIqController extends Controller
 
         }
 
-        if (empty($I)) {
+        if (($I != 'search-input') and ($I != 'provider-search-input'))
+          $I = 'search-input';
 
-            $I = 'search-input';
+        $type = self::getSearchType($Q);
 
-        }
-
-
-        # Todo: have a method that determines the query type based on the contents of Q,
-        # i.e. last,first vs first last vs me@moo.cow vs. ###-###-####
-
-        #$type = $this->getSearchType($Q);
-
-        $P = new PatientProfile($this->BI_USERNAME,$this->BI_PASSWORD);
-
-        $type = 'any'; // or allow them to specify the type?  i.e. type=ssn by searching on ssn:xxx-xx-xxxx
-
-        # or make type be an object where getSearchType has parsed out all the potential fields to search on for that type
+        $P = new PatientProfile();
 
         if ($I != 'provider-search-input') {
             $where = "SELECT *";
@@ -130,6 +85,31 @@ class BurstIqController extends Controller
         }
 
         switch ($type) {
+            case 'null':
+                $where .= " WHERE (1=1) ";
+                break;
+
+            case 'email':
+                $where .= " WHERE asset.email ILIKE '%$Q%' ";
+                break;
+            
+            case 'ssn':
+                $where .= " WHERE asset.ssn = '$Q' ";
+                break;
+
+            case 'lastNameFirst':
+                $a = explode(',', $Q, 2);
+                $firstName = trim($a[1]);
+                $lastName = trim($a[0]);
+                $where .= " WHERE asset.first_name ILIKE '%$firstName%' and asset.last_name  ILIKE '%$lastName%' ";
+                break;
+
+            case 'names':
+                $a = explode(' ', $Q, 2);
+                $firstName = trim($a[0]);
+                $lastName = trim($a[1]);
+                $where .= " WHERE asset.first_name ILIKE '%$firstName%' and asset.last_name  ILIKE '%$lastName%' ";
+                break;
 
             case 'any':
             default:
@@ -151,6 +131,8 @@ class BurstIqController extends Controller
         }
         // TESTING $where = $where . ' AND e.site_id=1';
 
+        $where .= ' LIMIT 100 '; // TODO: Are we going to use pagination? 
+
         if (!$P->find($where)) {
 
             return $this->error('Search produced an error');
@@ -166,15 +148,10 @@ class BurstIqController extends Controller
     function encounters(Request $request) {
 
         $Q = $request->get('q');
-
-        # Todo: sanitize Q to prevent hackery
-        #$Q = $this->sanitize($Q);
-
-        if (empty($Q)) {
-
-            # Todo or something
-        }
-
+        $Q = (is_numeric($Q)) ? (int)$Q : 0;
+        if ($Q == 0)
+            abort(403, 'Invalid Patient ID');
+        
         if ($Q < 40) {
             $Q = 111;
         }
@@ -222,14 +199,10 @@ class BurstIqController extends Controller
     {
 
         $Q = $request->get('q');
+        $Q = (is_numeric($Q)) ? (int)$Q : 0;
+        if ($Q == 0)
+            abort(403, 'Invalid Patient ID');
 
-        # Todo: sanitize Q to prevent hackery
-        #$Q = $this->sanitize($Q);
-
-        if (empty($Q)) {
-
-            # Todo or something
-        }
         $P = new PatientProfile();
 
         $where = "WHERE asset.id=$Q";
@@ -379,5 +352,30 @@ class BurstIqController extends Controller
             'success' => true,
             'data' => $data,
         ]);
+    }
+
+    static function getSearchType($txt){
+        if (!isset($txt))
+            return 'null';
+        
+        $val = new \Egulias\EmailValidator\EmailValidator();
+        if ($val->isValid($txt, new \Egulias\EmailValidator\Validation\RFCValidation()))
+            return 'email';
+        
+        if (preg_match('/^(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$/', $txt))
+            return 'ssn';
+
+        if (preg_match('/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im', $txt))
+            return 'phone';
+        
+        $a = explode(',', $txt);
+        if (count($a) == 2)
+            return 'lastNameFirst';
+        
+        $a = explode(' ', $txt);
+        if (count($a) == 2)
+            return 'names';
+        
+        return 'any';
     }
 }
