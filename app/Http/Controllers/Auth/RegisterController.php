@@ -49,14 +49,26 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        $validator = Validator::make($data, [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            // 'dob' => ['required', 'date'],
-            // 'name' => ['required', 'string', 'max:100'],
+            'date_of_birth' => ['required', 'date'],
         ]);
+
+        $validator->after(function($validator){
+          if (!$dateOfBirth = \strtotime(request('date_of_birth')))
+            return; //already hit required rule
+          
+          $cutOffDate = \strtotime('-18 years');
+          if ($dateOfBirth > $cutOffDate){
+            $validator->errors()->add('date_of_birth', __('You must be at least 18 years old to register'));
+            return;
+          }
+        });
+
+        return $validator;
     }
 
     /**

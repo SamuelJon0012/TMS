@@ -33,6 +33,9 @@ Route::get('/vaccine', 'CoverController@vaccineGet')->name('vaccine_get');
 Route::post('/vaccine', 'CoverController@vaccinePost')->name('vaccine_post');
 Route::post('/affirm', 'CoverController@vaccinePostAffirm')->name('vaccine_post_affirm');
 
+//Route::get('/patient-test/{$id}','PatientCOVIDTestController@show')->name('patient_test_get');
+Route::post('/patient-test', 'PatientCOVIDTestController@insert')->name('patient_test_post');
+
 /*
  *
  *  Testing BurstIq methods

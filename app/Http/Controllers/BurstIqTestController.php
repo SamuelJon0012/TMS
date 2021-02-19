@@ -19,15 +19,6 @@ use Illuminate\Http\Request;
 
 class BurstIqTestController extends Controller
 {
-    // Ajax Endpoints for BurstIq IO
-    private $BI_USERNAME;
-    private $BI_PASSWORD;
-
-    public function __construct()
-    {
-        $this->BI_USERNAME = env('BI_USERNAME');
-        $this->BI_PASSWORD = env('BI_PASSWORD');
-    }
 
     function status() {
 
@@ -51,17 +42,6 @@ class BurstIqTestController extends Controller
         return $B->lookups();
     }
 
-
-    function login(Request $request) {
-
-//        $B = new BurstIq();
-//
-//        if ($B->login($this->BI_USERNAME,$this->BI_PASSWORD) === false) {
-//            // Todo: Login failed
-//
-//        }
-    }
-
     function testGettingAChain(Request $request) {
 
         ini_set('display_errors', 1);
@@ -70,7 +50,7 @@ class BurstIqTestController extends Controller
 
         $A = '';
 
-        $B = new BurstIq($this->BI_USERNAME,$this->BI_PASSWORD);
+        $B = new BurstIq();
         // $B = new BurstIq('sabbaas@gmail.com','TrackMy21!');
 
         #$where = "SELECT p.id AS id, e.patient_id AS pid FROM patient_profile AS p JOIN encounter_schedule AS e ON e.patient_id=p.id WHERE (p.first_name ILIKE '%jeff%' OR p.last_name ILIKE '%jeff%') AND e.site_id=1";
@@ -106,7 +86,7 @@ var_dump($A); exit;
         #ini_set('display_startup_errors', 1);
         #error_reporting(E_ALL);
 
-        $P = new PatientProfile($this->BI_USERNAME,$this->BI_PASSWORD);
+        $P = new PatientProfile();
 
         $where = "WHERE asset.address1 ILIKE '%Lucy%' OR asset.first_name ILIKE '%Lucy%' OR asset.last_name ILIKE '%Lucy%' OR asset.email ILIKE '%Lucy%' OR asset.ssn ILIKE '%Lucy%' OR asset.dl_number ILIKE '%Lucy%' OR asset.first_name ILIKE '%Lucy%'";
 
@@ -148,7 +128,7 @@ var_dump($A); exit;
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
 
-        $P = new ProviderProfile($this->BI_USERNAME,$this->BI_PASSWORD);
+        $P = new ProviderProfile();
 
         $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
 
@@ -193,9 +173,7 @@ var_dump($A); exit;
         $vsee_clinic_id = "trackmysolutions";
         $ssn = "123456789";
 
-        # instantiate a BurstIq class with optional username & password or use login() method later
-
-        $P = new PatientProfile($this->BI_USERNAME, $this->BI_PASSWORD);
+        $P = new PatientProfile();
 
         $P->setId(0)
             ->setAddress1($address2)
@@ -254,7 +232,7 @@ var_dump($A); exit;
 
     }
     function testGettingSiteProfile(Request $request) {
-        $P = new SiteProfile($this->BI_USERNAME,$this->BI_PASSWORD);
+        $P = new SiteProfile();
         $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
         // var_dump($P); exit;
         $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
@@ -269,7 +247,7 @@ var_dump($A); exit;
     }
 
     function testGettingDrugProfile(Request $request) {
-        $P = new DrugProfile($this->BI_USERNAME,$this->BI_PASSWORD);
+        $P = new DrugProfile();
         $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
         $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
         foreach ($test as $row) {
@@ -282,7 +260,7 @@ var_dump($A); exit;
         exit;
     }
     function testGettingQuestionProfile(Request $request) {
-        $P = new QuestionProfile($this->BI_USERNAME,$this->BI_PASSWORD);
+        $P = new QuestionProfile();
         $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
         $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
         foreach ($test as $row) {
@@ -295,7 +273,7 @@ var_dump($A); exit;
         exit;
     }
     function testGettingEncounterSchedule(Request $request) {
-        $P = new EncounterSchedule($this->BI_USERNAME,$this->BI_PASSWORD);
+        $P = new EncounterSchedule();
         $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
         $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
         foreach ($test as $row) {
@@ -308,7 +286,7 @@ var_dump($A); exit;
         exit;
     }
     function testGettingEncounter(Request $request) {
-        $P = new Encounter($this->BI_USERNAME,$this->BI_PASSWORD);
+        $P = new Encounter();
         $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
         $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
         foreach ($test as $row) {
@@ -321,7 +299,7 @@ var_dump($A); exit;
         exit;
     }
     function testGettingProcedureResults(Request $request) {
-        $P = new ProcedureResults($this->BI_USERNAME,$this->BI_PASSWORD);
+        $P = new ProcedureResults();
         $P->find("WHERE asset.id >= 0")->getData(); // full object returned from BurstIq
         $test = $P->array(); // Get an array of rows (arrays with sub objects or sub arrays of sub objects)
         foreach ($test as $row) {
@@ -336,7 +314,7 @@ var_dump($A); exit;
     //By Abb
     function testGettingPatientScheduleSiteQuery(Request $request) {
 
-        $P = new PatientScheduleSiteQuery($this->BI_USERNAME,$this->BI_PASSWORD);
+        $P = new PatientScheduleSiteQuery();
 
 
         $where="SELECT p.asset.*, e.asset.*, s.asset.id as s_id, s.asset.name as name, s.asset.vicinity_name as vicinity_name, s.asset.address1 as site_address1, s.asset.address2 as site_address2, s.asset.city as site_city, s.asset.state as site_state, s.asset.zipcode as site_zipcode, s.asset.county as site_county FROM patient_profile AS p LEFT OUTER JOIN encounter_schedule AS e ON e.asset.patient_id=p.asset.id LEFT OUTER JOIN site_profile AS s ON s.asset.id=e.asset.site_id WHERE (p.asset.first_name ILIKE '%jeff%' OR p.asset.last_name ILIKE '%jeff%')";
@@ -405,10 +383,7 @@ var_dump($A); exit;
         $ethnicity = $row[$ctr++];
         $race = $row[$ctr++];
 
-
-        # instantiate a BurstIq class with optional username & password or use login() method later
-
-        $P = new PatientProfile($this->BI_USERNAME, $this->BI_PASSWORD);
+        $P = new PatientProfile();
 
         $P->setAddress1($address1)
             ->setAddress2($address2)
@@ -509,9 +484,7 @@ var_dump($A); exit;
         $npi = $row[$ctr++];
         $sites = $row[$ctr++];
 
-        # instantiate a BurstIq class with optional username & password or use login() method later
-
-        $P = new ProviderProfile($this->BI_USERNAME, $this->BI_PASSWORD);
+        $P = new ProviderProfile();
 
         $result = $P->setIsDoctor($is_doctor)
                 ->setIsNurse($is_nurse)
@@ -567,10 +540,7 @@ var_dump($A); exit;
         $zipcode = $row[$ctr++];
         $county = $row[$ctr++];
 
-
-        # instantiate a BurstIq class with optional username & password or use login() method later
-
-        $P = new SiteProfile($this->BI_USERNAME, $this->BI_PASSWORD);
+        $P = new SiteProfile();
 
         $result = $P->setAddress1($address1)
             ->setAddress2($address2)
@@ -653,9 +623,7 @@ var_dump($A); exit;
             'acknowledged' => $acknowledged
         ];
 
-        # instantiate a BurstIq class with optional username & password or use login() method later
-
-        $P = new EncounterSchedule($this->BI_USERNAME, $this->BI_PASSWORD);
+        $P = new EncounterSchedule();
 
         $result = $P->setAppointmentType($appointment_type)
             ->setIsWalkin($is_walkin)

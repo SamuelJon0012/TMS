@@ -8,6 +8,7 @@
 
         $('#myvaccine-button').on('click', function() {
 
+            Modals.show('my-vaccine-page-modal');
             preloader_on();
 
             $.ajax({
@@ -15,17 +16,15 @@
                 data: 'q=' + {{ Auth::user()->id }},
                 dataType: 'text',
                 success: function(o) {
-                    preloader_off();
-
                     $('#my-vaccine-info').html(o);
-                    $('.my-vaccine-page-modal').show();
-
                 },
                 error: function() {
-                    preloader_off();
                     // Todo: handle this more elegantly
                     alert('An error has occurred');
                 },
+                complete: function(){
+                    preloader_off();
+                }
             });
 
 
@@ -305,7 +304,8 @@
 
         $('.go_home').on('click', function() {
             $('.modals').hide();
-            });
+            $('.modals.initial-modal').fadeIn();
+        });
 
         $('.close-all').on('click', function() {
             $('.modals').hide();

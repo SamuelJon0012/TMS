@@ -212,6 +212,7 @@
             $('.modals').hide();
             $('#barcode-go-home').hide();
             $('#barcode-go-results').hide();
+            $('.modals.initial-modal').fadeIn();
             $('.fvalue').html('');
             if (DT !== false) {
                 DT.destroy(true);
