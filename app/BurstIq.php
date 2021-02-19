@@ -146,6 +146,13 @@ class BurstIq
 
         $this->url = $this->BI_BASE_URL . 'upsert/' . $chain;
 
+
+//        $R =  $this->putCurl($postFields);
+//
+//        var_dump($R);
+//
+//        return $R;
+
         if ($err = $this->checkCurl($this->putCurl($postFields)))
             exit($this->error($err));
 

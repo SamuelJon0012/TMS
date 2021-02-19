@@ -173,7 +173,9 @@ class BurstIqController extends Controller
 
         $result['ndc'] = $ndc;
 
-        #var_dump($result);exit; // Todo adjust datetime to local timezone
+        $date = new \DateTime($result['dose_date'], new \DateTimeZone('UTC'));
+        $date->setTimezone(new \DateTimeZone('America/New_York'));
+        $result['dose_date'] = $date->format('Y-m-d H:i:s');
 
         return view('app.my_vaccines', $result);
 

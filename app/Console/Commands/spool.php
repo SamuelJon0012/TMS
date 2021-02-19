@@ -6,6 +6,7 @@ use App\PatientProfile;
 use App\User;
 use App\VSee;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class spool extends Command
 {
@@ -45,10 +46,12 @@ class spool extends Command
     public function handle()
     {
 
+        $this->output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
+
         $chain = $this->argument('chain');
 
 
-        try {
+        //try {
 
             $this->info($chain);
 
@@ -223,8 +226,15 @@ $sql =
                             continue;
                         }
 
+                        if (isset($row->timestamp)) {
 
-                        $timestamp = date('Y-m-d H:i:s',filemtime($file));
+                            $timestamp = strtotime($row->timestamp);
+
+                        } else {
+
+                            $timestamp = date('Y-m-d H:i:s', filemtime($file));
+
+                        }
 
                             $uniq_id = basename($file);
 
@@ -275,7 +285,10 @@ $sql =
 
                     #1. Get the patient from user table (foreach that not has encounter(s)) MEMEME
 
-                    $sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != ''";
+                    #$sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != ''";
+
+                    # refresh everyone
+                    $sql = "SELECT * FROM users WHERE id > 39 and ifnull(dob, '') != ''";
 
                     #The Robert Higginses (no Visit found)
                     #$sql = "SELECT * FROM users WHERE id > 39 AND ifnull(encounter, 0)=0 and ifnull(dob, '') != '' and id in (2515,2512)";
@@ -331,7 +344,7 @@ $sql =
                         ";
 
 
-                try {
+                //try {
 
                     while ($row = mysqli_fetch_object($rows)) {
 
@@ -396,25 +409,25 @@ $sql =
                                 $visit->type,
                                 $visit->status,
                                 $visit->completed_by,
-                                $visit->room->id,
-                                $visit->room->code,
-                                $visit->provider->subtype,
-                                mysqli_real_escape_string($conn, $visit->provider->full_name),
-                                mysqli_real_escape_string($conn, $visit->provider->title),
-                                mysqli_real_escape_string($conn, $visit->provider->suffix),
-                                mysqli_real_escape_string($conn, $visit->provider->email),
-                                mysqli_real_escape_string($conn, $visit->provider->id),
-                                mysqli_real_escape_string($conn, $visit->provider->first_name),
-                                mysqli_real_escape_string($conn, $visit->provider->last_name),
-                                mysqli_real_escape_string($conn, $visit->member->full_name),
-                                mysqli_real_escape_string($conn, $visit->member->email),
-                                mysqli_real_escape_string($conn, $visit->member->id),
-                                mysqli_real_escape_string($conn, $visit->member->first_name),
-                                mysqli_real_escape_string($conn, $visit->member->last_name),
-                                mysqli_real_escape_string($conn, $visit->payment->description),
-                                mysqli_real_escape_string($conn, $visit->room->name),
-                                mysqli_real_escape_string($conn, $visit->room->slug),
-                                mysqli_real_escape_string($conn, $visit->room->domain),
+                                $visit->room->id ?? '',
+                                $visit->room->code ?? '',
+                                $visit->provider->subtype ?? '',
+                                mysqli_real_escape_string($conn, $visit->provider->full_name ?? ''),
+                                mysqli_real_escape_string($conn, $visit->provider->title ?? ''),
+                                mysqli_real_escape_string($conn, $visit->provider->suffix ?? ''),
+                                mysqli_real_escape_string($conn, $visit->provider->email ?? ''),
+                                mysqli_real_escape_string($conn, $visit->provider->id ?? ''),
+                                mysqli_real_escape_string($conn, $visit->provider->first_name ?? ''),
+                                mysqli_real_escape_string($conn, $visit->provider->last_name ?? ''),
+                                mysqli_real_escape_string($conn, $visit->member->full_name ?? ''),
+                                mysqli_real_escape_string($conn, $visit->member->email ?? ''),
+                                mysqli_real_escape_string($conn, $visit->member->id ?? ''),
+                                mysqli_real_escape_string($conn, $visit->member->first_name ?? ''),
+                                mysqli_real_escape_string($conn, $visit->member->last_name ?? ''),
+                                mysqli_real_escape_string($conn, $visit->payment->description ?? ''),
+                                mysqli_real_escape_string($conn, $visit->room->name ?? ''),
+                                mysqli_real_escape_string($conn, $visit->room->slug ?? ''),
+                                mysqli_real_escape_string($conn, $visit->room->domain ?? ''),
 
                                 date('Y-m-d H:i:s',$viz->data->start),            #<--- These are the only
                                 date('Y-m-d H:i:s',$viz->data->end),              #<--- Useful things we get
@@ -438,12 +451,12 @@ $sql =
 
                         }
                     }
-                } catch (\Exception $e) {
-
-                    $this->error($e->getMessage());
-                    echo($visits_json);
-
-                }
+//                } catch (\Exception $e) {
+//
+//                    $this->error($e->getMessage());
+//                    echo($visits_json);
+//
+//                }
 
                 #3. Foreach appointment from Vsee
                 # find site and provider (ids are in barcodes table)
@@ -688,11 +701,11 @@ $sql =
             }
 
 
-        } catch
-        (\Exception $e) {
-
-            $this->error($e->getMessage());
-        }
+//        } catch
+//        (\Exception $e) {
+//
+//            $this->error($e->getMessage());
+//        }
 
 
         return 0;

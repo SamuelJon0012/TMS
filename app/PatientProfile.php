@@ -123,6 +123,9 @@ class PatientProfile extends BurstIq
      */
     public function setEmail($email)
     {
+
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
         $this->email = $email;
         return $this;
     }
