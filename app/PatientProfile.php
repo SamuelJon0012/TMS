@@ -9,7 +9,6 @@ class PatientProfile extends BurstIq
 {
 
     # $this->status()
-    # $this->login()
     # $this->query(chain, query)
     # $this->upsert(chain, postfields) accepts object or json_encoded object
     # see BurtIqController for examples

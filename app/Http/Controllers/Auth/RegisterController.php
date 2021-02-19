@@ -54,21 +54,16 @@ class RegisterController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'date_of_birth' => ['required', 'date'],
         ]);
 
         $validator->after(function($validator){
-          $dateOfBirth = request('date_of_birth');
-          if (empty($dateOfBirth))
-            return; // Accept blank dates
-
-          if (!$dateOfBirth = \strtotime($dateOfBirth)){
-            $validator->errors()->add('date_of_birth', 'Invalid Date of Birth');
-            return;
-          }
+          if (!$dateOfBirth = \strtotime(request('date_of_birth')))
+            return; //already hit required rule
           
           $cutOffDate = \strtotime('-18 years');
           if ($dateOfBirth > $cutOffDate){
-            $validator->errors()->add('date_of_birth', 'You must be at least 18 years old to register');
+            $validator->errors()->add('date_of_birth', __('You must be at least 18 years old to register'));
             return;
           }
         });

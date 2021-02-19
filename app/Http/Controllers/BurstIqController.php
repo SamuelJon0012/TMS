@@ -18,17 +18,6 @@ use Illuminate\Http\Request;
  */
 class BurstIqController extends Controller
 {
-    // Ajax Endpoints for BurstIq IO
-    // const BI_USERNAME = 'sabbaas@gmail.com'; // Todo: get this from .env
-    // const BI_PASSWORD = 'TrackMy21!';
-    private $BI_USERNAME;
-    private $BI_PASSWORD;
-
-    public function __construct()
-    {
-//        $this->BI_USERNAME = env('BI_USERNAME');
-//        $this->BI_PASSWORD = env('BI_PASSWORD');
-    }
 
     function redirect()
     {
@@ -67,26 +56,6 @@ class BurstIqController extends Controller
 
     }
 
-    /**
-     * @param Request $request
-     * @return mixed
-     *
-     * expects username and password parameters
-     *
-     * returns JWT (it's also kept in session)
-     *
-     */
-    function login(Request $request)
-    {
-
-//        $B = new BurstIq();
-//
-//        if ($B->login($request->get('username'), $request->get('password')) === false) {
-//            // Todo: Login failed
-//
-//        }
-    }
-
     function find(Request $request)
     {
 
@@ -105,7 +74,7 @@ class BurstIqController extends Controller
 
         $type = self::getSearchType($Q);
 
-        $P = new PatientProfile($this->BI_USERNAME,$this->BI_PASSWORD);
+        $P = new PatientProfile();
 
         if ($I != 'provider-search-input') {
             $where = "SELECT *";

@@ -14,10 +14,8 @@ class BurstIq
 
     protected $BI_PUBLIC_KEY;
     protected $BI_BASE_URL;
-    protected $BI_USERNAME;
-    protected $BI_PASSWORD;
 
-    protected $url, $username='', $password='', $jwt='', $data, $id=0, $asset_id='';
+    protected $url, $data, $id=0, $asset_id='';
 
     protected $get=[], $first, $array=[];
     protected $lastCurlError = null;
@@ -25,41 +23,17 @@ class BurstIq
     // Get this from db
 
     public $lookup;
-    # Put a wrapper around queries to attempt to re-login if jwt is expired?  Or logout the user <-- this
 
     /**
      * BurstIq constructor.
-     * @param false $username
-     * @param false $password
-     *
-     * Optional username and password in constructor
-     *
-     * You can also pass them with $this->login() method.  login() creates the JWT used by the other methods
      *
      */
-    public function __construct($username=false, $password=false) {
+    public function __construct() {
 
         $this->lookup = (array)json_decode(file_get_contents('/var/www/lookup.json'));
 
-        # Do not instantiate this object if the user isn't logged in except for Registration, and right now we don't have this
-
-        # if(user_is_logged_in)
-        //$this->jwt = session('bi_jwt', false);
         $this->BI_PUBLIC_KEY = env('BI_PUBLIC_KEY');
         $this->BI_BASE_URL = env('BI_BASE_URL');
-#        $this->BI_USERNAME = env('BI_USERNAME');
-#        $this->BI_PASSWORD = env('BI_PASSWORD');
-
-//        if (empty($this->jwt)) {
-//
-//            if ($username && $password) {
-//
-//                $this->username = $username;
-//                $this->password = $password;
-//
-//            }
-//        }
-
 
     }
 
@@ -137,31 +111,6 @@ class BurstIq
         $this->url = $this->BI_BASE_URL . 'util/lookups';
 
         return $this->getCurl();
-
-    }
-
-    /**
-     * @param $username
-     * @param $password
-     * @return mixed
-     */
-    function login($username, $password) {
-
-        # NOT USED
-
-        $this->username = $username;
-        $this->password = $password;
-
-        $this->url = $this->BI_BASE_URL . 'auth/login';
-
-        if ($err = $this->checkCurl($this->getCurl()))
-            return false;
-
-        $this->jwt = $this->data->token;
-
-        session([ 'bi_jwt' => $this->jwt ]);
-
-        return $this->jwt;
 
     }
 
@@ -330,23 +279,6 @@ class BurstIq
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getJwt()
-    {
-        return $this->jwt;
-    }
-
-    /**
-     * @param  $jwt
-     * @return mixed
-     */
-    public function setJwt($jwt)
-    {
-        $this->jwt = $jwt;
-        return $this;
-    }
 
     /**
      * @return mixed
@@ -509,7 +441,7 @@ class BurstIq
      * @return string
      */
     static function escapeString($txt){
-        return addslashes($txt); //TODO: establish if this will be acceptable
+        return DB::connection()->getPdo()->quote($txt);
     }
 
 
