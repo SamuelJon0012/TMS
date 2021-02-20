@@ -14,6 +14,7 @@ class BurstIq
 
     protected $BI_PUBLIC_KEY;
     protected $BI_BASE_URL;
+    protected $BI_PRIVATEID;
 
     protected $url, $data, $id=0, $asset_id='';
 
@@ -22,7 +23,7 @@ class BurstIq
 
     // Get this from db
 
-    public $lookup;
+    protected $lookup;
 
     /**
      * BurstIq constructor.
@@ -34,6 +35,7 @@ class BurstIq
 
         $this->BI_PUBLIC_KEY = env('BI_PUBLIC_KEY');
         $this->BI_BASE_URL = env('BI_BASE_URL');
+        $this->BI_PRIVATEID = env('BI_PRIVATEID', 'b67afe2ec35e80bb');
 
     }
 
@@ -78,6 +80,35 @@ class BurstIq
 
         $this->data = $obj;
         return false;
+    }
+
+    /**
+     * set the Authorization ID used during calls to BurstIq.
+     * setting a blank value causes it to use the default value
+     * 
+     * @param mixed 
+     */
+    function setPrivateID($newPrivateId){
+        $this->BI_PRIVATEID = (empty($newPrivateId)) ? env('BI_PRIVATEID', 'b67afe2ec35e80bb') : $newPrivateId;
+    }
+
+    /**
+     * calls BurstIq and gets a new Private ID
+     * 
+     * @return string 
+     */
+    function newPrivateId(){
+        $this->url = $this->BI_BASE_URL . 'util/privateid';
+
+        if ($err = $this->checkCurl($this->getCurl()))
+            abort(500, $err);
+
+        $data = $this->data;
+        
+        if (empty($data->private_id))
+            abort(500, __('Failed to obtain a new ID from BurstIq'));
+        
+        return $data->private_id;
     }
 
     /**
@@ -176,7 +207,7 @@ class BurstIq
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: ID b67afe2ec35e80bb',
+                'Authorization: ID '.$this->BI_PRIVATEID,
             ),
         ));
 
@@ -207,7 +238,7 @@ class BurstIq
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => $postFields,
             CURLOPT_HTTPHEADER => array(
-                'Authorization: ID b67afe2ec35e80bb',
+                'Authorization: ID '.$this->BI_PRIVATEID,
                 'Content-Type: application/json'
             ),
         ));
@@ -238,7 +269,7 @@ class BurstIq
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_POSTFIELDS => $postFields,
             CURLOPT_HTTPHEADER => array(
-                'Authorization: ID b67afe2ec35e80bb',
+                'Authorization: ID '.$this->BI_PRIVATEID,
                 'Content-Type: application/json'
             ),
         ));
@@ -448,7 +479,9 @@ class BurstIq
      * @return string
      */
     static function escapeString($txt){
-        return DB::connection()->getPdo()->quote($txt);
+        $txt = \DB::connection()->getPdo()->quote($txt);
+        $txt = substr($txt, 1, -1); //Remove single quotes around text
+        return $txt;
     }
 
 

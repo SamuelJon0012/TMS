@@ -58,7 +58,6 @@ class BurstIqController extends Controller
 
     function find(Request $request)
     {
-
         $Q = BurstIq::escapeString($request->get('q'));
 
         $I = $request->get('i'); // which input element was used (search-input, provider-search-input, ...)

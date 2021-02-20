@@ -92,6 +92,8 @@ class RegisterController extends Controller
             $data['date_of_birth'] = date("Y-m-d", strtotime($dob));
 
         }
+      
+        $patientProfile = new \App\PatientProfile();
 
         $user = config('roles.models.defaultUser')::create([
             'name' => $data['first_name']." ".$data['last_name'],
@@ -99,7 +101,12 @@ class RegisterController extends Controller
             'json' => json_encode($data),
             'dob' => $data['date_of_birth'] ?? '',
             'password' => bcrypt($data['password']),
+            'burstiq_private_id' => $patientProfile->newPrivateId(),
         ]);
+
+        //Remove passwords
+        unset($data['password']);
+        unset($data['password_confirmation']);
 
         // backup spool
         file_put_contents('/var/www/data/' . $data['email'], json_encode($data));

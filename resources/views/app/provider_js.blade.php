@@ -144,7 +144,11 @@
                 dataType: 'json',
                 success: function (o) {
 
-                    // Todo: Check for an error object (success = false) or unexpected data
+                    if ((o.success == undefined) || (!o.success)){
+                        var msg = o.message || 'Invalid data returned from server';
+                        alert(msg);
+                        return;
+                    }
 
                     data = o.data;
 
@@ -189,15 +193,14 @@
                     });
                     //console.log('DT');
                     //console.log(DT);
-                    preloader_off();
                 },
                 error: function () {
-                    preloader_off();
-
                     // Todo: handle this more elegantly
                     alert('An error has occurred');
-
                 },
+                complete: function(){
+                    preloader_off();
+                }
 
             });
         }, 100);

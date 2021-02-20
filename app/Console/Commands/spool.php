@@ -513,7 +513,7 @@ $sql =
 
                                     $i = file_get_contents("work/i/$id");
 
-                                    $result = $this->upsertPatient($id, $row, json_decode($i));
+                                    $result = $this->upsertPatient($user, $row, json_decode($i));
 
                                     $copy = str_replace('/var/www/data/', '/var/www/lake/users/', $file);
 
@@ -711,8 +711,10 @@ $sql =
         return 0;
     }
 
-    function upsertPatient($id, $row, $i)
+    function upsertPatient($user, $row, $i)
     {
+
+        $this->P->setPrivateID($user->burst_private_id);
 
         $this->P->setAddress1($row->address1) // errors out here when it's a provider ... meh that's fine
             ->setAddress2($row->address2)
@@ -731,7 +733,7 @@ $sql =
             ->setSsn('0000')
             ->setState($row->state)
             ->setZipcode($row->zipcode)
-            ->setId($id);
+            ->setId($user->id);
 
         # sub assets must be stored as arrays and all fields must be included even if they are not required
 
