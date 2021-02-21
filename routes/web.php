@@ -55,6 +55,8 @@ Route::post('/biq/bulkadd', 'BurstIqTestController@bulkAdd')->name('biq_bulkadd'
 Route::get('/biq/bulkaddbarcode', 'BurstIqTestController@bulkAddBarcode')->name('biq_bulkaddbarcode');
 Route::post('/biq/bulkaddbarcode', 'BurstIqTestController@bulkAddBarcode')->name('biq_bulkaddbarcode');
 Route::get('/biq/encounters', 'BurstIqController@encounters')->name('biq_encounters');
+Route::get('/biq/myVaccines', 'BurstIqController@myVaccines');
+
 
 Route::get('/biq/test-getting-a-chain', 'BurstIqTestController@testGettingAChain')->name('test_getting_a_chain');
 /*

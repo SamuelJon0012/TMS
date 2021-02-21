@@ -11,6 +11,8 @@ use App\SiteProfile;
 use App\Visits;
 use App\VSee;
 use Illuminate\Http\Request;
+use Auth;
+use DB;
 
 /**
  * Class BurstIqController
@@ -144,6 +146,101 @@ class BurstIqController extends Controller
         return $this->success($rows);
     }
 
+    /**
+     * Sends a html table back to the browser with the patient's jab history
+     * expects a parameter of "q" with the patent_id to look up
+     * 
+     * Note there can be duplicate barcode records
+     */
+    function myVaccines(Request $request){
+        $patient_id = $request->get('q');
+        $patient_id = (is_numeric($patient_id)) ? (int)$patient_id : 0;
+        if ($patient_id == 0)
+            abort(403, 'Invalid Patient ID');
+
+        $user = Auth::user();
+        if ((!$user->hasOneRole('Admin', 'Provider')) and ($user->id != $patient_id))
+            abort(401, 'You can not access this persons records');
+        
+        $data = [];
+
+        //Get the encounter records for this patient as it will have the information we need 
+        $rows = Encounters::where('patient_id', $patient_id)->get();
+        foreach($rows as $row){
+            $key = $row['barcode'].'~'.date('Y-m-d',strtotime($row['dose_date']));
+            $data[$key] = $row;
+        }
+            
+
+        //Get barcode records for this patient looking for bar codes not found in the encounter records
+        $sql = <<<EOT
+            select b.barcode, b.lot, b.timestamp, v.room_name from barcodes b
+            left join visits v on v.user_id = b.patient_id and date_add(v.start, interval -2 hour) < b.timestamp and date_add(v.start, interval 2 hour) > b.timestamp
+            left join encounters e on e.patient_id = b.patient_id and e.barcode = b.barcode
+            where b.patient_id = $patient_id and e.id is null
+        EOT;
+        $rows = DB::select($sql);
+
+        if (count($rows) > 0){
+            //We have barcodes with out an encounter, we'll build up data
+
+            $ndcLookup = [];
+            foreach(DB::table('drugs')->get() as $row){
+                if (!$key = $row->ndc_product_code ?? null)
+                    continue;
+                $ndcLookup[$key] = $row;
+            }
+            
+            foreach($rows as $row){
+                if (!$barcode = $row->barcode ?? null)
+                  continue;
+                $key = $barcode.'~'.date('Y-m-d',strtotime($row->timestamp));
+                if (isset($data[$key]))
+                    continue;
+                $a = explode('_', $barcode, 2);
+                
+                if (count($a) == 2){
+                    $ndc = $a[1];
+                    $lot = $a[0];
+                } else
+                  $ndc = $lot = '';
+
+                $drug = $ndcLookup[$ndc] ?? null;
+
+                $new = [
+                    'barcode'=>$barcode,
+                    'dose_date'=>$row->timestamp ?? 0,
+                    'room_name'=>$row->room_name ?? '',
+                    'lot_number'=>$lot,
+                    'ndc'=>$ndc,
+                    'vendor'=>($drug) ? $drug->labeler_name : '',
+                    'size'=>($drug) ? $drug->strength : '',
+                    'manufacturer'=>($drug) ? $drug->manufacturer_name : '',
+                ];
+                 
+                $data[$key] = $new;
+            }
+        }
+
+        //Sort data by dose_date
+        uasort($data, function($a, $b){
+            return $a['dose_date'] <=> $b['dose_date'];
+        });
+
+        //Fix up data for display
+        foreach($data as $barcode=>&$row){
+            $barray = explode('_', $barcode . '_ ');
+            $row['ndc'] = $barray[1];
+
+            $date = new \DateTime($row['dose_date'], new \DateTimeZone('UTC'));
+            $date->setTimezone(new \DateTimeZone('America/New_York'));
+            $row['dose_date'] = $date->format('Y-m-d H:i:s');
+        }
+
+        return view('app.my_vaccines', ['rows'=>$data]);
+
+    }
+
     function encounters(Request $request) {
 
         $Q = $request->get('q');
@@ -176,7 +273,7 @@ class BurstIqController extends Controller
         $date->setTimezone(new \DateTimeZone('America/New_York'));
         $result['dose_date'] = $date->format('Y-m-d H:i:s');
 
-        return view('app.my_vaccines', $result);
+        return view('app.my_vaccines', ['rows'=>[$result]]);
 
         // IDK why the below isn't working
 

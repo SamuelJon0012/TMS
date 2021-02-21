@@ -12,7 +12,7 @@
             preloader_on();
 
             $.ajax({
-                url: '/biq/encounters',
+                url: '/biq/myVaccines',
                 data: 'q=' + {{ Auth::user()->id }},
                 dataType: 'text',
                 success: function(o) {
