@@ -88,13 +88,13 @@
 
                             <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
 
-                            <form name="vaccine-location-search-form" onsubmit="return doVaccineLocationSearch();">
+                            <form name="vaccineLocationSearchForm" onsubmit="doVaccineLocationSearch(); return false">
 
-                                <input id="vaccine-location-search-input" type="search" class="form-control" name="vaccine-location-search-input" placeholder="{{ __('Search by Name, Address, City, Zip or County') }}" >
+                                <input id="vaccine-location-search-input" type="search" class="form-control" name="searchInput" placeholder="{{ __('Search by Name, Address, City, Zip or County') }}" >
 
                             </form>
 
-                            <div id="search-results"></div>
+                            <div id="vaccine-location-search-results"></div>
 
                         </div>
 

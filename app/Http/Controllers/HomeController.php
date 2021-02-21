@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Sites;
 
 class HomeController extends Controller
 {
@@ -24,21 +25,26 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        if (!$user = Auth::user())
+            redirect('/login');
 
-        $id = Auth::id();
+        if ($user->site_id){
+            $site = Sites::where('id',$user->site_id)->first();
+            $siteName = $site->name ?? '';
+        } else
+            $siteName = '';
 
         $v = $request->get('v');
 
         $m = $request->get('m');
 
-        $file = '/var/www/tokens/' . $id;
+        $file = '/var/www/tokens/' . $user->id;
 
         if (file_exists($file)) {
             $token = file_get_contents($file);
         } else {
             $token = '0';
         }
-
-            return view('home', ['token' => $token, 'id' => $id, 'v' => $v, 'm' => $m]);
+            return view('home', ['token' => $token, 'id' => $user->id, 'v' => $v, 'm' => $m, 'siteId'=>$user->site_id, 'siteName'=>$siteName]);
     }
 }

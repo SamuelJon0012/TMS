@@ -176,8 +176,7 @@ class BurstIqController extends Controller
         $sql = <<<EOT
             select b.barcode, b.lot, b.timestamp, v.room_name from barcodes b
             left join visits v on v.user_id = b.patient_id and date_add(v.start, interval -2 hour) < b.timestamp and date_add(v.start, interval 2 hour) > b.timestamp
-            left join encounters e on e.patient_id = b.patient_id and e.barcode = b.barcode
-            where b.patient_id = $patient_id and e.id is null
+            where b.patient_id = $patient_id
         EOT;
         $rows = DB::select($sql);
 

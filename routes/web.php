@@ -126,3 +126,6 @@ Route::post('/vsee/saveonly', 'VSeeController@saveonly')->name('vsee_saveonly');
 
 Route::get('profile/{user}',  ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 Route::patch('profile/{user}',  ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
+
+Route::get('search-sites', 'LocationController@searchSites');
+Route::get('switch-site', 'LocationController@switchSite');

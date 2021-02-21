@@ -9,9 +9,13 @@
     $(document).ready(function () {
 
 
-
-        $('.search-modal').show();
-
+        @if(!Auth::user()->site_id??0)
+            alert('{{ __('Please select a vaccination site') }}');
+            $('.set-vaccine-location-modal').show();
+        @else
+            $('.search-modal').show();
+        @endif
+        
         $(".Qoption").click(function () {
             var oResult = $(this).attr('rel');
             var oResultArr = oResult.split("_");
@@ -315,6 +319,7 @@
         })
         $('.set-vaccine-location').on('click', function () {
             $('.set-vaccine-location-modal').show();
+            vaccineLocationSearchForm.searchInput.focus();
         })
     });
 
@@ -670,5 +675,60 @@
             return '(' + match[1] + ') ' + match[2] + '-' + match[3]
         }
         return null
+    }
+
+    function doVaccineLocationSearch(){
+        var q = vaccineLocationSearchForm.searchInput.value;
+
+        $.ajax('/search-sites',{
+            dataType: 'text',
+            data: {'q':q},
+            beforeSend: function(){
+                preloader_on();
+            },
+            complete: function(){
+                preloader_off();
+            },
+            error: function(xhr){
+                var txt = '('+xhr.status+') ';
+                if ((xhr.responseJSON) && (xhr.responseJSON.message))
+                    txt += xhr.responseJSON.message;
+                else
+                    txt += xhr.statusText
+                alert(txt);
+            },
+            success: function(data){
+                $('#vaccine-location-search-results').html(data);
+            }
+        });
+    }
+
+    function switchVaccineLocation(siteId){
+        $.ajax({
+            type: "GET",
+            url:'/switch-site',
+            data: {'siteId': siteId, _token: '{{ csrf_token() }}'},
+            contentType: 'application/json',
+            beforeSend: function(){
+                preloader_on();
+            },
+            complete: function(){
+                preloader_off();
+            },
+            error: function(xhr){
+                var txt = '('+xhr.status+') ';
+                if ((xhr.responseJSON) && (xhr.responseJSON.message))
+                    txt += xhr.responseJSON.message;
+                else
+                    txt += xhr.statusText
+                alert(txt);
+            },
+            success: function(data){
+                $('#currentSiteName').html(data.name);
+                $('#vaccine-location-search-results').html('');
+                $('.modals').hide();
+                $('.modals.initial-modal').fadeIn();
+            }
+        });
     }
 </script>

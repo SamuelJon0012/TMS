@@ -161,9 +161,10 @@
             ]])
 
             <br><br><br>
-            <div class="row justify-content-center"  title="This feature is currently unnavailable" >
+            <div class="row justify-content-center">
               <div class="col-6 col-collapse">
-                <button disabled='disabled' id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-location">{{ __('Set Vaccine Location') }}</button>
+                <button id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-location">{{ __('Set Vaccine Location') }}</button>
+                <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
               </div>
             </div>
           @endif
