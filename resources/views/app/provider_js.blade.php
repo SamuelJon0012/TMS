@@ -12,8 +12,6 @@
         @if(!Auth::user()->site_id??0)
             alert('{{ __('Please select a vaccination site') }}');
             $('#setVaccineLocation').trigger('click');
-        @else
-            Modals.show('patient-search-modal');
         @endif
         
         $(".Qoption").click(function () {

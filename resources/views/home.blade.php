@@ -37,7 +37,7 @@
   }
 
   .set-vaccine-location-wrapper button{
-    width: 13pc;
+    width: 10pc;
     border-radius: unset;
   }
 
@@ -188,7 +188,7 @@
             <br><br><br>
             <div class="row justify-content-center">
               <div class="set-vaccine-location-wrapper">
-                <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Vaccine Location') }}</button>
+                <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
                 <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
               </div>
             </div>
