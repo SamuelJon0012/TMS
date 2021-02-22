@@ -13,7 +13,7 @@
             alert('{{ __('Please select a vaccination site') }}');
             $('#setVaccineLocation').trigger('click');
         @else
-            $('.search-modal').show();
+            Modals.show('patient-search-modal');
         @endif
         
         $(".Qoption").click(function () {
@@ -216,10 +216,9 @@
         $.noConflict();
 
         $('.go_home').on('click', function () {
-            $('.modals').hide();
+            Modals.showHome();
             $('#barcode-go-home').hide();
             $('#barcode-go-results').hide();
-            $('.modals.initial-modal').fadeIn();
             $('.fvalue').html('');
             if (DT !== false) {
                 DT.destroy(true);
@@ -227,18 +226,15 @@
 
         });
         $('.go_search').on('click', function () {
-            $('.patient-form-modal').hide();
+            Modals.show('patient-search-modal');
             $('.fvalue').html('');
-            $('.provider-questionnaire-page-modal').hide();
-            $('.scanner-page-modal').hide();
             $('#barcode-go-home').hide();
             $('#barcode-go-results').hide();
 
             // Todo: Besure to hide anything else that might be on top of it.
         });
         $('.go_patient').on('click', function () {
-            $('.provider-questionnaire-page-modal').hide();
-            $('.scanner-page-modal').hide();
+            Modals.show('patient-form-modal');
             $('#barcode-go-home').hide();
             $('#barcode-go-results').hide();
             // Todo: Clear Questionnaire
@@ -246,7 +242,7 @@
             // Todo: Besure to hide anything else that might be on top of it.
         });
         $('.go_questionnaire').on('click', function () {
-            $('.scanner-page-modal').hide();
+            Modals.show('provider-questionnaire-page-modal');
             $('#barcode-go-home').hide();
             $('#barcode-go-results').hide();
             // Todo: Clear Scanner Page
@@ -311,9 +307,6 @@
             });
 
         });
-        $('.patient-button').on('click', function () {
-            $('.search-modal').show();
-        });
         $('.provider-search').on('click', function () {
             $('.provider-search-modal').show();
         });
@@ -327,7 +320,7 @@
 
         preloader_on();
 
-        $('.patient-form-modal').show();
+        Modals.show('patient-form-modal');
 
         // schedule (encounter_schedule) and site (site_profile) are an array of objects which are joined with the patient
 
@@ -536,7 +529,7 @@
 
         // populate the questionnaire during the business above
 
-        $('.provider-questionnaire-page-modal').show();
+        Modals.show('provider-questionnaire-page-modal');
 
         return false;
 
@@ -547,7 +540,7 @@
         // console.log('scanner');
         $('#barcode-allergy').hide();
 
-        $('.scanner-page-modal').show();
+        Modals.show('scanner-page-modal');
         $('#barcode-results').html('');
         $('#barcode-input').val('').focus();
         $('#barcode-form').show();
@@ -649,7 +642,7 @@
     }
 
     function showVaccineLocationSearch(){
-        $('.set-vaccine-location-modal').show();
+        Modals.show('set-vaccine-location-modal');
         vaccineLocationSearchForm.searchInput.focus();
         if ((vaccineLocationSearchForm.searchInput.value == '') && ($('#vaccine-location-search-results').html() == ''))
             doVaccineLocationSearch();
@@ -703,8 +696,7 @@
             },
             success: function(data){
                 $('#currentSiteName').html(data.name);
-                $('.modals').hide();
-                $('.modals.initial-modal').fadeIn();
+                Modals.showHome();
             }
         });
     }

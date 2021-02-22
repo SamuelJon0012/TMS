@@ -10,6 +10,7 @@
 
 window.noBacksies = {
   _hash: "|",
+  _initDone: false,
   onBack: null,
   onBackStack: [],
 
@@ -20,8 +21,9 @@ window.noBacksies = {
 
     if (inx == -1 || inx == window.location.href.length - 1) {
       setTimeout(function () {
-        if (window.location.hash == '') 
+        if (window.location.hash == '')
           window.location.hash = noBacksies._hash;
+        noBacksies._initDone = true;
       }, 10);
     }
   },
@@ -37,7 +39,7 @@ window.noBacksies = {
     if (window.location.hash == '') 
       window.location.hash = noBacksies._hash;
 
-    if (backPressed) {
+    if ((backPressed) && (noBacksies._initDone)){
       noBacksies.callBackHandler(noBacksies.onBack);
       noBacksies.callBackHandler(noBacksies.onBackStack.pop());
     }

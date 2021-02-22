@@ -149,7 +149,7 @@
 
         preloader_on();
 
-        $('.patient-form-modal').show();
+        Modals.show('patient-form-modal');
 
         // schedule (encounter_schedule) and site (site_profile) are an array of objects which are joined with the patient
 
@@ -291,7 +291,7 @@
         // populate the questionnaire during the business above
         console.log('boo');
 
-        $('.patient-questionnaire-page-modal').show();
+        Modals.show('patient-questionnaire-page-modal');
 
         return false;
 
@@ -308,7 +308,7 @@
         });
 
         $('.close-all').on('click', function() {
-            $('.modals').hide();
+            Modals.showHome();
 
             $("#q1").val("");
             $("#q2").val("");
