@@ -11,7 +11,7 @@
 
         @if(!Auth::user()->site_id??0)
             alert('{{ __('Please select a vaccination site') }}');
-            $('.set-vaccine-location-modal').show();
+            $('#setVaccineLocation').trigger('click');
         @else
             $('.search-modal').show();
         @endif
@@ -316,11 +316,7 @@
         });
         $('.provider-search').on('click', function () {
             $('.provider-search-modal').show();
-        })
-        $('.set-vaccine-location').on('click', function () {
-            $('.set-vaccine-location-modal').show();
-            vaccineLocationSearchForm.searchInput.focus();
-        })
+        });
     });
 
     var insuranceOnce = true;
@@ -652,6 +648,13 @@
         return null
     }
 
+    function showVaccineLocationSearch(){
+        $('.set-vaccine-location-modal').show();
+        vaccineLocationSearchForm.searchInput.focus();
+        if ((vaccineLocationSearchForm.searchInput.value == '') && ($('#vaccine-location-search-results').html() == ''))
+            doVaccineLocationSearch();
+    }
+
     function doVaccineLocationSearch(){
         var q = vaccineLocationSearchForm.searchInput.value;
 
@@ -700,7 +703,6 @@
             },
             success: function(data){
                 $('#currentSiteName').html(data.name);
-                $('#vaccine-location-search-results').html('');
                 $('.modals').hide();
                 $('.modals.initial-modal').fadeIn();
             }

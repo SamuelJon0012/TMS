@@ -38,6 +38,7 @@ class LocationController extends Controller
                     ->orWhere('zipcode',$search)
                     ->orWhere('county','LIKE', $v)
                     ->orderBy('name')
+                    ->take(50)
                     ->get();
         }
         

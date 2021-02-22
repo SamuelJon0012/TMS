@@ -20,7 +20,7 @@
 
   }
 
-.button-image {
+  .button-image {
     height: 72px;
     max-height:50%;
   }
@@ -29,11 +29,37 @@
     margin-top: 1pc;
   }
 
+  .set-vaccine-location-wrapper{
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--blue);
+    padding: 0;
+  }
+
+  .set-vaccine-location-wrapper button{
+    width: 13pc;
+    border-radius: unset;
+  }
+
+  .set-vaccine-location-wrapper #currentSiteName{
+    margin-left: 1pc;
+  }
+
   @media(max-width: 32pc){
     .col-collapse{
       display: block;
       width: 90%;
       margin: 0.5pc auto;
+    }
+    .set-vaccine-location-wrapper{
+      flex-direction: column;
+    }
+    .set-vaccine-location-wrapper button{
+      width: 100%;
+    }
+    .set-vaccine-location-wrapper #currentSiteName{
+      margin: 1pc;
+      text-align: center;
     }
   }
 
@@ -161,8 +187,8 @@
 
             <br><br><br>
             <div class="row justify-content-center">
-              <div class="col-6 col-collapse">
-                <button id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-location">{{ __('Set Vaccine Location') }}</button>
+              <div class="set-vaccine-location-wrapper">
+                <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Vaccine Location') }}</button>
                 <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
               </div>
             </div>

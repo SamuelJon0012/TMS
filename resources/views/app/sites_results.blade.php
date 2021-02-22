@@ -27,11 +27,7 @@
     }
 }
 </style>
-<script>
-var selectedSiteId = {{ $siteId }};
 
-function setSelectedSite()
-</script> 
 <div class="site-search-results">
     @foreach($rows as $row)
         @php
