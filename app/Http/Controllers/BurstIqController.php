@@ -194,7 +194,8 @@ class BurstIqController extends Controller
 
         //Get barcode records for this patient looking for bar codes not found in the encounter records
         $sql = <<<EOT
-            select b.barcode, b.lot, b.timestamp, v.room_name from barcodes b
+            select b.barcode, b.lot, b.timestamp, v.room_name, s.name as site_name from barcodes b
+            left join sites s on s.id = b.site_id
             left join visits v on v.user_id = b.patient_id and date_add(v.start, interval -2 hour) < b.timestamp and date_add(v.start, interval 2 hour) > b.timestamp
             where b.patient_id = $patient_id
         EOT;
@@ -229,7 +230,7 @@ class BurstIqController extends Controller
                 $new = [
                     'barcode'=>$barcode,
                     'dose_date'=>$row->timestamp ?? 0,
-                    'room_name'=>$row->room_name ?? '',
+                    'room_name'=>$row->room_name ?? $row->site_name ?? '',
                     'lot_number'=>$lot,
                     'ndc'=>$ndc,
                     'vendor'=>($drug) ? $drug->labeler_name : '',
