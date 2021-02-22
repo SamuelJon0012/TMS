@@ -674,8 +674,6 @@
                                 </select>
                                 <br/><br/>
 
-                                <input type="hidden" name="provider_id" id="provider_id" value="{{ Auth::user()->id }}">
-
                                 <button onclick="doHandleBarcode()" class='btn btn-primary save-barcode-form'>Save Administration Site</button>
 
                                 </div>
@@ -685,7 +683,7 @@
                                     <br/>
                                     <span class="btn btn-link"
 
-                                          onclick="$('#barcode-form').show();$('#barcode-input').val('').focus();">Scan Again</span>
+                                          onclick="$('#barcode-go-home').hide(); $('#barcode-form').show();$('#barcode-input').val('').focus();">Scan Again</span>
 
                                 </div>
                                 <br/>

@@ -13,6 +13,7 @@ use App\VSee;
 use Illuminate\Http\Request;
 use Auth;
 use DB;
+use App\User;
 
 /**
  * Class BurstIqController
@@ -44,18 +45,37 @@ class BurstIqController extends Controller
      * This is the barcode from the scanner
      *
      */
-    function barcode()
+    function barcode(Request $request)
     {
+        if (!$user = Auth::user())
+            \redirect('/login');
 
-        $data=json_encode($_REQUEST);
+        $request->validate([
+            'patient_id'=>'required|integer',
+            'barcode'=>'required',
+            'adminsite'=>'required',
+        ]);
 
-        $patient_id = $_REQUEST['patient_id'];
-        $barcode = $_REQUEST['barcode'];
+        if (!$patient = User::find($request->get('patient_id')))
+            abort(500, 'Invalid Patient ID');
 
-        file_put_contents ('/var/www/data/bc' . uniqid(true), $data);
+        $uniq_id = 'bc'.uniqid(true);
 
-        exit("Stored barcode $barcode for Patient ID $patient_id");
+        $barcode = $request->get('barcode');
 
+        $data = [
+            'patient_id' => $request->get('patient_id'),
+            'barcode' => $barcode,
+            'adminsite' => $request->get('adminsite'),
+            'provider_id' => $user->id,
+            'site_id' => $user->site_id ?? null,
+            'uniq_id' => $uniq_id, // Adding these just incase we need them moving forward
+            'email' => $patient->email,
+        ];
+        
+        file_put_contents ('/var/www/data/'.$uniq_id, json_encode($data));
+
+        return ['success'=>true, 'message'=>"Stored barcode $barcode for Patient ".$patient->name];
     }
 
     function find(Request $request)
@@ -220,6 +240,9 @@ class BurstIqController extends Controller
                 $data[$key] = $new;
             }
         }
+
+        if (count($data) == 0)
+            exit("Vaccination data for Patient has not been posted");
 
         //Sort data by dose_date
         uasort($data, function($a, $b){

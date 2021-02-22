@@ -136,7 +136,6 @@
               [
                 'image'=>asset('images/magnifyingglass-icon.png'),
                 'caption'=>__('Search For Patient'),
-                'hint'=>'This feature is currently unavailable',
                 'classnames'=>'patient-button',
               ],
               [

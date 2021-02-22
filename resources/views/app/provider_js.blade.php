@@ -603,16 +603,7 @@
     }
 
     function doHandleBarcode() {
-        //
-        // try {
-        //
-        //     doHandleBarcodePost();
-        //
-        // } catch {
-        // }
-
-
-
+       
         let barcode = $('#barcode-input').val();
 
         if (barcode.trim() === '') {
@@ -621,52 +612,36 @@
         }
 
         let adminsite = $('#admin-site').val();
-        let provider = $('#provider_id').val();
+        let patientId = $('#patient_id').val();
 
         $.ajax({
             url: '/biq/barcode',
-            data: 'adminsite=' + adminsite + '&barcode=' + barcode + '&patient_id=' + $('#patient_id').val() + '&provider_id=' + provider,
-            dataType: 'text',
-            success: function (o) {
+            data:  {'adminsite': adminsite, 'barcode': barcode, 'patient_id': patientId},
+            dataType: 'json',
+            success: function (data) {
 
-                $('#barcode-results').html(o);
+                $('#barcode-results').html(data.message);
                 $('#barcode-input').val('').focus();
                 $('#barcode-form').hide();
                 $('#barcode-go-home').show();
 
-
             },
-            error: function () {
+            beforeSend: function(){
+                preloader_on();
+            },
+            complete: function(){
                 preloader_off();
-                // Todo: handle this more elegantly
-                alert('An error has occurred');
+            },
+            error: function(xhr){
+                var txt = '('+xhr.status+') ';
+                if ((xhr.responseJSON) && (xhr.responseJSON.message))
+                    txt += xhr.responseJSON.message;
+                else
+                    txt += xhr.statusText;
+                alert(txt);
             },
         });
     }
-
-    // function doHandleBarcodePost() {
-    //
-    //     let barcode = $('#barcode-input').val();
-    //     let adminsite = $('#admin-site').val();
-    //
-    //     $.ajax({
-    //         url: '/biq/barcode',
-    //         type: 'POST',
-    //         data: {
-    //             'adminsite': $('#admin-site').val(),
-    //             'barcode': $('#barcode-input').val(),
-    //             'patient_id': $('#patient_id').val(),
-    //             'provider_id': $('#provider_id').val()
-    //          },
-    //         dataType: 'text',
-    //         success: function(o) {
-    //
-    //         },
-    //         error: function() {
-    //
-    //         },
-    //     });
-    // }
 
     function formatPhoneNumber(phoneNumberString) {
         var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
@@ -694,7 +669,7 @@
                 if ((xhr.responseJSON) && (xhr.responseJSON.message))
                     txt += xhr.responseJSON.message;
                 else
-                    txt += xhr.statusText
+                    txt += xhr.statusText;
                 alert(txt);
             },
             success: function(data){
