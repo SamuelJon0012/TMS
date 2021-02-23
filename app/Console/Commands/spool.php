@@ -39,6 +39,20 @@ class spool extends Command
     }
 
     /**
+     * connect the a mysql database using the values configured in .env
+     * 
+     * @return mysqli database handle for use in mysqli_* statements
+     */
+    public function newDBConnection(){
+        return mysqli_connect(
+            env('DB_HOST'),
+            env('DB_USERNAME'),
+            env('DB_PASSWORD'),
+            env('DB_DATABASE', 'tms')
+        );
+    }
+
+    /**
      * Execute the console command.
      *
      * @return int
@@ -74,12 +88,7 @@ class spool extends Command
 
                     # NOT DONE YET ! ! !
 
-                    $conn = mysqli_connect(
-                        'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
-                        'admin',
-                        '4rfvBGT%6yhn',
-                        'tms'
-                    );
+                    $conn = $this->newDBConnection();
 
                     $this->info('vsee');
 
@@ -164,12 +173,7 @@ class spool extends Command
 
                 case 'fix':
 
-                    $conn = mysqli_connect(
-                        'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
-                        'admin',
-                        '4rfvBGT%6yhn',
-                        'tms'
-                    );
+                    $conn = $this->newDBConnection();
                     $sql = "UPDATE users SET dob = STR_TO_DATE(dob,'%m/%d/%Y') where dob like '%/%' and id > 4600";
 
                     mysqli_query($conn, $sql);
@@ -187,12 +191,7 @@ class spool extends Command
                 case 'bc2':
                 case 'barcodes':
                 case 'barcode':
-                    $conn = mysqli_connect(
-                        'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
-                        'admin',
-                        '4rfvBGT%6yhn',
-                        'tms'
-                    );
+                    $conn = $this->newDBConnection();
 
                     $this->info('barcodes');
 
@@ -208,11 +207,18 @@ class spool extends Command
                     }
 
                     $ctr = 0;
-# Todo make this a stored procedure or prepared stmt ... but Don't use entities / models for performance
-$sql =
-"INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id=%s, uniq_id = '%s', barcode = '%s', timestamp = '%s'";
 
-                    foreach ($files as $file) { if(strpos($file, '@') != false) continue;
+                    $sql = <<<EOT
+                        INSERT IGNORE INTO barcodes SET 
+                        adminsite = ?, patient_id = ?, provider_id = ?, uniq_id = ?, 
+                        barcode = ?, `timestamp` = ?, email = ?, site_id = ?
+                    EOT;
+
+                    $stm = mysqli_prepare($conn, $sql);
+
+                    foreach ($files as $file) { 
+                        
+                        if(strpos($file, '@') != false) continue;
 
                         $ctr++;
 
@@ -222,19 +228,19 @@ $sql =
 
                             $row = json_decode($json);
 
-                        if (!isset($row->adminsite)) {
-                            continue;
-                        }
+                            if (!isset($row->adminsite)) {
+                                continue;
+                            }
 
-                        if (isset($row->timestamp)) {
+                            if (isset($row->timestamp)) {
 
-                            $timestamp = strtotime($row->timestamp);
+                                $timestamp = strtotime($row->timestamp);
 
-                        } else {
+                            } else {
 
-                            $timestamp = date('Y-m-d H:i:s', filemtime($file));
+                                $timestamp = date('Y-m-d H:i:s', filemtime($file));
 
-                        }
+                            }
 
                             $uniq_id = basename($file);
 
@@ -242,14 +248,18 @@ $sql =
                                 $row->provider_id = 0;
                             }
 
-                            $result = mysqli_query($conn,sprintf($sql,
+                            \mysqli_stmt_bind_param($stm, 'iiissssi',
                                 $row->adminsite,
                                 $row->patient_id,
                                 $row->provider_id,
                                 $uniq_id,
                                 $row->barcode,
-                                $timestamp
-                            ));
+                                $timestamp,
+                                $row->email,
+                                $row->site_id
+                            );
+                            \mysqli_execute($stm);
+                            
 
                             $this->line("$ctr. $file");
 
@@ -274,12 +284,7 @@ $sql =
                 case 'encounter':
                     $this->info('encounter');
 
-                    $conn = mysqli_connect(
-                        'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
-                        'admin',
-                        '4rfvBGT%6yhn',
-                        'tms'
-                    );
+                    $conn = $this->newDBConnection();
 
                     # done -1 Make table from barcodes (insert ignore)
 
@@ -513,7 +518,7 @@ $sql =
 
                                     $i = file_get_contents("work/i/$id");
 
-                                    $result = $this->upsertPatient($id, $row, json_decode($i));
+                                    $result = $this->upsertPatient($user, $row, json_decode($i));
 
                                     $copy = str_replace('/var/www/data/', '/var/www/lake/users/', $file);
 
@@ -711,8 +716,10 @@ $sql =
         return 0;
     }
 
-    function upsertPatient($id, $row, $i)
+    function upsertPatient($user, $row, $i)
     {
+
+        $this->P->setPrivateID($user->burst_private_id);
 
         $this->P->setAddress1($row->address1) // errors out here when it's a provider ... meh that's fine
             ->setAddress2($row->address2)
@@ -731,7 +738,7 @@ $sql =
             ->setSsn('0000')
             ->setState($row->state)
             ->setZipcode($row->zipcode)
-            ->setId($id);
+            ->setId($user->id);
 
         # sub assets must be stored as arrays and all fields must be included even if they are not required
 

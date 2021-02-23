@@ -28,10 +28,15 @@ Auth::routes();
 Route::resource('patientvaccine', PatientVaccineController::class);
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/new-patient','HomeController@newPatient');
+Route::post('/new-patient','HomeController@registerNewPatient')->name('register_new_parent');
 
 Route::get('/vaccine', 'CoverController@vaccineGet')->name('vaccine_get');
 Route::post('/vaccine', 'CoverController@vaccinePost')->name('vaccine_post');
 Route::post('/affirm', 'CoverController@vaccinePostAffirm')->name('vaccine_post_affirm');
+
+//Route::get('/patient-test/{$id}','PatientCOVIDTestController@show')->name('patient_test_get');
+Route::post('/patient-test', 'PatientCOVIDTestController@insert')->name('patient_test_post');
 
 /*
  *
@@ -52,6 +57,8 @@ Route::post('/biq/bulkadd', 'BurstIqTestController@bulkAdd')->name('biq_bulkadd'
 Route::get('/biq/bulkaddbarcode', 'BurstIqTestController@bulkAddBarcode')->name('biq_bulkaddbarcode');
 Route::post('/biq/bulkaddbarcode', 'BurstIqTestController@bulkAddBarcode')->name('biq_bulkaddbarcode');
 Route::get('/biq/encounters', 'BurstIqController@encounters')->name('biq_encounters');
+Route::get('/biq/myVaccines', 'BurstIqController@myVaccines');
+
 
 Route::get('/biq/test-getting-a-chain', 'BurstIqTestController@testGettingAChain')->name('test_getting_a_chain');
 /*
@@ -118,3 +125,9 @@ Route::get('/vsee/loginas', 'VSeeController@loginAs')->name('vsee_loginas');
 Route::get('/vsee/visits', 'VSeeController@Visits')->name('vsee_visits');
 
 Route::post('/vsee/saveonly', 'VSeeController@saveonly')->name('vsee_saveonly');
+
+Route::get('profile/{user}',  ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
+Route::patch('profile/{user}',  ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
+
+Route::get('search-sites', 'LocationController@searchSites');
+Route::get('switch-site', 'LocationController@switchSite');

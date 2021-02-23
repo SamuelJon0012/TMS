@@ -1,14 +1,19 @@
+@php
+    $isProvider = $isProvider ?? false;
+    $route = ($isProvider) ? 'register_new_parent' : 'register';
+@endphp
+
 @extends('layouts.app')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-      @if(request()->get('rt') == "patient")
+      @if((request()->get('rt') == "patient") or ($isProvider))
         <div class="col-md-12 text-center">
           <h3 class="text-primary"><b>{{ __('Patient Registration') }}</b></h3>
         </div>
         <br><br><br>
 
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route($route) }}">
           @csrf
             <input type="hidden" name="version" value="2">
           <div class="row">
@@ -19,7 +24,7 @@
               </div>
               <div class="card-body text-center">
                 <br>
-                {{ __('Please fill all the Required fields to ensure that all neccessary information is captured for clinical and billing purposes.') }}
+                {{ __('Please fill all the Required fields to ensure that all necessary information is captured for clinical and billing purposes.') }}
                 <br><br>
 
                 <div class="form-group row justify-content-center">
