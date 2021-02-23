@@ -16,7 +16,8 @@ class BurstIq
     protected $BI_BASE_URL;
     protected $BI_PRIVATEID;
 
-    protected $url, $data, $id=0, $asset_id='';
+    protected $url, $id=0, $asset_id='';
+    public $data;
 
     protected $get=[], $first, $array=[];
     protected $lastCurlError = null;
@@ -85,8 +86,8 @@ class BurstIq
     /**
      * set the Authorization ID used during calls to BurstIq.
      * setting a blank value causes it to use the default value
-     * 
-     * @param mixed 
+     *
+     * @param mixed
      */
     function setPrivateID($newPrivateId){
         $this->BI_PRIVATEID = (empty($newPrivateId)) ? env('BI_PRIVATEID', 'b67afe2ec35e80bb') : $newPrivateId;
@@ -94,8 +95,8 @@ class BurstIq
 
     /**
      * calls BurstIq and gets a new Private ID
-     * 
-     * @return string 
+     *
+     * @return string
      */
     function newPrivateId(){
         $this->url = $this->BI_BASE_URL . 'util/privateid';
@@ -104,10 +105,10 @@ class BurstIq
             abort(500, $err);
 
         $data = $this->data;
-        
+
         if (empty($data->private_id))
             abort(500, __('Failed to obtain a new ID from BurstIq'));
-        
+
         return $data->private_id;
     }
 
