@@ -195,11 +195,14 @@ $(function(){
                 contentType: 'application/json',
             })
             .then(function(data){
-                checkAjaxResult(data);
+                checkAjaxResponse(data);
                 frmTestQuestions.setData(data);
                 Modals.show('patient-COVID-test3-modal');
             })
-        );
+        ).always(function(){
+            preloader_off();
+            frmTestQuestions.btnSubmit.disabled = false;
+        });
     }
 });
 </script>
