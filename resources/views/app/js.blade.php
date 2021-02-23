@@ -60,6 +60,16 @@ function checkAjaxResponse(data){
     if (typeof data != 'object')
         return true;
     if ((data.success != undefined) && (!data.success)){
+
+        if (typeof data.message == 'string'){
+            try{
+                data = JSON.parse(data.message);
+            }catch(e){
+                return true;
+            }
+        }
+
+
         alert(data.message || 'An error occurred');
         return false;
     }
