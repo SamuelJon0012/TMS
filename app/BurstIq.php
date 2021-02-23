@@ -17,7 +17,8 @@ class BurstIq
     protected $BI_USERNAME;
     protected $BI_PASSWORD;
 
-    protected $url, $username='', $password='', $jwt='', $data, $id=0, $asset_id='';
+    protected $url, $username='', $password='', $jwt='', $id=0, $asset_id='';
+    public $data;
 
     protected $get=[], $first, $array=[];
 

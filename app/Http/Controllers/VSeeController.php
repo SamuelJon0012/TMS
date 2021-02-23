@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\PatientProfile;
 use App\User;
 use App\VSee;
 use Illuminate\Auth\Authenticatable;
@@ -273,14 +274,22 @@ class VSeeController extends Controller
 
 
     }
-    function saveonly(Request $request)
+    function saveonly(Request $request) // Update the patient but do not SSL
     {
 
         // Save questionnaire and redirect to home (saved by provider)
 
         $data = json_encode($_POST);
 
+        # Save a copy of what was entered
+
         file_put_contents ('/var/www/data/prq' . uniqid(true), $data);
+
+        # Yes this part is still stupid --------------
+
+        /* What this does is put a file on the disk that can be detected with ajax on the barcode page and if detected
+           it displays the allergy warning.  This was the only way I could think of the ad this feature in the 10 seconds
+           of alloted dev time */
 
         $q6 = $request->get('q6');
 
@@ -302,6 +311,45 @@ class VSeeController extends Controller
             }
 
         }
+
+        # End of Stupid ----------------------
+
+        // Todo: Error trap this
+
+        $P = new PatientProfile();
+
+        $P->query('patient_profile', 'WHERE asset.id=' . $q_patient_id);
+
+        $records = $P->data->records; // Make $P->data public
+
+        foreach ($records as $record) {
+
+            // There should only be 1 match here so this is more like first()
+
+            $P->make($record);
+
+            $insurances = [[
+
+                "administrator_name" => $request->get('administrator_name'),
+                "group_id" =>$request->get('administrator_name'),
+                "employer_name" =>$request->get('administrator_name'),
+                "coverage_effective_date" =>$request->get('administrator_name'),
+                "issuer_id" =>$request->get('administrator_name'),
+                "primary_cardholder" =>$request->get('administrator_name'). " " . $request->get('administrator_name'),
+                "insurance_type" => $request->get('administrator_name'),
+                "relationship_to_primary_cardholder" => $request->get('administrator_name'),
+                "plan_type" => $request->get('administrator_name'),
+                "plan_id" => $request->get('administrator_name'),
+
+            ]];
+
+            $result = $P->setInsurances($insurances) ->save();
+
+            break;
+
+        }
+
+
 
         return redirect('/home');
 
