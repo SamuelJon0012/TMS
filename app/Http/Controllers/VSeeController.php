@@ -120,7 +120,17 @@ class VSeeController extends Controller
 
         }
 
+	$slug = Auth::user()->slug;
+
+	if (empty($slug)) {
+
         $url = "https://trackmysolutions.vsee.me/auth?sso_token=$token&next=/";
+
+	} else {
+
+        $url = "https://trackmysolutions.vsee.me/auth?sso_token=$token&next=/u/$slug";
+
+	}
 
         return redirect($url);
 
@@ -189,7 +199,24 @@ class VSeeController extends Controller
 
         }
 
+
+
+
+
+	$slug = Auth::user()->slug;
+
+
+	if (empty($slug)) {
+
         $url = "https://trackmysolutions.vsee.me/auth?sso_token=$token&next=/";
+
+	} else {
+
+        $url = "https://trackmysolutions.vsee.me/auth?sso_token=$token&next=/u/$slug";
+
+	}
+
+
 
         return redirect($url);
 
