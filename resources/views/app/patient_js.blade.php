@@ -10,33 +10,21 @@
 
             Modals.show('my-vaccine-page-modal');
             preloader_on();
-
-            $.ajax({
-                url: '/biq/myVaccines',
-                data: 'q=' + {{ Auth::user()->id }},
-                dataType: 'text',
-                success: function(o) {
-                    $('#my-vaccine-info').html(o);
-                },
-                error: function() {
-                    // Todo: handle this more elegantly
-                    alert('An error has occurred');
-                },
-                complete: function(){
-                    preloader_off();
-                }
-            });
-
+            decorateAjax(
+                $.ajax({
+                    url: '/biq/myVaccines',
+                    data: 'q=' + {{ Auth::user()->id }},
+                    dataType: 'text',
+                    success: function(o) {
+                        if (checkAjaxResponse(o))
+                          $('#my-vaccine-info').html(o);
+                    },
+                })
+            );
 
             $('.adverse-event').on('click', function() {
                 alert('This feature is not currently available');
             })
-
-
-
-
-
-
 
         });
 

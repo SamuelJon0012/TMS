@@ -25,7 +25,7 @@ class LocationController extends Controller
     function searchSites(Request $request){
         $user = Auth::user();
         if ($user == null)
-            return redirect('/login');
+            abort(401, 'Please login');
 
         $search = $request->get('q');
         if (empty($search)){
@@ -50,7 +50,7 @@ class LocationController extends Controller
     function switchSite(Request $request){
         $user = Auth::user();
         if ($user == null)
-            return redirect('/login');
+            abort(401, 'Please login');
 
         if (!$siteId = $request['siteId'] ?? null)
             abort(500, 'Site ID required');

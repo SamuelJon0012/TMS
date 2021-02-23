@@ -185,38 +185,21 @@ $(function(){
             return;
         preloader_on();
         frmTestQuestions.btnSubmit.disabled = true;
-        $.ajax({
-            type: "POST",
-            url:'/patient-test',
-            data: JSON.stringify(frmTestQuestions.getData()),
-            processData: false,
-            contentType: 'application/json',
-        })
-        .then(function(data){
-            if (typeof data != 'object'){     /* TODO: test for some reference to the stored record */
-                alert('Failed to send your details');
-                return;
-            }
-            //check for BurstIq specific errors
-            if ((data.success != undefined) && (data.success == false)){
-                alert(data.message);
-            } else {
+
+        decorateAjax(
+            $.ajax({
+                type: "POST",
+                url:'/patient-test',
+                data: JSON.stringify(frmTestQuestions.getData()),
+                processData: false,
+                contentType: 'application/json',
+            })
+            .then(function(data){
+                checkAjaxResult(data);
                 frmTestQuestions.setData(data);
                 Modals.show('patient-COVID-test3-modal');
-            }
-        })
-        .always(function(){
-            preloader_off();
-            frmTestQuestions.btnSubmit.disabled = false;
-        })
-        .fail(function(xhr){
-            var txt = '('+xhr.status+') ';
-            if ((xhr.responseJSON) && (xhr.responseJSON.message))
-              txt += xhr.responseJSON.message;
-            else
-              txt += xhr.statusText
-            alert(txt);
-        });
+            })
+        );
     }
 });
 </script>

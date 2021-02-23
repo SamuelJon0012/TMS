@@ -48,7 +48,7 @@ class BurstIqController extends Controller
     function barcode(Request $request)
     {
         if (!$user = Auth::user())
-            \redirect('/login');
+            abort(401, 'Please login');
 
         $request->validate([
             'patient_id'=>'required|integer',
@@ -179,7 +179,7 @@ class BurstIqController extends Controller
             abort(403, 'Invalid Patient ID');
 
         $user = Auth::user();
-        if ((!$user->hasOneRole('Admin', 'Provider')) and ($user->id != $patient_id))
+        if ((!$user->checkRole('provider')) and ($user->id != $patient_id))
             abort(401, 'You can not access this persons records');
         
         $data = [];
@@ -332,6 +332,8 @@ class BurstIqController extends Controller
 
         }
         $rows = $P->array(); // Get Patient Data for Display Only (Enumerations converted, joins, etc)
+        if (count($rows) == 0)
+            return $this->success($rows); //No results to return;
 
         # ToDo - Use Abbas' new join model (see BurstIqTestController@testGettingPatientScheduleSiteQuery)
         # Make this a join in the Model, but for now I'm getting strange results when I try to use JOIN

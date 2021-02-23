@@ -187,10 +187,19 @@
 
             <br><br><br>
             <div class="row justify-content-center">
-              <div class="set-vaccine-location-wrapper">
-                <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
-                <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
+              <div>
+                <div class="set-vaccine-location-wrapper">
+                  <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
+                  <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
+                </div>
               </div>
+              
+              
+              <div class="col-6 col-collapse">
+                <button id="registerPatientByProvider" class="btn btn-primary form-control" onclick="document.location='/new-patient'">{{ __('Register a Patient') }}</button>
+              </div>
+                
+              
             </div>
           @endif
 

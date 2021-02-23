@@ -55,6 +55,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'date_of_birth' => ['required', 'date'],
+            'byProvider'=>['boolean'],
         ]);
 
         $validator->after(function($validator){
@@ -66,6 +67,17 @@ class RegisterController extends Controller
             $validator->errors()->add('date_of_birth', __('You must be at least 18 years old to register'));
             return;
           }
+
+          //Check email is in email.json if this is not a provider
+          $byProvider = $validator->getData()['byProvider'] ?? false;
+          if (!$byProvider){
+            $email = trim(strtolower(request('email')));
+            if (!$emails = \json_decode(file_get_contents(public_path().'/email.json')))
+              $validator->errors()->add('email', __('Failed to load list of valid emails'));
+            if (!in_array($email, $emails))
+              $validator->errors()->add('email', __('This email has not completed the affirmation process'));
+          }
+          
         });
 
         return $validator;
@@ -130,5 +142,17 @@ class RegisterController extends Controller
         }
 
         return $user;
+    }
+
+    /**
+     * Handles the registration of a patient by a provider
+     * @return user instance of newly create user record
+     */
+    function RegisterPatient(array $data){
+      $data['byProvider'] = true;
+      $data['r_type'] = "patient";
+      $validator = $this->validator($data);
+      $validator->validate();
+      return $this->create($data);
     }
 }

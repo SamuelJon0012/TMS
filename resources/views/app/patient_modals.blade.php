@@ -9,7 +9,7 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-12 text-center">
-                        <h3>{{ __('Patient Screening Questionaire') }}</h3>
+                        <h3>{{ __('Patient Screening Questionnaire') }}</h3>
                     </div>
                     <div class="col-md-10">
                         <div class="card-body">

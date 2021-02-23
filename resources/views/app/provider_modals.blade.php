@@ -17,7 +17,7 @@
                     <div class="col-md-10">
                         <div class="card-body">
 
-                            <form name="search-form" onsubmit="return doPatientSearch('search-input');">
+                            <form name="search-form" onsubmit="doPatientSearch('search-input'); return false;">
 
                                 <input id="search-input" type="search" class="form-control" name="search-input" placeholder="{{ __('Search by Last Name, Email or Phone Number') }}" >
 
@@ -52,7 +52,7 @@
 
                             <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
 
-                            <form name="provider-search-form" onsubmit="return doPatientSearch('provider-search-input');">
+                            <form name="provider-search-form" onsubmit="doPatientSearch('provider-search-input'); return false;">
 
                                 <input id="provider-search-input" type="search" class="form-control" name="provider-search-input" placeholder="{{ __('Search by Last Name, Email or phone number') }}" >
 
@@ -115,8 +115,6 @@
         ['caption'=>'Search', 'className'=>'go_search'],
     ]
 ])
-    {{--<div class="patient-form-modal modals">--}}
-
     <div class="patient-form-modal-inner">
 
         <div id="page-content">
@@ -314,7 +312,6 @@
             </div>
         </div>
     </div>
-    {{-- </div> --}}
 
 @endcomponent    
 
