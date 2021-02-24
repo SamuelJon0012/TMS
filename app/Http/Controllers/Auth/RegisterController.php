@@ -60,6 +60,9 @@ class RegisterController extends Controller
         ]);
 
         $validator->after(function($validator){
+          if (request('r_type') == 'provider')
+            return;
+
           if (!$dateOfBirth = \strtotime(request('date_of_birth')))
             return; //already hit required rule
           
