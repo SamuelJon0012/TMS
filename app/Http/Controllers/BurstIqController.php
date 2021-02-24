@@ -359,6 +359,8 @@ class BurstIqController extends Controller
 
         $dob = $dob['$date'];
         $dob = substr($dob,0,10);
+        $rows[0]['date_of_birth'] = $dob;
+
         $email = $rows[0]['email'];
 
         $data = $V->getVisits($first, $last, $dob, $email);
