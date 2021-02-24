@@ -73,10 +73,14 @@ class RegisterController extends Controller
           $byProvider = $validator->getData()['byProvider'] ?? false;
           if (!$byProvider){
             $email = trim(strtolower(request('email')));
-            if (!$emails = \json_decode(file_get_contents(public_path().'/email.json')))
-              $validator->errors()->add('email', __('Failed to load list of valid emails'));
-            if (!in_array($email, $emails))
-              $validator->errors()->add('email', __('This email has not completed the affirmation process'));
+            if (strpos($email,'@')){
+              if (!$emails = \json_decode(file_get_contents(public_path().'/email.json')))
+                $validator->errors()->add('email', __('Failed to load list of valid emails'));
+              if (!in_array($email, $emails)){
+                $validator->errors()->add('email', __('This email is not on the authorized list'));
+                $validator->errors()->add('emailPopup', 'Show'); //Triggers popup dialogue
+              }
+            }
           }
           
         });
