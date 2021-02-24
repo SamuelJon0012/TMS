@@ -46,6 +46,8 @@ function decorateAjax(xhr){
     xhr.always(function(){
         preloader_off();
     });
+
+    return xhr;
 }
 
 function checkAjaxResponse(data){

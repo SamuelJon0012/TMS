@@ -148,9 +148,11 @@
                     <div class="col-6 col-collapse">
                         <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control">{{ __('Add a Vaccine') }}</button>
                     </div>
+                    {{--
                     <div class="col-6 col-collapse">
                         <button id="startCOVIDTest" class="btn btn-primary form-control" onclick="Modals.show('patient-COVID-test1-modal')">{{ __('Start COVID Test') }}</button>
                     </div>
+                    --}}
 
                 @endif
 

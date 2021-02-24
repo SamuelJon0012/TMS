@@ -322,11 +322,14 @@ class VSeeController extends Controller
 
         $records = $P->data->records; // Make $P->data public
 
+	return redirect('/home');
+
         foreach ($records as $record) {
 
             // There should only be 1 match here so this is more like first()
 
             $P->make($record);
+
 
             $insurances = [[
 
@@ -342,6 +345,7 @@ class VSeeController extends Controller
                 "plan_id" => $request->get('administrator_name'),
 
             ]];
+
 
             $result = $P->setInsurances($insurances) ->save();
 
