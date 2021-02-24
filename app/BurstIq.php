@@ -16,7 +16,7 @@ class BurstIq
     protected $BI_BASE_URL;
     protected $BI_PRIVATEID;
 
-    protected $url, $id=0, $asset_id='';
+    protected $url, $username='', $password='', $jwt='', $id=0, $asset_id='';
     public $data;
 
     protected $get=[], $first, $array=[];
@@ -77,7 +77,7 @@ class BurstIq
         }
 
         if ((!isset($obj->status)) or ($obj->status != 200))
-            return $this->error($data);
+            return $obj->message ?? 'Invalid data returned from chain';
 
         $this->data = $obj;
         return false;
@@ -210,9 +210,9 @@ class BurstIq
             CURLOPT_HTTPHEADER => array(
                 'Authorization: ID '.$this->BI_PRIVATEID,
             ),
-        ));
+        ));                                                                                                     error_log('$this->BI_PRIVATEID='.$this->BI_PRIVATEID);
 
-        $response = curl_exec($curl);
+        $response = curl_exec($curl);                                                                           error_log('getCurl('.$this->url.') = '.substr($response, 0, 500));
         $this->lastCurlError = ($response !== null) ? null : '('.\curl_errno($curl).') '.\curl_error($curl);
 
         curl_close($curl);
@@ -242,9 +242,9 @@ class BurstIq
                 'Authorization: ID '.$this->BI_PRIVATEID,
                 'Content-Type: application/json'
             ),
-        ));
+        ));                                                                                                       error_log('$this->BI_PRIVATEID='.$this->BI_PRIVATEID);
 
-        $response = curl_exec($curl);
+        $response = curl_exec($curl);                                                                             error_log('postCurl('.$this->url.', '.substr($postFields,0,500).') = '.substr($response, 0, 500));
         $this->lastCurlError = ($response !== null) ? null : '('.\curl_errno($curl).') '.\curl_error($curl);
 
         curl_close($curl);
@@ -273,9 +273,9 @@ class BurstIq
                 'Authorization: ID '.$this->BI_PRIVATEID,
                 'Content-Type: application/json'
             ),
-        ));
+        ));                                                                                                      error_log('$this->BI_PRIVATEID='.$this->BI_PRIVATEID);
 
-        $response = curl_exec($curl);
+        $response = curl_exec($curl);                                                                            error_log('putCurl('.$this->url.', '.substr($postFields,0,500).') = '.substr($response, 0, 500));
         $this->lastCurlError = ($response !== null) ? null : '('.\curl_errno($curl).') '.\curl_error($curl);
 
         curl_close($curl);
