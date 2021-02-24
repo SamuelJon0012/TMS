@@ -113,7 +113,7 @@ class RegisterController extends Controller
             'json' => json_encode($data),
             'dob' => $data['date_of_birth'] ?? '',
             'password' => bcrypt($data['password']),
-            'burstiq_private_id' => $patientProfile->newPrivateId(),
+            //'burstiq_private_id' => $patientProfile->newPrivateId(),
         ]);
 
         //Remove passwords

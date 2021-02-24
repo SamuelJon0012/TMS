@@ -212,7 +212,7 @@ class BurstIq
             ),
         ));
 
-        $response = curl_exec($curl);
+        $response = curl_exec($curl);                                                                                 error_log('getCurl('.$this->url.') = '.substr($response, 0, 500));
         $this->lastCurlError = ($response !== null) ? null : '('.\curl_errno($curl).') '.\curl_error($curl);
 
         curl_close($curl);
@@ -244,7 +244,7 @@ class BurstIq
             ),
         ));
 
-        $response = curl_exec($curl);
+        $response = curl_exec($curl);                                                                                     error_log('postCurl('.$this->url.', '.substr($postFields,0,500).') = '.substr($response, 0, 500));
         $this->lastCurlError = ($response !== null) ? null : '('.\curl_errno($curl).') '.\curl_error($curl);
 
         curl_close($curl);
@@ -275,7 +275,7 @@ class BurstIq
             ),
         ));
 
-        $response = curl_exec($curl);
+        $response = curl_exec($curl);                                                                                     error_log('putCurl('.$this->url.', '.substr($postFields,0,500).') = '.substr($response, 0, 500));
         $this->lastCurlError = ($response !== null) ? null : '('.\curl_errno($curl).') '.\curl_error($curl);
 
         curl_close($curl);
