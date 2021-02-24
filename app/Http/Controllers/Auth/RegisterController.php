@@ -138,6 +138,7 @@ class RegisterController extends Controller
           if($data['r_type'] == "patient") {
                 //Call for inserting Patient Record in BurstIq
 
+		
 
               # instantiate a BurstIq class with optional username & password or use login() method later
 
