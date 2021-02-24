@@ -99,12 +99,12 @@
           @if(Auth::check() && Auth::user()->hasRole('patient'))
             <?php
               $items = [
-                [
+                /*[
                   'id'=>'lab-results-button',
                   'image'=>asset('images/lab-icon.png'),
                   'caption'=>__('My Lab Results'),
                   'hint'=>'This feature is currently unavailable',
-                ],
+                ],*/
                 [
                   'id'=>'myvaccine-button',
                   'image'=>asset('images/syringe.png'),

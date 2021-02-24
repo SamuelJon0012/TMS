@@ -648,3 +648,73 @@
     <br><br><br>
 </div>
 @endsection
+
+
+@error('emailPopup')
+@push('pageBottom')
+<style>
+  #EmailNotListed-outer{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #000a;
+    display: none;
+    flex-direction: column;
+  }
+  #EmailNotListed-inner{
+    max-width: 48pc;
+    background: #eeef;
+    display: inline-block;
+    margin: 4pc auto;
+    padding: 2pc;
+    box-shadow: 0.1pc 0.1pc 0.2pc #0004;
+  }
+  #EmailNotListed-inner div{
+    margin: 1pc 0 0 0;
+    text-align: justify;
+  }
+  @media(max-width: 24pc){
+    #EmailNotListed-outer{
+      position: absolute;
+    }
+  }
+</style>
+
+<div id="EmailNotListed-outer">
+  <div style="display: flex">
+    <div id="EmailNotListed-inner">
+      <div>
+        Your application to receive a vaccination is disallowed at this time because this account is not 
+        currently on Bucks County’s registration list. Only one registration link per person is valid, and 
+        only those directly contacted by the county are eligible to be scheduled now. If you believe you 
+        received such an email, please call <b>1-844-522-5952</b> to speak to a scheduling assistant to 
+        help you. Appointments made through links shared on social media are being cancelled. Even if you 
+        are 1A eligible, using a link received from any source other than a Bucks County invitation email 
+        is invalid, and you will have to wait your turn. In the interest of fairness, Bucks County is 
+        vaccinating people in the order they pre-registered. If you have not yet pre-registered, please go 
+        to <a href="https://buckscounty.org">buckscounty.org</a>, click on the Vaccine Information tile and 
+        click on the red link to register.
+      </div>
+      <div style="text-align: right">
+        <button class="btn btn-primary" onclick="EmailNotListed_close()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var eEmailNotListed = document.getElementById('EmailNotListed-outer');
+
+  function EmailNotListed_close(){
+    $(eEmailNotListed).fadeOut();
+  }
+  $(function(){
+    $(eEmailNotListed).fadeIn();
+  });
+</script>
+
+
+@endpush
+@enderror
