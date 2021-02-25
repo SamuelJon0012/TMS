@@ -15,6 +15,8 @@
     "dl_number":"{{$data->getDlNumber()}}",
     "ethnicity":"{{$data->getEthnicity()}}",
     "race":"{{$data->getRace()}}",
+    "vsee_clinic_id":"{{$data->getVseeClinicId()}}",
     "phone_numbers": {!!json_encode($data->getPhoneNumbers())!!},
-    "insurance": {!!json_encode($data->getInsurances())!!}
+    "insurance": {!!json_encode($data->getInsurances())!!},
+    "birth_sex": {{(int)$data->getBirthSex()}}
     }

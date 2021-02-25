@@ -1,9 +1,7 @@
 {
   "id": {{(int)$data->getId()}},
-  "is_doctor": {{(int)$data->getIsDoctor()}},
-  "is_nurse": {{(int)$data->getIsNurse()}},
-  "is_nurse_practioner": {{(int)$data->getIsNursePractitioner()}},
-{{--  "user_id": {{(int)$data->getUserId()}},--}}
+  "provider_type": {{(int)$data->getProviderType()}},
   "npi": "{{$data->getNPI()}}",
   "sites": {{json_encode($data->getSites())}}
+  "vsee_clinic_id": {{json_encode($data->getVseeClinicId())}}
 }

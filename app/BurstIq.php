@@ -21,6 +21,9 @@ class BurstIq
 
     protected $get=[], $first, $array=[];
 
+    // Get this from db
+
+    public $lookup;
     # Put a wrapper around queries to attempt to re-login if jwt is expired?  Or logout the user <-- this
 
     /**
@@ -35,30 +38,33 @@ class BurstIq
      */
     public function __construct($username=false, $password=false) {
 
+        $this->lookup = (array)json_decode(file_get_contents('/var/www/lookup.json'));
+
         # Do not instantiate this object if the user isn't logged in except for Registration, and right now we don't have this
 
         # if(user_is_logged_in)
-        $this->jwt = session('bi_jwt', false);
+        //$this->jwt = session('bi_jwt', false);
         $this->BI_PUBLIC_KEY = env('BI_PUBLIC_KEY');
         $this->BI_BASE_URL = env('BI_BASE_URL');
-        $this->BI_USERNAME = env('BI_USERNAME');
-        $this->BI_PASSWORD = env('BI_PASSWORD');
+#        $this->BI_USERNAME = env('BI_USERNAME');
+#        $this->BI_PASSWORD = env('BI_PASSWORD');
 
-        if (empty($this->jwt)) {
-
-            if ($username && $password) {
-
-                $this->username  = $username;
-                $this->password = $password;
-
-                if ($this->login($username, $password) === false) {
-                    // Todo: Login failed
-
-                }
-            }
-        }
+//        if (empty($this->jwt)) {
+//
+//            if ($username && $password) {
+//
+//                $this->username = $username;
+//                $this->password = $password;
+//
+//            }
+//        }
 
 
+    }
+
+    public static function __callStatic($name, $arguments)
+    {
+        // TODO: Implement __callStatic() method.
     }
 
     /**
@@ -66,10 +72,32 @@ class BurstIq
      */
     function status() {
 
-        $this->url = $this->BI_BASE_URL . 'util/status';
+        $this->url = $this->BI_BASE_URL . 'util/privateid';
 
         return $this->getCurl();
+/*
+ * TM captures all relevant info for user
+ When performing registration action, do:
+   a. call /trackmy/util/privateid
+   b. store this private id in the users login/credential attributes
+   c. call upsert of patient_profile with that new private id, by setting this header
+      Authorization = ID xxxxxxxxxxx
 
+    stag ID ef9718dadf578ef7
+    prd ID b67afe2ec35e80bb
+
+ */
+
+    }
+
+    /**
+     * @return bool|string
+     */
+    function lookups() {
+
+        $this->url = $this->BI_BASE_URL . 'util/lookups';
+
+        return $this->getCurl();
 
     }
 
@@ -80,6 +108,8 @@ class BurstIq
      */
     function login($username, $password) {
 
+        # NOT USED
+
         $this->username = $username;
         $this->password = $password;
 
@@ -89,7 +119,7 @@ class BurstIq
 
         $this->data = json_decode($json);
 
-        # Todo: Make a json_decoder method because this is repetetetive :)
+        # Todo: Make a json_decoder method because this is repetetetive :)  (See the one I made in Vsee.php)
 
         # And Log errors - have a realtime notifier
 
@@ -196,21 +226,6 @@ class BurstIq
             exit($this->error($result));
         }
 
-
-//        if (strpos($result, 'Forbidden') > 0) {
-//
-//            // log in again
-//
-//            $this->url = $this->BI_BASE_URL . 'query/' . $chain;
-//
-//            $this->login($this->username, $this->password);
-//
-//            # Todo -- make sure login was successful
-//
-//            $result = $this->postCurl($postFields);
-//
-//        }
-
         return $this->data;
 
     }
@@ -249,7 +264,7 @@ class BurstIq
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Basic ' . base64_encode($this->username . ':' . $this->password)
+                'Authorization: ID b67afe2ec35e80bb',
             ),
         ));
 
@@ -279,7 +294,7 @@ class BurstIq
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => $postFields,
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer ' . $this->jwt,
+                'Authorization: ID b67afe2ec35e80bb',
                 'Content-Type: application/json'
             ),
         ));
@@ -309,7 +324,7 @@ class BurstIq
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_POSTFIELDS => $postFields,
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer ' . $this->jwt,
+                'Authorization: ID b67afe2ec35e80bb',
                 'Content-Type: application/json'
             ),
         ));
@@ -488,9 +503,9 @@ class BurstIq
 
         $json = view($this->view)->with(['data' => $this])->render();
 
-        $results = $this->upsert($this->chain, $json);
+        echo($json);
 
-        //var_dump($results);
+        $results = $this->upsert($this->chain, $json);
 
         return $results;
 
@@ -521,6 +536,13 @@ class BurstIq
             'message' => $msg,
         ]);
     }
+
+function enum($key, $val) {
+
+        return $this->lookup[$key][$val];
+
+
+}
 
 
 }

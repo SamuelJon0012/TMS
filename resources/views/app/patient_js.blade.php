@@ -2,6 +2,8 @@
 
     // Questionnaire
 
+
+
     $(document).ready(function(){
         $(".Qoption").click(function(){
             var oResult = $(this).attr('rel');
@@ -13,10 +15,10 @@
             if(oValue == "Yes")
             {
 
-                if (oNumber == 5) {
+                if ((oNumber == 5) || (oNumber == 6)) {
 
-                    $("#q"+oNumber+"Yes").addClass( "GreenSelect" )
-                    $("#q"+oNumber+"No").removeClass( "GreenSelect" )
+                    $("#q"+oNumber+"Yes").addClass( "GreySelect" )
+                    $("#q"+oNumber+"No").removeClass( "GreySelect" )
 
                 } else {
 
@@ -28,9 +30,17 @@
             }
             else if(oValue == "No")
             {
-                $("#q"+oNumber+"Yes").removeClass( "RedSelect" )
-                $("#q"+oNumber+"Yes").removeClass( "GreenSelect" )
-                $("#q"+oNumber+"No").addClass( "GreenSelect" )
+                if ((oNumber == 5) || (oNumber == 6)) {
+
+                    $("#q"+oNumber+"Yes").removeClass( "GreySelect" )
+                    $("#q"+oNumber+"No").addClass( "GreySelect" )
+
+                } else {
+
+                    $("#q"+oNumber+"Yes").removeClass( "RedSelect" )
+                    $("#q"+oNumber+"No").addClass( "GreenSelect" )
+
+                }
             }
             else
             {
@@ -59,11 +69,14 @@
                     $("#q1").val() == "Yes" || $("#q2").val() == "Yes" || $("#q3").val() == "Yes" || $("#q4").val() == "Yes"
                 )
 
+                // If there's a yes in 1-5 AND every Q has an A
+
                 && ($("#q1").val() == "Yes" || $("#q1").val() == "No")
                 && ($("#q2").val() == "Yes" || $("#q2").val() == "No")
                 && ($("#q3").val() == "Yes" || $("#q3").val() == "No")
                 && ($("#q4").val() == "Yes" || $("#q4").val() == "No")
                 && ($("#q5").val() == "Yes" || $("#q5").val() == "No")
+                && ($("#q6").val() == "Yes" || $("#q6").val() == "No")
 
             ) {
 
@@ -71,11 +84,11 @@
 
             }
 
-
-
         });
 
         $("#insuranceSection").hide();
+
+        // Todo: @here add plan_id, relationship_to_primary_cardholder, plan_type
 
         $("#have_insurance_no").click(function(){
             $("#insuranceSection").hide();
@@ -116,10 +129,36 @@
                 //console.log(time);
                 $('#date').html(date);
                 $('#time').html(time);
+                $('#location').html(time);
+
+            } else if (key === 'schedule1') {
+
+
+                let date = value.date;
+                let time = value.time;
+                let location = value.location;
+
+                $('#schedule2').hide(); // show it later if we have one
+
+                $('#date').html(date);
+                $('#time').html(time);
+                $('#location').html(time);
+
+            } else if (key === 'schedule2') {
+
+                let date = value.date;
+                let time = value.time;
+                let location = value.location;
+
+                $('#schedule2').show();
+
+                $('#date2').html(date);
+                $('#time2').html(time);
+                $('#location2').html(time);
 
             } else if (key === 'site') {
                 //console.log(value[0]);
-                $('#location').html(value[0].name);
+                //$('#location').html(value[0].name);
 
             } else if (key === 'phone_numbers') {
                 console.log(value[0]);
@@ -233,7 +272,26 @@
 
         $('.close-all').on('click', function() {
             $('.modals').hide();
-            //$('.sorry-page-modal').hide();
+
+            $("#q1").val("");
+            $("#q2").val("");
+            $("#q3").val("") ;
+            $("#q4").val("");
+            $("#q5").val("");
+            $("#q6").val("");
+
+            $("#q1Yes").removeClass( "RedSelect" );
+            $("#q1No").removeClass( "GreenSelect" );
+            $("#q2Yes").removeClass( "RedSelect" );
+            $("#q2No").removeClass( "GreenSelect" );
+            $("#q3Yes").removeClass( "RedSelect" );
+            $("#q3No").removeClass( "GreenSelect" );
+            $("#q4Yes").removeClass( "RedSelect" );
+            $("#q4No").removeClass( "GreenSelect" );
+            $("#q5Yes").removeClass( "GreySelect" );
+            $("#q5No").removeClass( "GreySelect" );
+            $("#q6Yes").removeClass( "GreySelect" );
+            $("#q6No").removeClass( "GreySelect" );
 
         });
 

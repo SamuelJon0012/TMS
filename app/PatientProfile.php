@@ -33,8 +33,27 @@ class PatientProfile extends BurstIq
     private $dl_number;
     private $ethnicity;
     private $race;
+    private $vsee_clinic_id;
     private $phone_numbers; # Array of arrays [ is_primary / phone_type / phone_number ]
-    private $insurances; # Array of arrays:
+    private $insurances;
+
+    /**
+     * @return mixed
+     */
+    public function getVseeClinicId()
+    {
+        return $this->vsee_clinic_id;
+    }
+
+    /**
+     * @param mixed $vsee_clinic_id
+     * @return PatientProfile
+     */
+    public function setVseeClinicId($vsee_clinic_id)
+    {
+        $this->vsee_clinic_id = $vsee_clinic_id;
+        return $this;
+    } # Array of arrays:
     /*
         administrator_name
         group_id
@@ -434,23 +453,23 @@ class PatientProfile extends BurstIq
 
                 $insurance = (array) $insurance;
 
-                # cause an exception if any of these do not exist
-
                 $insurances_array[] =
                 [
-                    'administrator_name' => $insurance['administrator_name'],
-                    'group_id' => $insurance['group_id'],
-                    'employer_name' => $insurance['employer_name'],
-                    'coverage_effective_date' => $insurance['coverage_effective_date'],
-                    'issuer_id' => $insurance['issuer_id'],
-                    'primary_cardholder' => $insurance['primary_cardholder'],
-                    'patient_profile_id' => $insurance['patient_profile_id'],
-                    'insurance_type' => $insurance['insurance_type'],
+                    'administrator_name' => $insurance['administrator_name'] ?? '',
+                    'group_id' => $insurance['group_id'] ?? '',
+                    'employer_name' => $insurance['employer_name'] ?? '',
+                    'coverage_effective_date' => '2021-01-01', // '$insurance['coverage_effective_date'] ?? '',
+                    'issuer_id' => $insurance['issuer_id'] ?? '',
+                    'primary_cardholder' => $insurance['primary_cardholder'] ?? '',
+                    'relationship_to_primary_cardholder' => $insurance['relationship_to_primary_cardholder']  ?? '',
+                    'insurance_type' => $insurance['insurance_type'] ?? '',
+                    'plan_type' => $insurance['plan_type'] ?? '',
+                    'plan_id' => $insurance['plan_id'] ?? '',
                 ];
             }
         } catch (\Exception $e) {
 
-            throw new \Exception('Invalid insurances passed to setInsurances in PatientProfile. Parameter must be a string or an array of insirance objects');
+            throw new \Exception('Invalid insurances passed to setInsurances in PatientProfile. Parameter must be a string or an array of insurance objects: ' . $e->getMessage());
         }
 
         $this->insurances = $insurances_array;
@@ -463,51 +482,53 @@ class PatientProfile extends BurstIq
 
         $asset = $record->asset;
 
-        $this->id = $asset->id;
-        $this->email = $asset->email;
-        $this->relationship_to_owner = $asset->   relationship_to_owner;
-        $this->first_name = $asset->first_name;
-        $this->last_name = $asset->last_name;
+        $this->id = $asset->id ?? '?';
+        $this->email = $asset->email ?? '?';
+        $this->relationship_to_owner = $asset->relationship_to_owner ?? '?';
+        $this->first_name = $asset->first_name ?? '?';
+        $this->last_name = $asset->last_name ?? '?';
 
-        $this->birth_sex = '01/01/2000'; // $asset->birth_sex; #Todo not getting this
+        $this->birth_sex = $asset->birth_sex ?? '?'; #Todo not getting this
 
-        $this->date_of_birth = $asset->date_of_birth;
-        $this->address1 = $asset->address1;
-        $this->address2 = $asset->address2;
-        $this->city = $asset->city;
-        $this->state = $asset->state;
-        $this->zipcode = $asset->zipcode;
-        $this->ssn = $asset->ssn;
-        $this->dl_state = $asset->dl_state;
-        $this->dl_number = $asset->dl_number;
-        $this->ethnicity = $asset->ethnicity;
-        $this->race = $asset->race;
-        $this->phone_numbers = $asset->phone_numbers;
-        $this->insurances = $asset->insurance;
+        $this->date_of_birth = $asset->date_of_birth ?? '?';
+        $this->address1 = $asset->address1 ?? '?';
+        $this->address2 = $asset->address2 ?? '?';
+        $this->city = $asset->city ?? '?';
+        $this->state = $asset->state ?? '?';
+        $this->zipcode = $asset->zipcode ?? '?';
+        $this->ssn = $asset->ssn ?? '?';
+        $this->dl_state = $asset->dl_state ?? '?';
+        $this->dl_number = $asset->dl_number ?? '?';
+        $this->ethnicity = $asset->ethnicity ?? '?';
+        $this->race = $asset->race ?? '?';
+        $this->vsee_clinic_id = $asset->vsee_clinic_id ?? '?';
+        $this->phone_numbers = $asset->phone_numbers ?? '?';
+        $this->insurances = $asset->insurance ?? '?';
 
         # make a useful array of this row
 
         $array = [
 
             'id' => $asset->id,
-            'email' => $asset->email,
-            'relationship_to_owner' => $asset->   relationship_to_owner,
-            'first_name' => $asset->first_name,
-            'last_name' => $asset->last_name,
-            'birth_sex' => '01/01/2000', //  $asset->birth_sex, # Todo: not getting this
-            'date_of_birth' => $asset->date_of_birth,
-            'address1' => $asset->address1,
-            'address2' => $asset->address2,
-            'city' => $asset->city,
-            'state' => $asset->state,
-            'zipcode' => $asset->zipcode,
-            'ssn' => $asset->ssn,
-            'dl_state' => $asset->dl_state,
-            'dl_number' => $asset->dl_number,
-            'ethnicity' => $asset->ethnicity,
-            'race' => $asset->race,
-            'phone_numbers' => $asset->phone_numbers,
-            'insurances' => $asset->insurance
+            'email' => $asset->email ?? '?',
+            'relationship_to_owner' => $asset->   relationship_to_owner ?? '?',
+            'first_name' => $asset->first_name ?? '?',
+            'last_name' => $asset->last_name ?? '?',
+            'birth_sex' => $this->lookup['birth_sex'][$asset->birth_sex] ?? '?',
+            'date_of_birth' => $asset->date_of_birth ?? '?',
+            'address1' => $asset->address1 ?? '?',
+            'address2' => $asset->address2 ?? '?',
+            'city' => $asset->city ?? '?',
+            'state' => $asset->state ?? '?',
+            'zipcode' => $asset->zipcode ?? '?',
+            'ssn' => $asset->ssn ?? '?',
+            'dl_state' => $asset->dl_state ?? '?',
+            'dl_number' => $asset->dl_number ?? '?',
+            //'ethnicity' => $this->lookup['ethnicity'][$asset->ethnicity] ?? '?',
+            'race' => $this->lookup['race'][$asset->race] ?? '?',
+            'vsee_clinic_id' => $asset->vsee_clinic_id ?? '?',
+            'phone_numbers' => $asset->phone_numbers ?? '?',
+            'insurances' => $asset->insurance ?? '?'
 
         ];
 

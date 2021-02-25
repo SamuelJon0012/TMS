@@ -31,6 +31,18 @@
 
 <div class="container">
     <div class="row justify-content-center">
+        @if($v == '1')
+
+            <div style="text-align:center; color:#f60;">There was a problem connecting to the appointment system.  Please try again later or contact support.
+
+                <br>
+
+                Info: {!! $m ?? '' !!}
+
+            </div>
+
+        @endif
+
         <div class="col-md-8">
           @if(session()->get('success'))
             <div class="alert alert-success">
@@ -40,15 +52,15 @@
 
           @if(Auth::check() && Auth::user()->hasRole('patient'))
             <div class="row">
-              <div class="col-3">
-                <div  title="This feature is currently unnavailable" disabled='disabled' id="myvaccine-button" class="homeTop-button">
+              <div class="col-md-3 col-sm-6 mb-2">
+                <div id="myvaccine-button" class="homeTop-button">
                   <img class="button-image" src="{{ asset('images/syringe.png') }}">
                   <br>
                   {{ __('My Vaccines') }}
                 </div>
               </div>
 
-              <div class="col-3">
+              <div class="col-md-3 col-sm-6 mb-2">
                 <div  title="This feature is currently unnavailable" disabled='disabled' class="alert-button homeTop-button">
                   <img class="button-image" src="{{ asset('images/alert-icon.png') }}" />
                   <br/>
@@ -56,7 +68,7 @@
                 </div>
               </div>
 
-              <div class="col-3">
+              <div class="col-md-3 col-sm-6 mb-2">
                 <div  title="This feature is currently unnavailable" disabled='disabled' class="settings-button homeTop-button">
                   <img class="button-image" src="{{ asset('images/settings-icon.png') }}" />
                   <br/>
@@ -64,8 +76,8 @@
                 </div>
               </div>
 
-              <div class="col-3">
-                <div title="This feature is currently unnavailable" disabled='disabled' class="help-button homeTop-button">
+              <div class="col-md-3 col-sm-6 mb-2">
+                <div class="help-button homeTop-button" onclick="$('.help-page-modal').show()">
                   <img class="button-image" src="{{ asset('images/help-icon.png') }}" />
                   <br/>
                   {{ __('Help') }}
@@ -75,18 +87,33 @@
             </div>
             <br/><br/><br/>
             <div class="row">
-              <div class="col-6">
-                <button id="scheduleVaccineAppointment" onclick="doPatientQuestionnaire();" class="btn btn-primary form-control">{{ __('Schedule a Vaccine Appointment') }}</button>
-              </div>
-              <div class="col-6">
-                <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
-              </div>
+
+                @if($token == '0')
+
+                    <div class="col-md-6 col-sm-12 mb-2">
+                    <button id="scheduleVaccineAppointment" onclick="doPatientQuestionnaire();" class="btn btn-primary form-control">{{ __('Schedule a Vaccine Appointment') }}</button>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mb-2">
+                        <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
+                    </div>
+
+                @else
+
+                    <div class="col-md-6 col-sm-12 mb-2">
+                        <a target = "_blank" href="/vsee/return" class="btn btn-primary form-control">{{ __('Go to Appointments') }}</a>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mb-2">
+                        <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control" id="addVaccine">{{ __('Add a Vaccine') }}</button>
+                    </div>
+
+                @endif
+
             </div>
           @endif
 
           @if(Auth::check() && Auth::user()->hasRole('provider'))
             <div class="row">
-              <div class="col-3">
+              <div class="col-md-3 col-sm-6 mb-2">
                 <div class="patient-button homeTop-button">
                   <img class="button-image" src="{{ asset('images/magnifyingglass-icon.png') }}">
                   <br>
@@ -94,24 +121,30 @@
                 </div>
               </div>
 
-              <div class="col-3">
-                <div class="provider-button homeTop-button">
+              <div class="col-md-3 col-sm-6 mb-2">
+
+                <div class="provider-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
+
                   <img class="button-image" src="{{ asset('images/friend-icon.png') }}" />
                   <br/>
                   {{ __('Scheduled Patients by Location') }}
                 </div>
               </div>
 
-              <div class="col-3">
-                <div class="settings-button homeTop-button">
+              <div class="col-md-3 col-sm-6 mb-2">
+
+                <div class="settings-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
+
                   <img class="button-image" src="{{ asset('images/settings-icon.png') }}" />
                   <br/>
                   {{ __('Settings') }}
                 </div>
               </div>
 
-              <div class="col-3">
-                <div class="help-button homeTop-button">
+              <div class="col-md-3 col-sm-6 mb-2">
+
+                <div class="help-button homeTop-button" title="This feature is currently unnavailable" disabled='disabled'>
+
                   <img class="button-image" src="{{ asset('images/help-icon.png') }}" />
                   <br/>
                   {{ __('Help') }}
@@ -119,9 +152,9 @@
               </div>
             </div>
             <br><br><br>
-            <div class="row justify-content-center">
-              <div class="col-6">
-                <button id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-location">{{ __('Set Vaccine Location') }}</button>
+            <div class="row justify-content-center"  title="This feature is currently unnavailable" >
+              <div class="col-md-6 col-sm-12 mb-2">
+                <button disabled='disabled' id="setVaccineLocation" class="btn btn-primary form-control set-vaccine-location">{{ __('Set Vaccine Location') }}</button>
               </div>
             </div>
           @endif
@@ -130,6 +163,12 @@
           <div class="row">
             <div class="col-12 text-center">
               <img src = "{{ asset('images/trackmysolutionslogoregtm-web.jpg') }}">
+               <br/>
+                [
+                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Terms</a>
+                |
+                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Privacy policy</a>
+                ]
             </div>
           </div>
         </div>

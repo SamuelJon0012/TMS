@@ -11,7 +11,7 @@ site_id
 provider_id
 datetime
 dx_icd10
-refering_provider_id
+referring_provider_id
 patient_question_responses
 	question_id
 	patient_response
@@ -60,10 +60,31 @@ class Encounter extends BurstIq
     private $provider_id;
     private $datetime;
     private $dx_icd10;
-    private $refering_provider_id;
+    private $referring_provider_id;
     private $patient_question_responses;
     private $billing_provider_id;
     private $procedures;
+    private $type;
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     * @return Encounter
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+
 
     /**
      * @return mixed
@@ -158,18 +179,18 @@ class Encounter extends BurstIq
     /**
      * @return mixed
      */
-    public function getReferingProviderId()
+    public function getReferringProviderId()
     {
-        return $this->refering_provider_id;
+        return $this->referring_provider_id;
     }
 
     /**
-     * @param mixed $refering_provider_id
+     * @param mixed $referring_provider_id
      * @return Encounter
      */
-    public function setReferingProviderId($refering_provider_id)
+    public function setReferringProviderId($referring_provider_id)
     {
-        $this->refering_provider_id = $refering_provider_id;
+        $this->referring_provider_id = $referring_provider_id;
         return $this;
     }
 
@@ -249,7 +270,7 @@ class Encounter extends BurstIq
         $this->provider_id = $asset->provider_id;
         $this->datetime = $asset->datetime;
         $this->dx_icd10 = $asset->dx_icd10;
-        $this->refering_provider_id = $asset->refering_provider_id;
+        $this->referring_provider_id = $asset->referring_provider_id;
         $this->patient_question_responses = $asset->patient_question_responses;
         $this->billing_provider_id = $asset->billing_provider_id;
         $this->procedures = $asset->procedures;
@@ -265,7 +286,7 @@ class Encounter extends BurstIq
             'provider_id' => $asset->provider_id,
             'datetime' => $asset->datetime,
             'dx_icd10' => $asset->dx_icd10,
-            'refering_provider_id' => $asset->refering_provider_id,
+            'referring_provider_id' => $asset->referring_provider_id,
             'patient_question_responses' => $asset->patient_question_responses,
             'billing_provider_id' => $asset->billing_provider_id,
             'procedures' => $asset->procedures,

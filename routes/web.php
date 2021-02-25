@@ -20,11 +20,18 @@ use App\Http\Controllers\PatientVaccineController;
 Route::get('/', function () {
     return redirect(route('login'));//return view('welcome');
 });
+//Route::get('/vaccine', function () {
+//    return redirect(route('login'));
+//});
 
 Auth::routes();
 Route::resource('patientvaccine', PatientVaccineController::class);
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/vaccine', 'CoverController@vaccineGet')->name('vaccine_get');
+Route::post('/vaccine', 'CoverController@vaccinePost')->name('vaccine_post');
+Route::post('/affirm', 'CoverController@vaccinePostAffirm')->name('vaccine_post_affirm');
 
 /*
  *
@@ -32,6 +39,8 @@ Route::get('/home', 'HomeController@index')->name('home');
  *
  */
 
+Route::get('/biq/test-private', 'BurstIqTestController@private')->name('test_private');
+Route::get('/biq/test-lookups', 'BurstIqTestController@lookups')->name('test_lookups');
 Route::get('/biq/test-status', 'BurstIqTestController@status')->name('test_status');
 Route::get('/biq/test-login', 'BurstIqTestController@login')->name('test_login');
 
@@ -49,6 +58,7 @@ Route::get('/biq/test-upserting-patients', 'BurstIqTestController@testUpsertingP
 Route::get('/biq/test-upserting-providers', 'BurstIqTestController@testUpsertingProviders')->name('test_upserting_providers');
 Route::get('/biq/test-upserting-sites', 'BurstIqTestController@testUpsertingSites')->name('test_upserting_sites');
 Route::get('/biq/test-upserting-schedules', 'BurstIqTestController@testUpsertingSchedules')->name('test_upserting_schedules');
+Route::get('/biq/test-upserting-encounters', 'BurstIqTestController@testUpsertingEncounters')->name('test_upserting_encounters');
 
 Route::get('/biq/test-getting-a-patient', 'BurstIqTestController@testGettingAPatient')->name('test_getting_a_patient');
 Route::get('/biq/test-getting-a-provider', 'BurstIqTestController@testGettingAProvider')->name('test_getting_a_provider');
@@ -74,8 +84,10 @@ Route::get('/vsee/test', 'VSeeController@test')->name('vsee_test');
  *
  */
 
-Route::get('/biq/status', 'BurstIqController@status')->name('biq-status');
-Route::get('/biq/login', 'BurstIqController@login')->name('biq-login');
+Route::get('/biq/barcode', 'BurstIqController@barcode')->name('biq-barcode');
+Route::post('/biq/barcode', 'BurstIqController@barcode')->name('biq-barcode');
+// defunct Route::get('/biq/login', 'BurstIqController@login')->name('biq-login');
+
 
 
 #Route::webhooks('api/xcelerateudi');
@@ -92,4 +104,14 @@ Route::get('/providerquestionaire', function () {
     return view('providerquestionaire');
 });
 
-Route::post('/vsee/redirect', 'VSeeController@redirect')->name('redirect');
+Route::post('/vsee/redirect', 'VSeeController@redirect')->name('vsee_redirect');
+Route::get('/vsee/return', 'VSeeController@return')->name('vsee_return');
+Route::post('/vsee/webhook', 'VSeeController@webhook')->name('vsee_webhook');
+Route::get('/vsee/webhook', 'VSeeController@webhook')->name('vsee_webhook');
+Route::get('/vsee/loginas', 'VSeeController@loginAs')->name('vsee_loginas');
+Route::get('/vsee/visits', 'VSeeController@Visits')->name('vsee_visits');
+
+Route::post('/vsee/saveonly', 'VSeeController@saveonly')->name('vsee_saveonly');
+
+Route::get('profile/{user}',  ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
+Route::patch('profile/{user}',  ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
