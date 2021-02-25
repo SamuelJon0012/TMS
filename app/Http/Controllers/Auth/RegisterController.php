@@ -50,6 +50,18 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+      if (request('r_type') == 'provider'){ //Provider only
+
+        $validator = Validator::make($data, [
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'byProvider'=>['boolean'],
+        ]);
+
+      } else { //Not a Provider and subject to more validation
+
         $validator = Validator::make($data, [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -60,9 +72,6 @@ class RegisterController extends Controller
         ]);
 
         $validator->after(function($validator){
-          if (request('r_type') == 'provider')
-            return;
-
           if (!$dateOfBirth = \strtotime(request('date_of_birth')))
             return; //already hit required rule
           
@@ -85,10 +94,11 @@ class RegisterController extends Controller
               }
             }
           }
-          
         });
 
-        return $validator;
+      }
+
+      return $validator;
     }
 
     /**
