@@ -13,6 +13,8 @@
         </div>
         <br><br><br>
 
+        @if(Auth::check() && Auth::user()->hasRole('patient'))
+
         <form method="POST" action="{{route('profile.edit', $user)}}">
           {{ csrf_field() }}
           {{ method_field('patch') }}
@@ -276,21 +278,6 @@
                 {{ __('Please fill out the fields below to provide additional information and to ensure proper identification during the testing and vaccination process.') }}
                 <br><br>
 
-{{--                <div class="form-group row justify-content-center">--}}
-{{--                  <div class="col-md-1 m-0 text-right pr-0">--}}
-
-{{--                  </div>--}}
-{{--                  <div class="col-md-11 text-center m-0 pl-0">--}}
-{{--                        <input id="ssn" type="text" class="form-control-reg @error('ssn') is-invalid @enderror" name="ssn" value="{{ old('ssn') }}"  autocomplete="ssn" placeholder="{{ __('SOCIAL SECURITY NUMBER') }}">--}}
-
-{{--                        @error('ssn')--}}
-{{--                            <span class="invalid-feedback" role="alert">--}}
-{{--                                <strong>{{ $message }}</strong>--}}
-{{--                            </span>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
                 <div class="form-group row justify-content-center">
                   <div class="col-md-1 m-0 text-right pr-0">
 
@@ -464,7 +451,7 @@
                 <div class="form-group row justify-content-center">
                   <div class="col-md-8 text-center">
                     <button type="submit" class="btn btn-primary form-control-blue">
-                        {{ __('Edit Profile') }}
+                        {{ __('Update Profile') }}
                     </button>
                   </div>
                 </div>
@@ -475,6 +462,169 @@
         </div>
 
         </form>
+        @endif
+
+        @if(Auth::check() && Auth::user()->hasRole('provider'))
+
+                <form method="POST" action="{{ route('register') }}">
+                    @csrf
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="form-reg-header">
+                                    {{ __('REQUIRED FIELDS') }}
+                                </div>
+                                <div class="card-body text-center">
+                                    <br>
+                                    {{ __('Please fill out all the Required fields to ensure that all neccessary information is captured for clinical and billing purposes.') }}
+                                    <br><br>
+
+                                    <div class="form-group row justify-content-center">
+                                        <div class="col-md-1 m-0 text-right pr-0">
+                                            <img src="{{ asset('images/email-icon.png') }}" border=0 alt="ImageIcon" width="32px">
+                                        </div>
+                                        <div class="col-md-11 text-center m-0 pl-0">
+                                            <input id="email" type="email" class="form-control-reg @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{ __('EMAIL') }}">
+
+                                            @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row justify-content-center">
+                                        <div class="col-md-1 m-0 text-right pr-0">
+                                            <img src="{{ asset('images/lockpassword-icon.png') }}" border=0 alt="ImageIcon" width="32px">
+                                        </div>
+                                        <div class="col-md-11 text-center m-0 pl-0">
+                                            <input id="password" type="password" class="form-control-reg @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="{{ __('PASSWORD') }}" >
+
+                                            @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row justify-content-center">
+                                        <div class="col-md-1 m-0 text-right pr-0">
+                                            <img src="{{ asset('images/lockpassword-icon.png') }}" border=0 alt="ImageIcon" width="32px">
+                                        </div>
+                                        <div class="col-md-11 text-center m-0 pl-0">
+                                            <input id="password-confirm" type="password" class="form-control-reg" name="password_confirmation" required autocomplete="new-password" placeholder="{{ __('REPEAT PASSWORD') }}" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row justify-content-center">
+                                        <div class="col-md-1 m-0 text-right pr-0">
+                                            <img src="{{ asset('images/user-circle-icon.png') }}" border=0 alt="ImageIcon" width="32px">
+                                        </div>
+                                        <div class="col-md-11 text-center m-0 pl-0">
+                                            <input id="first_name" type="text" class="form-control-reg @error('first_name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" required autocomplete="first_name"  placeholder="{{ __('FIRST NAME') }}">
+
+                                            @error('first_name')
+                                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row justify-content-center">
+                                        <div class="col-md-1 m-0 text-right pr-0">
+                                            <img src="{{ asset('images/user-circle-icon.png') }}" border=0 alt="ImageIcon" width="32px">
+                                        </div>
+                                        <div class="col-md-11 text-center m-0 pl-0">
+                                            <input id="last_name" type="text" class="form-control-reg @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="last_name" placeholder="{{ __('LAST NAME') }}">
+
+                                            @error('last_name')
+                                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row justify-content-center">
+                                        <div class="col-md-1 m-0 text-right pr-0">
+                                            <img src="{{ asset('images/user-circle-icon.png') }}" border=0 alt="ImageIcon" width="32px">
+                                        </div>
+                                        <div class="col-md-11 text-center m-0 pl-0">
+                                            <input id="npi" type="text" class="form-control-reg @error('npi') is-invalid @enderror" name="npi" value="{{ old('npi') }}" autocomplete="npi" placeholder="{{ __('NATIONAL PROVIDER IDENTIFIER (NPI) (Optional)') }}">
+
+                                            @error('npi')
+                                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row justify-content-center">
+                                        <div class="col-md-12 text-left form-reg-color ">
+                                            {{ __('SELECT ALL THAT APPLY:') }}
+                                            <div class="row">
+                                                <div class="col-4 text-left">
+                                                    <input type="checkbox" name="is_doctor" id="is_doctor" value="1" > <label for ="is_doctor">{{ __('Doctor') }}</label>
+                                                </div>
+                                                <div class="col-4 text-center">
+                                                    <input type="checkbox" name="is_nurse" id="is_nurse" value="1"> <label for ="is_nurse">{{ __('Nurse') }}</label>
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    <input type="checkbox" name="is_nurse_practioner" id="is_nurse_practioner" value="1"> <label for ="is_nurse_practioner">{{ __('Nurse Practioner') }}</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-4 text-left">
+                                                    <input type="checkbox" name="is_cna" id="is_cna" value="1"> <label for ="is_cna">{{ __('CNAt') }}</label>
+                                                </div>
+                                                <div class="col-4 text-center">
+                                                    <input type="checkbox" name="is_pa" id="is_pa" value="1"> <label for ="is_pa">{{ __('Physicians Assistant') }}</label>
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    <input type="checkbox" name="is_emto" id="is_emto" value="1"> <label for ="is_emto">{{ __('EMT / Other') }}</label>
+                                                </div>
+
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row justify-content-center">
+                                        <div class="col-md-12 text-center">
+
+                                            <br><br>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row justify-content-center">
+                                <div class="col-md-10 text-center">
+                                    <br><br><br>
+                                    <input type="hidden" name="r_type" value="{{ request()->get('rt') }}">
+                                    <button type="submit" class="btn btn-primary form-control">
+                                        {{ __('Register') }}
+                                    </button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </form>
+
+
+
+        @endif
+
 
     </div>
     <br><br><br>
