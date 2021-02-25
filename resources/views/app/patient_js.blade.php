@@ -8,36 +8,23 @@
 
         $('#myvaccine-button').on('click', function() {
 
+            Modals.show('my-vaccine-page-modal');
             preloader_on();
-
-            $.ajax({
-                url: '/biq/encounters',
-                data: 'q=' + {{ Auth::user()->id }},
-                dataType: 'text',
-                success: function(o) {
-                    preloader_off();
-
-                    $('#my-vaccine-info').html(o);
-                    $('.my-vaccine-page-modal').show();
-
-                },
-                error: function() {
-                    preloader_off();
-                    // Todo: handle this more elegantly
-                    alert('An error has occurred');
-                },
-            });
-
+            decorateAjax(
+                $.ajax({
+                    url: '/biq/myVaccines',
+                    data: 'q=' + {{ Auth::user()->id }},
+                    dataType: 'text',
+                    success: function(o) {
+                        if (checkAjaxResponse(o))
+                          $('#my-vaccine-info').html(o);
+                    },
+                })
+            );
 
             $('.adverse-event').on('click', function() {
                 alert('This feature is not currently available');
             })
-
-
-
-
-
-
 
         });
 
@@ -150,7 +137,7 @@
 
         preloader_on();
 
-        $('.patient-form-modal').show();
+        Modals.show('patient-form-modal');
 
         // schedule (encounter_schedule) and site (site_profile) are an array of objects which are joined with the patient
 
@@ -292,7 +279,7 @@
         // populate the questionnaire during the business above
         console.log('boo');
 
-        $('.patient-questionnaire-page-modal').show();
+        Modals.show('patient-questionnaire-page-modal');
 
         return false;
 
@@ -305,10 +292,11 @@
 
         $('.go_home').on('click', function() {
             $('.modals').hide();
-            });
+            $('.modals.initial-modal').fadeIn();
+        });
 
         $('.close-all').on('click', function() {
-            $('.modals').hide();
+            Modals.showHome();
 
             $("#q1").val("");
             $("#q2").val("");

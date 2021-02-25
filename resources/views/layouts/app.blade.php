@@ -26,6 +26,7 @@
     <style type="text/css">
     @yield('styleCss')
     </style>
+    @stack('pageHeader')
 </head>
 <body>
     <div id="app">
@@ -71,6 +72,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+{{--                                    <a class="dropdown-item" href="{{ route('profile.edit',Auth::user()->id) }}">--}}
+{{--                                        {{ __('My Profile') }}--}}
+{{--                                    </a>--}}
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
@@ -119,6 +123,9 @@
 
     </div>
 
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+
+@stack('pageBottom')
+
 </body>
 </html>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
