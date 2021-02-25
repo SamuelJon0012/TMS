@@ -8,9 +8,9 @@
             </div>
         @endif
 
-        <div class="col-md-12 text-center">
-          <h3 class="text-primary"><b>{{ __('My Profile') }}</b></h3>
-        </div>
+{{--        <div class="col-md-12 text-center">--}}
+{{--          <h3 class="text-primary"><b>{{ __('My Profile') }}</b></h3>--}}
+{{--        </div>--}}
         <br><br><br>
 
         <form method="POST" action="{{route('profile.edit', $user)}}">
@@ -28,20 +28,20 @@
                 {{ __('Please fill all the Required fields to ensure that all neccessary information is captured for clinical and billing purposes.') }}
                 <br><br>
 
-                <div class="form-group row justify-content-center">
-                  <div class="col-md-1 m-0 text-right pr-0">
-                    <img src="{{ asset('images/email-icon.png') }}" border=0 alt="ImageIcon" width="32px">
-                  </div>
-                  <div class="col-md-11 text-center m-0 pl-0">
-                        <input id="email" type="email" class="form-control-reg @error('email') is-invalid @enderror" name="email" value="{{ $jsonobj->email }}" required autocomplete="email" autofocus placeholder="{{ __('EMAIL') }}" readonly>
+{{--                <div class="form-group row justify-content-center">--}}
+{{--                  <div class="col-md-1 m-0 text-right pr-0">--}}
+{{--                    <img src="{{ asset('images/email-icon.png') }}" border=0 alt="ImageIcon" width="32px">--}}
+{{--                  </div>--}}
+{{--                  <div class="col-md-11 text-center m-0 pl-0">--}}
+{{--                        <input id="email" type="email" class="form-control-reg @error('email') is-invalid @enderror" name="email" value="{{ $jsonobj->email }}" required autocomplete="email" autofocus placeholder="{{ __('EMAIL') }}" readonly>--}}
 
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
+{{--                        @error('email')--}}
+{{--                            <span class="invalid-feedback" role="alert">--}}
+{{--                                <strong>{{ $message }}</strong>--}}
+{{--                            </span>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 <div class="form-group row justify-content-center">
                   <div class="col-md-1 m-0 text-right pr-0">
@@ -126,13 +126,13 @@
                         @enderror
                         <div class="row form-reg-color">
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Mobile" value="Mobile" @if ($jsonobj->phone_type == "Mobile") checked @endif checked> <label for ="Mobile">{{ __('Mobile') }}</label>
+                            <input type="radio" name="phone_type" id="Mobile" value="2" @if ($jsonobj->phone_type == "Mobile") checked @endif checked> <label for ="Mobile">{{ __('Mobile') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Home" value="Home" @if ($jsonobj->phone_type == "Home") checked @endif> <label for ="Home">{{ __('Home') }}</label>
+                            <input type="radio" name="phone_type" id="Home" value="0" @if ($jsonobj->phone_type == "Home") checked @endif> <label for ="Home">{{ __('Home') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Work" value="Work" @if ($jsonobj->phone_type == "Work") checked @endif> <label for ="Work">{{ __('Work') }}</label>
+                            <input type="radio" name="phone_type" id="Work" value="1" @if ($jsonobj->phone_type == "Work") checked @endif> <label for ="Work">{{ __('Work') }}</label>
                           </div>
                         </div>
                     </div>
