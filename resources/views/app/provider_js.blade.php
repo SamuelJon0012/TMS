@@ -3,64 +3,132 @@
 
     var QA;
 
-    // Todo: move this to custom.js where it can be CND'd
     // Questionnaire
 
-    $(document).ready(function () {
 
 
-        @if(!Auth::user()->site_id??0)
-            alert('{{ __('Please select a vaccination site') }}');
-            $('#setVaccineLocation').trigger('click');
-        @elseif(session('newPatientId'))
-            var id = {{ session('newPatientId') }};
-            fetchUser(id, function(data){
-                doConfirmPatient(data);
-            });
-        @endif
-        
-        $(".Qoption").click(function () {
+    $(document).ready(function(){
+
+        $('#myvaccine-button').on('click', function() {
+
+            Modals.show('my-vaccine-page-modal');
+            preloader_on();
+            decorateAjax(
+                $.ajax({
+                    url: '/biq/myVaccines',
+                    data: 'q=' + {{ Auth::user()->id }},
+                    dataType: 'text',
+                    success: function(o) {
+                        if (checkAjaxResponse(o))
+                            $('#my-vaccine-info').html(o);
+                    },
+                })
+            );
+
+            $('.adverse-event').on('click', function() {
+                alert('This feature is not currently available');
+            })
+
+        });
+
+
+        $(".Qoption").click(function(){
             var oResult = $(this).attr('rel');
             var oResultArr = oResult.split("_");
             var oNumber = oResultArr[1]
             var oValue = oResultArr[0]
 
-            $("#q" + oNumber).val(oValue);
-            if (oValue == "Yes") {
-                $("#q" + oNumber + "Yes").addClass("RedSelect")
-                $("#q" + oNumber + "No").removeClass("GreenSelect")
-            } else if (oValue == "No") {
-                $("#q" + oNumber + "Yes").removeClass("RedSelect")
-                $("#q" + oNumber + "No").addClass("GreenSelect")
-            } else {
-                $("#q" + oNumber + "Yes").removeClass("RedSelect")
-                $("#q" + oNumber + "No").removeClass("GreenSelect")
+            $("#q"+oNumber).val(oValue);
+            if(oValue == "Yes")
+            {
+
+                if ((oNumber == 5) || (oNumber == 6)) {
+
+                    $("#q"+oNumber+"Yes").addClass( "GreySelect" )
+                    $("#q"+oNumber+"No").removeClass( "GreySelect" )
+
+                } else {
+
+                    $("#q"+oNumber+"Yes").addClass( "RedSelect" )
+                    $("#q"+oNumber+"No").removeClass( "GreenSelect" )
+
+                }
+
+            }
+            else if(oValue == "No")
+            {
+                if ((oNumber == 5) || (oNumber == 6)) {
+
+                    $("#q"+oNumber+"Yes").removeClass( "GreySelect" )
+                    $("#q"+oNumber+"No").addClass( "GreySelect" )
+
+                } else {
+
+                    $("#q"+oNumber+"Yes").removeClass( "RedSelect" )
+                    $("#q"+oNumber+"No").addClass( "GreenSelect" )
+
+                }
+            }
+            else
+            {
+                $("#q"+oNumber+"Yes").removeClass( "RedSelect" )
+                $("#q"+oNumber+"No").removeClass( "GreenSelect" )
             }
 
-            if ($("#q1").val() == "No" && $("#q2").val() == "No" && $("#q3").val() == "No" && $("#q4").val() == "No") {
-                $("#subBtn").removeClass("disabled")
-                $("#have_insurance_no, #have_insurance_yes, #dosage_number_1, #dosage_number_2").removeAttr('disabled')
-            } else {
-                $("#subBtn").addClass("disabled")
-                $("#have_insurance_no, #have_insurance_yes, #dosage_number_1, #dosage_number_2").attr('disabled', true)
-            }
+            // We don't care about Q5
+
+            // if($("#q1").val() == "No" && $("#q2").val() == "No" && $("#q3").val() == "No" && $("#q4").val() == "No")
+            // {
+            //     $("#subBtn").removeClass( "disabled" )
+            //     $("#have_insurance_no, #have_insurance_yes").removeAttr('disabled')
+            //     $('#no-appointment').hide();
+            // }
+            // else
+            // {
+            //     $("#subBtn").addClass( "disabled" )
+            //     $("#have_insurance_no, #have_insurance_yes").attr('disabled', true)
+            //     $('#no-appointment').show();
+            // }
+
+            // if(
+            //     (
+            //
+            //         $("#q1").val() == "Yes" || $("#q2").val() == "Yes" || $("#q3").val() == "Yes" || $("#q4").val() == "Yes"
+            //     )
+            //
+            //     // If there's a yes in 1-5 AND every Q has an A
+            //
+            //     && ($("#q1").val() == "Yes" || $("#q1").val() == "No")
+            //     && ($("#q2").val() == "Yes" || $("#q2").val() == "No")
+            //     && ($("#q3").val() == "Yes" || $("#q3").val() == "No")
+            //     && ($("#q4").val() == "Yes" || $("#q4").val() == "No")
+            //     && ($("#q5").val() == "Yes" || $("#q5").val() == "No")
+            //     && ($("#q6").val() == "Yes" || $("#q6").val() == "No")
+            //
+            // ) {
+            //
+            //     $('.sorry-page-modal').show();
+            //
+            // }
+
         });
 
         $("#insuranceSection").hide();
 
-        $("#have_insurance_no").click(function () {
+        // Todo: @here add plan_id, relationship_to_primary_cardholder, plan_type
+
+        $("#have_insurance_no").click(function(){
             $("#insuranceSection").hide();
-            $("#administrator_name, #group_id, #coverage_effective_date, #primary_cardholder, #issuer_id, #insurance_type").removeAttr('required');
+            // $("#administrator_name, #group_id, #coverage_effective_date, #primary_cardholder, #issuer_id, #insurance_type").removeAttr('required');
         });
 
-        $("#have_insurance_yes").click(function () {
+        $("#have_insurance_yes").click(function(){
             $("#insuranceSection").show();
-            $("#administrator_name, #group_id, #coverage_effective_date, #primary_cardholder, #issuer_id, #insurance_type").attr('required', true);
+            // $("#administrator_name, #group_id, #coverage_effective_date, #primary_cardholder, #issuer_id, #insurance_type").attr('required', true);
         });
 
 
     });
-
     // End Questionnaire
 
 
@@ -152,13 +220,13 @@
                 success: function (o) {
                     if (!checkAjaxResponse(o))
                         return;
-                    
+
                     data = o.data;
 
                     let row, xdate_of_birth;
-                    
+
                     dtData = [['', 'Patient Name', 'Date of Birth', 'Patient Email', 'Patient Phone']];
-                    
+
                     data.forEach(function (row) {
                         xdate_of_birth = '1970-01-01';
                         try{
@@ -191,7 +259,7 @@
     }
 
     function fetchUser(userId, then=doConfirmPatient){
-        
+
         preloader_on();
         decorateAjax(
             $.ajax({
@@ -243,7 +311,7 @@
         $(document.body).on('click', '.seluser', function () {
             preloader_on();
             let id = $(this).attr('rel');
-            
+
             fetchUser(id);
         });
         $(document.body).on('click', '.seluser-barcode', function () {
@@ -401,11 +469,7 @@
 
                 var strFile = 'https://erik.trackmyvaccine.com/work/i/' + $('#patient_id').val();
 
-                //console.log('QAAAAAAAA');
-
-                //console.log(strFile);
-
-                $.ajax({
+                  $.ajax({
                     url: strFile,
                     type: 'GET',
                     dataType: 'json', // added data type
@@ -452,20 +516,20 @@
         // $("#q4Yes").removeClass( "RedSelect" );
         // $("#q4No").addClass( "GreenSelect" );
 
-        if ($("#q1").val() == "No" && $("#q2").val() == "No" && $("#q3").val() == "No" && $("#q4").val() == "No") {
-            $("#subBtn").removeClass("disabled")
-            $("#have_insurance_no, #have_insurance_yes, #dosage_number_1, #dosage_number_2").removeAttr('disabled')
-        } else {
-            $("#subBtn").addClass("disabled")
-            $("#have_insurance_no, #have_insurance_yes, #dosage_number_1, #dosage_number_2").attr('disabled', true)
-        }
+        // if ($("#q1").val() == "No" && $("#q2").val() == "No" && $("#q3").val() == "No" && $("#q4").val() == "No") {
+        //     $("#subBtn").removeClass("disabled")
+        //     $("#have_insurance_no, #have_insurance_yes, #dosage_number_1, #dosage_number_2. #dosage_number").removeAttr('disabled')
+        // } else {
+        //     $("#subBtn").addClass("disabled")
+        //     $("#have_insurance_no, #have_insurance_yes, #dosage_number_1, #dosage_number_2").attr('disabled', true)
+        // }
 
         if (!insuranceOnce) {
             // iterating once Checks Yes on the private insurance question and opens the thing
             $("#have_insurance_yes").click(function () {
 
                 $("#insuranceSection").show();
-                $("#administrator_name, #group_id, #coverage_effective_date, #primary_cardholder, #issuer_id, #insurance_type").attr('required', true);
+                // $("#administrator_name, #group_id, #coverage_effective_date, #primary_cardholder, #issuer_id, #insurance_type").attr('required', true);
             });
             $("#have_insurance_yes").click();
 
@@ -541,7 +605,7 @@
     }
 
     function doHandleBarcode() {
-       
+
         let barcode = $('#barcode-input').val();
 
         if (barcode.trim() === '') {

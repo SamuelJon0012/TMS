@@ -310,7 +310,7 @@
         </div>
     </div>
 
-@endcomponent    
+@endcomponent
 
 
 @component('controls.modal',[
@@ -462,10 +462,10 @@
                                         <h5>{{ __('Please select the dose number that the patient is here for today?') }}</h5>
                                     </div>
                                     <div class="col-4">
-                                        <input type="radio" name="dosage_number" id="dosage_number_1" value="1" checked disabled>
+                                        <input type="radio" name="dosage_number" id="dosage_number_1" value="1" checked>
                                         <label for="dosage_number_1">{{ __('First Dose') }}</label>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" name="dosage_number" id="dosage_number_2" value="2" disabled>
+                                        <input type="radio" name="dosage_number" id="dosage_number_2" value="2">
                                         <label for="dosage_number_2">{{ __('Second Dose') }}</label>
                                     </div>
                                 </div>
@@ -475,10 +475,10 @@
                                     <div class="col-12 text-center">
                                         <h5>{{ __('Do you have personal health insurance through your employer or private health insurance you have purchased on your own?') }}</h5>
 
-                                        <input type="radio" name="have_insurance" id="have_insurance_yes" value="Yes" disabled>
+                                        <input type="radio" name="have_insurance" id="have_insurance_yes" value="Yes">
                                         <label for="have_insurance_yes">{{ __('Yes') }}</label>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" name="have_insurance" id="have_insurance_no" value="No" checked disabled>
+                                        <input type="radio" name="have_insurance" id="have_insurance_no" value="No" checked>
                                         <label for="have_insurance_no">{{ __('No') }}</label>
                                     </div>
                                 </div>
