@@ -195,13 +195,13 @@
                   <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
                 </div>
               </div>
-              
-              
+
+
               <div class="col-6 col-collapse">
                 <button id="registerPatientByProvider" class="btn btn-primary form-control" onclick="document.location='/new-patient'">{{ __('Register a Patient') }}</button>
               </div>
-                
-              
+
+
             </div>
           @endif
 
