@@ -1,14 +1,19 @@
+@php
+    $isProvider = $isProvider ?? false;
+    $route = ($isProvider) ? 'register_new_parent' : 'register';
+@endphp
+
 @extends('layouts.app')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-      @if(request()->get('rt') == "patient")
+      @if((request()->get('rt') == "patient") or ($isProvider))
         <div class="col-md-12 text-center">
           <h3 class="text-primary"><b>{{ __('Patient Registration') }}</b></h3>
         </div>
         <br><br><br>
 
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route($route) }}">
           @csrf
             <input type="hidden" name="version" value="2">
           <div class="row">
@@ -19,7 +24,7 @@
               </div>
               <div class="card-body text-center">
                 <br>
-                {{ __('Please fill all the Required fields to ensure that all neccessary information is captured for clinical and billing purposes.') }}
+                {{ __('Please fill all the Required fields to ensure that all necessary information is captured for clinical and billing purposes.') }}
                 <br><br>
 
                 <div class="form-group row justify-content-center">
@@ -120,13 +125,13 @@
                         @enderror
                         <div class="row form-reg-color">
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Mobile" value="Mobile" checked> <label for ="Mobile">{{ __('Mobile') }}</label>
+                            <input type="radio" name="phone_type" id="Mobile" value="2" checked> <label for ="Mobile">{{ __('Mobile') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Home" value="Home"> <label for ="Home">{{ __('Home') }}</label>
+                            <input type="radio" name="phone_type" id="Home" value="0"> <label for ="Home">{{ __('Home') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Work" value="Work"> <label for ="Work">{{ __('Work') }}</label>
+                            <input type="radio" name="phone_type" id="Work" value="1"> <label for ="Work">{{ __('Work') }}</label>
                           </div>
                         </div>
                     </div>
@@ -643,3 +648,73 @@
     <br><br><br>
 </div>
 @endsection
+
+
+@error('emailPopup')
+@push('pageBottom')
+<style>
+  #EmailNotListed-outer{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #000a;
+    display: none;
+    flex-direction: column;
+  }
+  #EmailNotListed-inner{
+    max-width: 48pc;
+    background: #eeef;
+    display: inline-block;
+    margin: 4pc auto;
+    padding: 2pc;
+    box-shadow: 0.1pc 0.1pc 0.2pc #0004;
+  }
+  #EmailNotListed-inner div{
+    margin: 1pc 0 0 0;
+    text-align: justify;
+  }
+  @media(max-width: 24pc){
+    #EmailNotListed-outer{
+      position: absolute;
+    }
+  }
+</style>
+
+<div id="EmailNotListed-outer">
+  <div style="display: flex">
+    <div id="EmailNotListed-inner">
+      <div>
+        Your application to receive a vaccination is disallowed at this time because this account is not
+        currently on Bucks County’s registration list. Only one registration link per person is valid, and
+        only those directly contacted by the county are eligible to be scheduled now. If you believe you
+        received such an email, please call <b>1-844-522-5952</b> to speak to a scheduling assistant to
+        help you. Appointments made through links shared on social media are being cancelled. Even if you
+        are 1A eligible, using a link received from any source other than a Bucks County invitation email
+        is invalid, and you will have to wait your turn. In the interest of fairness, Bucks County is
+        vaccinating people in the order they pre-registered. If you have not yet pre-registered, please go
+        to <a href="https://buckscounty.org">buckscounty.org</a>, click on the Vaccine Information tile and
+        click on the red link to register.
+      </div>
+      <div style="text-align: right">
+        <button class="btn btn-primary" onclick="EmailNotListed_close()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var eEmailNotListed = document.getElementById('EmailNotListed-outer');
+
+  function EmailNotListed_close(){
+    $(eEmailNotListed).fadeOut();
+  }
+  $(function(){
+    $(eEmailNotListed).fadeIn();
+  });
+</script>
+
+
+@endpush
+@enderror

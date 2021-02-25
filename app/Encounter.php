@@ -45,7 +45,6 @@ class Encounter extends BurstIq
     # base class methods
 
     # $this->status()
-    # $this->login()
     # $this->query(chain, query)
     # $this->upsert(chain, json) accepts object or json_encoded object
     # see BurtIqTestController for examples

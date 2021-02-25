@@ -9,7 +9,6 @@ class PatientProfile extends BurstIq
 {
 
     # $this->status()
-    # $this->login()
     # $this->query(chain, query)
     # $this->upsert(chain, postfields) accepts object or json_encoded object
     # see BurtIqController for examples
@@ -124,6 +123,9 @@ class PatientProfile extends BurstIq
      */
     public function setEmail($email)
     {
+
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
         $this->email = $email;
         return $this;
     }

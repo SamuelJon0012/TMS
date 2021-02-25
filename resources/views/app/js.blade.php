@@ -27,4 +27,55 @@ function preloader_off() {
     $('#preloader').hide();
 
 }
+
+function decorateAjax(xhr){
+
+    xhr.fail(function(xhr){
+        if (xhr.status == 401){
+            document.location = '/login';
+            return;
+        }
+        var txt = '('+xhr.status+') ';
+        if ((xhr.responseJSON) && (xhr.responseJSON.message))
+            txt += xhr.responseJSON.message;
+        else
+            txt += xhr.statusText;
+        alert(txt);
+    });
+
+    xhr.always(function(){
+        preloader_off();
+    });
+
+    return xhr;
+}
+
+function checkAjaxResponse(data){
+    if (typeof data == 'string'){
+        try{
+            data = JSON.parse(data);
+        }catch(e){
+            return true;
+        }
+    }
+
+    if (typeof data != 'object')
+        return true;
+    if ((data.success != undefined) && (!data.success)){
+
+        if (typeof data.message == 'string'){
+            try{
+                data = JSON.parse(data.message);
+            }catch(e){
+                return true;
+            }
+        }
+
+
+        alert(data.message || 'An error occurred');
+        return false;
+    }
+    return true;
+}
+
 </script>

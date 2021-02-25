@@ -11,6 +11,9 @@ use App\SiteProfile;
 use App\Visits;
 use App\VSee;
 use Illuminate\Http\Request;
+use Auth;
+use DB;
+use App\User;
 
 /**
  * Class BurstIqController
@@ -18,17 +21,6 @@ use Illuminate\Http\Request;
  */
 class BurstIqController extends Controller
 {
-    // Ajax Endpoints for BurstIq IO
-    // const BI_USERNAME = 'sabbaas@gmail.com'; // Todo: get this from .env
-    // const BI_PASSWORD = 'TrackMy21!';
-    private $BI_USERNAME;
-    private $BI_PASSWORD;
-
-    public function __construct()
-    {
-//        $this->BI_USERNAME = env('BI_USERNAME');
-//        $this->BI_PASSWORD = env('BI_PASSWORD');
-    }
 
     function redirect()
     {
@@ -53,49 +45,44 @@ class BurstIqController extends Controller
      * This is the barcode from the scanner
      *
      */
-    function barcode()
+    function barcode(Request $request)
     {
+        if (!$user = Auth::user())
+            abort(401, 'Please login');
 
-        $data=json_encode($_REQUEST);
+        $request->validate([
+            'patient_id'=>'required|integer',
+            'barcode'=>'required',
+            'adminsite'=>'required',
+        ]);
 
-        $patient_id = $_REQUEST['patient_id'];
-        $barcode = $_REQUEST['barcode'];
+        if (!$patient = User::find($request->get('patient_id')))
+            abort(500, 'Invalid Patient ID');
 
-        file_put_contents ('/var/www/data/bc' . uniqid(true), $data);
+        $uniq_id = 'bc'.uniqid(true);
 
-        exit("Stored barcode $barcode for Patient ID $patient_id");
+        $barcode = $request->get('barcode');
 
-    }
+        $data = [
+            'patient_id' => $request->get('patient_id'),
+            'barcode' => $barcode,
+            'adminsite' => $request->get('adminsite'),
+            'provider_id' => $user->id,
+            'site_id' => $user->site_id ?? null,
+            'uniq_id' => $uniq_id, // Adding these just incase we need them moving forward
+            'email' => $patient->email,
+        ];
+        
+        file_put_contents ('/var/www/data/'.$uniq_id, json_encode($data));
 
-    /**
-     * @param Request $request
-     * @return mixed
-     *
-     * expects username and password parameters
-     *
-     * returns JWT (it's also kept in session)
-     *
-     */
-    function login(Request $request)
-    {
-
-//        $B = new BurstIq();
-//
-//        if ($B->login($request->get('username'), $request->get('password')) === false) {
-//            // Todo: Login failed
-//
-//        }
+        return ['success'=>true, 'message'=>"Stored barcode $barcode for Patient ".$patient->name];
     }
 
     function find(Request $request)
     {
-
-        $Q = $request->get('q');
+        $Q = BurstIq::escapeString($request->get('q'));
 
         $I = $request->get('i'); // which input element was used (search-input, provider-search-input, ...)
-
-        # Todo: sanitize Q to prevent hackery
-        #$Q = $this->sanitize($Q);
 
         if (empty($Q)) {
 
@@ -103,23 +90,12 @@ class BurstIqController extends Controller
 
         }
 
-        if (empty($I)) {
+        if (($I != 'search-input') and ($I != 'provider-search-input'))
+          $I = 'search-input';
 
-            $I = 'search-input';
+        $type = self::getSearchType($Q);
 
-        }
-
-
-        # Todo: have a method that determines the query type based on the contents of Q,
-        # i.e. last,first vs first last vs me@moo.cow vs. ###-###-####
-
-        #$type = $this->getSearchType($Q);
-
-        $P = new PatientProfile($this->BI_USERNAME,$this->BI_PASSWORD);
-
-        $type = 'any'; // or allow them to specify the type?  i.e. type=ssn by searching on ssn:xxx-xx-xxxx
-
-        # or make type be an object where getSearchType has parsed out all the potential fields to search on for that type
+        $P = new PatientProfile();
 
         if ($I != 'provider-search-input') {
             $where = "SELECT *";
@@ -130,6 +106,31 @@ class BurstIqController extends Controller
         }
 
         switch ($type) {
+            case 'null':
+                $where .= " WHERE (1=1) ";
+                break;
+
+            case 'email':
+                $where .= " WHERE asset.email ILIKE '%$Q%' ";
+                break;
+            
+            case 'ssn':
+                $where .= " WHERE asset.ssn = '$Q' ";
+                break;
+
+            case 'lastNameFirst':
+                $a = explode(',', $Q, 2);
+                $firstName = trim($a[1]);
+                $lastName = trim($a[0]);
+                $where .= " WHERE asset.first_name ILIKE '%$firstName%' and asset.last_name  ILIKE '%$lastName%' ";
+                break;
+
+            case 'names':
+                $a = explode(' ', $Q, 2);
+                $firstName = trim($a[0]);
+                $lastName = trim($a[1]);
+                $where .= " WHERE asset.first_name ILIKE '%$firstName%' and asset.last_name  ILIKE '%$lastName%' ";
+                break;
 
             case 'any':
             default:
@@ -151,6 +152,8 @@ class BurstIqController extends Controller
         }
         // TESTING $where = $where . ' AND e.site_id=1';
 
+        $where .= ' LIMIT 100 '; // TODO: Are we going to use pagination? 
+
         if (!$P->find($where)) {
 
             return $this->error('Search produced an error');
@@ -163,18 +166,111 @@ class BurstIqController extends Controller
         return $this->success($rows);
     }
 
+    /**
+     * Sends a html table back to the browser with the patient's jab history
+     * expects a parameter of "q" with the patent_id to look up
+     * 
+     * Note there can be duplicate barcode records
+     */
+    function myVaccines(Request $request){
+        $patient_id = $request->get('q');
+        $patient_id = (is_numeric($patient_id)) ? (int)$patient_id : 0;
+        if ($patient_id == 0)
+            abort(403, 'Invalid Patient ID');
+
+        $user = Auth::user();
+        if ((!$user->checkRole('provider')) and ($user->id != $patient_id))
+            abort(401, 'You can not access this persons records');
+        
+        $data = [];
+
+        //Get the encounter records for this patient as it will have the information we need 
+        $rows = Encounters::where('patient_id', $patient_id)->get();
+        foreach($rows as $row){
+            $key = $row['barcode'].'~'.date('Y-m-d',strtotime($row['dose_date']));
+            $data[$key] = $row;
+        }
+            
+
+        //Get barcode records for this patient looking for bar codes not found in the encounter records
+        $sql = <<<EOT
+            select b.barcode, b.lot, b.timestamp, v.room_name, s.name as site_name from barcodes b
+            left join sites s on s.id = b.site_id
+            left join visits v on v.user_id = b.patient_id and date_add(v.start, interval -2 hour) < b.timestamp and date_add(v.start, interval 2 hour) > b.timestamp
+            where b.patient_id = $patient_id
+        EOT;
+        $rows = DB::select($sql);
+
+        if (count($rows) > 0){
+            //We have barcodes with out an encounter, we'll build up data
+
+            $ndcLookup = [];
+            foreach(DB::table('drugs')->get() as $row){
+                if (!$key = $row->ndc_product_code ?? null)
+                    continue;
+                $ndcLookup[$key] = $row;
+            }
+            
+            foreach($rows as $row){
+                if (!$barcode = $row->barcode ?? null)
+                  continue;
+                $key = $barcode.'~'.date('Y-m-d',strtotime($row->timestamp));
+                if (isset($data[$key]))
+                    continue;
+                $a = explode('_', $barcode, 2);
+                
+                if (count($a) == 2){
+                    $ndc = $a[1];
+                    $lot = $a[0];
+                } else
+                  $ndc = $lot = '';
+
+                $drug = $ndcLookup[$ndc] ?? null;
+
+                $new = [
+                    'barcode'=>$barcode,
+                    'dose_date'=>$row->timestamp ?? 0,
+                    'room_name'=>$row->room_name ?? $row->site_name ?? '',
+                    'lot_number'=>$lot,
+                    'ndc'=>$ndc,
+                    'vendor'=>($drug) ? $drug->labeler_name : '',
+                    'size'=>($drug) ? $drug->strength : '',
+                    'manufacturer'=>($drug) ? $drug->manufacturer_name : '',
+                ];
+                 
+                $data[$key] = $new;
+            }
+        }
+
+        if (count($data) == 0)
+            exit("Vaccination data for Patient has not been posted");
+
+        //Sort data by dose_date
+        uasort($data, function($a, $b){
+            return $a['dose_date'] <=> $b['dose_date'];
+        });
+
+        //Fix up data for display
+        foreach($data as $barcode=>&$row){
+            $barray = explode('_', $barcode . '_ ');
+            $row['ndc'] = $barray[1];
+
+            $date = new \DateTime($row['dose_date'], new \DateTimeZone('UTC'));
+            $date->setTimezone(new \DateTimeZone('America/New_York'));
+            $row['dose_date'] = $date->format('Y-m-d H:i:s');
+        }
+
+        return view('app.my_vaccines', ['rows'=>$data]);
+
+    }
+
     function encounters(Request $request) {
 
         $Q = $request->get('q');
-
-        # Todo: sanitize Q to prevent hackery
-        #$Q = $this->sanitize($Q);
-
-        if (empty($Q)) {
-
-            # Todo or something
-        }
-
+        $Q = (is_numeric($Q)) ? (int)$Q : 0;
+        if ($Q == 0)
+            abort(403, 'Invalid Patient ID');
+        
         if ($Q < 40) {
             $Q = 111;
         }
@@ -196,9 +292,11 @@ class BurstIqController extends Controller
 
         $result['ndc'] = $ndc;
 
-        #var_dump($result);exit; // Todo adjust datetime to local timezone
+        $date = new \DateTime($result['dose_date'], new \DateTimeZone('UTC'));
+        $date->setTimezone(new \DateTimeZone('America/New_York'));
+        $result['dose_date'] = $date->format('Y-m-d H:i:s');
 
-        return view('app.my_vaccines', $result);
+        return view('app.my_vaccines', ['rows'=>[$result]]);
 
         // IDK why the below isn't working
 
@@ -220,14 +318,10 @@ class BurstIqController extends Controller
     {
 
         $Q = $request->get('q');
+        $Q = (is_numeric($Q)) ? (int)$Q : 0;
+        if ($Q == 0)
+            abort(403, 'Invalid Patient ID');
 
-        # Todo: sanitize Q to prevent hackery
-        #$Q = $this->sanitize($Q);
-
-        if (empty($Q)) {
-
-            # Todo or something
-        }
         $P = new PatientProfile();
 
         $where = "WHERE asset.id=$Q";
@@ -238,6 +332,8 @@ class BurstIqController extends Controller
 
         }
         $rows = $P->array(); // Get Patient Data for Display Only (Enumerations converted, joins, etc)
+        if (count($rows) == 0)
+            return $this->success($rows); //No results to return;
 
         # ToDo - Use Abbas' new join model (see BurstIqTestController@testGettingPatientScheduleSiteQuery)
         # Make this a join in the Model, but for now I'm getting strange results when I try to use JOIN
@@ -263,6 +359,8 @@ class BurstIqController extends Controller
 
         $dob = $dob['$date'];
         $dob = substr($dob,0,10);
+        $rows[0]['date_of_birth'] = $dob;
+
         $email = $rows[0]['email'];
 
         $data = $V->getVisits($first, $last, $dob, $email);
@@ -377,5 +475,30 @@ class BurstIqController extends Controller
             'success' => true,
             'data' => $data,
         ]);
+    }
+
+    static function getSearchType($txt){
+        if (!isset($txt))
+            return 'null';
+        
+        $val = new \Egulias\EmailValidator\EmailValidator();
+        if ($val->isValid($txt, new \Egulias\EmailValidator\Validation\RFCValidation()))
+            return 'email';
+        
+        if (preg_match('/^(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$/', $txt))
+            return 'ssn';
+
+        if (preg_match('/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im', $txt))
+            return 'phone';
+        
+        $a = explode(',', $txt);
+        if (count($a) == 2)
+            return 'lastNameFirst';
+        
+        $a = explode(' ', $txt);
+        if (count($a) == 2)
+            return 'names';
+        
+        return 'any';
     }
 }

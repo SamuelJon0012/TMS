@@ -9,9 +9,16 @@
     $(document).ready(function () {
 
 
-
-        $('.search-modal').show();
-
+        @if(!Auth::user()->site_id??0)
+            alert('{{ __('Please select a vaccination site') }}');
+            $('#setVaccineLocation').trigger('click');
+        @elseif(session('newPatientId'))
+            var id = {{ session('newPatientId') }};
+            fetchUser(id, function(data){
+                doConfirmPatient(data);
+            });
+        @endif
+        
         $(".Qoption").click(function () {
             var oResult = $(this).attr('rel');
             var oResultArr = oResult.split("_");
@@ -137,45 +144,36 @@
         //console.log('doPatientSearch');
         input = $('#' + inputId).val();
         preloader_on();
-        setTimeout(function () {
+        decorateAjax(
             $.ajax({
                 url: '/biq/find',
                 data: 'i=' + inputId + '&q=' + input,
                 dataType: 'json',
                 success: function (o) {
-
-                    // Todo: Check for an error object (success = false) or unexpected data
-
+                    if (!checkAjaxResponse(o))
+                        return;
+                    
                     data = o.data;
 
-                    let row, btn;
-
+                    let row, xdate_of_birth;
+                    
                     dtData = [['', 'Patient Name', 'Date of Birth', 'Patient Email', 'Patient Phone']];
-
+                    
                     data.forEach(function (row) {
-
-                        let xdate_of_birth = '1970-01-01';
-
-                        try {
+                        xdate_of_birth = '1970-01-01';
+                        try{
                             xdate_of_birth = row.date_of_birth.$date.replace('T00:00:00.000Z', '');
-
-                        } catch {
+                        } catch(e){
                             xdate_of_birth = '1970-01-01';
                         }
 
-                        dtData[dtData.length] =
-                            [
-                                row.id, row.first_name + ' ' + row.last_name,
-                                xdate_of_birth,
-                                row.email,
-                                row.phone_numbers[0].phone_number
-                            ];
+                        dtData.push([
+                            row.id, row.first_name + ' ' + row.last_name,
+                            xdate_of_birth,
+                            row.email,
+                            row.phone_numbers[0].phone_number
+                        ]);
                     });
-
-                    //console.log('dtData');
-                    //console.log(dtData);
-
-                    // Todo: hide the #search-results div while this is taking place? mebs
 
                     if (DT !== false) {
                         DT.destroy(true);
@@ -185,133 +183,82 @@
                         'searching': false,
                         'paging': false,
                         'scrollY': 300
-
                     });
-                    //console.log('DT');
-                    //console.log(DT);
-                    preloader_off();
-                },
-                error: function () {
-                    preloader_off();
-
-                    // Todo: handle this more elegantly
-                    alert('An error has occurred');
-
-                },
-
-            });
-        }, 100);
+                }
+            })
+        );
         return false;
     }
 
-    //setTimeout(function() {
+    function fetchUser(userId, then=doConfirmPatient){
+        
+        preloader_on();
+        decorateAjax(
+            $.ajax({
+                url: '/biq/get',
+                data: 'q=' + userId,
+                dataType: 'json',
+                success: function (o) {
+                    if ((checkAjaxResponse(o)) && (typeof then == 'function')){
+                        if ((typeof o.data != 'object') || (typeof o.data[0] != 'object'))
+                            alert('record not found');
+                        else
+                            then(o.data[0] || null);
+                    }
+                }
+            })
+        );
+    }
+
     $(function () {
         $.noConflict();
 
         $('.go_home').on('click', function () {
-            $('.modals').hide();
+            Modals.showHome();
             $('#barcode-go-home').hide();
             $('#barcode-go-results').hide();
             $('.fvalue').html('');
             if (DT !== false) {
                 DT.destroy(true);
             }
-
         });
         $('.go_search').on('click', function () {
-            $('.patient-form-modal').hide();
+            Modals.show('patient-search-modal');
             $('.fvalue').html('');
-            $('.provider-questionnaire-page-modal').hide();
-            $('.scanner-page-modal').hide();
             $('#barcode-go-home').hide();
             $('#barcode-go-results').hide();
-
-            // Todo: Besure to hide anything else that might be on top of it.
         });
         $('.go_patient').on('click', function () {
-            $('.provider-questionnaire-page-modal').hide();
-            $('.scanner-page-modal').hide();
+            Modals.show('patient-form-modal');
             $('#barcode-go-home').hide();
             $('#barcode-go-results').hide();
             // Todo: Clear Questionnaire
-
-            // Todo: Besure to hide anything else that might be on top of it.
         });
         $('.go_questionnaire').on('click', function () {
-            $('.scanner-page-modal').hide();
+            Modals.show('provider-questionnaire-page-modal');
             $('#barcode-go-home').hide();
             $('#barcode-go-results').hide();
             // Todo: Clear Scanner Page
-
-            // Todo: Besure to hide anything else that might be on top of it.
         });
         $(document.body).on('click', '.seluser', function () {
             preloader_on();
             let id = $(this).attr('rel');
-
-            $.ajax({
-                url: '/biq/get',
-                data: 'q=' + id,
-                dataType: 'json',
-                success: function (o) {
-
-                    // Todo: Check for an error object (success = false) or unexpected data
-
-                    //console.log('o');
-                    //console.log(o);
-
-                    // Todo: Confirm o.data[0] exists
-
-                    doConfirmPatient(o.data[0]);
-
-                },
-                error: function () {
-                    preloader_off();
-                    // Todo: handle this more elegantly
-                    alert('An error has occurred');
-                },
-            });
-
+            
+            fetchUser(id);
         });
         $(document.body).on('click', '.seluser-barcode', function () {
             preloader_on();
             let id = $(this).attr('rel');
 
-            $.ajax({
-                url: '/biq/get',
-                data: 'q=' + id,
-                dataType: 'json',
-                success: function (o) {
-
-                    // Todo: Check for an error object (success = false) or unexpected data
-
-                    //console.log('o');
-                    //console.log(o);
-
-                    // Todo: Confirm o.data[0] exists
-
-                    doConfirmPatient(o.data[0]);
-                    doProviderQuestionnaire();
-                    doScanner();
-
-                },
-                error: function () {
-                    preloader_off();
-                    // Todo: handle this more elegantly
-                    alert('An error has occurred');
-                },
+            fetchUser(id, function(data){
+                doConfirmPatient(data);
+                doProviderQuestionnaire();
+                doScanner();
             });
-
-        });
-        $('.patient-button').on('click', function () {
-            $('.search-modal').show();
         });
         $('.provider-search').on('click', function () {
             $('.provider-search-modal').show();
-        })
-        $('.set-vaccine-location').on('click', function () {
-            $('.set-vaccine-location-modal').show();
-        })
+        });
     });
 
     var insuranceOnce = true;
@@ -322,7 +269,7 @@
 
         preloader_on();
 
-        $('.patient-form-modal').show();
+        Modals.show('patient-form-modal');
 
         // schedule (encounter_schedule) and site (site_profile) are an array of objects which are joined with the patient
 
@@ -531,7 +478,7 @@
 
         // populate the questionnaire during the business above
 
-        $('.provider-questionnaire-page-modal').show();
+        Modals.show('provider-questionnaire-page-modal');
 
         return false;
 
@@ -542,7 +489,7 @@
         // console.log('scanner');
         $('#barcode-allergy').hide();
 
-        $('.scanner-page-modal').show();
+        Modals.show('scanner-page-modal');
         $('#barcode-results').html('');
         $('#barcode-input').val('').focus();
         $('#barcode-form').show();
@@ -594,16 +541,7 @@
     }
 
     function doHandleBarcode() {
-        //
-        // try {
-        //
-        //     doHandleBarcodePost();
-        //
-        // } catch {
-        // }
-
-
-
+       
         let barcode = $('#barcode-input').val();
 
         if (barcode.trim() === '') {
@@ -612,52 +550,24 @@
         }
 
         let adminsite = $('#admin-site').val();
-        let provider = $('#provider_id').val();
+        let patientId = $('#patient_id').val();
 
-        $.ajax({
-            url: '/biq/barcode',
-            data: 'adminsite=' + adminsite + '&barcode=' + barcode + '&patient_id=' + $('#patient_id').val() + '&provider_id=' + provider,
-            dataType: 'text',
-            success: function (o) {
+        preloader_on();
+        decorateAjax(
+            $.ajax({
+                url: '/biq/barcode',
+                data:  {'adminsite': adminsite, 'barcode': barcode, 'patient_id': patientId},
+                dataType: 'json',
+                success: function (data) {
 
-                $('#barcode-results').html(o);
-                $('#barcode-input').val('').focus();
-                $('#barcode-form').hide();
-                $('#barcode-go-home').show();
-
-
-            },
-            error: function () {
-                preloader_off();
-                // Todo: handle this more elegantly
-                alert('An error has occurred');
-            },
-        });
+                    $('#barcode-results').html(data.message);
+                    $('#barcode-input').val('').focus();
+                    $('#barcode-form').hide();
+                    $('#barcode-go-home').show();
+                }
+            })
+        );
     }
-
-    // function doHandleBarcodePost() {
-    //
-    //     let barcode = $('#barcode-input').val();
-    //     let adminsite = $('#admin-site').val();
-    //
-    //     $.ajax({
-    //         url: '/biq/barcode',
-    //         type: 'POST',
-    //         data: {
-    //             'adminsite': $('#admin-site').val(),
-    //             'barcode': $('#barcode-input').val(),
-    //             'patient_id': $('#patient_id').val(),
-    //             'provider_id': $('#provider_id').val()
-    //          },
-    //         dataType: 'text',
-    //         success: function(o) {
-    //
-    //         },
-    //         error: function() {
-    //
-    //         },
-    //     });
-    // }
 
     function formatPhoneNumber(phoneNumberString) {
         var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
@@ -666,5 +576,47 @@
             return '(' + match[1] + ') ' + match[2] + '-' + match[3]
         }
         return null
+    }
+
+    function showVaccineLocationSearch(){
+        Modals.show('set-vaccine-location-modal');
+        vaccineLocationSearchForm.searchInput.focus();
+        if ((vaccineLocationSearchForm.searchInput.value == '') && ($('#vaccine-location-search-results').html() == ''))
+            doVaccineLocationSearch();
+    }
+
+    function doVaccineLocationSearch(){
+        var q = vaccineLocationSearchForm.searchInput.value;
+
+        decorateAjax(
+            $.ajax('/search-sites',{
+                dataType: 'text',
+                data: {'q':q},
+                beforeSend: function(){
+                    preloader_on();
+                },
+                success: function(data){
+                    if (checkAjaxResponse(data))
+                        $('#vaccine-location-search-results').html(data);
+                }
+            })
+        );
+    }
+
+    function switchVaccineLocation(siteId){
+        preloader_on();
+        decorateAjax(
+            $.ajax({
+                type: "GET",
+                url:'/switch-site',
+                data: {'siteId': siteId, _token: '{{ csrf_token() }}'},
+                contentType: 'application/json',
+                success: function(data){
+                    $('#currentSiteName').html(data.name);
+                    $('#vaccine-location-search-results').html('');
+                    Modals.showHome();
+                }
+            })
+        );
     }
 </script>
