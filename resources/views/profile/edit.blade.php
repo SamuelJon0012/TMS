@@ -126,13 +126,13 @@
                         @enderror
                         <div class="row form-reg-color">
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Mobile" value="Mobile" @if ($jsonobj->phone_type == "Mobile") checked @endif checked> <label for ="Mobile">{{ __('Mobile') }}</label>
+                            <input type="radio" name="phone_type" id="Mobile" value="2" @if ($jsonobj->phone_type == "Mobile") checked @endif checked> <label for ="Mobile">{{ __('Mobile') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Home" value="Home" @if ($jsonobj->phone_type == "Home") checked @endif> <label for ="Home">{{ __('Home') }}</label>
+                            <input type="radio" name="phone_type" id="Home" value="0" @if ($jsonobj->phone_type == "Home") checked @endif> <label for ="Home">{{ __('Home') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Work" value="Work" @if ($jsonobj->phone_type == "Work") checked @endif> <label for ="Work">{{ __('Work') }}</label>
+                            <input type="radio" name="phone_type" id="Work" value="1" @if ($jsonobj->phone_type == "Work") checked @endif> <label for ="Work">{{ __('Work') }}</label>
                           </div>
                         </div>
                     </div>
