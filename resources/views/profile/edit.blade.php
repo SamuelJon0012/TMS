@@ -8,9 +8,9 @@
             </div>
         @endif
 
-        <div class="col-md-12 text-center">
-          <h3 class="text-primary"><b>{{ __('My Profile') }}</b></h3>
-        </div>
+{{--        <div class="col-md-12 text-center">--}}
+{{--          <h3 class="text-primary"><b>{{ __('My Profile') }}</b></h3>--}}
+{{--        </div>--}}
         <br><br><br>
 
         <form method="POST" action="{{route('profile.edit', $user)}}">
@@ -28,20 +28,20 @@
                 {{ __('Please fill all the Required fields to ensure that all neccessary information is captured for clinical and billing purposes.') }}
                 <br><br>
 
-                <div class="form-group row justify-content-center">
-                  <div class="col-md-1 m-0 text-right pr-0">
-                    <img src="{{ asset('images/email-icon.png') }}" border=0 alt="ImageIcon" width="32px">
-                  </div>
-                  <div class="col-md-11 text-center m-0 pl-0">
-                        <input id="email" type="email" class="form-control-reg @error('email') is-invalid @enderror" name="email" value="{{ $jsonobj->email }}" required autocomplete="email" autofocus placeholder="{{ __('EMAIL') }}" readonly>
+{{--                <div class="form-group row justify-content-center">--}}
+{{--                  <div class="col-md-1 m-0 text-right pr-0">--}}
+{{--                    <img src="{{ asset('images/email-icon.png') }}" border=0 alt="ImageIcon" width="32px">--}}
+{{--                  </div>--}}
+{{--                  <div class="col-md-11 text-center m-0 pl-0">--}}
+{{--                        <input id="email" type="email" class="form-control-reg @error('email') is-invalid @enderror" name="email" value="{{ $jsonobj->email }}" required autocomplete="email" autofocus placeholder="{{ __('EMAIL') }}" readonly>--}}
 
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
+{{--                        @error('email')--}}
+{{--                            <span class="invalid-feedback" role="alert">--}}
+{{--                                <strong>{{ $message }}</strong>--}}
+{{--                            </span>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 <div class="form-group row justify-content-center">
                   <div class="col-md-1 m-0 text-right pr-0">
