@@ -16,32 +16,22 @@ class ProfileController extends Controller
     public function edit(User $user)
     {
         $user = Auth::user();
-        $jsonobj =  json_decode($user->json);
-/*
-    @if(Auth::check() && Auth::user()->hasRole('patient'))
-    @include('app.patient_modals')
-    @include('app.patient_js')
-    @endif
 
-    @if(Auth::check() && Auth::user()->hasRole('provider'))
-    @include('app.provider_modals')
-    @include('app.provider_js')
-    @endif
- */
+        $id = Auth::id();
 
-        if (empty($user->json)) {
+        if($user->hasRole('patient')) { # For provider, use the json array (currently referenced in edit.blade)
 
-            // default to patient
-            $jsonobj = json_decode('{"first_name":"","last_name":"","date_of_birth":"1970-01-01","phone_number":"","phone_type":"0","address1":"","address2":"","city":"","state":"","zipcode":"","ssn":"","phone_number1":"","phone_type1":"0","dl_state":"","dl_number":"","ethnicity":"0","race":"0","birth_sex":"0"}');
+            $BC = new BurstIqController();
+                $id=4577; # Yain't Getting Nuthin Cuz Yaint Got No Patients In Staging
+            $data = $BC->getPatient($id);
 
-            if ($user->hasRole('provider')) {
-                $jsonobj = json_decode('{"first_name":"","last_name":"","npi":""}');
-            }
+            # Gotta pivot to BlockChain stuff, sorry.  Come back again
+
+            dd($data);
+
+            return view('profile.edit', compact('user', 'jsonobj'));
+
         }
-
-       # dd($jsonobj);
-
-        return view('profile.edit', compact('user','jsonobj'));
     }
 
     public function update(User $user)

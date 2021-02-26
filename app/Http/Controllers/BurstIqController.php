@@ -72,7 +72,7 @@ class BurstIqController extends Controller
             'uniq_id' => $uniq_id, // Adding these just incase we need them moving forward
             'email' => $patient->email,
         ];
-        
+
         file_put_contents ('/var/www/data/'.$uniq_id, json_encode($data));
 
         return ['success'=>true, 'message'=>"Stored barcode $barcode for Patient ".$patient->name];
@@ -113,7 +113,7 @@ class BurstIqController extends Controller
             case 'email':
                 $where .= " WHERE asset.email ILIKE '%$Q%' ";
                 break;
-            
+
             case 'ssn':
                 $where .= " WHERE asset.ssn = '$Q' ";
                 break;
@@ -152,7 +152,7 @@ class BurstIqController extends Controller
         }
         // TESTING $where = $where . ' AND e.site_id=1';
 
-        $where .= ' LIMIT 100 '; // TODO: Are we going to use pagination? 
+        $where .= ' LIMIT 100 '; // TODO: Are we going to use pagination?
 
         if (!$P->find($where)) {
 
@@ -169,7 +169,7 @@ class BurstIqController extends Controller
     /**
      * Sends a html table back to the browser with the patient's jab history
      * expects a parameter of "q" with the patent_id to look up
-     * 
+     *
      * Note there can be duplicate barcode records
      */
     function myVaccines(Request $request){
@@ -181,16 +181,16 @@ class BurstIqController extends Controller
         $user = Auth::user();
         if ((!$user->checkRole('provider')) and ($user->id != $patient_id))
             abort(401, 'You can not access this persons records');
-        
+
         $data = [];
 
-        //Get the encounter records for this patient as it will have the information we need 
+        //Get the encounter records for this patient as it will have the information we need
         $rows = Encounters::where('patient_id', $patient_id)->get();
         foreach($rows as $row){
             $key = $row['barcode'].'~'.date('Y-m-d',strtotime($row['dose_date']));
             $data[$key] = $row;
         }
-            
+
 
         //Get barcode records for this patient looking for bar codes not found in the encounter records
         $sql = <<<EOT
@@ -210,7 +210,7 @@ class BurstIqController extends Controller
                     continue;
                 $ndcLookup[$key] = $row;
             }
-            
+
             foreach($rows as $row){
                 if (!$barcode = $row->barcode ?? null)
                   continue;
@@ -218,7 +218,7 @@ class BurstIqController extends Controller
                 if (isset($data[$key]))
                     continue;
                 $a = explode('_', $barcode, 2);
-                
+
                 if (count($a) == 2){
                     $ndc = $a[1];
                     $lot = $a[0];
@@ -237,7 +237,7 @@ class BurstIqController extends Controller
                     'size'=>($drug) ? $drug->strength : '',
                     'manufacturer'=>($drug) ? $drug->manufacturer_name : '',
                 ];
-                 
+
                 $data[$key] = $new;
             }
         }
@@ -270,7 +270,7 @@ class BurstIqController extends Controller
         $Q = (is_numeric($Q)) ? (int)$Q : 0;
         if ($Q == 0)
             abort(403, 'Invalid Patient ID');
-        
+
         if ($Q < 40) {
             $Q = 111;
         }
@@ -318,6 +318,21 @@ class BurstIqController extends Controller
     {
 
         $Q = $request->get('q');
+
+        $rows = $this->getPatient($Q);
+
+        if (!empty($rows)) {
+
+            return $this->success($rows);
+
+        } else {
+
+            return $this->error($rows);
+        }
+
+    }
+
+    public function getPatient($Q) {
         $Q = (is_numeric($Q)) ? (int)$Q : 0;
         if ($Q == 0)
             abort(403, 'Invalid Patient ID');
@@ -334,22 +349,6 @@ class BurstIqController extends Controller
         $rows = $P->array(); // Get Patient Data for Display Only (Enumerations converted, joins, etc)
         if (count($rows) == 0)
             return $this->success($rows); //No results to return;
-
-        # ToDo - Use Abbas' new join model (see BurstIqTestController@testGettingPatientScheduleSiteQuery)
-        # Make this a join in the Model, but for now I'm getting strange results when I try to use JOIN
-        # SELECT * FROM patient_profile AS p
-        # INNER JOIN encounter_schedule AS s ON s.patient.id=p.id WHERE p.first_name LIKE '%e%'
-        # results in no data or strangely scrambled data
-
-        # ^ Belay that order, Ensign
-
-
-
-//        $E = new EncounterSchedule(); <----- This needs to be reconsidered
-//
-//        $where = "WHERE asset.patient_id=$Q";
-//        $dummy = $E->find($where);
-//        $rows[0]['schedule'] = $E->array();
 
         $V = new VSee();
 
@@ -442,21 +441,11 @@ class BurstIqController extends Controller
                     'more' => $data->total_count - 3,
 
                 ];
-
-
-
             }
-
-
-
         }
 
-        #$where = "WHERE asset.id=" . $E->getSiteId();
-//        $where = "WHERE asset.id=1";
-//        $S = new SiteProfile();
-//        $dummy = $S->find($where);
-//        $rows[0]['site'] = $S->array();
-        return $this->success($rows);
+        return $rows;
+
     }
 
     function error($msg = 'An error has occurred')
@@ -480,25 +469,25 @@ class BurstIqController extends Controller
     static function getSearchType($txt){
         if (!isset($txt))
             return 'null';
-        
+
         $val = new \Egulias\EmailValidator\EmailValidator();
         if ($val->isValid($txt, new \Egulias\EmailValidator\Validation\RFCValidation()))
             return 'email';
-        
+
         if (preg_match('/^(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$/', $txt))
             return 'ssn';
 
         if (preg_match('/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im', $txt))
             return 'phone';
-        
+
         $a = explode(',', $txt);
         if (count($a) == 2)
             return 'lastNameFirst';
-        
+
         $a = explode(' ', $txt);
         if (count($a) == 2)
             return 'names';
-        
+
         return 'any';
     }
 }
