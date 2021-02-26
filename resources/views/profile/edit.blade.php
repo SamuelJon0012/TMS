@@ -27,7 +27,7 @@
               </div>
               <div class="card-body text-center">
                 <br>
-                {{ __('Please fill all the Required fields to ensure that all neccessary information is captured for clinical and billing purposes.') }}
+                {{ __('Please fill all the Required fields to ensure that all necessary information is captured for clinical and billing purposes.') }}
                 <br><br>
 
                 <div class="form-group row justify-content-center">
