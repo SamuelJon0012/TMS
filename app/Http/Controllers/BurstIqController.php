@@ -412,7 +412,7 @@ class BurstIqController extends Controller
                 $gmdate = gmdate("Y-m-d\TH:i:s\Z", $timestamp);
                 $date = gmdate("Y-m-d", $timestamp);
                 $time = gmdate("H:i", $timestamp);
-                $location = $data->data[1]->room->name;
+                $location = $data->data[1]->room->name ?? 'Not set';
 
                 $rows[0]['schedule2'] = [
 
@@ -431,7 +431,7 @@ class BurstIqController extends Controller
                 $gmdate = gmdate("Y-m-d\TH:i:s\Z", $timestamp);
                 $date = gmdate("Y-m-d", $timestamp);
                 $time = gmdate("H:i", $timestamp);
-                $location = $data->data[2]->room->name;
+                $location = $data->data[2]->room->name ?? 'Not Set';
 
                 $rows[0]['schedule3'] = [
 
