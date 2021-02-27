@@ -3,7 +3,12 @@
     "email": "{{$data->getEmail()}}",
     "first_name": "{{$data->getFirstName()}}",
     "last_name": "{{$data->getLastName()}}",
+@if(env('BI_VERSION', '4.6') == '4.6')
     "relationship_to_owner": "{{$data->getRelationshipToOwner()}}",
+@elseif(env('BI_VERSION') == '4.7')
+    "relationship_to_owner": {{$data->getRelationshipToOwner()}},
+    "middle_name": "{{$data->getMiddleName()}}",
+@endif
     "date_of_birth":{!!json_encode($data->getDateOfBirth())!!},
     "address1":"{{$data->getAddress1()}}",
     "address2":"{{$data->getAddress2()}}",

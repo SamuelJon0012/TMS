@@ -15,6 +15,7 @@ class BurstIq
     protected $BI_PUBLIC_KEY;
     protected $BI_BASE_URL;
     protected $BI_PRIVATEID;
+    protected $BI_VERSION;
 
     protected $url, $username='', $password='', $jwt='', $id=0, $asset_id='';
     public $data;
