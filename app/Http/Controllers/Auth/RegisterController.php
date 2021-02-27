@@ -75,9 +75,9 @@ class RegisterController extends Controller
           if (!$dateOfBirth = \strtotime(request('date_of_birth')))
             return; //already hit required rule
           
-          $cutOffDate = \strtotime('-18 years');
+          $cutOffDate = \strtotime('-16 years');
           if ($dateOfBirth > $cutOffDate){
-            $validator->errors()->add('date_of_birth', __('You must be at least 18 years old to register'));
+            $validator->errors()->add('date_of_birth', __('You must be at least 16 years old to register'));
             return;
           }
 
