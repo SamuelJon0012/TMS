@@ -37,7 +37,7 @@ class BurstIq
         $this->BI_PUBLIC_KEY = env('BI_PUBLIC_KEY');
         $this->BI_BASE_URL = env('BI_BASE_URL');
         $this->BI_PRIVATEID = env('BI_PRIVATEID', 'b67afe2ec35e80bb');
-        $this->BI_PRIVATEID = env('BI_VERSION', 'b67afe2ec35e80bb');
+        $this->BI_VERSION = env('BI_VERSION', '4.6');
 
     }
 
