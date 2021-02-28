@@ -16,11 +16,22 @@ class ProfileController extends Controller
     public function edit(User $user)
     {
         $user = Auth::user();
-        $jsonobj =  json_decode($user["json"]);
-        //echo $jsonobj->email;
-        //dd($jsonobj);
 
-        return view('profile.edit', compact('user','jsonobj'));
+        $id = Auth::id();
+
+        if($user->hasRole('patient')) { # For provider, use the json array (currently referenced in edit.blade)
+
+            $BC = new BurstIqController();
+                $id=4577; # Yain't Getting Nuthin Cuz Yaint Got No Patients In Staging
+            $data = $BC->getPatient($id);
+
+            # Gotta pivot to BlockChain stuff, sorry.  Come back again
+
+            dd($data);
+
+            return view('profile.edit', compact('user', 'jsonobj'));
+
+        }
     }
 
     public function update(User $user)
