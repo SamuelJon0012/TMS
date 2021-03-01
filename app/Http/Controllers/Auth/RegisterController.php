@@ -74,10 +74,10 @@ class RegisterController extends Controller
         $validator->after(function($validator){
           if (!$dateOfBirth = \strtotime(request('date_of_birth')))
             return; //already hit required rule
-          
-          $cutOffDate = \strtotime('-18 years');
+
+          $cutOffDate = \strtotime('-16 years');
           if ($dateOfBirth > $cutOffDate){
-            $validator->errors()->add('date_of_birth', __('You must be at least 18 years old to register'));
+            $validator->errors()->add('date_of_birth', __('You must be at least 16 years old to register'));
             return;
           }
 
@@ -124,7 +124,7 @@ class RegisterController extends Controller
             $data['date_of_birth'] = date("Y-m-d", strtotime($dob));
 
         }
-      
+
         $patientProfile = new \App\PatientProfile();
 
         $user = config('roles.models.defaultUser')::create([
@@ -155,7 +155,7 @@ class RegisterController extends Controller
           if($data['r_type'] == "patient") {
                 //Call for inserting Patient Record in BurstIq
 
-		
+
 
               # instantiate a BurstIq class with optional username & password or use login() method later
 

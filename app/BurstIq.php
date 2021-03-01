@@ -15,6 +15,7 @@ class BurstIq
     protected $BI_PUBLIC_KEY;
     protected $BI_BASE_URL;
     protected $BI_PRIVATEID;
+    protected $BI_VERSION;
 
     protected $url, $username='', $password='', $jwt='', $id=0, $asset_id='';
     public $data;
@@ -37,6 +38,7 @@ class BurstIq
         $this->BI_PUBLIC_KEY = env('BI_PUBLIC_KEY');
         $this->BI_BASE_URL = env('BI_BASE_URL');
         $this->BI_PRIVATEID = env('BI_PRIVATEID', 'b67afe2ec35e80bb');
+        $this->BI_VERSION = env('BI_VERSION', '4.6');
 
     }
 

@@ -401,20 +401,21 @@
                   </div>
                    <div class="col-md-12 text-center">
                       <select id="ethnicity" required="required" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
+
                           <option value="">ETHNICITY</option>
+@if(env('BI_VERSION', '4.6') == '4.6')
                           <option value="0">Unknown</option>
                           <option value="1">Hispanic or Latino</option>
                           <option value="2">Not Hispanic or Latino</option>
                           <option value="3">Black or African American</option>
                           <option value="4">Rather not say</option>
                           <option value="5">White or Caucasian</option>
-                                {{--Old wrong choices--}}
-{{--                          <option value="1">Unknown</option>--}}
-{{--                          <option value="2">Hispanic or Latino</option>--}}
-{{--                          <option value="3">Not Hispanic or Latino</option>--}}
-{{--                          <option value="4">Black or African American</option>--}}
-{{--                          <option value="5">Rather not say</option>--}}
+@elseif(env('BI_VERSION') == '4.7')
 
+                          <option value="0">Hispanic or Latino</option>
+                          <option value="1">Not Hispanic or Latino</option>
+                          <option value="2">Unknown</option>
+@endif
 
 
                       </select>
@@ -443,7 +444,9 @@
                     <div class="col-md-12 text-center">
                       <select id="birth_sex" required="required" class="form-control @error('birth_sex') is-invalid @enderror" name="birth_sex" placeholder="{{ __('BIRTH SEX') }}">
                           <option value="">BIRTH SEX</option>
-
+@if(env('BI_VERSION', '4.6') == '4.6')
+@elseif(env('BI_VERSION') == '4.7')
+@endif
                           <option value="1">Male</option>
                           <option value="2">Female</option>
                           <option value="0">Other</option>
