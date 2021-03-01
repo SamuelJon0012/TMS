@@ -38,6 +38,7 @@ class SiteProfile extends BurstIq
     private $state;
     private $zipcode;
     private $county;
+    private $phone;
     private $vsee_clinic_id;
 
     /**
@@ -202,6 +203,24 @@ class SiteProfile extends BurstIq
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     * @return SiteProfile
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+
     # Generate fluent getters and setters here
 
 
@@ -227,6 +246,7 @@ class SiteProfile extends BurstIq
         $this->state = $asset->state;
         $this->zipcode = $asset->zipcode;
         $this->county = $asset->county;
+        $this->phone = $asset->phone;
         $this->vsee_clinic_id = $asset->vsee_clinic_id;
 
 
@@ -244,6 +264,7 @@ class SiteProfile extends BurstIq
             'state' => $asset->state,
             'zipcode' => $asset->zipcode,
             'county' => $asset->county,
+            'phone' => $asset->phone,
             'vsee_clinic_id' => $asset->vsee_clinic_id,
 
         ];

@@ -20,6 +20,7 @@ class PatientProfile extends BurstIq
     private $relationship_to_owner;
     private $first_name;
     private $last_name;
+    private $middle_name;
     private $date_of_birth;
     private $birth_sex;
     private $address1;
@@ -35,6 +36,24 @@ class PatientProfile extends BurstIq
     private $vsee_clinic_id;
     private $phone_numbers; # Array of arrays [ is_primary / phone_type / phone_number ]
     private $insurances;
+
+    /**
+     * @return mixed
+     */
+    public function getMiddleName()
+    {
+        return $this->middle_name;
+    }
+
+    /**
+     * @param mixed $middle_name
+     * @return PatientProfile
+     */
+    public function setMiddleName($middle_name)
+    {
+        $this->middle_name = $middle_name;
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -489,6 +508,7 @@ class PatientProfile extends BurstIq
         $this->relationship_to_owner = $asset->relationship_to_owner ?? '?';
         $this->first_name = $asset->first_name ?? '?';
         $this->last_name = $asset->last_name ?? '?';
+        $this->middle_name = $asset->middle_name ?? '?';
 
         $this->birth_sex = $asset->birth_sex ?? '?'; #Todo not getting this
 
@@ -516,6 +536,7 @@ class PatientProfile extends BurstIq
             'relationship_to_owner' => $asset->   relationship_to_owner ?? '?',
             'first_name' => $asset->first_name ?? '?',
             'last_name' => $asset->last_name ?? '?',
+            'middle_name' => $asset->middle_name ?? '?',
             'birth_sex' => $this->lookup['birth_sex'][$asset->birth_sex] ?? '?',
             'date_of_birth' => $asset->date_of_birth ?? '?',
             'address1' => $asset->address1 ?? '?',

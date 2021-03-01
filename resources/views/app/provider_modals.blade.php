@@ -680,6 +680,7 @@
                             <b>Administration Site</b>
                             <br/>
                             <select id='admin-site' name='admin-site'>
+@if(env('BI_VERSION', '4.6') == '4.6')
                                 <option value="0">RA-Right Arm</option>
                                 <option value="1">BU-Buttock</option>
                                 <option value="2">LA-Left Arm</option>
@@ -687,6 +688,24 @@
                                 <option value="4">LT-Left Thigh</option>
                                 <option value="5">LUA-Left Upper Arm</option>
                                 <option value="6">RUA-Right Upper Arm</option>
+@elseif(env('BI_VERSION') == '4.7')
+                                <option value="7">BN-Bilateral Nares</option>
+                                <option value="1">BU-Buttock</option>
+                                <option value="2">LA-Left Arm</option>
+                                <option value="8">LD-Left Deltoid</option>
+                                <option value="9">LG-Left Gluteus Medius</option>
+                                <option value="10">LLFA-Left Lower Forearm</option>
+                                <option value="4">LT-Left Thigh</option>
+                                <option value="5">LUA-Left Upper Arm</option>
+                                <option value="11">LVL-Left Vastus Lateralis</option>
+                                <option value="0">RA-Right Arm</option>
+                                <option value="12">RD-Right Deltoid</option>
+                                <option value="13">RG-Right Gluteus Medius</option>
+                                <option value="14">RLFA-Right Lower Forearm</option>
+                                <option value="3">RT-Right Thigh</option>
+                                <option value="6">RUA-Right Upper Arm</option>
+                                <option value="15">RVL-Right Vastus Lateralis</option>
+@endif
                             </select>
                             <br/><br/>
 

@@ -19,6 +19,9 @@ class ProviderProfile extends BurstIq
     protected $view = 'biq/provider_profile';
 
     # List all of the private vars here (id and other common ones are in the base class)
+    private $first_name;
+    private $last_name;
+    private $middle_name;
     private $is_doctor;
     private $is_nurse;
     private $is_nurse_practitioner;
@@ -157,6 +160,60 @@ class ProviderProfile extends BurstIq
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getFirstName()
+    {
+        return $this->first_name;
+    }
+
+    /**
+     * @param mixed $first_name
+     * @return ProviderProfile
+     */
+    public function setFirstName($first_name)
+    {
+        $this->first_name = $first_name;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastName()
+    {
+        return $this->last_name;
+    }
+
+    /**
+     * @param mixed $last_name
+     * @return ProviderProfile
+     */
+    public function setLastName($last_name)
+    {
+        $this->last_name = $last_name;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMiddleName()
+    {
+        return $this->middle_name;
+    }
+
+    /**
+     * @param mixed $middle_name
+     * @return ProviderProfile
+     */
+    public function setMiddleName($middle_name)
+    {
+        $this->middle_name = $middle_name;
+        return $this;
+    }
+
 
     # custom functions here
 
@@ -168,6 +225,9 @@ class ProviderProfile extends BurstIq
         $asset = $record->asset;
 
         $this->id = $asset->id;
+        $this->first_name = $asset->first_name ?? '?';
+        $this->last_name = $asset->last_name ?? '?';
+        $this->middle_name = $asset->middle_name ?? '?';
         $this->is_doctor = $asset->is_doctor;
         $this->is_nurse = $asset->is_nurse;
         $this->is_nurse_practitioner = $asset->is_nurse_practioner;
@@ -181,6 +241,9 @@ class ProviderProfile extends BurstIq
         $array = [
 
             'id' => $asset->id,
+            'first_name' => $asset->first_name ?? '?',
+            'last_name' => $asset->last_name ?? '?',
+            'middle_name' => $asset->middle_name ?? '?',
             'is_doctor' => $asset->is_doctor,
             'is_nurse' => $asset->is_nurse,
             'is_nurse_practitioner' => $asset->is_nurse_practioner,

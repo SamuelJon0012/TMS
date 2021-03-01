@@ -289,9 +289,15 @@
                                                     class="form-control @error('relationship_to_primary_cardholder') is-invalid @enderror"
                                                     name="relationship_to_primary_cardholder">
                                                 <option value=""></option>
+@if(env('BI_VERSION', '4.6') == '4.6')
                                                 <option value="0">{{ __('I am the patient') }}</option>
-                                                <option value="1">{{ __('Legal guardian of patient') }}</option>
+                                                <option value="14">{{ __('Legal guardian of patient') }}</option>
                                                 <option value="2">{{ __('Authorized representative of patient') }}</option>
+@elseif(env('BI_VERSION') == '4.7')
+                                                <option value="22">{{ __('I am the patient') }}</option>
+                                                <option value="1">{{ __('Legal guardian of patient') }}</option>
+                                                <option value="21">{{ __('Other') }}</option>
+@endif
                                             </select>
                                             @error('insurance_type')
                                             <span class="invalid-feedback" role="alert">
