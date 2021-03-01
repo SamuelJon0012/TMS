@@ -39,7 +39,7 @@
                                 @enderror
                             </div>
                         </div>
-
+{{--
                         <div class="form-group row justify-content-center">
                             <!-- <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('EMail') }}</label> -->
 
@@ -81,6 +81,7 @@
                                 @enderror
                             </div>
                         </div>
+--}}
 
                         <div class="form-group row  justify-content-center">
                             <div class="col-md-10  text-center">
