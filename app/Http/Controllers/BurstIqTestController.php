@@ -653,14 +653,16 @@ var_dump($A); exit;
 
         $rows = Encounters::all();
 
+        $P = new Encounter();
+
         foreach ($rows as $row) {
 
-            $this->upsertEncounter($row);
+            $this->upsertEncounter($P, $row);
 
         }
     }
 
-    function upsertEncounter($row) {
+    function upsertEncounter($P, $row) {
 
         $patient_questions = [
             [ 'question_id' => $row->question_1_id, 'patient_response' => $row->question_1_answer ],
@@ -681,7 +683,6 @@ var_dump($A); exit;
             'size' => $row->size
         ];
 
-        $P = new Encounter();
 
         $result = $P->setId($row->id)
             ->setPatientId($row->patient_id)
@@ -694,7 +695,7 @@ var_dump($A); exit;
 
             ->save();
 
-        echo("<pre>$result</pre>");
+        var_dump($result); exit;
 
     }
 
