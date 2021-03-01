@@ -70,7 +70,7 @@
                             </div>
                         </div>
 
-TrackMyVaccines is closed for new registrations at this time.  We will reopen soon.
+TrackMyVaccines is closed for new registrations at this time.  We will re-open soon.
 
 {{--                        <div class="form-group row justify-content-center">--}}
 {{--                            <div class="col-md-10 text-center dashes">--}}
