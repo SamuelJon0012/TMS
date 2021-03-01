@@ -197,6 +197,10 @@ class spool extends Command
 
                 } else {
 
+                    $this->error('Use bc2 instead');
+
+                    exit;
+
                     $files = glob('/var/www/lake/bc/*'); # <-- no, this retries all
                 }
 
