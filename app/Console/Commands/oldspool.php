@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Encounter;
 use App\PatientProfile;
 use App\User;
 use App\VSee;
@@ -176,10 +177,108 @@ class spool extends Command
 
                 break;
 
+            case 'er': // encounter realtime
+
+                $conn = mysqli_connect(
+                    'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
+                    'admin',
+                    '4rfvBGT%6yhn',
+                    'tms'
+                );
+
+                $sql = 'select * from barcodes where fixed=1 and encountered=0';
+
+                $enc_sql = "select
+                    b.id,
+                    u.id as patient_id,
+                    b.site_id as site_id,
+                    b.site_id as room_code,
+                    b.provider_id as provider_id,
+                    b.`timestamp` as `datetime`,
+                    1 as `type`,
+                    1 as question_1_id,
+                    'No' as question_1_answer,
+                    2 as question_2_id,
+                    'No' as question_2_answer,
+                    3 as question_3_id,
+                    'No' as question_3_answer,
+                    4 as question_4_id,
+                    'No' as question_4_answer,
+                    5 as question_5_id,
+                    'No' as question_5_answer,
+                    6 as question_6_id,
+                    'No' as question_6_answer,
+                    0 as billing_provider_id,
+                    1 as proc_1_id,
+                    b.provider_id as proc_1_rpid,
+                    d.labeler_name as vendor,
+                    d.manufacturer_id as manufacturer,
+                    b.lot as lot_number,
+                    1 as dose_number,
+                    b.timestamp as dose_date,
+                    d.strength as size,
+                    b.barcode,
+                    s.name as room_name
+                    from barcodes b
+                    join users u on b.patient_id = u.id
+                    left join users p on p.id = b.provider_id
+                    left join sites s on s.id = b.site_id
+                    left join drugs d on d.ndc_product_code = b.ndc
+                    where b.id = %s";
+
+                $ok_sql = 'UPDATE barcodes SET encountered = 1 WHERE id = %s';
+
+                $rows = mysqli_query($conn, $sql);
+
+                if ($rows) {
+
+                    $P = new Encounter();
+
+                    # There is some hard coded stuff in this query like manufacturer etc that will need to be corrected
+
+                    while ($row = mysqli_fetch_object($rows)) {
+
+                        $eds = mysqli_query($conn, sprintf($enc_sql, $row->id));
+
+                        if (!$eds) {
+
+                            $this->error("Error description: " . mysqli_error($conn));
+
+                            exit;
+
+                            continue;
+
+                        }
+
+                        while ($ed = mysqli_fetch_object($eds)) {
+
+                            $biqResponse = $this->upsertEncounter($P, $ed);
+
+                            // Todo check for ok
+
+                            $done = mysqli_query($conn, sprintf($ok_sql, $row->id));
+
+                            var_dump($biqResponse); // ... 200 / The operation was successful
+
+                            var_dump($done); // true
+
+                            #exit;
+                        };
+
+                    }
+
+                } else { $this->line('Nothing to do'); }
+
+                break;
+
             case 'bc':
             case 'bc2':
             case 'barcodes':
             case 'barcode':
+
+
+                // Insert barcodes into the barcode table where they will be fixed with 'fix'
+
                 $conn = mysqli_connect(
                     'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
                     'admin',
@@ -189,17 +288,15 @@ class spool extends Command
 
                 $this->info('barcodes');
 
-                # do this after moving files into lake folder
-
                 if ($chain == 'bc2') { # <------------ this is cron
 
                     $files = glob('/var/www/data/bc*');
 
                 } else {
 
-                    $this->error('Use bc2 instead');
+                    #$this->error('Use bc2 instead');
 
-                    exit;
+                    #exit;
 
                     $files = glob('/var/www/lake/bc/*'); # <-- no, this retries all
                 }
@@ -207,7 +304,15 @@ class spool extends Command
                 $ctr = 0;
 # Todo make this a stored procedure or prepared stmt ... but Don't use entities / models for performance
                 $sql =
-                    "INSERT IGNORE INTO barcodes SET adminsite=%s, patient_id=%s, provider_id=%s, uniq_id = '%s', barcode = '%s', timestamp = '%s'";
+                    "INSERT INTO barcodes
+                    SET site_id=%s,
+                        adminsite=%s,
+                        patient_id=%s,
+                        provider_id=%s,
+                        uniq_id = '%s',
+                        barcode = '%s',
+                        timestamp = '%s'
+                    ON DUPLICATE KEY UPDATE encountered=0, site_id=%s";
 
                 foreach ($files as $file) { if(strpos($file, '@') != false) continue;
 
@@ -239,22 +344,44 @@ class spool extends Command
                             $row->provider_id = 0;
                         }
 
-                        $result = mysqli_query($conn,sprintf($sql,
-                            $row->adminsite,
-                            $row->patient_id,
-                            $row->provider_id,
-                            $uniq_id,
-                            $row->barcode,
-                            $timestamp
-                        ));
+                        if (isset($row->site_id)) {
+
+                            // Only insert if we have a site ID
+                            //
+                            // Todo: This was temporary in order to load site_ids to existing
+
+                            $result = mysqli_query($conn,sprintf($sql,
+                                $row->site_id,
+                                $row->adminsite,
+                                $row->patient_id,
+                                $row->provider_id,
+                                $uniq_id,
+                                $row->barcode,
+                                $timestamp,
+                                $row->site_id
+                            ));
+
+                            if (!$result) {
+
+                                $this->error("Error description: " . mysqli_error($conn));
+
+                                exit;
+
+                        }
+
+                        }
+
 
                         $this->line("$ctr. $file");
 
-                        $copy = str_replace('/var/www/data/', '/var/www/lake/bc/', $file);
+                        if ($chain == 'bc2') { # <------------ this is cron
 
-                        $this->line("copy $file to $copy");
+                            $copy = str_replace('/var/www/data/', '/var/www/lake/bc/', $file);
 
-                        rename($file, $copy);
+                            $this->line("copy $file to $copy");
+
+                            rename($file, $copy);
+                        }
 
                     } catch (\Exception $e) {
 
@@ -267,7 +394,7 @@ class spool extends Command
 
                 break;
 
-            case 'e': # mememe
+            case 'e': # No, this is not encounters, this just updates the Visits table which we do not neet
             case 'encounter':
                 $OLD = '';
                 $this->info('encounter');
@@ -821,6 +948,41 @@ class spool extends Command
         return $result;
 
     }
+    function upsertEncounter($P, $row) {
 
+        $patient_questions = [
+            [ 'question_id' => $row->question_1_id, 'patient_response' => $row->question_1_answer ],
+            [ 'question_id' => $row->question_2_id, 'patient_response' => $row->question_2_answer ],
+            [ 'question_id' => $row->question_3_id, 'patient_response' => $row->question_3_answer ],
+            [ 'question_id' => $row->question_4_id, 'patient_response' => $row->question_4_answer ],
+            [ 'question_id' => $row->question_5_id, 'patient_response' => $row->question_5_answer ],
+            [ 'question_id' => $row->question_6_id, 'patient_response' => $row->question_6_answer ]
+        ];
+        $procedures = [
+            'id' => $row->proc_1_id,
+            'rendering_provider_id' => $row->proc_1_rpid,
+            'vendor' => $row->vendor,
+            'manufacturer' => $row->manufacturer,
+            'lot_number' => $row->lot_number,
+            'dose_number' => $row->dose_number,
+            'dose_date' => $row->dose_date,
+            'size' => $row->size
+        ];
+
+
+        $result = $P->setId($row->id)
+            ->setPatientId($row->patient_id)
+            ->setProviderId($row->provider_id)
+            ->setSiteId($row->site_id)
+            ->setDateTime($row->datetime)
+            ->setType($row->type)
+            ->setPatientQuestionResponses($patient_questions)
+            ->setProcedures($procedures)
+
+            ->save();
+
+        return $result;
+
+    }
 
 }
