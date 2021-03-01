@@ -694,7 +694,7 @@ var_dump($A); exit;
 
             ->save();
 
-        echo("<pre>$result</pre>");
+        var_dump($result);
 
     }
 
