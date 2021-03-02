@@ -666,6 +666,8 @@ class spool extends Command
                             }
                             $row->date_of_birth = $dob;
 
+                            $row->phone_number = $row->phone_number ?? '1111111111';
+
                             $em = $row->email;
 
                             $user = User::where('email', $em)->first();

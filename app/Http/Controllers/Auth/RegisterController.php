@@ -238,4 +238,11 @@ class RegisterController extends Controller
       $validator->validate();
       return $this->create($data);
     }
+
+    public function doCreate(array $data) {
+
+        // Bulk upload
+
+        return $this->create($data);
+    }
 }
