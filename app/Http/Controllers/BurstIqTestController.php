@@ -877,5 +877,14 @@ var_dump($A); exit;
         <?php
     }
 
+    function bulkAddPatients(Request $request) {
+
+        // Expecting a pasted spreadsheet (\n delimited rows of \t delimited columns)
+
+
+
+
+    }
+
 
 }

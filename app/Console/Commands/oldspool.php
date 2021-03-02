@@ -678,8 +678,6 @@ class spool extends Command
 
                             file_put_contents("work/pp/$id", $json);
 
-
-
                             if (file_exists("work/i/$id")) {
 
                                 // we can process this patient because an i exists and fo
@@ -779,7 +777,7 @@ class spool extends Command
 
                         $copy = str_replace('/var/www/data/', '/var/www/lake/pq/', $file);
 
-                        $this->line('rename $file as $copy');
+                        $this->line("rename $file as $copy");
 
                         rename($file, $copy);
 
