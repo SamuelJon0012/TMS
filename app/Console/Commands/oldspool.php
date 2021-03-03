@@ -294,9 +294,9 @@ class spool extends Command
 
                 } else {
 
-                    #$this->error('Use bc2 instead');
+                    $this->error('Use bc2 instead');
 
-                    #exit;
+                    exit;
 
                     $files = glob('/var/www/lake/bc/*'); # <-- no, this retries all
                 }
@@ -883,6 +883,8 @@ class spool extends Command
 
         return 0;
     }
+
+
 
     function upsertPatient($id, $row, $i)
     {

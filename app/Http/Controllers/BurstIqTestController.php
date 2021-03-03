@@ -929,6 +929,7 @@ var_dump($A); exit;
             $data['last_name'] = $cols[2];
             $data['email'] = $cols[0];
             $data['password'] = 'password1!';
+            $data['phone_number'] = '1111111111';
             $data['r_type'] = 'patient';
 
             try {
