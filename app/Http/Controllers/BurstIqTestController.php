@@ -8,6 +8,7 @@ use App\DrugProfile;
 use App\Encounter;
 use App\Encounters;
 use App\EncounterSchedule;
+use App\Http\Controllers\Auth\RegisterController;
 use App\PatientProfile;
 use App\ProcedureResults;
 use App\ProviderProfile;
@@ -653,14 +654,16 @@ var_dump($A); exit;
 
         $rows = Encounters::all();
 
+        $P = new Encounter();
+
         foreach ($rows as $row) {
 
-            $this->upsertEncounter($row);
+            $this->upsertEncounter($P, $row);
 
         }
     }
 
-    function upsertEncounter($row) {
+    function upsertEncounter($P, $row) {
 
         $patient_questions = [
             [ 'question_id' => $row->question_1_id, 'patient_response' => $row->question_1_answer ],
@@ -681,7 +684,6 @@ var_dump($A); exit;
             'size' => $row->size
         ];
 
-        $P = new Encounter();
 
         $result = $P->setId($row->id)
             ->setPatientId($row->patient_id)
@@ -694,7 +696,7 @@ var_dump($A); exit;
 
             ->save();
 
-        echo("<pre>$result</pre>");
+        var_dump($result); exit;
 
     }
 
@@ -876,5 +878,74 @@ var_dump($A); exit;
         <?php
     }
 
+    function bulkAddPatients(Request $request) {
 
+        // Expecting a pasted spreadsheet (\n delimited rows of \t delimited columns)
+
+        $text = $request->get('data');
+
+        $dataRows = explode("\n", $text);
+
+        $R = new RegisterController();
+
+        $once = true;
+
+        $output = '';
+
+        foreach ($dataRows as $row) {
+
+            $cols = explode("\t", $row);
+
+            if ($once) {
+                // header row
+                // email	first_name	last_name	birth_sex	date_of_birth
+
+                $once = false;
+                continue;
+            }
+
+
+            $output .= $row;
+
+            $data = [];
+            $data['address1'] = '123 Bulk St';
+            $data['address2'] = '';
+            $data['city'] = 'Anytown';
+            $data['dl_number'] = '';
+            $data['dl_state'] = '';
+            $data['ethnicity'] = '2';
+            $data['race'] = '5';
+            $data['relationship_to_owner'] = '25';
+            $data['ssn'] = '';
+            $data['state'] = 'PA';
+            $data['zipcode'] = '18000';
+            if ($cols[3] == 'Male') {
+                $data['birth_sex'] = '1';
+            } else {
+                $data['birth_sex'] = '2';
+            }
+            $data['date_of_birth'] = $cols[4]; // format gets fixed in RegisterController
+            $data['first_name'] = $cols[1];
+            $data['last_name'] = $cols[2];
+            $data['email'] = $cols[0];
+            $data['password'] = 'password1!';
+            $data['phone_number'] = '1111111111';
+            $data['r_type'] = 'patient';
+
+            try {
+
+                $user = $R->doCreate($data);
+
+            } catch (\Exception $e) {
+
+                $output .= '|' . $e->getMessage();
+
+            }
+            $output .= "\n";
+
+        }
+
+        exit ("<pre>$output</pre>");
+
+    }
 }

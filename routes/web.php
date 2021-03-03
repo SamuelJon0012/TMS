@@ -90,6 +90,8 @@ Route::get('/email/test', function () {
 
 Route::get('/vsee/test', 'VSeeController@test')->name('vsee_test');
 
+Route::post('/tools/importzilla', 'BurstIqTestController@bulkAddPatients')->name('importzilla');
+
 
 /*
  *

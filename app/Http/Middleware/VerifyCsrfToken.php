@@ -17,6 +17,7 @@ class VerifyCsrfToken extends Middleware
         'vsee/webhook',
         'affirm',
         'biq/bulkadd',
-        'biq/bulkaddbarcode'
+        'biq/bulkaddbarcode',
+        'tools/importzilla'
     ];
 }

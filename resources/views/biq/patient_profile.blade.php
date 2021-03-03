@@ -6,7 +6,7 @@
 @if(env('BI_VERSION', '4.6') == '4.6')
     "relationship_to_owner": "{{$data->getRelationshipToOwner()}}",
 @elseif(env('BI_VERSION') == '4.7')
-    "relationship_to_owner": {{$data->getRelationshipToOwner()}},
+    "relationship_to_owner": "{{$data->getRelationshipToOwner()}}",
     "middle_name": "{{$data->getMiddleName()}}",
 @endif
     "date_of_birth":{!!json_encode($data->getDateOfBirth())!!},
