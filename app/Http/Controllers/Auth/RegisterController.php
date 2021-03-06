@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\RegistrationNotification;
 use App\PatientProfile;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -223,7 +224,7 @@ class RegisterController extends Controller
           }
 
         }
-
+        $user->notify(new RegistrationNotification());
         return $user;
     }
 
