@@ -10,7 +10,7 @@ use jeremykenedy\LaravelRoles\App\Services\RoleFormFields;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 use jeremykenedy\LaravelRoles\Traits\RolesUsageAuthTrait;
 
-class LaravelRolesController extends Controller
+class LaravelRolesControllerBAD extends Controller
 {
     use RolesAndPermissionsHelpersTrait;
     use RolesUsageAuthTrait;
