@@ -41,18 +41,27 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-{{--                    <ul class="navbar-nav mr-auto">--}}
-{{--                      <li class="nav-item">--}}
-{{--                          <a class="nav-link" href="#">{{ __('About Us') }}</a>--}}
-{{--                      </li>--}}
-{{--                      <li class="nav-item">--}}
-{{--                          <a class="nav-link" href="#">{{ __('Contact Us') }}</a>--}}
-{{--                      </li>--}}
-{{--                      <li class="nav-item">--}}
-{{--                          <a class="nav-link" href="#">{{ __('Help') }}</a>--}}
-{{--                      </li>--}}
-{{--                    </ul>--}}
-
+                    @if(Auth::check() && Auth::user()->hasRole('admin') )
+                        <ul class="navbar-nav mr-auto">
+                            @if(!Route::is('dashboard'))
+                                @if(Route::is('laravelroles::roles.index'))
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/users">{{ __('Users') }}</a>
+                                    </li>
+                                @endif
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/dashboard">{{ __('Dashboard') }}</a>
+                                </li>
+                            @else
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/users">{{ __('Users') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/roles">{{ __('Roles') }}</a>
+                                </li>
+                            @endif
+                        </ul>
+                    @endif
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
@@ -62,9 +71,7 @@
                             </li>
 
                         @else
-{{--                            <li class="nav-item">--}}
-{{--                                <a class="nav-link" href="{{ route('home') }}">{{ __('Dashboard') }}</a>--}}
-{{--                            </li>--}}
+
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

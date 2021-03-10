@@ -24,8 +24,10 @@ Route::get('/', function () {
 //    return redirect(route('login'));
 //});
 
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware('role:admin');
+
 Auth::routes();
-Route::resource('patientvaccine', PatientVaccineController::class);
+Route::resource('patientvaccine', 'PatientVaccineController');
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/new-patient','HomeController@newPatient');
