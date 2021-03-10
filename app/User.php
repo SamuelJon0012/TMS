@@ -38,4 +38,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function scopePatients($q)
+    {
+        return $q->join('role_user', function ($join) {
+            $join->on('role_user.user_id', '=', 'users.id')
+                ->where('role_user.role_id', 2);
+        });
+    }
 }

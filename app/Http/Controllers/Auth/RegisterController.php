@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendRegistrationMailJob;
+use App\Notifications\RegistrationNotification;
 use App\PatientProfile;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -224,6 +226,7 @@ class RegisterController extends Controller
 
         }
 
+        dispatch(new SendRegistrationMailJob($user));
         return $user;
     }
 
