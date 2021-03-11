@@ -1,8 +1,8 @@
 @once
 @push('pageBottom')
-<script> 
+<script>
 $(function(){
-    
+
     frmTestQuestions.handleSelfTestingSelected = function(selectedValue){
         frmTestQuestions.isSelfTesting.value = selectedValue;
         Modals.show('patient-COVID-test2-modal');
@@ -70,7 +70,7 @@ $(function(){
             return '<?=__('too high')?>';
 
         var min = parseInt(control.min);
-        if ((!isNaN(min)) && (value < min)) 
+        if ((!isNaN(min)) && (value < min))
           return '<?=__('too low')?>';
     }
 
@@ -232,7 +232,7 @@ $(function(){
         min-height: 12pc;
     }
     .patient-COVID-test-self-item:hover{
-        background-color: #ddeeff; 
+        background-color: #ddeeff;
     }
     .patient-COVID-test-self-group{
 
@@ -264,9 +264,9 @@ $(function(){
     }
     .patient-COVID-test-submit button{
         max-width: 28pc;
-        margin: 2pc auto;  
+        margin: 2pc auto;
     }
-    
+
     body #frmTestQuestions .invalid-feedback{ /* override mixin for this form*/
         display: inherit;
     }
@@ -280,7 +280,7 @@ $(function(){
         font-weight:bold;
         font-size: 140%;
     }
-    
+
     @media(max-width: 32pc){
         .patient-COVID-test-self-row{
             flex-direction: column;
@@ -365,7 +365,7 @@ $(function(){
 
         <div class="form-group">
             <p>{{ __('The COVID-19 PCR-Nasal Swab is a test to see if you are currently infected with COVID-19.') }}</p>
-        
+
             <b>{{ __('Do you currently have any of the following severe symptoms?') }}</b>
             <ul style="list-style: decimal; font-weight: bold;">
                 <li>{{ __('Trouble breathing') }}</li>
@@ -383,7 +383,7 @@ $(function(){
             ?>
             <div id="hasSevereSymptoms_error"></div>
         </div>
-        
+
 
         <div class="form-group">
             <b>{{ __('Have you been in contact with someone who tested positive for COVID-19 or a place where COVID-19 is spreading in the last 2 weeks?') }}</b>
@@ -447,7 +447,7 @@ $(function(){
 
 
         <div class="form-group" id="frmTestQuestions_issues">
-            <b>Medical issues</b>
+            <b>{{__('Medical issues')}}</b>
             <?php
             MakeCheckBoxGroup('issues', [
                 'aids'=>'AIDS',
@@ -469,7 +469,7 @@ $(function(){
         </div>
 
         <div class="form-group">
-            <b>May we leave a message on your phone?</b>
+            <b>{{ __('May we leave a message on your phone?') }}</b>
             <?php
             MakeRadioGroup('phoneMessage',[
                 'yes'=>'Yes',
@@ -479,7 +479,7 @@ $(function(){
             <div id="phoneMessage_error"></div>
 
             <br/>
-            <p><strong>Please provide your Height and Weight?</strong></p>
+            <p><strong>{{ __('Please provide your Height and Weight?') }}</strong></p>
             <table>
                 <tr>
                     <td>Height: </td>
@@ -529,8 +529,8 @@ $(function(){
 ])
 
     <div id="patient-COVID-test-thankyou">
-        <p>Thank you for submitting your answers.</p>
-        <p>You may now proceed to the patient testing area!</p>
+        <p>{{ __('Thank you for submitting your answers.') }}</p>
+        <p>{{ __('You may now proceed to the patient testing area!') }}</p>
     </div>
 
 @endcomponent

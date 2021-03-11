@@ -79,11 +79,11 @@
     <div class="row justify-content-center">
         @if($v == '1')
 
-            <div style="text-align:center; color:#f60;">There was a problem connecting to the appointment system.  Please try again later or contact support.
+            <div style="text-align:center; color:#f60;">{{ __('There was a problem connecting to the appointment system.  Please try again later or contact support.') }}
 
                 <br>
 
-                Info: {!! $m ?? '' !!}
+                {{ __('Info:') }} {!! $m ?? '' !!}
 
             </div>
 
@@ -211,9 +211,9 @@
               <img src = "{{ asset('images/trackmysolutionslogoregtm-web.jpg') }}" style="max-width: 100%">
                <br/>
                 [
-                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Terms</a>
+                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">{{ __('Terms') }}</a>
                 |
-                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Privacy policy</a>
+                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">{{ __('Privacy policy') }}</a>
                 ]
             </div>
           </div>

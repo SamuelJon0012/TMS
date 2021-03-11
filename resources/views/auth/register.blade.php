@@ -188,58 +188,58 @@
                     </div>
                     <div class="col-md-4 text-center m-0 pl-0">
                         <select id="state" class="form-control-blue @error('state') is-invalid @enderror" name="state" required placeholder="{{ __('STATE') }}">
-                          <option value="">STATE</option>
-                          <option value="AL">Alabama</option>
-                        	<option value="AK">Alaska</option>
-                        	<option value="AZ">Arizona</option>
-                        	<option value="AR">Arkansas</option>
-                        	<option value="CA">California</option>
-                        	<option value="CO">Colorado</option>
-                        	<option value="CT">Connecticut</option>
-                        	<option value="DE">Delaware</option>
-                        	<option value="DC">District Of Columbia</option>
-                        	<option value="FL">Florida</option>
-                        	<option value="GA">Georgia</option>
-                        	<option value="HI">Hawaii</option>
-                        	<option value="ID">Idaho</option>
-                        	<option value="IL">Illinois</option>
-                        	<option value="IN">Indiana</option>
-                        	<option value="IA">Iowa</option>
-                        	<option value="KS">Kansas</option>
-                        	<option value="KY">Kentucky</option>
-                        	<option value="LA">Louisiana</option>
-                        	<option value="ME">Maine</option>
-                        	<option value="MD">Maryland</option>
-                        	<option value="MA">Massachusetts</option>
-                        	<option value="MI">Michigan</option>
-                        	<option value="MN">Minnesota</option>
-                        	<option value="MS">Mississippi</option>
-                        	<option value="MO">Missouri</option>
-                        	<option value="MT">Montana</option>
-                        	<option value="NE">Nebraska</option>
-                        	<option value="NV">Nevada</option>
-                        	<option value="NH">New Hampshire</option>
-                        	<option value="NJ">New Jersey</option>
-                        	<option value="NM">New Mexico</option>
-                        	<option value="NY">New York</option>
-                        	<option value="NC">North Carolina</option>
-                        	<option value="ND">North Dakota</option>
-                        	<option value="OH">Ohio</option>
-                        	<option value="OK">Oklahoma</option>
-                        	<option value="OR">Oregon</option>
-                        	<option value="PA">Pennsylvania</option>
-                        	<option value="RI">Rhode Island</option>
-                        	<option value="SC">South Carolina</option>
-                        	<option value="SD">South Dakota</option>
-                        	<option value="TN">Tennessee</option>
-                        	<option value="TX">Texas</option>
-                        	<option value="UT">Utah</option>
-                        	<option value="VT">Vermont</option>
-                        	<option value="VA">Virginia</option>
-                        	<option value="WA">Washington</option>
-                        	<option value="WV">West Virginia</option>
-                        	<option value="WI">Wisconsin</option>
-                        	<option value="WY">Wyoming</option>
+                            <option value="">{{ __('STATE') }}</option>
+                            <option value="AL">{{ __('Alabama') }}</option>
+                        	<option value="AK">{{ __('Alaska') }}</option>
+                        	<option value="AZ">{{ __('Arizona') }}</option>
+                        	<option value="AR">{{ __('Arkansas') }}</option>
+                        	<option value="CA">{{ __('California') }}</option>
+                        	<option value="CO">{{ __('Colorado') }}</option>
+                        	<option value="CT">{{ __('Connecticut') }}</option>
+                        	<option value="DE">{{ __('Delaware') }}</option>
+                        	<option value="DC">{{ __('District Of Columbia') }}</option>
+                        	<option value="FL">{{ __('Florida') }}</option>
+                        	<option value="GA">{{ __('Georgia') }}</option>
+                        	<option value="HI">{{ __('Hawaii') }}</option>
+                        	<option value="ID">{{ __('Idaho') }}</option>
+                        	<option value="IL">{{ __('Illinois') }}</option>
+                        	<option value="IN">{{ __('Indiana') }}</option>
+                        	<option value="IA">{{ __('Iowa') }}</option>
+                        	<option value="KS">{{ __('Kansas') }}</option>
+                        	<option value="KY">{{ __('Kentucky') }}</option>
+                        	<option value="LA">{{ __('Louisiana') }}</option>
+                        	<option value="ME">{{ __('Maine') }}</option>
+                        	<option value="MD">{{ __('Maryland') }}</option>
+                        	<option value="MA">{{ __('Massachusetts') }}</option>
+                        	<option value="MI">{{ __('Michigan') }}</option>
+                        	<option value="MN">{{ __('Minnesota') }}</option>
+                        	<option value="MS">{{ __('Mississippi') }}</option>
+                        	<option value="MO">{{ __('Missouri') }}</option>
+                        	<option value="MT">{{ __('Montana') }}</option>
+                        	<option value="NE">{{ __('Nebraska') }}</option>
+                        	<option value="NV">{{ __('Nevada') }}</option>
+                        	<option value="NH">{{ __('New Hampshire') }}</option>
+                        	<option value="NJ">{{ __('New Jersey') }}</option>
+                        	<option value="NM">{{ __('New Mexico') }}</option>
+                        	<option value="NY">{{ __('New York') }}</option>
+                        	<option value="NC">{{ __('North Carolina') }}</option>
+                        	<option value="ND">{{ __('North Dakota') }}</option>
+                        	<option value="OH">{{ __('Ohio') }}</option>
+                        	<option value="OK">{{ __('Oklahoma') }}</option>
+                        	<option value="OR">{{ __('Oregon') }}</option>
+                        	<option value="PA">{{ __('Pennsylvania') }}</option>
+                        	<option value="RI">{{ __('Rhode Island') }}</option>
+                        	<option value="SC">{{ __('South Carolina') }}</option>
+                        	<option value="SD">{{ __('South Dakota') }}</option>
+                        	<option value="TN">{{ __('Tennessee') }}</option>
+                        	<option value="TX">{{ __('Texas') }}</option>
+                        	<option value="UT">{{ __('Utah') }}</option>
+                        	<option value="VT">{{ __('Vermont') }}</option>
+                        	<option value="VA">{{ __('Virginia') }}</option>
+                        	<option value="WA">{{ __('Washington') }}</option>
+                        	<option value="WV">{{ __('West Virginia') }}</option>
+                        	<option value="WI">{{ __('Wisconsin') }}</option>
+                        	<option value="WY">{{ __('Wyoming') }}</option>
                         </select>
 
                         @error('state')
@@ -322,58 +322,58 @@
                   </div>
                     <div class="col-md-4 text-center m-0 pl-0">
                         <select id="dl_state" class="form-control-blue @error('dl_state') is-invalid @enderror" name="dl_state" placeholder="{{ __('STATE (optional)') }}">
-                          <option value="">STATE (optional)</option>
-                          <option value="AL">Alabama</option>
-                        	<option value="AK">Alaska</option>
-                        	<option value="AZ">Arizona</option>
-                        	<option value="AR">Arkansas</option>
-                        	<option value="CA">California</option>
-                        	<option value="CO">Colorado</option>
-                        	<option value="CT">Connecticut</option>
-                        	<option value="DE">Delaware</option>
-                        	<option value="DC">District Of Columbia</option>
-                        	<option value="FL">Florida</option>
-                        	<option value="GA">Georgia</option>
-                        	<option value="HI">Hawaii</option>
-                        	<option value="ID">Idaho</option>
-                        	<option value="IL">Illinois</option>
-                        	<option value="IN">Indiana</option>
-                        	<option value="IA">Iowa</option>
-                        	<option value="KS">Kansas</option>
-                        	<option value="KY">Kentucky</option>
-                        	<option value="LA">Louisiana</option>
-                        	<option value="ME">Maine</option>
-                        	<option value="MD">Maryland</option>
-                        	<option value="MA">Massachusetts</option>
-                        	<option value="MI">Michigan</option>
-                        	<option value="MN">Minnesota</option>
-                        	<option value="MS">Mississippi</option>
-                        	<option value="MO">Missouri</option>
-                        	<option value="MT">Montana</option>
-                        	<option value="NE">Nebraska</option>
-                        	<option value="NV">Nevada</option>
-                        	<option value="NH">New Hampshire</option>
-                        	<option value="NJ">New Jersey</option>
-                        	<option value="NM">New Mexico</option>
-                        	<option value="NY">New York</option>
-                        	<option value="NC">North Carolina</option>
-                        	<option value="ND">North Dakota</option>
-                        	<option value="OH">Ohio</option>
-                        	<option value="OK">Oklahoma</option>
-                        	<option value="OR">Oregon</option>
-                        	<option value="PA">Pennsylvania</option>
-                        	<option value="RI">Rhode Island</option>
-                        	<option value="SC">South Carolina</option>
-                        	<option value="SD">South Dakota</option>
-                        	<option value="TN">Tennessee</option>
-                        	<option value="TX">Texas</option>
-                        	<option value="UT">Utah</option>
-                        	<option value="VT">Vermont</option>
-                        	<option value="VA">Virginia</option>
-                        	<option value="WA">Washington</option>
-                        	<option value="WV">West Virginia</option>
-                        	<option value="WI">Wisconsin</option>
-                        	<option value="WY">Wyoming</option>
+                            <option value="">{{ __('STATE (optional)') }}</option>
+                            <option value="AL">{{ __('Alabama') }}</option>
+                        	<option value="AK">{{ __('Alaska') }}</option>
+                        	<option value="AZ">{{ __('Arizona') }}</option>
+                        	<option value="AR">{{ __('Arkansas') }}</option>
+                        	<option value="CA">{{ __('California') }}</option>
+                        	<option value="CO">{{ __('Colorado') }}</option>
+                        	<option value="CT">{{ __('Connecticut') }}</option>
+                        	<option value="DE">{{ __('Delaware') }}</option>
+                        	<option value="DC">{{ __('District Of Columbia') }}</option>
+                        	<option value="FL">{{ __('Florida') }}</option>
+                        	<option value="GA">{{ __('Georgia') }}</option>
+                        	<option value="HI">{{ __('Hawaii') }}</option>
+                        	<option value="ID">{{ __('Idaho') }}</option>
+                        	<option value="IL">{{ __('Illinois') }}</option>
+                        	<option value="IN">{{ __('Indiana') }}</option>
+                        	<option value="IA">{{ __('Iowa') }}</option>
+                        	<option value="KS">{{ __('Kansas') }}</option>
+                        	<option value="KY">{{ __('Kentucky') }}</option>
+                        	<option value="LA">{{ __('Louisiana') }}</option>
+                        	<option value="ME">{{ __('Maine') }}</option>
+                        	<option value="MD">{{ __('Maryland') }}</option>
+                        	<option value="MA">{{ __('Massachusetts') }}</option>
+                        	<option value="MI">{{ __('Michigan') }}</option>
+                        	<option value="MN">{{ __('Minnesota') }}</option>
+                        	<option value="MS">{{ __('Mississippi') }}</option>
+                        	<option value="MO">{{ __('Missouri') }}</option>
+                        	<option value="MT">{{ __('Montana') }}</option>
+                        	<option value="NE">{{ __('Nebraska') }}</option>
+                        	<option value="NV">{{ __('Nevada') }}</option>
+                        	<option value="NH">{{ __('New Hampshire') }}</option>
+                        	<option value="NJ">{{ __('New Jersey') }}</option>
+                        	<option value="NM">{{ __('New Mexico') }}</option>
+                        	<option value="NY">{{ __('New York') }}</option>
+                        	<option value="NC">{{ __('North Carolina') }}</option>
+                        	<option value="ND">{{ __('North Dakota') }}</option>
+                        	<option value="OH">{{ __('Ohio') }}</option>
+                        	<option value="OK">{{ __('Oklahoma') }}</option>
+                        	<option value="OR">{{ __('Oregon') }}</option>
+                        	<option value="PA">{{ __('Pennsylvania') }}</option>
+                        	<option value="RI">{{ __('Rhode Island') }}</option>
+                        	<option value="SC">{{ __('South Carolina') }}</option>
+                        	<option value="SD">{{ __('South Dakota') }}</option>
+                        	<option value="TN">{{ __('Tennessee') }}</option>
+                        	<option value="TX">{{ __('Texas') }}</option>
+                        	<option value="UT">{{ __('Utah') }}</option>
+                        	<option value="VT">{{ __('Vermont') }}</option>
+                        	<option value="VA">{{ __('Virginia') }}</option>
+                        	<option value="WA">{{ __('Washington') }}</option>
+                        	<option value="WV">{{ __('West Virginia') }}</option>
+                        	<option value="WI">{{ __('Wisconsin') }}</option>
+                        	<option value="WY">{{ __('Wyoming') }}</option>
                         </select>
 
                         @error('dl_state')
@@ -402,19 +402,19 @@
                    <div class="col-md-12 text-center">
                       <select id="ethnicity" required="required" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
 
-                          <option value="">ETHNICITY</option>
+                          <option value="">{{ __('ETHNICITY') }}</option>
 @if(env('BI_VERSION', '4.6') == '4.6')
-                          <option value="0">Unknown</option>
-                          <option value="1">Hispanic or Latino</option>
-                          <option value="2">Not Hispanic or Latino</option>
-                          <option value="3">Black or African American</option>
-                          <option value="4">Rather not say</option>
-                          <option value="5">White or Caucasian</option>
+                          <option value="0">{{ __('Unknown') }}</option>
+                          <option value="1">{{ __('Hispanic or Latino') }}</option>
+                          <option value="2">{{ __('Not Hispanic or Latino') }}</option>
+                          <option value="3">{{ __('Black or African American') }}</option>
+                          <option value="4">{{ __('Rather not say') }}</option>
+                          <option value="5">{{ __('White or Caucasian') }}</option>
 @elseif(env('BI_VERSION') == '4.7')
 
-                          <option value="0">Hispanic or Latino</option>
-                          <option value="1">Not Hispanic or Latino</option>
-                          <option value="2">Unknown</option>
+                          <option value="0">{{ __('Hispanic or Latino') }}</option>
+                          <option value="1">{{ __('Not Hispanic or Latino') }}</option>
+                          <option value="2">{{ __('Unknown') }}</option>
 @endif
 
 
@@ -428,28 +428,28 @@
                   </div>
                   <div class="col-md-12 text-center">
                       <select id="race" required="required" class="form-control @error('race') is-invalid @enderror" name="race" placeholder="{{ __('RACE') }}">
-                        <option value="">RACE</option>
+                        <option value="">{{ __('RACE') }}</option>
 
-                          <option value="1">American Indian or Alaska Native</option>
-                          <option value="2">Asian</option>
-                          <option value="3">Black or African American</option>
-                          <option value="4">Native Hawaiian or Other Pacific Islander</option>
-                          <option value="7">White</option>
-                          <option value="5">Other</option>
-                          <option value="6">Rather not say</option>
+                          <option value="1">{{ __('American Indian or Alaska Native') }}</option>
+                          <option value="2">{{ __('Asian') }}</option>
+                          <option value="3">{{ __('Black or African American') }}</option>
+                          <option value="4">{{ __('Native Hawaiian or Other Pacific Islander') }}</option>
+                          <option value="7">{{ __('White') }}</option>
+                          <option value="5">{{ __('Other') }}</option>
+                          <option value="6">{{ __('Rather not say') }}</option>
                       </select>
                     </div>
                 </div>
                 <div class="form-group row justify-content-center">
                     <div class="col-md-12 text-center">
                       <select id="birth_sex" required="required" class="form-control @error('birth_sex') is-invalid @enderror" name="birth_sex" placeholder="{{ __('BIRTH SEX') }}">
-                          <option value="">BIRTH SEX</option>
+                          <option value="">{{ __('BIRTH SEX') }}</option>
 @if(env('BI_VERSION', '4.6') == '4.6')
 @elseif(env('BI_VERSION') == '4.7')
 @endif
-                          <option value="1">Male</option>
-                          <option value="2">Female</option>
-                          <option value="0">Other</option>
+                          <option value="1">{{ __('Male') }}</option>
+                          <option value="2">{{ __('Female') }}</option>
+                          <option value="0">{{ __('Other') }}</option>
 
                       </select>
                     </div>
@@ -464,7 +464,7 @@
                 <div class="form-group row justify-content-center">
 
                   <div class="col-md-12 text-center">
-                    NOTICE: By clicking Register, you agree to our <a target="_blank" href="https://trackmyapp.us/files/default/terms.html">Terms</a> and that you have read our <a target="_parent" href="https://trackmyapp.us/files/default/policy.html">Privacy policy</a>.
+                      {{ __('NOTICE: By clicking Register, you agree to our') }} <a target="_blank" href="https://trackmyapp.us/files/default/terms.html">{{ __('Terms') }}</a> {{ __('and that you have read our') }} <a target="_parent" href="https://trackmyapp.us/files/default/policy.html">{{ __('Privacy policy') }}</a>.
 
                   </div>
                 </div>
