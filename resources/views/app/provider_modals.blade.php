@@ -718,7 +718,7 @@
                                 <br/>
                                 <span class="btn btn-link"
 
-                                        onclick="$('#barcode-go-home').hide(); $('#barcode-form').show();$('#barcode-input').val('').focus();">{{ __('Scan Again' }}</span>
+                                        onclick="$('#barcode-go-home').hide(); $('#barcode-form').show();$('#barcode-input').val('').focus();">{{ __('Scan Again') }}</span>
 
                             </div>
                             <br/>
