@@ -11,7 +11,7 @@
                     <div class="card-body text-center">
 
 
-                        <h1>Thank you</h1>
+                        <h1>{{ __('Thank you') }}</h1>
 
 
                     </div>
@@ -25,9 +25,9 @@
             <img src = "{{ asset('images/trackmysolutionslogoregtm-web.jpg') }}">
             <br/>
             [
-            <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Terms</a>
+            <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">{{ __('Terms') }}</a>
             |
-            <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Privacy policy</a>
+            <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">{{ __('Privacy policy') }}</a>
             ]
         </div>
     </div>
