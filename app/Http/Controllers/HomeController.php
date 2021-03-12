@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use LanguageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Sites;
@@ -54,8 +54,17 @@ class HomeController extends Controller
             abort(401, 'Please login');
         if (!$user->checkRole('provider'))
             abort(403, 'You can not access to register a patient');
-        
+
         return view('auth.register',['isProvider'=>true]);
+    }
+
+    public function changeLocale($locale)
+    {
+        $locales = LanguageService::getLocales();
+        if ($locales->where('slug', $locale)->count()){
+            LanguageService::setLocale($locale);
+        }
+        return redirect()->back();
     }
 
     function registerNewPatient(Request $request){

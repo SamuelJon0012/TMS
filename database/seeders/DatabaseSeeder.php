@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Seeders
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
-use Database\Seeders\PermissionsTableSeeder
+use Database\Seeders\PermissionsTableSeeder;
 use Database\Seeders\RolesTableSeeder;
 use Database\Seeders\ConnectRelationshipsSeeder;
 
