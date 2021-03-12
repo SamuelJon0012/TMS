@@ -2,7 +2,6 @@
     $isProvider = $isProvider ?? false;
     $route = ($isProvider) ? 'register_new_parent' : 'register';
 @endphp
-
 @extends('layouts.app')
 @section('content')
 <div class="container">
@@ -128,10 +127,10 @@
                             <input type="radio" name="phone_type" id="Mobile" value="2" checked> <label for ="Mobile">{{ __('Mobile') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Home" value="0"> <label for ="Home">{{ __('Home') }}</label>
+                            <input type="radio" name="phone_type" id="Home" value="0" @if(old('phone_type') === '0') checked @endif> <label for ="Home">{{ __('Home') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Work" value="1"> <label for ="Work">{{ __('Work') }}</label>
+                            <input type="radio" name="phone_type" id="Work" value="1" @if(old('phone_type') === '1') checked @endif> <label for ="Work">{{ __('Work') }}</label>
                           </div>
                         </div>
                     </div>
@@ -304,13 +303,13 @@
                         @enderror
                         <div class="row form-reg-color">
                           <div class="col-4">
-                            <input type="radio" name="phone_type1" id="Mobile1" value="2" checked> <label for ="Mobile1">{{ __('Mobile') }}</label>
+                            <input type="radio" name="phone_type1" id="Mobile1" value="2" checked > <label for ="Mobile1">{{ __('Mobile') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type1" id="Home1" value="0"> <label for ="Home1">{{ __('Home') }}</label>
+                            <input type="radio" name="phone_type1" id="Home1" value="0" @if(old('phone_type1') === '0') checked @endif> <label for ="Home1">{{ __('Home') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type1" id="Work1" value="1"> <label for ="Work1">{{ __('Work') }}</label>
+                            <input type="radio" name="phone_type1" id="Work1" value="1" @if(old('phone_type1') === '1') checked @endif> <label for ="Work1">{{ __('Work') }}</label>
                           </div>
                         </div>
                     </div>
@@ -447,7 +446,7 @@
 @if(env('BI_VERSION', '4.6') == '4.6')
 @elseif(env('BI_VERSION') == '4.7')
 @endif
-                          <option value="1">Male</option>
+                          <option  value="1">Male</option>
                           <option value="2">Female</option>
                           <option value="0">Other</option>
 
@@ -651,7 +650,15 @@
     <br><br><br>
 </div>
 @endsection
-
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        document.getElementById('birth_sex').value = "{{ old('birth_sex') ?? '' }}";
+        document.getElementById('state').value = "{{  old('state') ?? '' }}";
+        document.getElementById('dl_state').value = "{{ old('dl_state') ?? '' }}";
+        document.getElementById('ethnicity').value = "{{ old('ethnicity') ?? '' }}";
+        document.getElementById('race').value = "{{ old('race') ?? '' }}";
+    });
+</script>
 
 @error('emailPopup')
 @push('pageBottom')
@@ -716,6 +723,7 @@
   $(function(){
     $(eEmailNotListed).fadeIn();
   });
+
 </script>
 
 
