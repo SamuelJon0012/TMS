@@ -39,6 +39,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = str_replace('’', "'", $value);
+    }
+
     public function scopePatients($q)
     {
         return $q->join('role_user', function ($join) {

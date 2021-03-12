@@ -25,9 +25,9 @@
                 <img src = "{{ asset('images/trackmysolutionslogoregtm-web.jpg') }}">
                 <br/>
                 [
-                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Terms</a>
+                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">{{ __('Terms') }}</a>
                 |
-                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Privacy policy</a>
+                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">{{ __('Privacy policy') }}</a>
                 ]
             </div>
         </div>
