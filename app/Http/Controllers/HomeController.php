@@ -58,14 +58,6 @@ class HomeController extends Controller
         return view('auth.register',['isProvider'=>true]);
     }
 
-    public function changeLocale($locale)
-    {
-        $locales = LanguageService::getLocales();
-        if ($locales->where('slug', $locale)->count()){
-            LanguageService::setLocale($locale);
-        }
-        return redirect()->back();
-    }
 
     function registerNewPatient(Request $request){
         if (!$user = Auth::user())

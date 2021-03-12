@@ -166,14 +166,18 @@
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
     <script>
         function changeLang(lang){
-            let parentFlag = document.getElementsByClassName('parent_lang_img');
-            let parentLang = document.getElementsByClassName('parent_lang');
-            let clickLang = document.getElementsByClassName(lang)[0].textContent;
-            parentFlag[0].src = 'images/' + lang + '.png';
-            parentLang[0].innerHTML = clickLang;
+
+            if( document.getElementsByClassName(lang)[0] ){
+                let parentFlag = document.getElementsByClassName('parent_lang_img');
+                let parentLang = document.getElementsByClassName('parent_lang');
+                let clickLang = document.getElementsByClassName(lang)[0].textContent;
+                parentFlag[0].src = 'images/' + lang + '.png';
+                parentLang[0].innerHTML = clickLang;
+            }
+
         }
         document.addEventListener("DOMContentLoaded", function(event) {
-            let local = "{{app()->getlocale()}}"
+            let local = "{{app()->getlocale()}}";
             changeLang(local);
         });
     </script>
