@@ -85,17 +85,9 @@
                                                 <img src='{{asset("images/en.png")}}' id="en" class="flags-png">
                                                 <span class="en">{{ __('English') }}</span>
                                             </a>
-                                            <a class="dropdown-item flags-item"  href="{{ url('/change-locale/de') }}" onclick="changeLang('de')">
-                                                <img src='{{asset("images/de.png")}}' id="de" class="flags-png">
-                                                <span class="de">{{ __('Germany') }}</span>
-                                            </a>
-                                            <a class="dropdown-item flags-item" href="{{ url('/change-locale/sp') }}" onclick="changeLang('sp')">
-                                                <img src='{{asset("images/sp.png")}}' id="sp" class="flags-png" >
-                                                <span class="sp">{{ __('Spanish') }}</span>
-                                            </a>
-                                            <a class="dropdown-item flags-item" href="{{ url('/change-locale/fr') }}" onclick="changeLang('fr')">
-                                                <img src='{{asset("images/fr.png")}}' id="fr" class="flags-png">
-                                                <span class="fr">{{ __('France') }}</span>
+                                            <a class="dropdown-item flags-item" href="{{ url('/change-locale/es') }}" onclick="changeLang('es')">
+                                                <img src='{{asset("images/es.png")}}' id="es" class="flags-png" >
+                                                <span class="es">{{ __('Spanish') }}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -165,6 +157,7 @@
             document.addEventListener("DOMContentLoaded", function(event) {
                 let local = "{{app()->getlocale()}}"
                 changeLang(local);
+
 
             });
         </script>

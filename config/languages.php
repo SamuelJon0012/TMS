@@ -12,7 +12,7 @@ return [
             'align' => 'left',
         ],
         [
-            'slug' => 'sp',
+            'slug' => 'es',
             'title' => 'Spanish',
             'align' => 'left',
         ],
