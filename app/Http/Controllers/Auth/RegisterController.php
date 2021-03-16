@@ -143,7 +143,7 @@ class RegisterController extends Controller
         unset($data['password_confirmation']);
 
         // backup spool
-        file_put_contents('/var/www/data/' . $data['email'], json_encode($data));
+//        file_put_contents('/var/www/data/' . $data['email'], json_encode($data));
 
         if($data['r_type']) {
 
