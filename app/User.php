@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
 
 class User extends Authenticatable
@@ -18,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'json', 'dob', 'phone', 'power', 'burstiq_private_id', 'site_id'
+        'name', 'email', 'password', 'json', 'dob', 'phone', 'power', 'burstiq_private_id', 'site_id','is_confirmed'
     ];
 
     /**
@@ -50,5 +51,8 @@ class User extends Authenticatable
             $join->on('role_user.user_id', '=', 'users.id')
                 ->where('role_user.role_id', 2);
         });
+    }
+    public function getIsPatientAttribute() :bool{
+        return $this->hasRole('patient');
     }
 }

@@ -96,6 +96,7 @@
                                         <th class="no-search no-sort">{!! trans('laravelusers::laravelusers.users-table.actions') !!}</th>
                                         <th class="no-search no-sort"></th>
                                         <th class="no-search no-sort"></th>
+                                        <th class="no-search no-sort"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="users_table">
@@ -138,6 +139,17 @@
                                                     {!! trans('laravelusers::laravelusers.buttons.edit') !!}
                                                 </a>
                                             </td>
+                                            <td>
+                                                @if($user->is_patient && $user->is_confirmed == 0)
+                                                    <a class="btn btn-sm btn-secondary btn-block" href="#"  type="button" data-toggle="modal" data-target="#exampleModal" onclick="openConfirmedModal({{$user}})">
+                                                        {!! trans('laravelusers::laravelusers.buttons.confirm-user') !!}
+                                                    </a>
+                                                 @elseif($user->is_patient && $user->is_confirmed == 1)
+                                                    <button class="btn btn-sm btn-secondary btn-block" disabled>
+                                                        {!! trans('laravelusers::laravelusers.buttons.confirmed') !!}
+                                                    </button>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -152,12 +164,70 @@
 
                         </div>
                     </div>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document" style="max-width: 880px">
+                            <div class="modal-content" style="padding: 20px;">
+                                <div class="modal-header text-center" style="border-bottom: 0px">
+                                    <h5 class="modal-title w-100" id="exampleModalLabel">{{ __('Patient Confirmation') }}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 pl-4">
+                                        <a style="cursor: pointer;"><i class="fas fa-arrow-left" style="font-size: 12px;"></i> {{ __('Home') }}  </a>
+                                        <a class="ml-2" style="cursor: pointer;"><i class="fas fa-arrow-left"style="font-size: 12px;"></i>{{ __('Search') }}</a>
+                                    </div>
+                                </div>
+                                <div class="modal-body mt-2"style="border-top: 1px solid #dee2e6;">
+                                    <div class="row">
+                                        <div class="col-6 col_left_right">
+                                            <div class="rounded_div">
+                                                <div class="personal_rounded">
+                                                    <p class="personal_rounded_p">{{ __('Personal Data') }}</p>
+                                                    <p class="mt-3 mb-3" style="padding: 0px 14px;">{{ __('Please confirm identity of yourvisitor and the information on this page, then praceed to the next step.') }}</p>
+                                                    <p class="p_left"><strong>{{ __('First Name') }} </strong></p><p class="p_right first_name">{{ __('First Name') }}</p>
+                                                    <p class="p_left"><strong>{{ __('Last Name') }} </strong></p><p class="p_right last_name">{{ __('Last Name') }}</p>
+                                                    <p class="p_left"><strong>{{ __('Date of Birth') }} </strong></p><p class="p_right date_of_birth">{{ __('Date of Birth') }}</p>
+                                                    <p class="p_left"><strong>{{ __('SSN') }} </strong></p><p class="p_right ssn">{{ __('SSN') }}</p>
+                                                    <p class="p_left"><strong>{{ __('Driver`s License') }} </strong></p><p class="p_right drivers_license">{{ __('Driver`s License') }}</p>
+                                                    <p class="p_left"><strong>{{ __('Address') }} </strong></p><p class="p_right address">{{ __('Address') }}</p>
+                                                    <p class="p_left"><strong>{{ __('Apt / Unie') }} </strong></p><p class="p_right apt_unit">{{ __('Apt / Unie') }}</p>
+                                                    <p class="p_left"><strong>{{ __('City') }} </strong></p><p class="p_right city">{{ __('City') }}</p>
+                                                    <p class="p_left"><strong>{{ __('State') }} </strong></p><p class="p_right state">{{ __('State') }}</p>
+                                                    <p class="p_left" style="margin-bottom: 15px;"><strong>{{ __('Zipconde') }} </strong></p><p class="p_right zipcode">{{ __('Zipconde') }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col_left_right">
+                                            <div class="rounded_div">
+                                                <div class="personal_rounded">
+                                                    <p class="personal_rounded_p">{{ __('Demographics') }}</p>
+                                                    <p class="p_left"><strong>{{ __('Email') }} </strong></p><p class="p_right email">{{ __('Email') }}</p>
+                                                    <p class="p_left"><strong>{{ __('Mobile Phone') }} </strong></p><p class="p_right mobile_phone">{{ __('Mobile Phone') }}</p>
+                                                    <p class="p_left"><strong>{{ __('Home Phone') }} </strong></p><p class="p_right home_phone">{{ __('Home Phone') }}</p>
+                                                    <p class="p_left"><strong>{{ __('Birth Sex') }} </strong></p><p class="p_right birth_sex">{{ __('Birth Sex') }}</p>
+                                                    <p class="p_left"><strong>{{ __('Race') }} </strong></p><p class="p_right race">{{ __('Race') }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer" style="justify-content:center;">
+                                    <form id="logout-form" action="{{ route('confirm-patient') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="user_id" id="user_id">
+                                        <button type="submit" class="btn btn-primary">Confirm Patient</button>
+                                    </form>
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
     @include('laravelusers::modals.modal-delete')
 @endadmin
 @endsection
@@ -167,6 +237,7 @@
         @include('laravelusers::scripts.datatables')
     @endif
     @include('laravelusers::scripts.delete-modal-script')
+    @include('laravelusers::scripts.confirmed-modal')
     @include('laravelusers::scripts.save-modal-script')
     @if(config('laravelusers.tooltipsEnabled'))
         @include('laravelusers::scripts.tooltips')

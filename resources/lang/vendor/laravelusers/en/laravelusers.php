@@ -37,6 +37,8 @@ return [
         'back-to-user'  => 'Back  <span class="hidden-xs">to User</span>',
         'delete-user'   => '<i class="far fa-trash-alt fa-fw" aria-hidden="true"></i>  <span class="hidden-xs">Delete</span><span class="hidden-xs"> User</span>',
         'edit-user'     => '<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i> <span class="hidden-xs">Edit</span><span class="hidden-xs"> User</span>',
+        'confirm-user'  => '<i class="fas fa-check text-white"></i> <span class="hidden-xs text-white">Confirm</span><span class="hidden-xs text-white"> Patient</span>',
+        'confirmed'  => '<i class="fas fa-check text-white"></i> <span class="hidden-xs text-white">Confirmed</span>',
     ],
 
     'tooltips' => [
@@ -49,6 +51,7 @@ return [
         'email-user'    => 'Email :user',
         'submit-search' => 'Submit Users Search',
         'clear-search'  => 'Clear Search Results',
+        'confirmed'     => 'Confirmed',
     ],
 
     'messages' => [
