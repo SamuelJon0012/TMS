@@ -33,7 +33,7 @@ class BurstIq
      */
     public function __construct() {
 
-        $this->lookup = (array)json_decode(file_get_contents('/var/www/lookup.json'));
+//        $this->lookup = (array)json_decode(file_get_contents('/var/www/lookup.json'));
 
         $this->BI_PUBLIC_KEY = env('BI_PUBLIC_KEY');
         $this->BI_BASE_URL = env('BI_BASE_URL');
