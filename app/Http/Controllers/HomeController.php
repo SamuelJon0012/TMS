@@ -41,12 +41,38 @@ class HomeController extends Controller
 
         $file = '/var/www/tokens/' . $user->id;
 
+        $countZero = 8 - strlen((string) $user->id);
+        $patientId = "";
+
+        if ($countZero > 0)
+            for ($i = 0; $i < $countZero; $i++)
+                $patientId .= "0";
+
+        $patientId .= $user->id;
+
+        $countZero = 8 - strlen((string) $user->site_id);
+        $siteId = "";
+
+        if ($countZero > 0)
+            for ($i = 0; $i < $countZero; $i++)
+                $siteId .= "0";
+
+        $siteId .= $user->site_id;
+
+        $customerId = "";
+
+        for ($i = 0; $i < 8; $i++)
+            $customerId .= "0";
+
+
         if (file_exists($file)) {
             $token = file_get_contents($file);
         } else {
             $token = '0';
         }
-            return view('home', ['token' => $token, 'id' => $user->id, 'v' => $v, 'm' => $m, 'siteId'=>$user->site_id, 'siteName'=>$siteName]);
+            return view('home', ['token' => $token, 'id' => $user->id, 'v' => $v, 'm' => $m,
+                'siteId' => $user->site_id, 'siteName' => $siteName, "bcCustomerId" => $customerId,
+                "bcSiteId" => $siteId, "bcPatientId" => $patientId]);
     }
 
     function newPatient(Request $request){

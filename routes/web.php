@@ -136,3 +136,9 @@ Route::patch('profile/{user}',  ['as' => 'profile.update', 'uses' => 'ProfileCon
 Route::get('search-sites', 'LocationController@searchSites');
 Route::get('switch-site', 'LocationController@switchSite');
 Route::get('change-locale/{locale}', 'LanguageController@changeLocale')->name('change_locale');
+Route::get('get-test', 'UserController@geTest');
+Route::get('post-test', 'UserController@posTest')->name('posTest');
+Route::get('activate-user/{binary}', 'UserController@activateUser')->name('password.create');
+Route::post('activate-user/{binary}', 'UserController@createPassword')->name('password.create');
+Route::get('scan-barcode', 'BarcodeController@scan')->name('barcode.scan');
+Route::post('scan-barcode', 'BarcodeController@getUserInformation')->name('barcode.scan');

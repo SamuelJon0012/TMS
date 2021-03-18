@@ -101,4 +101,9 @@
     .clear-search {
         display: none;
     }
+    .barcode {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 </style>
