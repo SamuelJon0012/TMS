@@ -208,10 +208,12 @@
             <br><br><br>
             <div class="row justify-content-center">
               <div>
-                <div class="set-vaccine-location-wrapper">
-                    <button class="btn btn-primary form-control" onclick="document.location='/scan-barcode'">{{ __('Scan Patient Barcode') }}</button>
+                <div class="set-vaccine-location-wrapper" style="border: none">
+                    @if(auth()->user()->hasRole('provider'))
+                        <button style="margin-right: 10px" class="btn btn-primary" onclick="document.location='/scan-barcode'">{{ __('Scan Patient Barcode') }}</button>
+                    @endif
                     <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
-                  <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
+                    <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
                 </div>
               </div>
 

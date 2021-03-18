@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use LanguageService;
+use App\Services\LanguageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Sites;

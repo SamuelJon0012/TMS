@@ -10,6 +10,37 @@
         border-top-left-radius: .2rem;
         border-top-right-radius: .2rem;
     }
+    .rounded_div{
+        border: 1px solid;
+        border-radius: 14px;
+        text-align: center;
+        min-height: 100%;
+    }
+    .col_left_right{
+        margin-top: 35px;
+    }
+    .p_right{
+        width: 50%;
+        float: left;
+        text-align: left;
+        padding-left: 15px;
+        margin-bottom: 0;
+    }
+    .p_left{
+        width: 50%;
+        float: left;
+        text-align: right;
+        margin-bottom: 0;
+    }
+    .personal_rounded_p{
+        width: 55%;
+        border: 1px solid;
+        padding: 2% 10%;
+        background: white;
+        border-radius: 14px;
+        margin-top: -35px !important;
+        margin-left: 22%;
+    }
     .modal-success .modal-header {
         color: #ffffff;
         background-color: #5cb85c;
@@ -45,7 +76,7 @@
         margin-bottom: 0;
     }
     .clickable-row:hover {
-      cursor: pointer;
+        cursor: pointer;
     }
     .users-table.table-responsive {
         border: none;
@@ -90,7 +121,7 @@
 
     .btn-save,
     .pw-change-container {
-      display: none;
+        display: none;
     }
     .has-error,
     .has-error input,
@@ -100,10 +131,5 @@
     }
     .clear-search {
         display: none;
-    }
-    .barcode {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
     }
 </style>

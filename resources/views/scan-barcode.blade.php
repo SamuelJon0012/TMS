@@ -14,7 +14,7 @@
         </div>
     </div>
     @if(isset($userInfo))
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fadeIn" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document" style="max-width: 880px">
                 <div class="modal-content" style="padding: 20px;">
                     <div class="modal-header text-center" style="border-bottom: 0px">
@@ -23,7 +23,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="row">
+                    <div class="row mb-4">
                         <div class="col-6 pl-4">
                             <a style="cursor: pointer;"><i class="fas fa-arrow-left" style="font-size: 12px;"></i> {{ __('Home') }}  </a>
                             <a class="ml-2" style="cursor: pointer;"><i class="fas fa-arrow-left"style="font-size: 12px;"></i>{{ __('Search') }}</a>
@@ -64,9 +64,9 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="justify-content:center;">
-                        <form id="logout-form" action="" method="POST">
+                        <form id="logout-form" action="{{ route("barcode.image") }}" method="POST">
                             @csrf
-                            <input type="hidden" name="user_id" id="user_id">
+                            <input type="hidden" name="barcode" value="{{ $barcode }}">
                             <button type="submit" class="btn btn-primary">Confirm Patient</button>
                         </form>
                     </div>
@@ -74,7 +74,49 @@
             </div>
         </div>
     @endif
+    @if(isset($barcodePage))
+        <div class="modal fadeIn" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document" style="max-width: 880px">
+                <div class="modal-content" style="padding: 20px;">
+                    <div class="modal-header text-center" style="border-bottom: 0px">
+                        <h5 class="modal-title w-100" id="exampleModalLabel">{{ __('Patient Confirmation') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-6 pl-4">
+                            <a style="cursor: pointer;"><i class="fas fa-arrow-left" style="font-size: 12px;"></i> {{ __('Home') }}  </a>
+                            <a class="ml-2" style="cursor: pointer;"><i class="fas fa-arrow-left"style="font-size: 12px;"></i>{{ __('Search') }}</a>
+                        </div>
+                    </div>
+                    <div class="modal-body mt-2"style="border-top: 1px solid #dee2e6;">
+                        <div class="row">
+                            <div>
+                                <div style="display: flex; flex-direction: row; justify-content: center">
+                                    @php
+                                        $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
+                                        echo $generator->getBarcode('038K20A_80777-273-10', $generator::TYPE_CODE_128);
+                                    @endphp
+                                </div>
+                                <div style="text-align: center">
+                                    <span>{{ $bcCustomerId }}</span>
+                                    <span>-</span>
+                                    <span>{{ $bcSiteId }}</span>
+                                    <span>-</span>
+                                    <span>{{ $bcPatientId }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    @include('vendor.laravelusers.scripts.barcode')
 @endsection
+
+@include('vendor.laravelusers.partials.styles')
 
 @section("styleCss")
     #scanBarcodeButton {
