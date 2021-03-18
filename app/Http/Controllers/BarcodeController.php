@@ -22,6 +22,8 @@ class BarcodeController extends Controller
         if (!$user)
             return abort(404);
 
-        return view("scan-barcode", compact('user'));
+        $userInfo = json_decode($user->json);
+
+        return view("scan-barcode", compact('userInfo'));
     }
 }
