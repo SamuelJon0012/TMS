@@ -39,7 +39,10 @@
         }
     </style>
 </head>
-<body>
+<body
+    @if(isset($positive) && $positive) class="positive-page"@endif
+    @if(isset($negative) && $negative) class="negative-page"@endif
+>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -75,7 +78,7 @@
                     @endif
                     <div class="dropdown language-dropdown">
                         <a class="btn dropdown-toggle flags-item " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src='{{asset("images/en.png")}}' id="en" class="flags-png parent_lang_img">
+                            <img src='{{asset("/images/en.png")}}' id="en" class="flags-png parent_lang_img">
                             <span class="parent_lang">{{ __('English') }}</span>
                         </a>
 
