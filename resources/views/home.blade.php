@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('template_linked_css')
+    @include('laravelusers::partials.styles')
+@endsection
+
 @section('styleCss')
 
 .homeTop-button {
@@ -37,7 +41,7 @@
   }
 
   .set-vaccine-location-wrapper button{
-    width: 10pc;
+    width: 14pc;
     border-radius: unset;
   }
 
@@ -187,12 +191,29 @@
 
             ]])
 
+                  {{--<br><br><br>
+                   <div class="barcode">
+                       @php
+                               $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
+                               echo $generator->getBarcode('038K20A_80777-273-10', $generator::TYPE_CODE_128);
+                           @endphp
+                           <div>
+                               <span>{{ $bcCustomerId }}</span>
+                               <span>-</span>
+                               <span>{{ $bcSiteId }}</span>
+                               <span>-</span>
+                               <span>{{ $bcPatientId }}</span>
+                           </div>
+                       </div>--}}
             <br><br><br>
             <div class="row justify-content-center">
               <div>
-                <div class="set-vaccine-location-wrapper">
-                  <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
-                  <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
+                <div class="set-vaccine-location-wrapper" style="border: none">
+                    @if(auth()->user()->hasRole('provider'))
+                        <button style="margin-right: 10px" class="btn btn-primary" onclick="document.location='/scan-barcode'">{{ __('Scan Patient Barcode') }}</button>
+                    @endif
+                    <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
+                    <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
                 </div>
               </div>
 
