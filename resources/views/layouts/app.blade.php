@@ -78,7 +78,7 @@
                     @endif
                     <div class="dropdown language-dropdown">
                         <a class="btn dropdown-toggle flags-item " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src='{{asset("/images/en.png")}}' id="en" class="flags-png parent_lang_img">
+                            <img src='{{asset("images/en.png")}}' id="en" class="flags-png parent_lang_img">
                             <span class="parent_lang">{{ __('English') }}</span>
                         </a>
 
