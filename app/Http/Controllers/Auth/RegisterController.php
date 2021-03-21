@@ -9,8 +9,10 @@ use App\PatientProfile;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Emails;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -127,7 +129,7 @@ class RegisterController extends Controller
 
         }
 
-        $patientProfile = new \App\PatientProfile();
+        // $patientProfile = new \App\PatientProfile();
 
         $user = config('roles.models.defaultUser')::create([
             'name' => $data['first_name']." ".$data['last_name'],
@@ -141,6 +143,46 @@ class RegisterController extends Controller
         //Remove passwords
         unset($data['password']);
         unset($data['password_confirmation']);
+        
+        switch ($data["birth_sex"]){
+          case 1:
+              $data["birth_sex"] = "Male";
+              break;
+          case 2:
+              $data["birth_sex"] = "Female";
+              break;
+          case 0:
+              $data["birth_sex"] = "Others";
+              break;
+      }
+
+      $email = \App\Emails::create([
+          'name' => $data['first_name']." ".$data['last_name'],
+          'dob' => $data['date_of_birth'],
+          'location' => '',
+          'gender' => $data["birth_sex"],
+          'language' => "English",
+          'address' => $data["address1"],
+          'city' => $data["city"],
+          'state' => $data["state"],
+          'zip' => $data["zipcode"],
+          'phone' => $data["phone_number1"],
+          'cellphone' => '',
+          'facility' => '',
+          'doi' => '',
+          'insurance' => '',
+          'claim' => '',
+          'requested_date' => '',
+          'requested_time' => '',
+          'new_requested_date' => '',
+          'new_requested_time' => '',
+          'email_file' => '',
+          'first_name' => $data['first_name'],
+          'last_name' => $data['last_name']
+      ]);
+
+      // backup spool
+//         file_put_contents('/var/www/data/' . $data['email'], json_encode($data));
 
         // backup spool
 //        file_put_contents('/var/www/data/' . $data['email'], json_encode($data));
