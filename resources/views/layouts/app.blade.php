@@ -39,7 +39,10 @@
         }
     </style>
 </head>
-<body>
+<body
+    @if(isset($positive) && $positive) class="positive-page"@endif
+    @if(isset($negative) && $negative) class="negative-page"@endif
+>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">

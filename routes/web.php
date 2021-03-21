@@ -136,3 +136,4 @@ Route::patch('profile/{user}',  ['as' => 'profile.update', 'uses' => 'ProfileCon
 Route::get('search-sites', 'LocationController@searchSites');
 Route::get('switch-site', 'LocationController@switchSite');
 Route::get('change-locale/{locale}', 'LanguageController@changeLocale')->name('change_locale');
+Route::get('/test/result/{check}', "TestResultController@result")->name('negative');
