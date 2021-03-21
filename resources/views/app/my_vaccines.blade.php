@@ -21,6 +21,7 @@
         <th>{{ __('Manufacturer') }}</th>
         <th>{{ __('Dose Date') }}</th>
         <th>{{ __('Clinical Site') }}</th>
+        <th>{{ __('Bar Code') }}</th>
 {{--        <th></th>--}}
     </tr>
     @foreach($rows as $row)
@@ -34,6 +35,7 @@
         <td>{{ $row['manufacturer']??'' }}</td>
         <td>{{ $row['dose_date']??'' }}</td>
         <td>{{ $row['room_name']??'' }}</td>
+        <td>{{ $row['barcode']??'' }}</td>
 {{--        <td>--}}
 {{--            <span class="btn btn-sm btn-small btn-warning adverse-event" onclick="alert('This feature is not currently available');">Adverse Event</span>--}}
 {{--        </td>--}}
