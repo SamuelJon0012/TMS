@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'json', 'dob', 'phone', 'power', 'burstiq_private_id', 'site_id'
+        'name', 'email', 'password', 'json', 'dob', 'phone', 'power', 'burstiq_private_id', 'site_id', 'benefit_affirmed_on', 'token'
     ];
 
     /**
@@ -39,16 +39,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = str_replace('’', "'", $value);
-    }
+    /**
+     * Gets the first and last names from the saves json.
+     * If there is no json, it will attempt to deduce the first and last names
+     * @return array [$first_name, $last_name]
+     */
+    public function getFirstAndLastNames(){
+        $json = $this->json ?? null;
+        if ( (!empty($json)) and ($json = json_decode($json)) )
+            return [$json->first_name, $json->last_name];
 
-    public function scopePatients($q)
-    {
-        return $q->join('role_user', function ($join) {
-            $join->on('role_user.user_id', '=', 'users.id')
-                ->where('role_user.role_id', 2);
-        });
+        //"Oh God No" fall back
+        $a = explode(' ', $this->name, 2);
+        if (count($a) == 1)
+            $a[] = 'Nosurname';
+
+        $a[0] = trim($a[0]);
+        $a[1] = trim($a[1]);
+
+        return $a;
     }
 }

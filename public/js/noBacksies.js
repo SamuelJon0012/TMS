@@ -18,14 +18,14 @@ window.noBacksies = {
     var inx = window.location.href.indexOf('#');
     if (inx == -1) 
       window.location.href += '#';
+    else if(window.location.hash = noBacksies._hash)
+      window.location.hash = '';
 
-    if (inx == -1 || inx == window.location.href.length - 1) {
-      setTimeout(function () {
-        if (window.location.hash == '')
-          window.location.hash = noBacksies._hash;
-        noBacksies._initDone = true;
-      }, 10);
-    }
+    setTimeout(function () {
+      if (window.location.hash == '')
+        window.location.hash = noBacksies._hash;
+      noBacksies._initDone = true;
+    }, 10);
   },
   
   callBackHandler: function (func) {

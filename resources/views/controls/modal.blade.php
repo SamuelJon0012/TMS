@@ -28,7 +28,7 @@ Parameters:
         },
         showHome: function(){
             Modals.hideAll();
-            $('.modals.initial-modal').fadeIn();
+            $('.modals.initial-modal').fadeIn(); 
         },
         getVisible: function(){
             var e = null;
@@ -99,6 +99,7 @@ Parameters:
     $isHome = $isHome ?? false;
     $classes = ($isHome) ? 'modals initial-modal' : 'modals';
     $initStyle = ($isHome) ? 'display: block' : 'display: none';
+   
 @endphp
 
 <div id="{{ $id }}" class="{{ $classes }}" style="{{ $initStyle }}">
@@ -106,7 +107,7 @@ Parameters:
     <div class="page-modal-inner modals-inner">
         @if(is_array($breadCrumbs) and (count($breadCrumbs) > 0) )
             <div class="bread-crumbs">
-            <?php
+            <?php            
             foreach($breadCrumbs as $itm){
                 if (isset($itm['onclick'])){
                     $onclick = $itm['onclick'];

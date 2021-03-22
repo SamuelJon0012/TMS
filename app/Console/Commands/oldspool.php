@@ -164,6 +164,7 @@ class spool extends Command
                 break;
 
             case 'fix':
+            case 'barcode_fixer':
 
                 $conn = mysqli_connect(
                     'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
@@ -178,6 +179,7 @@ class spool extends Command
                 break;
 
             case 'er': // encounter realtime
+            case 'encounter_realtime':
 
                 $conn = mysqli_connect(
                     'database-1.c5ptxfpwznpr.us-east-1.rds.amazonaws.com',
@@ -311,7 +313,7 @@ class spool extends Command
                         provider_id=%s,
                         uniq_id = '%s',
                         barcode = '%s',
-                        timestamp = '%s'
+                        `timestamp` = '%s'
                     ON DUPLICATE KEY UPDATE encountered=0, site_id=%s";
 
                 foreach ($files as $file) { if(strpos($file, '@') != false) continue;
@@ -344,13 +346,15 @@ class spool extends Command
                             $row->provider_id = 0;
                         }
 
+                        $row->barcode = str_replace(['\\','/','"',"'"], '', $row->barcode);
+
                         if (isset($row->site_id)) {
 
                             // Only insert if we have a site ID
                             //
                             // Todo: This was temporary in order to load site_ids to existing
 
-                            $result = mysqli_query($conn,sprintf($sql,
+                            $SQL = sprintf($sql,
                                 $row->site_id,
                                 $row->adminsite,
                                 $row->patient_id,
@@ -359,7 +363,11 @@ class spool extends Command
                                 $row->barcode,
                                 $timestamp,
                                 $row->site_id
-                            ));
+                            );
+
+                            echo $SQL;
+
+                            $result = mysqli_query($conn,$SQL);
 
                             if (!$result) {
 

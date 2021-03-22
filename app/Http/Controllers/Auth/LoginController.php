@@ -26,7 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = "home?wlc=ture";
 
     /**
      * Create a new controller instance.
@@ -37,4 +37,19 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+    
+    public function showLoginForm()
+    {
+
+        if(isset($_SERVER['SERVER_NAME']) &&
+            ($_SERVER['SERVER_NAME'] == "trackmylabresults.com" ||
+            $_SERVER['SERVER_NAME'] == "trackmylabresults.us"))
+            
+                return view('auth/labResultsLogin');
+            
+                else 
+                    return view('auth/login');
+                    
+    }
+    
 }

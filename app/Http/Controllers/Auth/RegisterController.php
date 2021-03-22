@@ -3,16 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\SendRegistrationMailJob;
 use App\Notifications\RegistrationNotification;
 use App\PatientProfile;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use App\Emails;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -73,6 +70,8 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'date_of_birth' => ['required', 'date'],
             'byProvider'=>['boolean'],
+            'affirm_a1'=>['accepted'],
+            'signedBy'=>['required', 'string'],
         ]);
 
         $validator->after(function($validator){
@@ -129,7 +128,9 @@ class RegisterController extends Controller
 
         }
 
-        // $patientProfile = new \App\PatientProfile();
+        $patientProfile = new \App\PatientProfile();
+
+        $benefitAffirmedOn = (isset($data['signedBy'])) ? date("y-m-d H:i:s", time()) : null;
 
         $user = config('roles.models.defaultUser')::create([
             'name' => $data['first_name']." ".$data['last_name'],
@@ -137,55 +138,16 @@ class RegisterController extends Controller
             'json' => json_encode($data),
             'dob' => $data['date_of_birth'] ?? '',
             'password' => bcrypt($data['password']),
+            'benefit_affirmed_on' => $benefitAffirmedOn,
             //'burstiq_private_id' => $patientProfile->newPrivateId(),
         ]);
 
         //Remove passwords
         unset($data['password']);
         unset($data['password_confirmation']);
-        
-        switch ($data["birth_sex"]){
-          case 1:
-              $data["birth_sex"] = "Male";
-              break;
-          case 2:
-              $data["birth_sex"] = "Female";
-              break;
-          case 0:
-              $data["birth_sex"] = "Others";
-              break;
-      }
-
-      $email = \App\Emails::create([
-          'name' => $data['first_name']." ".$data['last_name'],
-          'dob' => $data['date_of_birth'],
-          'location' => '',
-          'gender' => $data["birth_sex"],
-          'language' => "English",
-          'address' => $data["address1"],
-          'city' => $data["city"],
-          'state' => $data["state"],
-          'zip' => $data["zipcode"],
-          'phone' => $data["phone_number1"],
-          'cellphone' => '',
-          'facility' => '',
-          'doi' => '',
-          'insurance' => '',
-          'claim' => '',
-          'requested_date' => '',
-          'requested_time' => '',
-          'new_requested_date' => '',
-          'new_requested_time' => '',
-          'email_file' => '',
-          'first_name' => $data['first_name'],
-          'last_name' => $data['last_name']
-      ]);
-
-      // backup spool
-//         file_put_contents('/var/www/data/' . $data['email'], json_encode($data));
 
         // backup spool
-//        file_put_contents('/var/www/data/' . $data['email'], json_encode($data));
+        // file_put_contents('/var/www/data/' . $data['email'], json_encode($data));
 
         if($data['r_type']) {
 
@@ -258,7 +220,8 @@ class RegisterController extends Controller
               $result = $P->setInsurances($insurances)
                   ->setPhoneNumbers($phone_numbers)
                   ->save();
-
+              
+              $user->notify(new RegistrationNotification());
           }
 
           if($data['r_type'] == "provider") {
@@ -268,9 +231,8 @@ class RegisterController extends Controller
 
         }
 
-        dispatch(new SendRegistrationMailJob($user));
         return $user;
-    }
+    } 
 
     /**
      * Handles the registration of a patient by a provider

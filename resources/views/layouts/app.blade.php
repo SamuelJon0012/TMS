@@ -25,19 +25,8 @@
 
     <style type="text/css">
     @yield('styleCss')
-    </style>
+    </style> 
     @stack('pageHeader')
-    <style>
-        .flags-png{
-            width: 32px;
-        }
-        #dropdownMenuLink{
-            box-shadow: none;
-        }
-        .language-dropdown{
-            display: none;
-        }
-    </style>
 </head>
 <body
     @if(isset($positive) && $positive) class="positive-page"@endif
@@ -47,54 +36,33 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand small-logo" href="{{ url('/') }}">
-			             <img src="{{ asset('images/logo.jpg') }}" style="height:48px;" />
+			             <img src="/{{'images/'}}{{env('APP_logo')}}" style="height:48px;" />
                 </a>
+                
+                @if(env('APP_NAME') == 'TrackMy Lab Results')
+					<img src = "{{ asset('images/HITL_Logo.jpg') }}" height= '48'>
+                @endif
+                
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    @if(Auth::check() && Auth::user()->hasRole('admin') )
-                        <ul class="navbar-nav mr-auto">
-                            @if(!Route::is('dashboard'))
-                                @if(Route::is('laravelroles::roles.index'))
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/users">{{ __('Users') }}</a>
-                                    </li>
-                                @endif
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/dashboard">{{ __('Dashboard') }}</a>
-                                </li>
-                            @else
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/users">{{ __('Users') }}</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/roles">{{ __('Roles') }}</a>
-                                </li>
-                            @endif
-                        </ul>
-                    @endif
-                    <div class="dropdown language-dropdown">
-                        <a class="btn dropdown-toggle flags-item " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src='{{asset("images/en.png")}}' id="en" class="flags-png parent_lang_img">
-                            <span class="parent_lang">{{ __('English') }}</span>
-                        </a>
+{{--                    <ul class="navbar-nav mr-auto">--}}
+{{--                      <li class="nav-item">--}}
+{{--                          <a class="nav-link" href="#">{{ __('About Us') }}</a>--}}
+{{--                      </li>--}}
+{{--                      <li class="nav-item">--}}
+{{--                          <a class="nav-link" href="#">{{ __('Contact Us') }}</a>--}}
+{{--                      </li>--}}
+{{--                      <li class="nav-item">--}}
+{{--                          <a class="nav-link" href="#">{{ __('Help') }}</a>--}}
+{{--                      </li>--}}
+{{--                    </ul>--}}
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item flags-item"  href="{{ url('/change-locale/en') }}" onclick="changeLang('en')">
-                                <img src='{{asset("images/en.png")}}' id="en" class="flags-png">
-                                <span class="en">{{ __('English') }}</span>
-                            </a>
-                            <a class="dropdown-item flags-item" href="{{ url('/change-locale/es') }}" onclick="changeLang('es')">
-                                <img src='{{asset("images/es.png")}}' id="es" class="flags-png" >
-                                <span class="es">{{ __('Spanish') }}</span>
-                            </a>
-                        </div>
-                    </div>
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-3">
+                    <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -102,7 +70,9 @@
                             </li>
 
                         @else
-
+{{--                            <li class="nav-item">--}}
+{{--                                <a class="nav-link" href="{{ route('home') }}">{{ __('Dashboard') }}</a>--}}
+{{--                            </li>--}}
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -162,27 +132,7 @@
     </div>
 
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-    <script>
-        function changeLang(lang){
 
-            if( document.getElementsByClassName(lang)[0] ){
-                let parentFlag = document.getElementsByClassName('parent_lang_img');
-                let parentLang = document.getElementsByClassName('parent_lang');
-                let clickLang = document.getElementsByClassName(lang)[0].textContent;
-                parentFlag[0].src = 'images/' + lang + '.png';
-                parentLang[0].innerHTML = clickLang;
-                return true;
-            }
-
-        }
-        document.addEventListener("DOMContentLoaded", function(event) {
-            let local = "{{app()->getlocale()}}";
-            changeLang(local);
-            setTimeout(function(){
-                document.getElementsByClassName('language-dropdown')[0].style.display = 'block';
-            }, 0);
-        });
-    </script>
 @stack('pageBottom')
 
 </body>

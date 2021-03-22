@@ -6,6 +6,19 @@
  * @author   Taylor Otwell <taylor@laravel.com>
  */
 
+
+
+if(isset($_SERVER['SERVER_NAME']) &&
+    ($_SERVER['SERVER_NAME'] == "trackmylabresults.com" ||
+        $_SERVER['SERVER_NAME'] == "trackmylabresults.us")) {
+            putenv('APP_NAME=TrackMy Lab Results');
+            putenv('APP_logo=mylabresultlogo.jfif');
+    }else {
+        putenv('APP_NAME=TrackMyVaccines');
+        putenv('APP_logo=logo.jpg');
+    }
+        
+        
 define('LARAVEL_START', microtime(true));
 
 /*

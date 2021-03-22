@@ -13,9 +13,10 @@
         </div>
         <br><br><br>
 
-        <form method="POST" action="{{ route($route) }}">
+        <form method="POST" name="frmRegister" action="{{ route($route) }}" onsubmit="return frmRegister_validate()">
           @csrf
-            <input type="hidden" name="version" value="2">
+          <input type="hidden" name="version" value="2">
+          <input type="hidden" name="signedBy"/>
           <div class="row">
           <div class="col-md-6">
             <div class="card">
@@ -128,10 +129,10 @@
                             <input type="radio" name="phone_type" id="Mobile" value="2" checked> <label for ="Mobile">{{ __('Mobile') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Home" value="0" @if(old('phone_type') === '0') checked @endif> <label for ="Home">{{ __('Home') }}</label>
+                            <input type="radio" name="phone_type" id="Home" value="0"> <label for ="Home">{{ __('Home') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type" id="Work" value="1" @if(old('phone_type') === '1') checked @endif> <label for ="Work">{{ __('Work') }}</label>
+                            <input type="radio" name="phone_type" id="Work" value="1"> <label for ="Work">{{ __('Work') }}</label>
                           </div>
                         </div>
                     </div>
@@ -188,58 +189,58 @@
                     </div>
                     <div class="col-md-4 text-center m-0 pl-0">
                         <select id="state" class="form-control-blue @error('state') is-invalid @enderror" name="state" required placeholder="{{ __('STATE') }}">
-                            <option value="">{{ __('STATE') }}</option>
-                            <option value="AL">{{ __('Alabama') }}</option>
-                        	<option value="AK">{{ __('Alaska') }}</option>
-                        	<option value="AZ">{{ __('Arizona') }}</option>
-                        	<option value="AR">{{ __('Arkansas') }}</option>
-                        	<option value="CA">{{ __('California') }}</option>
-                        	<option value="CO">{{ __('Colorado') }}</option>
-                        	<option value="CT">{{ __('Connecticut') }}</option>
-                        	<option value="DE">{{ __('Delaware') }}</option>
-                        	<option value="DC">{{ __('District Of Columbia') }}</option>
-                        	<option value="FL">{{ __('Florida') }}</option>
-                        	<option value="GA">{{ __('Georgia') }}</option>
-                        	<option value="HI">{{ __('Hawaii') }}</option>
-                        	<option value="ID">{{ __('Idaho') }}</option>
-                        	<option value="IL">{{ __('Illinois') }}</option>
-                        	<option value="IN">{{ __('Indiana') }}</option>
-                        	<option value="IA">{{ __('Iowa') }}</option>
-                        	<option value="KS">{{ __('Kansas') }}</option>
-                        	<option value="KY">{{ __('Kentucky') }}</option>
-                        	<option value="LA">{{ __('Louisiana') }}</option>
-                        	<option value="ME">{{ __('Maine') }}</option>
-                        	<option value="MD">{{ __('Maryland') }}</option>
-                        	<option value="MA">{{ __('Massachusetts') }}</option>
-                        	<option value="MI">{{ __('Michigan') }}</option>
-                        	<option value="MN">{{ __('Minnesota') }}</option>
-                        	<option value="MS">{{ __('Mississippi') }}</option>
-                        	<option value="MO">{{ __('Missouri') }}</option>
-                        	<option value="MT">{{ __('Montana') }}</option>
-                        	<option value="NE">{{ __('Nebraska') }}</option>
-                        	<option value="NV">{{ __('Nevada') }}</option>
-                        	<option value="NH">{{ __('New Hampshire') }}</option>
-                        	<option value="NJ">{{ __('New Jersey') }}</option>
-                        	<option value="NM">{{ __('New Mexico') }}</option>
-                        	<option value="NY">{{ __('New York') }}</option>
-                        	<option value="NC">{{ __('North Carolina') }}</option>
-                        	<option value="ND">{{ __('North Dakota') }}</option>
-                        	<option value="OH">{{ __('Ohio') }}</option>
-                        	<option value="OK">{{ __('Oklahoma') }}</option>
-                        	<option value="OR">{{ __('Oregon') }}</option>
-                        	<option value="PA">{{ __('Pennsylvania') }}</option>
-                        	<option value="RI">{{ __('Rhode Island') }}</option>
-                        	<option value="SC">{{ __('South Carolina') }}</option>
-                        	<option value="SD">{{ __('South Dakota') }}</option>
-                        	<option value="TN">{{ __('Tennessee') }}</option>
-                        	<option value="TX">{{ __('Texas') }}</option>
-                        	<option value="UT">{{ __('Utah') }}</option>
-                        	<option value="VT">{{ __('Vermont') }}</option>
-                        	<option value="VA">{{ __('Virginia') }}</option>
-                        	<option value="WA">{{ __('Washington') }}</option>
-                        	<option value="WV">{{ __('West Virginia') }}</option>
-                        	<option value="WI">{{ __('Wisconsin') }}</option>
-                        	<option value="WY">{{ __('Wyoming') }}</option>
+                          <option value="">STATE</option>
+                          <option value="AL">Alabama</option>
+                        	<option value="AK">Alaska</option>
+                        	<option value="AZ">Arizona</option>
+                        	<option value="AR">Arkansas</option>
+                        	<option value="CA">California</option>
+                        	<option value="CO">Colorado</option>
+                        	<option value="CT">Connecticut</option>
+                        	<option value="DE">Delaware</option>
+                        	<option value="DC">District Of Columbia</option>
+                        	<option value="FL">Florida</option>
+                        	<option value="GA">Georgia</option>
+                        	<option value="HI">Hawaii</option>
+                        	<option value="ID">Idaho</option>
+                        	<option value="IL">Illinois</option>
+                        	<option value="IN">Indiana</option>
+                        	<option value="IA">Iowa</option>
+                        	<option value="KS">Kansas</option>
+                        	<option value="KY">Kentucky</option>
+                        	<option value="LA">Louisiana</option>
+                        	<option value="ME">Maine</option>
+                        	<option value="MD">Maryland</option>
+                        	<option value="MA">Massachusetts</option>
+                        	<option value="MI">Michigan</option>
+                        	<option value="MN">Minnesota</option>
+                        	<option value="MS">Mississippi</option>
+                        	<option value="MO">Missouri</option>
+                        	<option value="MT">Montana</option>
+                        	<option value="NE">Nebraska</option>
+                        	<option value="NV">Nevada</option>
+                        	<option value="NH">New Hampshire</option>
+                        	<option value="NJ">New Jersey</option>
+                        	<option value="NM">New Mexico</option>
+                        	<option value="NY">New York</option>
+                        	<option value="NC">North Carolina</option>
+                        	<option value="ND">North Dakota</option>
+                        	<option value="OH">Ohio</option>
+                        	<option value="OK">Oklahoma</option>
+                        	<option value="OR">Oregon</option>
+                        	<option value="PA">Pennsylvania</option>
+                        	<option value="RI">Rhode Island</option>
+                        	<option value="SC">South Carolina</option>
+                        	<option value="SD">South Dakota</option>
+                        	<option value="TN">Tennessee</option>
+                        	<option value="TX">Texas</option>
+                        	<option value="UT">Utah</option>
+                        	<option value="VT">Vermont</option>
+                        	<option value="VA">Virginia</option>
+                        	<option value="WA">Washington</option>
+                        	<option value="WV">West Virginia</option>
+                        	<option value="WI">Wisconsin</option>
+                        	<option value="WY">Wyoming</option>
                         </select>
 
                         @error('state')
@@ -304,13 +305,13 @@
                         @enderror
                         <div class="row form-reg-color">
                           <div class="col-4">
-                            <input type="radio" name="phone_type1" id="Mobile1" value="2" checked > <label for ="Mobile1">{{ __('Mobile') }}</label>
+                            <input type="radio" name="phone_type1" id="Mobile1" value="2" checked> <label for ="Mobile1">{{ __('Mobile') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type1" id="Home1" value="0" @if(old('phone_type1') === '0') checked @endif> <label for ="Home1">{{ __('Home') }}</label>
+                            <input type="radio" name="phone_type1" id="Home1" value="0"> <label for ="Home1">{{ __('Home') }}</label>
                           </div>
                           <div class="col-4">
-                            <input type="radio" name="phone_type1" id="Work1" value="1" @if(old('phone_type1') === '1') checked @endif> <label for ="Work1">{{ __('Work') }}</label>
+                            <input type="radio" name="phone_type1" id="Work1" value="1"> <label for ="Work1">{{ __('Work') }}</label>
                           </div>
                         </div>
                     </div>
@@ -322,58 +323,58 @@
                   </div>
                     <div class="col-md-4 text-center m-0 pl-0">
                         <select id="dl_state" class="form-control-blue @error('dl_state') is-invalid @enderror" name="dl_state" placeholder="{{ __('STATE (optional)') }}">
-                            <option value="">{{ __('STATE (optional)') }}</option>
-                            <option value="AL">{{ __('Alabama') }}</option>
-                        	<option value="AK">{{ __('Alaska') }}</option>
-                        	<option value="AZ">{{ __('Arizona') }}</option>
-                        	<option value="AR">{{ __('Arkansas') }}</option>
-                        	<option value="CA">{{ __('California') }}</option>
-                        	<option value="CO">{{ __('Colorado') }}</option>
-                        	<option value="CT">{{ __('Connecticut') }}</option>
-                        	<option value="DE">{{ __('Delaware') }}</option>
-                        	<option value="DC">{{ __('District Of Columbia') }}</option>
-                        	<option value="FL">{{ __('Florida') }}</option>
-                        	<option value="GA">{{ __('Georgia') }}</option>
-                        	<option value="HI">{{ __('Hawaii') }}</option>
-                        	<option value="ID">{{ __('Idaho') }}</option>
-                        	<option value="IL">{{ __('Illinois') }}</option>
-                        	<option value="IN">{{ __('Indiana') }}</option>
-                        	<option value="IA">{{ __('Iowa') }}</option>
-                        	<option value="KS">{{ __('Kansas') }}</option>
-                        	<option value="KY">{{ __('Kentucky') }}</option>
-                        	<option value="LA">{{ __('Louisiana') }}</option>
-                        	<option value="ME">{{ __('Maine') }}</option>
-                        	<option value="MD">{{ __('Maryland') }}</option>
-                        	<option value="MA">{{ __('Massachusetts') }}</option>
-                        	<option value="MI">{{ __('Michigan') }}</option>
-                        	<option value="MN">{{ __('Minnesota') }}</option>
-                        	<option value="MS">{{ __('Mississippi') }}</option>
-                        	<option value="MO">{{ __('Missouri') }}</option>
-                        	<option value="MT">{{ __('Montana') }}</option>
-                        	<option value="NE">{{ __('Nebraska') }}</option>
-                        	<option value="NV">{{ __('Nevada') }}</option>
-                        	<option value="NH">{{ __('New Hampshire') }}</option>
-                        	<option value="NJ">{{ __('New Jersey') }}</option>
-                        	<option value="NM">{{ __('New Mexico') }}</option>
-                        	<option value="NY">{{ __('New York') }}</option>
-                        	<option value="NC">{{ __('North Carolina') }}</option>
-                        	<option value="ND">{{ __('North Dakota') }}</option>
-                        	<option value="OH">{{ __('Ohio') }}</option>
-                        	<option value="OK">{{ __('Oklahoma') }}</option>
-                        	<option value="OR">{{ __('Oregon') }}</option>
-                        	<option value="PA">{{ __('Pennsylvania') }}</option>
-                        	<option value="RI">{{ __('Rhode Island') }}</option>
-                        	<option value="SC">{{ __('South Carolina') }}</option>
-                        	<option value="SD">{{ __('South Dakota') }}</option>
-                        	<option value="TN">{{ __('Tennessee') }}</option>
-                        	<option value="TX">{{ __('Texas') }}</option>
-                        	<option value="UT">{{ __('Utah') }}</option>
-                        	<option value="VT">{{ __('Vermont') }}</option>
-                        	<option value="VA">{{ __('Virginia') }}</option>
-                        	<option value="WA">{{ __('Washington') }}</option>
-                        	<option value="WV">{{ __('West Virginia') }}</option>
-                        	<option value="WI">{{ __('Wisconsin') }}</option>
-                        	<option value="WY">{{ __('Wyoming') }}</option>
+                          <option value="">STATE (optional)</option>
+                          <option value="AL">Alabama</option>
+                        	<option value="AK">Alaska</option>
+                        	<option value="AZ">Arizona</option>
+                        	<option value="AR">Arkansas</option>
+                        	<option value="CA">California</option>
+                        	<option value="CO">Colorado</option>
+                        	<option value="CT">Connecticut</option>
+                        	<option value="DE">Delaware</option>
+                        	<option value="DC">District Of Columbia</option>
+                        	<option value="FL">Florida</option>
+                        	<option value="GA">Georgia</option>
+                        	<option value="HI">Hawaii</option>
+                        	<option value="ID">Idaho</option>
+                        	<option value="IL">Illinois</option>
+                        	<option value="IN">Indiana</option>
+                        	<option value="IA">Iowa</option>
+                        	<option value="KS">Kansas</option>
+                        	<option value="KY">Kentucky</option>
+                        	<option value="LA">Louisiana</option>
+                        	<option value="ME">Maine</option>
+                        	<option value="MD">Maryland</option>
+                        	<option value="MA">Massachusetts</option>
+                        	<option value="MI">Michigan</option>
+                        	<option value="MN">Minnesota</option>
+                        	<option value="MS">Mississippi</option>
+                        	<option value="MO">Missouri</option>
+                        	<option value="MT">Montana</option>
+                        	<option value="NE">Nebraska</option>
+                        	<option value="NV">Nevada</option>
+                        	<option value="NH">New Hampshire</option>
+                        	<option value="NJ">New Jersey</option>
+                        	<option value="NM">New Mexico</option>
+                        	<option value="NY">New York</option>
+                        	<option value="NC">North Carolina</option>
+                        	<option value="ND">North Dakota</option>
+                        	<option value="OH">Ohio</option>
+                        	<option value="OK">Oklahoma</option>
+                        	<option value="OR">Oregon</option>
+                        	<option value="PA">Pennsylvania</option>
+                        	<option value="RI">Rhode Island</option>
+                        	<option value="SC">South Carolina</option>
+                        	<option value="SD">South Dakota</option>
+                        	<option value="TN">Tennessee</option>
+                        	<option value="TX">Texas</option>
+                        	<option value="UT">Utah</option>
+                        	<option value="VT">Vermont</option>
+                        	<option value="VA">Virginia</option>
+                        	<option value="WA">Washington</option>
+                        	<option value="WV">West Virginia</option>
+                        	<option value="WI">Wisconsin</option>
+                        	<option value="WY">Wyoming</option>
                         </select>
 
                         @error('dl_state')
@@ -402,19 +403,19 @@
                    <div class="col-md-12 text-center">
                       <select id="ethnicity" required="required" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
 
-                          <option value="">{{ __('ETHNICITY') }}</option>
+                          <option value="">ETHNICITY</option>
 @if(env('BI_VERSION', '4.6') == '4.6')
-                          <option value="0">{{ __('Unknown') }}</option>
-                          <option value="1">{{ __('Hispanic or Latino') }}</option>
-                          <option value="2">{{ __('Not Hispanic or Latino') }}</option>
-                          <option value="3">{{ __('Black or African American') }}</option>
-                          <option value="4">{{ __('Rather not say') }}</option>
-                          <option value="5">{{ __('White or Caucasian') }}</option>
+                          <option value="0">Unknown</option>
+                          <option value="1">Hispanic or Latino</option>
+                          <option value="2">Not Hispanic or Latino</option>
+                          <option value="3">Black or African American</option>
+                          <option value="4">Rather not say</option>
+                          <option value="5">White or Caucasian</option>
 @elseif(env('BI_VERSION') == '4.7')
 
-                          <option value="0">{{ __('Hispanic or Latino') }}</option>
-                          <option value="1">{{ __('Not Hispanic or Latino') }}</option>
-                          <option value="2">{{ __('Unknown') }}</option>
+                          <option value="0">Hispanic or Latino</option>
+                          <option value="1">Not Hispanic or Latino</option>
+                          <option value="2">Unknown</option>
 @endif
 
 
@@ -428,43 +429,65 @@
                   </div>
                   <div class="col-md-12 text-center">
                       <select id="race" required="required" class="form-control @error('race') is-invalid @enderror" name="race" placeholder="{{ __('RACE') }}">
-                        <option value="">{{ __('RACE') }}</option>
+                        <option value="">RACE</option>
 
-                          <option value="1">{{ __('American Indian or Alaska Native') }}</option>
-                          <option value="2">{{ __('Asian') }}</option>
-                          <option value="3">{{ __('Black or African American') }}</option>
-                          <option value="4">{{ __('Native Hawaiian or Other Pacific Islander') }}</option>
-                          <option value="7">{{ __('White') }}</option>
-                          <option value="5">{{ __('Other') }}</option>
-                          <option value="6">{{ __('Rather not say') }}</option>
+                          <option value="1">American Indian or Alaska Native</option>
+                          <option value="2">Asian</option>
+                          <option value="3">Black or African American</option>
+                          <option value="4">Native Hawaiian or Other Pacific Islander</option>
+                          <option value="7">White</option>
+                          <option value="5">Other</option>
+                          <option value="6">Rather not say</option>
                       </select>
                     </div>
                 </div>
                 <div class="form-group row justify-content-center">
                     <div class="col-md-12 text-center">
                       <select id="birth_sex" required="required" class="form-control @error('birth_sex') is-invalid @enderror" name="birth_sex" placeholder="{{ __('BIRTH SEX') }}">
-                          <option value="">{{ __('BIRTH SEX') }}</option>
+                          <option value="">BIRTH SEX</option>
 @if(env('BI_VERSION', '4.6') == '4.6')
 @elseif(env('BI_VERSION') == '4.7')
 @endif
-                          <option value="1">{{ __('Male') }}</option>
-                          <option value="2">{{ __('Female') }}</option>
-                          <option value="0">{{ __('Other') }}</option>
+                          <option value="1">Male</option>
+                          <option value="2">Female</option>
+                          <option value="0">Other</option>
 
                       </select>
                     </div>
                 </div>
-                <div class="form-group row justify-content-center">
-                  <div class="col-md-12 text-center">
+                <div class="form-group row">
+                  <div class="col-md-12" style="text-align: left">
 
-                    <br><br>
+                    <div style="margin: 1pc 0;">
+                      <input type="checkbox" name="affirm_a1" required="true"/>&nbsp;
+                      I affirm that I am 
+                      <a href="javascript:void(0)" onclick="Popup.show('pop_Affirm_A1')">eligible to receive the vaccine</a>
+                      @error('affirm_a1')
+                        <span class="invalid-feedback" role="alert" style="display: block">
+                          <strong>{{ __('This is required') }}</strong>
+                        </span>
+                      @enderror
+                    </div>
+
+                    <div style="margin: 1pc 0;">
+                      <input type="checkbox" name="affirm_benefits" required="true" onclick="Popup.show('pop_Affirm_Benefits')"/>&nbsp;
+                      {{_('I affirm that I accept assignment of benefits')}}
+
+                      @error('signedBy')
+                        <span class="invalid-feedback" role="alert" style="display: block">
+                          <strong>{{ __('Please sign') }}</strong>
+                        </span>
+                      @enderror
+                    </div>
+
                   </div>
                 </div>
 
+                <br/><br/>
                 <div class="form-group row justify-content-center">
 
                   <div class="col-md-12 text-center">
-                      {{ __('NOTICE: By clicking Register, you agree to our') }} <a target="_blank" href="https://trackmyapp.us/files/default/terms.html">{{ __('Terms') }}</a> {{ __('and that you have read our') }} <a target="_parent" href="https://trackmyapp.us/files/default/policy.html">{{ __('Privacy policy') }}</a>.
+                    NOTICE: By clicking Register, you agree to our <a target="_blank" href="https://trackmyapp.us/files/default/terms.html">Terms</a> and that you have read our <a target="_parent" href="https://trackmyapp.us/files/default/policy.html">Privacy policy</a>.
 
                   </div>
                 </div>
@@ -606,10 +629,10 @@
 
                         <div class="row">
                             <div class="col-4 text-left">
-                                <input type="checkbox" name="is_cna" id="is_cna" value="1"> <label for ="is_cna">{{ __('CNAt') }}</label>
+                                <input type="checkbox" name="is_cna" id="is_cna" value="1"> <label for ="is_cna">{{ __('CNA') }}</label>
                             </div>
                             <div class="col-4 text-center">
-                                <input type="checkbox" name="is_pa" id="is_pa" value="1"> <label for ="is_pa">{{ __('Physicians Assistant') }}</label>
+                                <input type="checkbox" name="is_pa" id="is_pa" value="1"> <label for ="is_pa">{{ __('Physician Assistant') }}</label>
                             </div>
                             <div class="col-4 text-right">
                                 <input type="checkbox" name="is_emto" id="is_emto" value="1"> <label for ="is_emto">{{ __('EMT / Other') }}</label>
@@ -650,82 +673,285 @@
     </div>
     <br><br><br>
 </div>
-@endsection
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function(event) {
-        document.getElementById('birth_sex').value = "{{ old('birth_sex') ?? '' }}";
-        document.getElementById('state').value = "{{  old('state') ?? '' }}";
-        document.getElementById('dl_state').value = "{{ old('dl_state') ?? '' }}";
-        document.getElementById('ethnicity').value = "{{ old('ethnicity') ?? '' }}";
-        document.getElementById('race').value = "{{ old('race') ?? '' }}";
-    });
-</script>
 
-@error('emailPopup')
 @push('pageBottom')
-<style>
-  #EmailNotListed-outer{
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #000a;
-    display: none;
-    flex-direction: column;
-  }
-  #EmailNotListed-inner{
-    max-width: 48pc;
-    background: #eeef;
-    display: inline-block;
-    margin: 4pc auto;
-    padding: 2pc;
-    box-shadow: 0.1pc 0.1pc 0.2pc #0004;
-  }
-  #EmailNotListed-inner div{
-    margin: 1pc 0 0 0;
-    text-align: justify;
-  }
-  @media(max-width: 24pc){
-    #EmailNotListed-outer{
-      position: absolute;
-    }
-  }
-</style>
+<script>
+  function frmRegister_validate(){
+    var frm = frmRegister;
 
-<div id="EmailNotListed-outer">
-  <div style="display: flex">
-    <div id="EmailNotListed-inner">
-      <div>
-        Your application to receive a vaccination is disallowed at this time because this account is not
-        currently on Bucks County’s registration list. Only one registration link per person is valid, and
-        only those directly contacted by the county are eligible to be scheduled now. If you believe you
-        received such an email, please call <b>1-844-522-5952</b> to speak to a scheduling assistant to
-        help you. Appointments made through links shared on social media are being cancelled. Even if you
-        are 1A eligible, using a link received from any source other than a Bucks County invitation email
-        is invalid, and you will have to wait your turn. In the interest of fairness, Bucks County is
-        vaccinating people in the order they pre-registered. If you have not yet pre-registered, please go
-        to <a href="https://buckscounty.org">buckscounty.org</a>, click on the Vaccine Information tile and
-        click on the red link to register.
+    if ((!frm.affirm_benefits.checked) || (frm.signedBy.value == '')){
+      Popup.show('pop_Affirm_Benefits');
+      return false;
+    }
+
+    return true;
+  }
+</script>
+@endpush
+
+@endsection
+
+
+{{-- -------------------------------------------------------------------------- Email Error --}}
+@component('controls.popup', [
+  'id'=>'pop_EmailNotListed',
+])
+  <div>
+    Your application to receive a vaccination is disallowed at this time because this account is not
+    currently on Bucks County’s registration list. Only one registration link per person is valid, and
+    only those directly contacted by the county are eligible to be scheduled now. If you believe you
+    received such an email, please call <b>1-844-522-5952</b> to speak to a scheduling assistant to
+    help you. Appointments made through links shared on social media are being cancelled. Even if you
+    are 1A eligible, using a link received from any source other than a Bucks County invitation email
+    is invalid, and you will have to wait your turn. In the interest of fairness, Bucks County is
+    vaccinating people in the order they pre-registered. If you have not yet pre-registered, please go
+    to <a href="https://buckscounty.org">buckscounty.org</a>, click on the Vaccine Information tile and
+    click on the red link to register.
+  </div>
+  <div style="text-align: right">
+    <button class="btn btn-primary" onclick="Popup.hide('pop_EmailNotListed')">Close</button>
+  </div>
+
+  @error('emailPopup')
+  <script>
+    window.addEventListener('load', ()=>{
+      Popup.show('pop_EmailNotListed');
+    });
+  </script>
+  @enderror
+  
+@endcomponent
+
+
+{{-- -------------------------------------------------------------------------- Affirm A1 --}}
+@push('pageHeader')
+  <style>
+    #pop_Affirm_A1 input[type='email']{
+      max-width: 20pc;
+    }
+    #pop_Affirm_A1 input[type="button"]{
+      margin: 0.5pc 1pc;
+      min-width: 9pc;
+    }
+  </style>
+@endpush
+
+@component('controls.popup', [
+  'id'=>'pop_Affirm_A1',
+  'title'=>'Affirmation Statement',
+])
+  <p>
+    I affirm that I meet one of the 1A criteria listed below
+  </p>
+
+  <ul>
+    <li>Health care personnel including, but not limited to:
+      <ul>
+          <li>Emergency medical service personnel</li>
+          <li>Nurses</li>
+          <li>Physicians</li>
+          <li>Dentists</li>
+          <li>Dental hygienists</li>
+          <li>Chiropractors</li>
+          <li>Therapists</li>
+          <li>Phlebotomists</li>
+          <li>Pharmacists</li>
+          <li>Technicians</li>
+          <li>Pharmacy technicians</li>
+          <li>Health professions students and trainees</li>
+          <li>Direct support professionals</li>
+          <li>Clinical personnel in school settings or correctional facilities</li>
+          <li>Contractual HCP not directly employed by the health care facility</li>
+          <li>Persons not directly involved in patient care but potentially exposed to infectious material that can transmit disease among or from health care personnel and patients</li>
+          <li>Persons ages 65 and older</li>
+          <li>Persons ages 16-64 with high risk conditions</li>
+      </ul>
+    </li>
+    <li>Cancer</li>
+    <li>COPD</li>
+    <li>Down Syndrome</li>
+    <li>Heart conditions, such as heart failure, coronary artery disease, or cardiomyopathies</li>
+    <li>Immunocompromised state (weakened immune system) from solid organ transplant or from blood or bone marrow transplant, immune deficiencies , HIV, use of corticosteroids, or use of other immune weakening medicines</li>
+    <li>Obesity (BMI of 30 kg/m2 or higher but &#62; 40 kg/m2)</li>
+    <li>Severe obesity (BMI &#8805; 40 kg/m2)</li>
+    <li>Pregnancy</li>
+    <li>Sickle cell disease</li>
+    <li>Smoking</li>
+    <li>Type 2 diabetes mellitus</li>
+  </ul>
+
+  <div style="text-align: center">
+    <button class="btn btn-primary" onclick="Popup.hide('pop_Affirm_A1')">Close</button>
+  </div>
+
+@endcomponent
+
+
+{{-- -------------------------------------------------------------------------- Affirm Benefits --}}
+@push('pageHeader')
+  <style>
+    #pop_Affirm_Benefits li{
+      margin-bottom: 0.5pc;
+    }
+    #pop_Affirm_Benefits .popup-inner{
+      text-align: justify;
+    }
+    #pop_Affirm_Benefits input[type='email']{
+      max-width: 20pc;
+    }
+    #pop_Affirm_Benefits input[type="button"]{
+      margin: 0pc 1pc;
+      margin-top: auto;
+      min-width: 9pc;
+    }
+    #frmSignBenefits_wrap{
+      display: flex; 
+      flex-wrap: wrap;
+    }
+    #frmSignBenefits_name{
+      display: flex; 
+      flex-wrap: wrap;
+    }
+    #frmSignBenefits_close{
+      margin-top: auto; 
+      text-align: right; 
+      flex:1;
+    }
+
+    @media(max-width: 42pc){
+      #frmSignBenefits_wrap{
+        flex-direction: column;
+      }
+      #frmSignBenefits_name{
+        flex-direction: column;
+        width: max-content;
+      }
+      #frmSignBenefits_name input[type="button"]{
+        margin:0.5pc 0 0 auto;
+      }
+      #frmSignBenefits_close{
+        align-self: center;
+        margin-top: 2pc;
+      }
+    }
+  </style>
+@endpush
+
+@component('controls.popup', [
+  'id'=>'pop_Affirm_Benefits',
+  'title'=>'ASSIGNMENT OF BENEFITS / RELEASE OF MEDICAL INFORMATION',
+])
+  <p>
+    I hereby authorize and request that payment of benefits by my insurance companies, as 
+    identified in my account records or as discovered on health insurance portals be made directly 
+    to County of Bucks for services furnished to me or my dependent. 
+  </p>
+
+  <p>
+    I understand that I am not responsible for any charges not covered by insurance. I will never 
+    receive a bill as a result of vaccination services provided by the County of Bucks.
+  </p>
+
+  <p>
+    In addition, I authorize County of Bucks to disclose any and all written information from my 
+    records to my insurance company and/or its designated representatives. Such disclosure shall be 
+    for reimbursement purposes for those services received.
+  </p>
+
+  <p>
+    I hereby release County of Bucks, its officers, agents, employees and any clinical staff 
+    associated with my case, from all liability that may arise as a result of disclosure of 
+    information to the above named insurance company(s) or their designated representatives. 
+  </p>
+
+  <p>
+    By electronically signing this assignment of benefits and release of information I acknowledge:
+  </p>
+
+    <ol>
+      <li>
+        I am aware and understand that this authorization will not be used unless my insurance 
+        company(s) or its designated representatives request records of information for 
+        reimbursement purposes; or seek to take action in reference to payment for treatment 
+        services.
+      </li>
+      <li>
+        I agree to participate and assist County of Bucks or its designated representatives with 
+        any appeal process necessary to collect payments for services rendered.
+      </li>
+      <li>
+        I am aware and have been advised of the provisions of Federal and State statues, rules and 
+        regulations that provide for my right to confidentiality of these records.
+      </li>
+      <li>
+        I understand that this assignment and authorization is subject to revocation at anytime 
+        except to the extent that action has been taken in reliance thereof. This authorization 
+        will expire once reimbursement for services rendered is complete.
+      </li>
+      <li>
+        County of Bucks is filing for insurance benefits assigned to me and it can assume no 
+        responsibility for guaranteeing payment of any charges from the insurance company(s).
+      </li>
+      <li>
+        A firm contracted by County of Bucks for billing and collection purposes may do billing.
+      </li>
+      <li>
+        County of Bucks is appointed by me to act as my representative and on my behalf in any 
+        proceeding that may be necessary to seek payment from my insurance carrier. This includes 
+        receiving a copy of my insurance plan’s documents.
+      </li>
+      <li>
+        Should an overpayment take place, a refund check will be mailed to the authorized party 
+        that is due the overpayment.
+      </li>
+      <li>
+        Should an overpayment take place, a refund check will be mailed to the authorized party 
+        that is due the overpayment.
+      </li>
+      <li>
+        County of Bucks shall be entitled to the full amount of its charges. It will accept 
+        reimbursement, collectively, from Federal and State agencies and insurance companies as 
+        payment in full. 
+      </li>
+    </ol>
+
+  <p>
+    I acknowledge receipt of a completed and signed copy of this assignment and release form.
+  </p>
+
+  <form name="frmSignBenefits" id="frmSignBenefits" onsubmit="return false;">
+    <div id="frmSignBenefits_wrap">
+      <div id="frmSignBenefits_name">
+        <div>
+          {{__('Please type your full name:')}}<br/>
+          <input name="fullName" type="text" required/>
+        </div>
+        <input type="button" value="{{__('sign')}}" class="btn btn-primary" onclick="AffirmBenefits_yes()"/>
       </div>
-      <div style="text-align: right">
-        <button class="btn btn-primary" onclick="EmailNotListed_close()">Close</button>
+      <div id="frmSignBenefits_close">
+        <input type="button" value="{{__('close')}}" onclick="AffirmBenefits_no()" class="btn btn-danger"/>
       </div>
     </div>
-  </div>
-</div>
+  </form>
 
-<script>
-  var eEmailNotListed = document.getElementById('EmailNotListed-outer');
+  <script>
+    function AffirmBenefits_yes(){
+      var names = frmSignBenefits.fullName.value;
+      if (names == ''){
+        alert('{{__('Please enter your name')}}');
+        return;
+      }
+      frmRegister.signedBy.value = names;
+      frmRegister.affirm_benefits.checked = true;
+      Popup.hide('pop_Affirm_Benefits');
+    }
 
-  function EmailNotListed_close(){
-    $(eEmailNotListed).fadeOut();
-  }
-  $(function(){
-    $(eEmailNotListed).fadeIn();
-  });
-</script>
+    function AffirmBenefits_no(){
+      frmRegister.affirm_benefits.checked = false;
+      Popup.hide('pop_Affirm_Benefits');
+    }
+  </script>
+
+@endcomponent
 
 
-@endpush
-@enderror

@@ -12,21 +12,20 @@
 <div class="my-vaccines">
 <table>
     <tr>
-        <th>{{ __('Vaccine') }}</th>
-        <th>{{ __('Dose') }}</th>
-        <th>{{ __('Vendor') }}</th>
-        <th>{{ __('Size') }}</th>
-        <th>{{ __('Product NDC') }}</th>
-        <th>{{ __('Lot Number') }}</th>
-        <th>{{ __('Manufacturer') }}</th>
-        <th>{{ __('Dose Date') }}</th>
-        <th>{{ __('Clinical Site') }}</th>
-        <th>{{ __('Bar Code') }}</th>
+        <th>Vaccine</th>
+        <th>Dose</th>
+        <th>Vendor</th>
+        <th>Size</th>
+        <th>Product NDC</th>
+        <th>Lot Number</th>
+        <th>Manufacturer</th>
+        <th>Dose Date</th>
+        <th>Clinical Site</th>
 {{--        <th></th>--}}
     </tr>
     @foreach($rows as $row)
     <tr>
-        <td>{{ __('COVID-19') }}</td>
+        <td>COVID-19</td>
         <td>1</td>
         <td>{{ $row['vendor']??'' }}</td>
         <td>{{ $row['size']??'' }}</td>
@@ -35,7 +34,6 @@
         <td>{{ $row['manufacturer']??'' }}</td>
         <td>{{ $row['dose_date']??'' }}</td>
         <td>{{ $row['room_name']??'' }}</td>
-        <td>{{ $row['barcode']??'' }}</td>
 {{--        <td>--}}
 {{--            <span class="btn btn-sm btn-small btn-warning adverse-event" onclick="alert('This feature is not currently available');">Adverse Event</span>--}}
 {{--        </td>--}}
