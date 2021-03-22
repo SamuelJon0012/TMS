@@ -15,7 +15,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-//        $this->middleware("auth");
+        $this->middleware("auth");
     }
 
     public function posTest(Request $request) {
@@ -119,5 +119,51 @@ class UserController extends Controller
         Auth::login($user);
 
         return redirect()->home();
+    }
+
+    public function createUsersFromEmailList(Request $request) {
+        $user = auth()->user();
+        if (!$user->hasRole("admin"))
+            abort(404);
+
+        $emails = [];
+        if ($request->emails && trim($request->emails))
+            $emails = explode("\r\n", $request->emails);
+
+        if (count($emails) > 0) {
+            foreach ($emails as $email) {
+
+                if (!trim($email)) continue;
+
+                $validator = Validator::make([$email], [
+                    0 => 'email|unique:users,email'
+                ]);
+
+                if ($validator->fails())
+                    continue;
+
+                $token = Str::random(90);
+                $user = User::create([
+                    "email" => $email,
+                    "token" => $token,
+                    "name" => "User-" . Str::random(5),
+                    "password" => "",
+                ]);
+
+                if (!$user)
+                    return response()->json(["error" => "User don't created"]);
+
+                $data = [
+                    "email" => $email,
+                    "token" => $token
+                ];
+
+                $binary = base64_encode(json_encode($data));
+
+                $user->notify(new ConfirmPasswordNotification($binary));
+            }
+        }
+
+        return redirect()->route('home');
     }
 }

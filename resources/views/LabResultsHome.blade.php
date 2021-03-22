@@ -6,6 +6,15 @@
 
 @section('styleCss')
 
+    .allowed-emails {
+        margin-top: 10px;
+    }
+
+    .allowed-emails-textarea {
+        resize: none;
+        width: 100%;
+    }
+
 .homeTop-button {
       text-align: center;
       font-size:100%;
@@ -71,7 +80,7 @@
 
 @section('content')
 
- 
+
 
 @component('controls.modal', [
     'id'=>'home-modal',
@@ -202,7 +211,7 @@
               <div class="set-vaccine-location-wrapper" style="border: none">
                     @if(auth()->user()->hasRole('provider'))
                         <button style="margin-right: 10px" class="btn btn-primary" onclick="document.location='/scan-barcode'">{{ __('Scan Patient Barcode') }}</button>
-                        <button style="margin-right: 10px" class="btn btn-primary" onclick="document.location='/set-vaccine-location'" disabled>{{ __('Set Vaccine Location') }}</button>
+                        <button class="btn btn-primary" onclick="document.location='/set-vaccine-location'" disabled>{{ __('Set Vaccine Location') }}</button>
                     @else
                       <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
                       <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
@@ -210,7 +219,6 @@
                         <button id="registerPatientByProvider" class="btn btn-primary form-control" onclick="document.location='/new-patient'">{{ __('Register a Patient') }}</button>
                       </div>
                     @endif
-                </div>
               </div>
 
 
@@ -218,6 +226,15 @@
                 <button id="registerPatientByProvider" class="btn btn-primary form-control" onclick="document.location='labResults/new-patient'">{{ __('Register a Patient') }}</button>
               </div>
 
+              <div class="allowed-emails">
+                  <form action="" method="post" class="clearfix">
+                      @csrf
+                      <div>
+                          <textarea name="emails" id="" cols="30" rows="10" class="allowed-emails-textarea"></textarea>
+                      </div>
+                      <button class="btn btn-primary float-right" type="submit">Send</button>
+                  </form>
+              </div>
 
             </div>
           @endif
