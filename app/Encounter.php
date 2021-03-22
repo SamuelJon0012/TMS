@@ -65,6 +65,10 @@ class Encounter extends BurstIq
     private $procedures;
     private $type;
 
+    const EncounterType_COVIDTest  = 0;
+    const EncounterType_Vaccine    = 1;
+    const EncounterType_Telehealth = 2;
+
     /**
      * @return mixed
      */
@@ -268,8 +272,8 @@ class Encounter extends BurstIq
         $this->site_id = $asset->site_id;
         $this->provider_id = $asset->provider_id;
         $this->datetime = $asset->datetime;
-        $this->dx_icd10 = $asset->dx_icd10;
-        $this->referring_provider_id = $asset->referring_provider_id;
+        $this->dx_icd10 = $asset->dx_icd10 ?? null;
+        $this->referring_provider_id = $asset->referring_provider_id ?? null;
         $this->patient_question_responses = $asset->patient_question_responses;
         $this->billing_provider_id = $asset->billing_provider_id;
         $this->procedures = $asset->procedures;
@@ -284,8 +288,8 @@ class Encounter extends BurstIq
             'site_id' => $asset->site_id,
             'provider_id' => $asset->provider_id,
             'datetime' => $asset->datetime,
-            'dx_icd10' => $asset->dx_icd10,
-            'referring_provider_id' => $asset->referring_provider_id,
+            'dx_icd10' => $asset->dx_icd10 ?? null,
+            'referring_provider_id' => $asset->referring_provider_id ?? null,
             'patient_question_responses' => $asset->patient_question_responses,
             'billing_provider_id' => $asset->billing_provider_id,
             'procedures' => $asset->procedures,

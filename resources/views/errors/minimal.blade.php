@@ -57,13 +57,13 @@
                 @yield('code') - @yield('message')
                 <br/>
                 <br/>
-                {{ __('Please try going') }} <a href="/home">{{ __('back to the dashboard') }}</a>{{ __(', or') }} <a href="/login">{{ __('log in again') }}</a>{{ __('. If the problem persists please contact support.') }}
+                Please try going <a href="/home">back to the dashboard</a>, or <a href="/login">log in again</a>. If the problem persists please contact support.
                 <br/>
                 <br/>
-                <h4>{{ __('Patient Call Center: 1-844-522-5952') }}</h4>
+                <h4>Patient Call Center: 1-844-522-5952</h4>
                 <br/>
                 <br/>
-                {{ __('9am-5pm 7 days a week EST') }}
+                9am-5pm 7 days a week EST
             </div>
         </div>
 

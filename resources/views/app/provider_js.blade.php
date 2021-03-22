@@ -166,6 +166,7 @@
             } else {
 
                 row = document.createElement('tr');
+
                 rowData.forEach(function (cellData) {
                     var cell = document.createElement('td');
 
@@ -187,6 +188,15 @@
                         cell.appendChild(btn);
 
 
+                        var btn = document.createElement('button');
+                        btn.innerHTML = "Covid-19";
+                        btn.setAttribute('rel', cellData);
+                        btn.setAttribute('name', rowData[1] );
+                        rel = cellData;
+                        btn.setAttribute('class', 'Covid-19 btn-primary toolb');
+                        cell.appendChild(btn);
+                        
+
                         first = false;
                     } else {
                         cell.appendChild(document.createTextNode(cellData));
@@ -194,6 +204,7 @@
                     }
 
                     row.appendChild(cell);
+                    
                 });
 
 
@@ -324,6 +335,15 @@
                 doScanner();
             });
         });
+
+        $(document.body).on('click', '.Covid-19', function () {
+            preloader_on();
+            let id = $(this).attr('rel');
+            let name = $(this).attr('name');
+			window.location.href = "/labResults/covid/"+id+"/"+name;
+
+        });
+
         $('.provider-search').on('click', function () {
             $('.provider-search-modal').show();
         });

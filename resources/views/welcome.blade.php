@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ __('Track My Vaccine') }}</title>
+        <title>Track My Vaccine</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
@@ -68,12 +68,12 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">{{ __('Home') }}</a>
+                        <a href="{{ url('/home') }}">Home</a>
                     @else
-                        <a href="{{ route('login') }}">{{ __('Login') }}</a>
+                        <a href="{{ route('login') }}">Login</a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <a href="{{ route('register') }}">Register</a>
                         @endif
                     @endauth
                 </div>

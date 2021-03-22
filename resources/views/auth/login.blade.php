@@ -70,7 +70,7 @@
                             </div>
                         </div>
 
-{{ __('TrackMyVaccines is closed for new registrations at this time.  We will re-open soon.') }}
+TrackMyVaccines is closed for new registrations at this time.  We will re-open soon.
 
                         <div class="form-group row justify-content-center">
                             <div class="col-md-10 text-center dashes">
@@ -101,9 +101,9 @@
         <img src = "{{ asset('images/trackmysolutionslogoregtm-web.jpg') }}">
         <br/>
         [
-        <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">{{ __('Terms') }}</a>
+        <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Terms</a>
         |
-        <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">{{ __('Privacy policy') }}</a>
+        <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Privacy policy</a>
         ]
 
     </div>

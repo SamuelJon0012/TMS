@@ -56,15 +56,20 @@ class BurstIqController extends Controller
             'adminsite'=>'required',
         ]);
 
-        if (!$patient = User::find($request->get('patient_id')))
-            abort(500, 'Invalid Patient ID');
+        $patient_id = $request->get('patient_id');
+
+        $patient = User::findOrFail($patient_id);
+
+        //$this->dispatch(new \App\Jobs\CompleteVisit($patient_id, $user->id, time())); //TODO: This job is not complete or fully tested
+
+        //Store the file for upload to burst (for now)
 
         $uniq_id = 'bc'.uniqid(true);
 
         $barcode = $request->get('barcode');
 
         $data = [
-            'patient_id' => $request->get('patient_id'),
+            'patient_id' => $patient_id,
             'barcode' => $barcode,
             'adminsite' => $request->get('adminsite'),
             'provider_id' => $user->id,
@@ -75,7 +80,9 @@ class BurstIqController extends Controller
 
         file_put_contents ('/var/www/data/'.$uniq_id, json_encode($data));
 
-        return ['success'=>true, 'message'=>"Stored barcode $barcode for Patient ".$patient->name];
+        //$names = trim($patient->getFirstName().' '.$patient->getLastName());
+
+        return ['success'=>true, 'message'=>"Stored barcode $barcode for Patient "/*.$names*/];
     }
 
     function find(Request $request)
@@ -153,7 +160,6 @@ class BurstIqController extends Controller
         // TESTING $where = $where . ' AND e.site_id=1';
 
         $where .= ' LIMIT 100 '; // TODO: Are we going to use pagination?
-
         if (!$P->find($where)) {
 
             return $this->error('Search produced an error');
@@ -217,7 +223,7 @@ class BurstIqController extends Controller
                 $key = $barcode.'~'.date('Y-m-d',strtotime($row->timestamp));
                 if (isset($data[$key]))
                     continue;
-                $a = explode('_', $barcode, 2);
+                $a = explode('-', $barcode, 2);
 
                 if (count($a) == 2){
                     $ndc = $a[1];
@@ -252,9 +258,9 @@ class BurstIqController extends Controller
 
         //Fix up data for display
         foreach($data as $barcode=>&$row){
-            $barray = explode('_', $barcode . '_ ');
-            $row['ndc'] = $barray[1];
-
+            $barray = explode('-', $barcode . '_ ');
+            $temp = explode('~',str_replace($barray[0] . '-', '', $barcode) . '~');
+            $row['ndc'] = $temp[0];
             $date = new \DateTime($row['dose_date'], new \DateTimeZone('UTC'));
             $date->setTimezone(new \DateTimeZone('America/New_York'));
             $row['dose_date'] = $date->format('Y-m-d H:i:s');

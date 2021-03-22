@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('template_linked_css')
+    @include('laravelusers::partials.styles')
+@endsection
+
 @section('styleCss')
 
 .homeTop-button {
@@ -37,7 +41,7 @@
   }
 
   .set-vaccine-location-wrapper button{
-    width: 10pc;
+    width: 50%;
     border-radius: unset;
   }
 
@@ -67,8 +71,6 @@
 
 @section('content')
 
-@include('app.patient_COVID_test_modal')
-
 @component('controls.modal', [
     'id'=>'home-modal',
     'isHome'=>true,
@@ -79,11 +81,11 @@
     <div class="row justify-content-center">
         @if($v == '1')
 
-            <div style="text-align:center; color:#f60;">{{ __('There was a problem connecting to the appointment system.  Please try again later or contact support.') }}
+            <div style="text-align:center; color:#f60;">There was a problem connecting to the appointment system.  Please try again later or contact support.
 
                 <br>
 
-                {{ __('Info:') }} {!! $m ?? '' !!}
+                Info: {!! $m ?? '' !!}
 
             </div>
 
@@ -148,11 +150,11 @@
                     <div class="col-6 col-collapse">
                         <button id="addVaccine" disabled='disabled' class="btn btn-primary form-control">{{ __('Add a Vaccine') }}</button>
                     </div>
-                    {{--
+                    @if(env('APP_ENV') == 'development') {{-- TODO: remove before going live --}}
                     <div class="col-6 col-collapse">
                         <button id="startCOVIDTest" class="btn btn-primary form-control" onclick="Modals.show('patient-COVID-test1-modal')">{{ __('Start COVID Test') }}</button>
                     </div>
-                    --}}
+                    @endif
 
                 @endif
 
@@ -187,20 +189,37 @@
 
             ]])
 
+            {{--<br><br><br>
+                   <div class="barcode">
+                       @php
+                               $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
+                               echo $generator->getBarcode('038K20A_80777-273-10', $generator::TYPE_CODE_128);
+                           @endphp
+                           <div>
+                               <span>{{ $bcCustomerId }}</span>
+                               <span>-</span>
+                               <span>{{ $bcSiteId }}</span>
+                               <span>-</span>
+                               <span>{{ $bcPatientId }}</span>
+                           </div>
+                    </div>--}}
+
             <br><br><br>
             <div class="row justify-content-center">
               <div>
-                <div class="set-vaccine-location-wrapper">
-                  <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
-                  <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
+              <div class="set-vaccine-location-wrapper" style="border: none">
+                    @if(auth()->user()->hasRole('provider'))
+                        <button style="margin-right: 10px" class="btn btn-primary" onclick="document.location='/scan-barcode'">{{ __('Scan Patient Barcode') }}</button>
+                        <button style="margin-right: 10px" class="btn btn-primary" onclick="document.location='/set-vaccine-location'" disabled>{{ __('Set Vaccine Location') }}</button>
+                    @else
+                      <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
+                      <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
+                      <div class="col-6 col-collapse">
+                        <button id="registerPatientByProvider" class="btn btn-primary form-control" onclick="document.location='/new-patient'">{{ __('Register a Patient') }}</button>
+                      </div>
+                    @endif
                 </div>
               </div>
-
-
-              <div class="col-6 col-collapse">
-                <button id="registerPatientByProvider" class="btn btn-primary form-control" onclick="document.location='/new-patient'">{{ __('Register a Patient') }}</button>
-              </div>
-
 
             </div>
           @endif
@@ -211,9 +230,9 @@
               <img src = "{{ asset('images/trackmysolutionslogoregtm-web.jpg') }}" style="max-width: 100%">
                <br/>
                 [
-                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">{{ __('Terms') }}</a>
+                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Terms</a>
                 |
-                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">{{ __('Privacy policy') }}</a>
+                <a href="https://trackmyapp.us/files/default/terms.html" target="_blank">Privacy policy</a>
                 ]
             </div>
           </div>

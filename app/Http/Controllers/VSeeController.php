@@ -60,27 +60,10 @@ class VSeeController extends Controller
 
         }
 
-        try {
+        if (!$user = Auth::user())
+            abort(401, 'Please login');
 
-            # Todo Oh God No
-
-            $name = explode(' ', Auth::user()->name . ' Nosurname');
-
-        } catch (\Exception $e) {
-
-            $E = [];
-
-            $E['spot'] = 'VSC1';
-            $E['error'] = $e->getMessage();
-            $E['user'] = Auth::id();
-            file_put_contents('/var/www/errors/er' . uniqid(true), json_encode($E));
-
-            return redirect('/home?v=1');
-        }
-
-        $first = $name[0];
-
-        $last = $name[1];
+        list($first, $last) = $user->getFirstAndLastNames();
 
         $dob = Auth::user()->dob;
 
@@ -357,6 +340,58 @@ class VSeeController extends Controller
 
         return redirect('/home');
 
+    }
+
+    /**
+     * Temp function to establish how to mark a visit as complete
+     */
+    function test_completing_a_visits(){
+        $first = 'Kyle';
+        $last = 'Peterman';
+        $dob = '1974/04/10';
+        $email = 'kpetey123@gmail.com';
+
+        //Get visits
+        $vsee = new VSee();
+        $visits = $vsee->getVisits($first, $last, $dob, $email);
+
+        if (($visits) and ($visits = json_decode($visits))) {
+
+            dd($visits);
+
+            $visit_id = 14518275;
+            $member_id = 13963264;
+            $provider_id = 14142453;
+/*
+            if ($err = $vsee->startVisit($visit_id))
+                die('VSee->startVisitVisit returned '.$err);
+*/            
+
+            //switch to provider
+            $vseeAdmin = new VSee();
+            //$token = $vseeAdmin->getSSOToken('Leeney','Sweeney','','leeney.sweeney@gmail.com', $vsee::USERTYPE_PROVIDER);
+            $token = $vseeAdmin->getSSOToken('Test','Test','','anton+Testing1@vsee.com', $vsee::USERTYPE_PROVIDER); //make up a new someone
+            
+            //exit('<pre>'.json_encode($token, JSON_PRETTY_PRINT).'</pre>');
+            $provider_id = $token->data->id;
+            $token = $token->data->token->token;
+            
+
+
+            //if ($err = $vseeAdmin->closeVisit($visit_id, ['completed_by'=>$provider_id, 'provider_id'=>$provider_id], $token) )
+            if ( $err = $vseeAdmin->closeVisit($visit_id, null, []) )
+                die('VSee->closeVisit returned '.$err);
+            else
+                die('OK');
+
+            /*
+            if ($err = $vsee->deleteVisit($visit_id))
+                die('VSee->deleteVisit returned '.$err);
+            else
+                die('OK');
+            */
+
+        }
     }
 
 

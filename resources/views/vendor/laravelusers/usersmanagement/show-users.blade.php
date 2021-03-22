@@ -1,3 +1,6 @@
+<?php
+
+
 @extends(config('laravelusers.laravelUsersBladeExtended'))
 
 @section('template_title')

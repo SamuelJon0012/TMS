@@ -19,6 +19,7 @@ class BurstIq
 
     protected $url, $username='', $password='', $jwt='', $id=0, $asset_id='';
     public $data;
+    public $curlLogFileName;
 
     protected $get=[], $first, $array=[];
     protected $lastCurlError = null;
@@ -33,12 +34,14 @@ class BurstIq
      */
     public function __construct() {
 
-//        $this->lookup = (array)json_decode(file_get_contents('/var/www/lookup.json'));
+        //$this->lookup = (array)json_decode(file_get_contents('/var/www/lookup.json'));
 
         $this->BI_PUBLIC_KEY = env('BI_PUBLIC_KEY');
         $this->BI_BASE_URL = env('BI_BASE_URL');
         $this->BI_PRIVATEID = env('BI_PRIVATEID', 'b67afe2ec35e80bb');
         $this->BI_VERSION = env('BI_VERSION', '4.6');
+
+        $this->BI_BASE_URL = rtrim($this->BI_BASE_URL,'/'); //ensure url does not have a tailing /
 
     }
 
@@ -78,8 +81,17 @@ class BurstIq
             return $msg;
         }
 
-        if ((!isset($obj->status)) or ($obj->status != 200))
-            return $obj->message ?? 'Invalid data returned from chain';
+        if ($data == '{}')
+            return false; //some stuff responds with just a {}
+
+        if (!isset($obj->status))
+            return 'Invalid JSON returned, no status';
+
+        if ($obj->status != 200){
+            $code = $obj->status;
+            $txt = ($obj->error ?? '').', '.($obj->message ?? '');
+            return "($code) $txt";
+        }
 
         $this->data = $obj;
         return false;
@@ -101,7 +113,7 @@ class BurstIq
      * @return string
      */
     function newPrivateId(){
-        $this->url = $this->BI_BASE_URL . 'util/privateid';
+        $this->url = $this->BI_BASE_URL . '/util/privateid';
 
         if ($err = $this->checkCurl($this->getCurl()))
             abort(500, $err);
@@ -119,7 +131,7 @@ class BurstIq
      */
     function status() {
 
-        $this->url = $this->BI_BASE_URL . 'util/privateid';
+        $this->url = $this->BI_BASE_URL . '/util/privateid';
 
         return $this->getCurl();
 /*
@@ -142,7 +154,7 @@ class BurstIq
      */
     function lookups() {
 
-        $this->url = $this->BI_BASE_URL . 'util/lookups';
+        $this->url = $this->BI_BASE_URL . '/util/lookups';
 
         return $this->getCurl();
 
@@ -159,7 +171,7 @@ class BurstIq
             \"queryTql\": \"$query\"
         }";
 
-        $this->url = $this->BI_BASE_URL . 'query/' . $chain;
+        $this->url = $this->BI_BASE_URL . '/query/' . $chain;
 
         if ($err = $this->checkCurl($this->postCurl($postFields)))
             exit($this->error($err));
@@ -178,7 +190,7 @@ class BurstIq
             $postFields = json_encode($postFields);
         }
 
-        $this->url = $this->BI_BASE_URL . 'upsert/' . $chain;
+        $this->url = $this->BI_BASE_URL . '/upsert/' . $chain;
 
 
 //        $R =  $this->putCurl($postFields);
@@ -229,6 +241,9 @@ class BurstIq
      */
     function postCurl($postFields) {
 
+        if (is_array($postFields))
+            $postFields = json_encode($postFields);
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -236,7 +251,8 @@ class BurstIq
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
+            CURLOPT_CONNECTTIMEOUT => 60,
+            CURLOPT_TIMEOUT => 600,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
@@ -245,13 +261,26 @@ class BurstIq
                 'Authorization: ID '.$this->BI_PRIVATEID,
                 'Content-Type: application/json'
             ),
-        ));                                                                                                       //error_log('$this->BI_PRIVATEID='.$this->BI_PRIVATEID);
+        ));
 
-        $response = curl_exec($curl);                                                                             //error_log('postCurl('.$this->url.', '.substr($postFields,0,500).') = '.substr($response, 0, 500));
+        if ($this->curlLogFileName){
+            $f = fopen($this->curlLogFileName, 'w');
+            fwrite($f, "url = {$this->url}\n");
+            fwrite($f, "postFields = {$postFields}\n\n");
+            curl_setopt($curl, CURLOPT_VERBOSE, true);
+            curl_setopt($curl, CURLOPT_STDERR, $f);
+        }
+
+        $response = curl_exec($curl);
 
         $this->lastCurlError = ($response !== null) ? null : '('.\curl_errno($curl).') '.\curl_error($curl);
 
         curl_close($curl);
+
+        if ($this->curlLogFileName){
+            fwrite($f,"\n\n".substr($response, 0, 500)."\n\n");
+            fclose($f);
+        }
         return $response;
     }
 
@@ -260,6 +289,9 @@ class BurstIq
      * @return bool|string
      */
     function putCurl($postFields) {
+
+        if (is_array($postFields))
+            $postFields = json_encode($postFields);
 
         $curl = curl_init();
 
@@ -277,9 +309,9 @@ class BurstIq
                 'Authorization: ID '.$this->BI_PRIVATEID,
                 'Content-Type: application/json'
             ),
-        ));                                                                                                      //error_log('$this->BI_PRIVATEID='.$this->BI_PRIVATEID);
+        ));
 
-        $response = curl_exec($curl);                                                                            //error_log('putCurl('.$this->url.', '.substr($postFields,0,500).') = '.substr($response, 0, 500));
+        $response = curl_exec($curl);
 
         $this->lastCurlError = ($response !== null) ? null : '('.\curl_errno($curl).') '.\curl_error($curl);
 
@@ -439,11 +471,24 @@ class BurstIq
         $json = view($this->view)->with(['data' => $this])->render();
 
         //echo($json);
+        //file_put_contents(__DIR__.'/../storage/logs/lastBurst.json', $json);
 
         $results = $this->upsert($this->chain, $json);
 
         return $results;
 
+    }
+
+    /**
+     * Attempt to fetch the record identified by the asset.id provided and populate the object before returning true
+     * @param mixed $assetId
+     * @return bool 
+     */
+    public function load($assetId){
+        $assetId = $this->escapeString($assetId);
+        $this->array = [];
+        $this->find("WHERE asset.id=$assetId");
+        return (count($this->array) == 1);
     }
 
     public function find($query) { //exit($query);

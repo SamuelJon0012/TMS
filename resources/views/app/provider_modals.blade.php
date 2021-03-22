@@ -50,7 +50,7 @@
                             <div class="card-body">
 
 
-                            <div class="breadcrumbs"><span class="go_home"><- {{ __('Home') }}</span></div>
+                            <div class="breadcrumbs"><span class="go_home"><- Home</span></div>
 
                             <form name="provider-search-form" onsubmit="doPatientSearch('provider-search-input'); return false;">
 
@@ -144,43 +144,43 @@
                                                 <br>
                                                 <table class="patient-show"><!-- mebe -->
                                                     <tr>
-                                                        <th class="flabel">{{ __('First Name') }}</th>
+                                                        <th class="flabel">First Name</th>
                                                         <td class="fvalue" id="first_name"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Last Name') }}</th>
+                                                        <th class="flabel">Last Name</th>
                                                         <td class="fvalue" id="last_name"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Date of Birth') }}</th>
+                                                        <th class="flabel">Date of Birth</th>
                                                         <td class="fvalue" id="date_of_birth"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('SSN') }}</th>
+                                                        <th class="flabel">SSN</th>
                                                         <td class="fvalue" id="ssn"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __("Driver's License") }}</th>
+                                                        <th class="flabel">Driver's License</th>
                                                         <td class="fvalue" id="dl_number"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Address') }}</th>
+                                                        <th class="flabel">Address</th>
                                                         <td class="fvalue" id="address1"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Apt / Unit') }}</th>
+                                                        <th class="flabel">Apt / Unit</th>
                                                         <td class="fvalue" id="address2"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('City') }}</th>
+                                                        <th class="flabel">City</th>
                                                         <td class="fvalue" id="city"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('State') }}</th>
+                                                        <th class="flabel">State</th>
                                                         <td class="fvalue" id="state"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Zipcode') }}</th>
+                                                        <th class="flabel">Zipcode</th>
                                                         <td class="fvalue" id="zipcode"></td>
                                                     </tr>
                                                 </table>
@@ -206,23 +206,23 @@
 
                                                 <table class="patient-show">
                                                     <tr>
-                                                        <th class="flabel">{{ __('Email') }}</th>
+                                                        <th class="flabel">Email</th>
                                                         <td class="fvalue" id="email"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Mobile Phone') }}</th>
+                                                        <th class="flabel">Mobile Phone</th>
                                                         <td class="fvalue" id="mphone"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Home Phone') }}</th>
+                                                        <th class="flabel">Home Phone</th>
                                                         <td class="fvalue" id="hphone"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Birth Sex') }}</th>
+                                                        <th class="flabel">Birth Sex</th>
                                                         <td class="fvalue" id="birth_sex"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Race') }}</th>
+                                                        <th class="flabel">Race</th>
                                                         <td class="fvalue" id="race"></td>
                                                     </tr>
 <!-- Todo: Ethnicity is wrong in registration form, will need to convert in spooler -->
@@ -235,65 +235,65 @@
                                                 <table class="patient-show">
                                                     <tr>
                                                         <td colspan="2" style="text-align:center;color:blue;">
-                                                            {{ __('Vaccine Schedule') }}
+                                                            Vaccine Schedule
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Location') }}</th>
-                                                        <td class="fvalue" id="location">{{ __('location') }}</td>
+                                                        <th class="flabel">Location</th>
+                                                        <td class="fvalue" id="location">location</td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Date') }}</th>
+                                                        <th class="flabel">Date</th>
                                                         <td class="fvalue" id="date"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Time') }}</th>
+                                                        <th class="flabel">Time</th>
                                                         <td class="fvalue" id="time"></td>
                                                     </tr>
                                                 </table>
                                                 <table class="patient-show" id="schedule2">
                                                     <tr>
                                                         <td colspan="2" style="text-align:center;color:blue;">
-                                                            {{ __('Vaccine Schedule #2') }}
+                                                            Vaccine Schedule #2
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Location') }}</th>
-                                                        <td class="fvalue" id="location2">{{ __('location2') }}</td>
+                                                        <th class="flabel">Location</th>
+                                                        <td class="fvalue" id="location2">location2</td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Date') }}</th>
+                                                        <th class="flabel">Date</th>
                                                         <td class="fvalue" id="date2"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Time') }}</th>
+                                                        <th class="flabel">Time</th>
                                                         <td class="fvalue" id="time2"></td>
                                                     </tr>
                                                 </table>
                                                 <table class="patient-show" id="schedule3">
                                                     <tr>
                                                         <td colspan="2" style="text-align:center;color:blue;">
-                                                            {{ __('Vaccine Schedule #3') }}
+                                                            Vaccine Schedule #3
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Location') }}</th>
-                                                        <td class="fvalue" id="location3">{{ __('location3') }}</td>
+                                                        <th class="flabel">Location</th>
+                                                        <td class="fvalue" id="location3">location3</td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Date') }}</th>
+                                                        <th class="flabel">Date</th>
                                                         <td class="fvalue" id="date3"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Time') }}</th>
+                                                        <th class="flabel">Time</th>
                                                         <td class="fvalue" id="time3"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('Total') }}</th>
+                                                        <th class="flabel">Total</th>
                                                         <td class="fvalue" id="total_count"></td>
                                                     </tr>
                                                     <tr>
-                                                        <th class="flabel">{{ __('More') }}</th>
+                                                        <th class="flabel">More</th>
                                                         <td class="fvalue" id="more"></td>
                                                     </tr>
 
@@ -677,53 +677,53 @@
 
                             <br/>
 
-                            <b>{{ __('Administration Site') }}</b>
+                            <b>Administration Site</b>
                             <br/>
                             <select id='admin-site' name='admin-site'>
 @if(env('BI_VERSION', '4.6') == '4.6')
-                                <option value="0">{{ __('RA-Right Arm') }}</option>
-                                <option value="1">{{ __('BU-Buttock') }}</option>
-                                <option value="2">{{ __('LA-Left Arm') }}</option>
-                                <option value="3">{{ __('RT-Right Thigh') }}</option>
-                                <option value="4">{{ __('LT-Left Thigh') }}</option>
-                                <option value="5">{{ __('LUA-Left Upper Arm') }}</option>
-                                <option value="6">{{ __('RUA-Right Upper Arm') }}</option>
+                                <option value="0">RA-Right Arm</option>
+                                <option value="1">BU-Buttock</option>
+                                <option value="2">LA-Left Arm</option>
+                                <option value="3">RT-Right Thigh</option>
+                                <option value="4">LT-Left Thigh</option>
+                                <option value="5">LUA-Left Upper Arm</option>
+                                <option value="6">RUA-Right Upper Arm</option>
 @elseif(env('BI_VERSION') == '4.7')
-                                <option value="7">{{ __('BN-Bilateral Nares') }}</option>
-                                <option value="1">{{ __('BU-Buttock') }}</option>
-                                <option value="2">{{ __('LA-Left Arm') }}</option>
-                                <option value="8">{{ __('LD-Left Deltoid') }}</option>
-                                <option value="9">{{ __('LG-Left Gluteus Medius') }}</option>
-                                <option value="10">{{ __('LLFA-Left Lower Forearm') }}</option>
-                                <option value="4">{{ __('LT-Left Thigh') }}</option>
-                                <option value="5">{{ __('LUA-Left Upper Arm') }}</option>
-                                <option value="11">{{ __('LVL-Left Vastus Lateralis') }}</option>
-                                <option value="0">{{ __('RA-Right Arm') }}</option>
-                                <option value="12">{{ __('RD-Right Deltoid') }}</option>
-                                <option value="13">{{ __('RG-Right Gluteus Medius') }}</option>
-                                <option value="14">{{ __('RLFA-Right Lower Forearm') }}</option>
-                                <option value="3">{{ __('RT-Right Thigh') }}</option>
-                                <option value="6">{{ __('RUA-Right Upper Arm') }}</option>
-                                <option value="15">{{ __('RVL-Right Vastus Lateralis') }}</option>
+                                <option value="7">BN-Bilateral Nares</option>
+                                <option value="1">BU-Buttock</option>
+                                <option value="2">LA-Left Arm</option>
+                                <option value="8">LD-Left Deltoid</option>
+                                <option value="9">LG-Left Gluteus Medius</option>
+                                <option value="10">LLFA-Left Lower Forearm</option>
+                                <option value="4">LT-Left Thigh</option>
+                                <option value="5">LUA-Left Upper Arm</option>
+                                <option value="11">LVL-Left Vastus Lateralis</option>
+                                <option value="0">RA-Right Arm</option>
+                                <option value="12">RD-Right Deltoid</option>
+                                <option value="13">RG-Right Gluteus Medius</option>
+                                <option value="14">RLFA-Right Lower Forearm</option>
+                                <option value="3">RT-Right Thigh</option>
+                                <option value="6">RUA-Right Upper Arm</option>
+                                <option value="15">RVL-Right Vastus Lateralis</option>
 @endif
                             </select>
                             <br/><br/>
 
-                            <button onclick="doHandleBarcode()" class='btn btn-primary save-barcode-form'>{{ __('Save Administration Site') }}</button>
+                            <button onclick="doHandleBarcode()" class='btn btn-primary save-barcode-form'>Save Administration Site</button>
 
                             </div>
                             <div id="barcode-results"></div>
                             <div id="barcode-go-home" style="display:none;">
-                                <span class="go_search btn btn-primary">{{ __('Back to Search Form') }}</span>
+                                <span class="go_search btn btn-primary">Back to Search Form</span>
                                 <br/>
                                 <span class="btn btn-link"
 
-                                        onclick="$('#barcode-go-home').hide(); $('#barcode-form').show();$('#barcode-input').val('').focus();">{{ __('Scan Again') }}</span>
+                                        onclick="$('#barcode-go-home').hide(); $('#barcode-form').show();$('#barcode-input').val('').focus();">Scan Again</span>
 
                             </div>
                             <br/>
                             <br/>
-                            <div style='display:none' id="barcode-allergy">{{ __('Patient Has a Prior Allergy - Ask to stay 30 minutes in observation area') }}</div>
+                            <div style='display:none' id="barcode-allergy">Patient Has a Prior Allergy - Ask to stay 30 minutes in observation area</div>
 
                         </div>
 
