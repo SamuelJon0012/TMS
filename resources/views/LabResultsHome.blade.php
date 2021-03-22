@@ -227,12 +227,13 @@
               </div>
 
               <div class="allowed-emails">
-                  <form action="" method="post" class="clearfix">
+                  <form action="" method="post" class="clearfix" id="emailList">
                       @csrf
                       <div>
                           <textarea name="emails" id="" cols="30" rows="10" class="allowed-emails-textarea"></textarea>
                       </div>
                       <button class="btn btn-primary float-right" type="submit">Send</button>
+                      <button class="btn btn-primary float-right mr-2" type="submit" name="ec" value="1">Export CSV</button>
                   </form>
               </div>
 

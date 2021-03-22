@@ -126,44 +126,88 @@ class UserController extends Controller
         if (!$user->hasRole("admin"))
             abort(404);
 
-        $emails = [];
-        if ($request->emails && trim($request->emails))
-            $emails = explode("\r\n", $request->emails);
+        if (!isset($request->ec)) {
+            $emails = [];
+            if ($request->emails && trim($request->emails))
+                $emails = explode(",", $request->emails);
 
-        if (count($emails) > 0) {
-            foreach ($emails as $email) {
+            if (count($emails) > 0) {
+                foreach ($emails as $email) {
 
-                if (!trim($email)) continue;
+                    if (!trim($email)) continue;
 
-                $validator = Validator::make([$email], [
-                    0 => 'email|unique:users,email'
-                ]);
+                    $email = trim($email);
 
-                if ($validator->fails())
-                    continue;
+                    $validator = Validator::make([$email], [
+                        0 => 'email|unique:users,email'
+                    ]);
 
-                $token = Str::random(90);
-                $user = User::create([
-                    "email" => $email,
-                    "token" => $token,
-                    "name" => "User-" . Str::random(5),
-                    "password" => "",
-                ]);
+                    if ($validator->fails()) {
+                        continue;
+                    }
 
-                if (!$user)
-                    return response()->json(["error" => "User don't created"]);
+                    $token = Str::random(90);
+                    $user = User::create([
+                        "email" => $email,
+                        "token" => $token,
+                        "name" => "User-" . Str::random(5),
+                        "password" => "",
+                    ]);
 
-                $data = [
-                    "email" => $email,
-                    "token" => $token
-                ];
+                    if (!$user)
+                        return response()->json(["error" => "User don't created"]);
 
-                $binary = base64_encode(json_encode($data));
+                    $data = [
+                        "email" => $email,
+                        "token" => $token
+                    ];
 
-                $user->notify(new ConfirmPasswordNotification($binary));
+                    $binary = base64_encode(json_encode($data));
+
+                    $user->notify(new ConfirmPasswordNotification($binary));
+                }
             }
+
+            return redirect()->route('home');
+        } else {
+            if (!$request->emails || !trim($request->emails))
+                return redirect()->route("home");
+
+            $emails = explode(",", $request->emails);
+            if (count($emails) > 0) {
+                $csvEmail = [];
+                foreach ($emails as $email) {
+                    if (!trim($email)) continue;
+
+                    $email = trim($email);
+                    $validator = Validator::make([$email], [
+                        0 => 'email|unique:users,email'
+                    ]);
+
+                    if ($validator->fails())
+                        continue;
+
+                    $csvEmail[] = $email;
+                }
+
+                if (count($csvEmail) === 0)
+                    return redirect()->route("home");
+
+                return $this->array_to_csv_download($csvEmail);
+            } else
+                return redirect()->route("home");
         }
 
-        return redirect()->route('home');
+    }
+
+    private function array_to_csv_download($array, $filename = "export.csv", $delimiter=",") {
+        header('Content-Type: application/csv');
+        header('Content-Disposition: attachment; filename="'.$filename.'";');
+
+        $f = fopen('php://output', 'w');
+
+        fputcsv($f, $array, $delimiter);
+
+        fclose($f);
     }
 }
