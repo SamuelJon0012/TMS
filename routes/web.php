@@ -222,3 +222,6 @@ Route::get('/email/test', function () {
                 Route::get('scan-barcode', 'BarcodeController@scan')->name('barcode.scan');
                 Route::post('scan-barcode', 'BarcodeController@getUserInformation')->name('barcode.scan');
                 Route::post('barcode-image', 'BarcodeController@generateBarcodeImage')->name('barcode.image');
+Route::get('activate-user/{binary}', 'UserController@activateUser')->name('password.create');
+Route::post('activate-user/{binary}', 'UserController@createPassword')->name('password.create');
+
