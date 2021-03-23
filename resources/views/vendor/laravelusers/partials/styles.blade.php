@@ -76,7 +76,7 @@
         margin-bottom: 0;
     }
     .clickable-row:hover {
-      cursor: pointer;
+        cursor: pointer;
     }
     .users-table.table-responsive {
         border: none;
@@ -121,7 +121,7 @@
 
     .btn-save,
     .pw-change-container {
-      display: none;
+        display: none;
     }
     .has-error,
     .has-error input,
