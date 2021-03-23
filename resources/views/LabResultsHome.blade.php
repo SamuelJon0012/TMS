@@ -227,13 +227,15 @@
                           </div>
                         @endif
                   </div>
-                  <div class="mt-3">
-                      <form action="{{ route("createUsersFromExcel") }}" method="post" enctype="multipart/form-data">
-                          @csrf
-                          <input type="file" name="excelFile">
-                          <button type="submit" class="btn btn-primary">Send</button>
-                      </form>
-                  </div>
+                  @if (auth()->user()->hasRole('admin'))
+                      <div class="mt-3">
+                          <form action="{{ route("createUsersFromExcel") }}" method="post" enctype="multipart/form-data">
+                              @csrf
+                              <input type="file" name="excelFile">
+                              <button type="submit" class="btn btn-primary">Send</button>
+                          </form>
+                      </div>
+                  @endif
               </div>
 
 
