@@ -3,6 +3,8 @@
 namespace App\Imports;
 
 use App\Notifications\ConfirmPasswordNotification;
+use App\Notifications\RegistrationNotification;
+use App\PatientProfile;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -56,8 +58,16 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
                     "phone" => $row["phone_number"],
                 ]);
 
-                $binary = base64_encode(json_encode(["email" => $row["email"], "token" => $token]));
+                $data['id'] = $user->id;
+
+                $binary = base64_encode(json_encode([
+                    "email" => $row["email"],
+                    "token" => $token
+                ]));
+
                 $user->notify(new ConfirmPasswordNotification($binary));
+
+                $this->createPatientProfile($data);
             }
         }
 
@@ -123,5 +133,56 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
             return false;
         }
         return true;
+    }
+
+    private function createPatientProfile($data) {
+        $P = new PatientProfile();
+
+        $P->setAddress1($data['address1'])
+            ->setAddress2($data['address2'])
+            ->setCity($data['city'])
+            ->setDateOfBirth($data['date_of_birth'])
+            ->setState($data['state_code'])
+            ->setEmail($data['email'])
+            ->setBirthSex($data['birth_sex'])
+            ->setEthnicity($data['ethnicity'])
+            ->setFirstName($data['first_name'])
+            ->setLastName($data['last_name'])
+            ->setRace($data['race'])
+            ->setVSeeClinicId('trackmysolutions')
+            ->setZipcode($data['zipcode'])
+            ->setId($data['id']);
+
+        # sub assets must be stored as arrays and all fields must be included even if they are not required
+
+        $phone_number = $data['phone_number'];
+
+        $phone_numbers= [ // Todo: fix registration form (it's sending "Mobile")
+            [
+                "is_primary" => "1",
+                "phone_type" => "1",
+                "phone_number" => $phone_number
+            ],
+            // Todo: Add 2nd phone number if they have it
+        ];
+
+        $insurances = [[ // We don't have this info yet (It's on the questionnaire)
+            "administrator_name" =>"Undefined",
+            "group_id" =>"0",
+            "employer_name" =>"Undefined",
+            "coverage_effective_date" =>"1/1/2021",
+            "issuer_id" =>"0000",
+            "primary_cardholder" => $data['first_name']." ".$data['last_name'],
+            "insurance_type" => 0,
+            "relationship_to_primary_cardholder" => 0,
+            "plan_type" => 0,
+            "plan_id" => "0",
+
+        ]];
+
+
+        $result = $P->setInsurances($insurances)
+            ->setPhoneNumbers($phone_numbers)
+            ->save();
     }
 }
