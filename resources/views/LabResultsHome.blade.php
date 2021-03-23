@@ -197,6 +197,22 @@
                            </div>
                     </div>--}}
             <br><br><br>
+              @if(session("error"))
+                <div class="alert alert-danger">
+                    <span>{{ session("error") }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+              @endif
+              @if(session("successImport"))
+                <div class="alert alert-success">
+                    <span>{{ session("successImport") }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+              @endif
             <div class="row justify-content-center">
               <div>
                   <div class="set-vaccine-location-wrapper" style="border: none">
@@ -214,7 +230,7 @@
                   <div class="mt-3">
                       <form action="{{ route("createUsersFromExcel") }}" method="post" enctype="multipart/form-data">
                           @csrf
-                          <input type="file" name="excel-file">
+                          <input type="file" name="excelFile">
                           <button type="submit" class="btn btn-primary">Send</button>
                       </form>
                   </div>

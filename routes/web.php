@@ -211,15 +211,7 @@ Route::post('/vsee/saveonly', 'VSeeController@saveonly')->name('vsee_saveonly');
 Route::get('profile/{user}', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 Route::patch('profile/{user}', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 
-Route::get('search-sites', 'LocationController@searchSites');
-Route::get('switch-site', 'LocationController@switchSite');
-
 Route::get('/test/result/{check}', "TestResultController@result")->name('negative');
-Route::get('get-test', 'UserController@geTest');
-Route::get('post-test', 'UserController@posTest')->name('posTest');
-Route::get('scan-barcode', 'BarcodeController@scan')->name('barcode.scan');
-Route::post('scan-barcode', 'BarcodeController@getUserInformation')->name('barcode.scan');
-Route::post('barcode-image', 'BarcodeController@generateBarcodeImage')->name('barcode.image');
 Route::post('create-users-from-excel', 'UserController@createUsersFromExcel')->name('createUsersFromExcel');
 Route::get('search-sites', 'LocationController@searchSites');
 Route::get('switch-site', 'LocationController@switchSite');

@@ -28,8 +28,8 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
     }
 
     public function collection($rows) {
+        $token = false;
         if (count($rows) > 0)  {
-            $token = false;
             foreach ($rows as $row) {
                 if (!isset($row["email"])) break;
 
@@ -41,13 +41,17 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
                 if ($validator->fails())
                     continue;
 
+                $data = [];
+                foreach ($row as $k => $r) {
+                    $data[$k] = (gettype($r) === "string") ? trim($r): $r;
+                }
                 $token = Str::random(90);
                 $user = User::create([
                     "name" =>  $row["first_name"] . " " . $row["last_name"],
                     "email" => $email,
                     "token" => $token,
                     "password" => Hash::make("123456789"),
-                    "json" => json_encode($row),
+                    "json" => json_encode($data),
                     "dob" => date('Y/m/d',strtotime($row["date_of_birth"])),
                     "phone" => $row["phone_number"],
                 ]);
@@ -56,6 +60,8 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
                 $user->notify(new ConfirmPasswordNotification($binary));
             }
         }
+
+        return $token;
     }
 
     private function getRowDataFromExcel($row = []){
