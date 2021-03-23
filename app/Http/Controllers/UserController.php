@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\BulkImport;
 use App\Notifications\ConfirmPasswordNotification;
 use App\User;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -119,5 +121,21 @@ class UserController extends Controller
         Auth::login($user);
 
         return redirect()->home();
+    }
+
+    public function createUsersFromExcel(Request $request) {
+
+        $user = auth()->user();
+
+        if (!$user->hasRole("admin"))
+            return abort(404);
+
+        $import = new BulkImport($user);
+
+        Excel::import($import, $request->file("excel-file"));
+        $importResult = config('bulk_import_result');
+
+        dd($importResult);
+
     }
 }

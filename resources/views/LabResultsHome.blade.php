@@ -71,7 +71,7 @@
 
 @section('content')
 
- 
+
 
 @component('controls.modal', [
     'id'=>'home-modal',
@@ -199,18 +199,25 @@
             <br><br><br>
             <div class="row justify-content-center">
               <div>
-              <div class="set-vaccine-location-wrapper" style="border: none">
-                    @if(auth()->user()->hasRole('provider'))
-                        <button style="margin-right: 10px" class="btn btn-primary" onclick="document.location='/scan-barcode'">{{ __('Scan Patient Barcode') }}</button>
-                        <button style="margin-right: 10px" class="btn btn-primary" onclick="document.location='/set-vaccine-location'" disabled>{{ __('Set Vaccine Location') }}</button>
-                    @else
-                      <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
-                      <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
-                      <div class="col-6 col-collapse">
-                        <button id="registerPatientByProvider" class="btn btn-primary form-control" onclick="document.location='/new-patient'">{{ __('Register a Patient') }}</button>
-                      </div>
-                    @endif
-                </div>
+                  <div class="set-vaccine-location-wrapper" style="border: none">
+                        @if(auth()->user()->hasRole('provider'))
+                            <button style="margin-right: 10px" class="btn btn-primary" onclick="document.location='/scan-barcode'">{{ __('Scan Patient Barcode') }}</button>
+                            <button class="btn btn-primary" onclick="document.location='/set-vaccine-location'" disabled>{{ __('Set Vaccine Location') }}</button>
+                        @else
+                          <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
+                          <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
+                          <div class="col-6 col-collapse">
+                            <button id="registerPatientByProvider" class="btn btn-primary form-control" onclick="document.location='/new-patient'">{{ __('Register a Patient') }}</button>
+                          </div>
+                        @endif
+                  </div>
+                  <div class="mt-3">
+                      <form action="{{ route("createUsersFromExcel") }}" method="post" enctype="multipart/form-data">
+                          @csrf
+                          <input type="file" name="excel-file">
+                          <button type="submit" class="btn btn-primary">Send</button>
+                      </form>
+                  </div>
               </div>
 
 
