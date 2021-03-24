@@ -212,7 +212,6 @@ Route::get('profile/{user}', ['as' => 'profile.edit', 'uses' => 'ProfileControll
 Route::patch('profile/{user}', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 
 Route::get('/test/result/{check}', "TestResultController@result")->name('negative');
-Route::post('create-users-from-excel', 'UserController@createUsersFromExcel')->name('createUsersFromExcel');
 Route::get('search-sites', 'LocationController@searchSites');
 Route::get('switch-site', 'LocationController@switchSite');
 Route::get('change-locale/{locale}', 'LanguageController@changeLocale')->name('change_locale');
@@ -222,3 +221,10 @@ Route::post('activate-user/{binary}', 'UserController@createPassword')->name('pa
 Route::get('scan-barcode', 'BarcodeController@scan')->name('barcode.scan');
 Route::post('scan-barcode', 'BarcodeController@getUserInformation')->name('barcode.scan');
 Route::post('barcode-image', 'BarcodeController@generateBarcodeImage')->name('barcode.image');
+
+Route::group(["prefix" => "admin", "as" => "admin.", "namespace" => "Admin"], function () {
+    Route::get("/", 'AdminController@index')->name("dashboard")->middleware('not.admin');
+    Route::get("/login", "LoginController@index")->name("login");
+    Route::get('bulk-import', 'AdminController@bulkImport')->name("bulk-import");
+    Route::post('create-users-from-excel', 'AdminController@createUsersFromExcel')->name('create-users-from-excel');
+});
