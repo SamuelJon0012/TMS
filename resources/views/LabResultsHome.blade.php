@@ -261,17 +261,22 @@
 
                   @if(auth()->user()->hasRole('admin'))
                       <div class="allowed-emails mb-2">
-                          <form action="" method="post" class="clearfix" id="emailList" enctype="multipart/form-data">
+                          <form action="{{ session("excelEmails") ? route("export-emails") : '' }}"
+                                method="post" class="clearfix" id="emailList" enctype="multipart/form-data">
                               @csrf
-                              <div>
-                                  <textarea name="emails" id="" cols="30" rows="10" class="allowed-emails-textarea"></textarea>
-                              </div>
-                              <button class="btn btn-primary float-right" type="submit">Send</button>
-{{--                              <button class="btn btn-primary float-right mr-2" type="submit" name="ec" value="1">Export</button>--}}
-                              <div class="excel-choose-file-block mr-2 float-right">
-                                  <span class="excel-choose-file-text">Select Excel</span>
-                                  <input type="file" name="excelFile" class="excel-file">
-                              </div>
+                              @if (!session("excelEmails"))
+                                  <button class="btn btn-primary float-right" type="submit">Send</button>
+                                  <div class="excel-choose-file-block mr-2 float-right">
+                                      <span class="excel-choose-file-text">Select Excel</span>
+                                      <input type="file" name="excelFile" class="excel-file">
+                                  </div>
+                              @else
+                                  <input type="hidden" name="type" value="{{ session("excelType") }}">
+                                  <div>
+                                      <textarea name="emails" id="" cols="30" rows="10" class="allowed-emails-textarea">{{ session("excelEmails") ? implode(", ", session("excelEmails")) : '' }}</textarea>
+                                  </div>
+                                  <button class="btn btn-primary float-right" type="submit" name="ec" value="1">Export</button>
+                              @endif
                           </form>
                       </div>
                   @endif

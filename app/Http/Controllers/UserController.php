@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\EmailExport;
+use App\Imports\ExcelFile;
 use App\Notifications\ConfirmPasswordNotification;
 use App\User;
 use Illuminate\Http\Request;
@@ -9,9 +11,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
+    private $excelType = ['csv', 'xls', 'xlsx'];
 
     public function __construct()
     {
@@ -127,6 +131,11 @@ class UserController extends Controller
             abort(404);
 
         if (isset($request->excelFile) && $request->excelFile) {
+            $fileType = $request->excelFile->getClientOriginalExtension();
+            if (!in_array($fileType, $this->excelType)) {
+                return redirect()->home()->with("error", "Wrong file type");
+            }
+
             $validator = Validator::make(
                 [
                     'file'      => $request->excelFile,
@@ -138,11 +147,22 @@ class UserController extends Controller
                 ]
             );
 
-            if ($validator->fails())
+            if ($validator->fails()) {
                 return redirect()->back()->with("error", "The file does not match the csv or xlsx types");
+            }
 
-            dd($request->all());
+            $user = auth()->user();
+            $import = new ExcelFile($user);
+            Excel::import($import, request()->file('excelFile'));
+
+            $emails = config('email_export')['data'] ?? [];
+
+            return redirect()->home()->with([
+                "excelEmails" => $emails,
+                "excelType" => $request->excelFile->getClientOriginalExtension(),
+            ]);
         }
+
 /*        if (!isset($request->ec)) {
             $emails = [];
             if ($request->emails && trim($request->emails))
@@ -217,14 +237,29 @@ class UserController extends Controller
 
     }
 
-    private function array_to_csv_download($array, $filename = "export.csv", $delimiter=",") {
-        header('Content-Type: application/csv');
-        header('Content-Disposition: attachment; filename="'.$filename.'";');
+    public function exportEmail(Request $request) {
 
-        $f = fopen('php://output', 'w');
+        if (!$request->emails)
+            return redirect()->back();
 
-        fputcsv($f, $array, $delimiter);
+        if (!$request->type || !in_array($request->type, $this->excelType))
+            return redirect()->home()->with("error", "Wrong file type");
 
-        fclose($f);
+        $emails = explode(",", $request->emails);
+
+        $data = [];
+        foreach ($emails as $email) {
+            $email = trim($email);
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+               continue;
+            };
+            $data[] = $email;
+        }
+
+        if (count($data) === 0)
+            return redirect()->home()->with("success", "File is empty");
+
+        return Excel::download(new EmailExport($data), "export." . $request->type, ucfirst($request->type));
     }
+
 }
