@@ -21,10 +21,10 @@
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>00/00/0000</td>
-                            <td>Test type</td>
-                            <td>Negative</td>
-                            <td>00/00/0000 00:00:00</td>
+                            <td>{{$result['date_time']}}</td>
+                            <td>{{$result['description']}}</td>
+                            <td>{{$result['result']}}</td>
+                            <td>{{$result['expiration_date']}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -33,12 +33,12 @@
     </div>
 
     <div class="test-result-image">
-        @if($positive)
+{{--        @if($positive)--}}
             <img src="{{ asset("images/positive.png") }}">
-        @endif
-        @if($negative)
-            <img src="{{ asset("images/negative.png") }}">
-        @endif
+{{--        @endif--}}
+{{--        @if($negative)--}}
+{{--            <img src="{{ asset("images/negative.png") }}">--}}
+{{--        @endif--}}
     </div>
 @endsection
 

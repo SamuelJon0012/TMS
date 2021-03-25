@@ -25,12 +25,11 @@
 
     <style type="text/css">
     @yield('styleCss')
-    </style> 
+    </style>
     @stack('pageHeader')
 </head>
 <body
-    @if(isset($positive) && $positive) class="positive-page"@endif
-    @if(isset($negative) && $negative) class="negative-page"@endif
+    @if(\Illuminate\Support\Facades\Route::is('user-results')) class="positive-page"@endif
 >
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -38,11 +37,11 @@
                 <a class="navbar-brand small-logo" href="{{ url('/') }}">
 			             <img src="/{{'images/'}}{{env('APP_logo')}}" style="height:48px;" />
                 </a>
-                
+
                 @if(env('APP_NAME') == 'TrackMy Lab Results')
 					<img src = "{{ asset('images/HITL_Logo.jpg') }}" height= '48'>
                 @endif
-                
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
