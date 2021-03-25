@@ -220,7 +220,7 @@ class RegisterController extends Controller
               $result = $P->setInsurances($insurances)
                   ->setPhoneNumbers($phone_numbers)
                   ->save();
-              
+
               $user->notify(new RegistrationNotification());
           }
 
@@ -232,7 +232,7 @@ class RegisterController extends Controller
         }
 
         return $user;
-    } 
+    }
 
     /**
      * Handles the registration of a patient by a provider
