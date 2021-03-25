@@ -126,7 +126,24 @@ class UserController extends Controller
         if (!$user->hasRole("admin"))
             abort(404);
 
-        if (!isset($request->ec)) {
+        if (isset($request->excelFile) && $request->excelFile) {
+            $validator = Validator::make(
+                [
+                    'file'      => $request->excelFile,
+                    'extension' => strtolower($request->excelFile->getClientOriginalExtension()),
+                ],
+                [
+                    'file'          => 'required',
+                    'extension'      => 'required|in:csv,xlsx,xls',
+                ]
+            );
+
+            if ($validator->fails())
+                return redirect()->back()->with("error", "The file does not match the csv or xlsx types");
+
+            dd($request->all());
+        }
+/*        if (!isset($request->ec)) {
             $emails = [];
             if ($request->emails && trim($request->emails))
                 $emails = explode(",", $request->emails);
@@ -196,7 +213,7 @@ class UserController extends Controller
                 return $this->array_to_csv_download($csvEmail);
             } else
                 return redirect()->route("home");
-        }
+        }*/
 
     }
 

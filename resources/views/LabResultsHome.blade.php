@@ -6,6 +6,33 @@
 
 @section('styleCss')
 
+    .excel-choose-file-block {
+        position: relative;
+        height: 38px;
+        width: 109px;
+    }
+
+    .excel-file {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .excel-choose-file-text {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #0d6efd;
+        color: #FFF;
+        padding: 6px 12px;
+        border: 1px solid #0d6efd;
+        border-radius: .25rem;
+        width: 109px;
+    }
+
     .allowed-emails {
         margin-top: 10px;
     }
@@ -105,6 +132,12 @@
           @if(session()->get('success'))
             <div class="alert alert-success">
               {{ session()->get('success') }}
+            </div>
+          @endif
+
+          @if(session()->get('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <span>{{ session()->get('error') }}</span>
             </div>
           @endif
 
@@ -226,16 +259,22 @@
                 <button id="registerPatientByProvider" class="btn btn-primary form-control" onclick="document.location='labResults/new-patient'">{{ __('Register a Patient') }}</button>
               </div>
 
-              <div class="allowed-emails">
-                  <form action="" method="post" class="clearfix" id="emailList">
-                      @csrf
-                      <div>
-                          <textarea name="emails" id="" cols="30" rows="10" class="allowed-emails-textarea"></textarea>
+                  @if(auth()->user()->hasRole('admin'))
+                      <div class="allowed-emails mb-2">
+                          <form action="" method="post" class="clearfix" id="emailList" enctype="multipart/form-data">
+                              @csrf
+                              <div>
+                                  <textarea name="emails" id="" cols="30" rows="10" class="allowed-emails-textarea"></textarea>
+                              </div>
+                              <button class="btn btn-primary float-right" type="submit">Send</button>
+{{--                              <button class="btn btn-primary float-right mr-2" type="submit" name="ec" value="1">Export</button>--}}
+                              <div class="excel-choose-file-block mr-2 float-right">
+                                  <span class="excel-choose-file-text">Select Excel</span>
+                                  <input type="file" name="excelFile" class="excel-file">
+                              </div>
+                          </form>
                       </div>
-                      <button class="btn btn-primary float-right" type="submit">Send</button>
-                      <button class="btn btn-primary float-right mr-2" type="submit" name="ec" value="1">Export CSV</button>
-                  </form>
-              </div>
+                  @endif
 
             </div>
           @endif
