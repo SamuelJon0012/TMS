@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\BulkImport;
 use App\Notifications\ConfirmPasswordNotification;
 use App\User;
 use Illuminate\Http\Request;
@@ -11,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -110,34 +108,5 @@ class UserController extends Controller
         Auth::login($user);
 
         return redirect()->home();
-    }
-
-    public function createUsersFromExcel(Request $request) {
-
-        $user = auth()->user();
-
-        if (!$user->hasRole("admin"))
-            return abort(404);
-
-        $validator = Validator::make(
-            [
-                'excelFile'      => $request->excelFile,
-                'extension' => strtolower($request->excelFile->getClientOriginalExtension()),
-            ],
-            [
-                'excelFile'          => 'required',
-                'extension'      => 'required|in:csv,xlsx,xls',
-            ]
-        );
-
-        if ($validator->fails()) {
-            return redirect()->back()->with("error", "Inappropriate file type");
-        }
-
-        $import = new BulkImport($user);
-
-        Excel::import($import, $request->file("excelFile"));
-
-        return redirect()->back()->with("successImport", "Users added");
     }
 }
