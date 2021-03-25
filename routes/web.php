@@ -1,9 +1,11 @@
 <?php
 
+use App\Exports\EmailExport;
 use App\Http\Controllers\LabResultsPatientCOVIDTestController;
 use App\Mail\TestAmazonSes;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientVaccineController;
+use Maatwebsite\Excel\Facades\Excel;
 use Picqer\Barcode\BarcodeGeneratorSVG;
 
 // use jeremykenedy\LaravelRoles\Route;
@@ -224,4 +226,4 @@ Route::get('/email/test', function () {
                 Route::post('barcode-image', 'BarcodeController@generateBarcodeImage')->name('barcode.image');
 Route::get('activate-user/{binary}', 'UserController@activateUser')->name('password.create');
 Route::post('activate-user/{binary}', 'UserController@createPassword')->name('password.create');
-
+Route::post('export-email-list', 'UserController@exportEmail')->name('export-emails');
