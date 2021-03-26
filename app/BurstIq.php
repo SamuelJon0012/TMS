@@ -482,7 +482,7 @@ class BurstIq
     /**
      * Attempt to fetch the record identified by the asset.id provided and populate the object before returning true
      * @param mixed $assetId
-     * @return bool 
+     * @return bool
      */
     public function load($assetId){
         $assetId = $this->escapeString($assetId);

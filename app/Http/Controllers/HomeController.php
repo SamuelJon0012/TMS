@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Services\LanguageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Sites;
@@ -79,7 +79,7 @@ class HomeController extends Controller
             abort(401, 'Please login');
         if (!$user->checkRole('provider'))
             abort(403, 'You can not access to register a patient');
-        
+
         return view('auth.register',['isProvider'=>true]);
     }
 

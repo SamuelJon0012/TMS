@@ -59,4 +59,17 @@ class User extends Authenticatable
 
         return $a;
     }
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = str_replace('’', "'", $value);
+    }
+
+    public function scopePatients($q)
+    {
+        return $q->join('role_user', function ($join) {
+            $join->on('role_user.user_id', '=', 'users.id')
+                ->where('role_user.role_id', 2);
+        });
+    }
 }

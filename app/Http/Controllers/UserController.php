@@ -6,6 +6,7 @@ use App\Notifications\ConfirmPasswordNotification;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -18,22 +19,9 @@ class UserController extends Controller
 //        $this->middleware("auth");
     }
 
-    public function posTest(Request $request) {
-        $user = auth()->user();
-
-        /*if (!$user->hasRole("admin"))
-            return response()->json(["error" => "Not have permission"]);
-        if (!$request->file("emails"))
-            return response()->json(["error" => "Not file"]);
-        $emails = explode("\r\n", $request->file("emails")->getContent());
-        if (count($emails) === 0)
-            return response()->json(["error" => "File is empty"]);*/
-
-        $checkEmails = [];
+    public function createPatient(Request $request) {
         $emails = [
-            "test@test.com",
-            "test1@test.com",
-            "drdfy@test.com",
+            Str::random(8) . "@" . Str::random(4) . "." . Str::random(3),
         ];
         foreach ($emails as $email) {
             $validator = Validator::make([$email], [
@@ -53,6 +41,7 @@ class UserController extends Controller
 
             if (!$user)
                 return response()->json(["error" => "User don't created"]);
+            DB::table('role_user')->insert(['user_id' => $user->id,'role_id' => 2,'created_at' => now(),'updated_at' => now()]);
 
             $data = [
                 "email" => $email,
