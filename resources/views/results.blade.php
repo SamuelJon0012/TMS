@@ -19,13 +19,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>{{$result['date_time']}}</td>
-                            <td>{{$result['description']}}</td>
-                            <td>{{$result['result']}}</td>
-                            <td>{{$result['expiration_date']}}</td>
-                        </tr>
+                        @foreach($result as $data)
+                            <tr>
+                                <td>1</td>
+                                <td>{{ $data['date_time'] }}</td>
+                                <td>{{ $data['description'] }}</td>
+                                <td>{{ $data['result'] }}</td>
+                                <td>{{ $data['expiration_datetime'] }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

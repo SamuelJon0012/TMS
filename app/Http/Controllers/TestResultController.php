@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Encounter;
+use App\PatientProfile;
 use App\ProcedureResults;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -13,21 +14,34 @@ class TestResultController extends Controller
 //        if ($check !== "positive" && $check !== "negative")
 //            return abort(404);
 
-        $obj = new \App\ProcedureResults();
-        $procedureResult = $obj->find('where asset.id = 1');
-        $procedureResult = $procedureResult->getData()->records[0]->asset->result;
+        $test = new Encounter();
+        $testResult = $test->find('where asset.type = 0');
 
-        $encounter = new Encounter();
-        $encounter = $encounter->find('where asset.id = 140000');
-        $dateTime = Carbon::make(get_object_vars($encounter->getDatetime())['$date'])->format('d/m/Y');
-        $encounterDescription = $encounter->getProcedures()[0]->description;
+        $result = [];
+        if ($testResult->data->records) {
+            foreach ($testResult->data->records as $data) {
+                $patient_id = $data->asset->patient_id;
+                if ($data->asset->procedures) {
+                    foreach ($data->asset->procedures as $procedure) {
+                        $obj = new ProcedureResults();
+                        $procedureResult = $obj->find('where `asset.patient_id` = ' . $patient_id);
 
-        $result = [
-          'result'          => $procedureResult,
-          'date_time'       => $dateTime,
-          'description'     => $encounterDescription,
-          'expiration_date' => ''
-        ];
+                        if ($procedureResult->data->records) {
+                            foreach ($procedureResult->data->records as $pr) {
+                                $result[$patient_id]["result"] = $pr->asset->result;
+
+                                $encounter = new Encounter();
+                                $encounter = $encounter->find('where asset.id = ' . $pr->asset->encounter_id);
+                                $result[$patient_id]["date_time"] = Carbon::make(get_object_vars($encounter->getDatetime())['$date'])->format('d/m/Y');
+                                $result[$patient_id]["expiration_datetime"] = Carbon::make(get_object_vars($pr->asset->expiration_datetime)['$date'])->format('d/m/Y');
+                                $result[$patient_id]["description"] = $encounter->getProcedures()[0]->description;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
 //        $positive = false;
 //        $negative = false;

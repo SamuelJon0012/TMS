@@ -80,7 +80,7 @@ class ProcedureResults extends BurstIq
 
         # populate id and all the other properties
 
-        $this->id = $asset->id;
+        $this->patient_id = $asset->patient_id;
         $this->encounter_id = $asset->encounter_id;
         $this->procedure_id = $asset->procedure_id;
 
@@ -89,7 +89,7 @@ class ProcedureResults extends BurstIq
 
         $array = [
 
-            'id' => $asset->id,
+            'patient_id' => $asset->patient_id,
             'encounter_id' => $asset->encounter_id,
             'procedure_id' => $asset->procedure_id,
 

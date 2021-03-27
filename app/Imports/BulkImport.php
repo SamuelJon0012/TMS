@@ -89,6 +89,8 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
             ->setRace($data['race'])
             ->setVSeeClinicId('trackmysolutions')
             ->setZipcode($data['zipcode'])
+            ->setIsWelcomed(true)
+            ->setPatientConsented(true)
             ->setId($data['id']);
 
         $phone_number = $data['phone_number'];
@@ -115,8 +117,15 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
 
         ]];
 
-        $result = $P->setInsurances($insurances)
-            ->setPhoneNumbers($phone_numbers)
-            ->save();
+        try{
+            $result = $P->setInsurances($insurances)
+                ->setPhoneNumbers($phone_numbers)
+                ->save();
+
+            return $result;
+        } catch (\Exception $e){
+            dd($e->getMessage());
+        }
+
     }
 }
