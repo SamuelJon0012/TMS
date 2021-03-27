@@ -51,7 +51,7 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
                     "name" =>  $row["first_name"] . " " . $row["last_name"],
                     "email" => $email,
                     "token" => $token,
-                    "password" => Hash::make("123456789"),
+                    "password" => Hash::make(uniqid()),
                     "json" => json_encode($data),
                     "dob" => date('Y/m/d',strtotime($row["date_of_birth"])),
                     "phone" => $row["phone_number"],

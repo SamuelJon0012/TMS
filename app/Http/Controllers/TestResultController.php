@@ -32,8 +32,8 @@ class TestResultController extends Controller
 
                                 $encounter = new Encounter();
                                 $encounter = $encounter->find('where asset.id = ' . $pr->asset->encounter_id);
-                                $result[$patient_id]["date_time"] = Carbon::make(get_object_vars($encounter->getDatetime())['$date'])->format('d/m/Y');
-                                $result[$patient_id]["expiration_datetime"] = Carbon::make(get_object_vars($pr->asset->expiration_datetime)['$date'])->format('d/m/Y');
+                                $result[$patient_id]["date_time"] = Carbon::make(get_object_vars($encounter->getDatetime())['$date'])->format('m/d/Y');
+                                $result[$patient_id]["expiration_datetime"] = Carbon::make(get_object_vars($pr->asset->expiration_datetime)['$date'])->format('m/d/Y H:i:s');
                                 $result[$patient_id]["description"] = $encounter->getProcedures()[0]->description;
                             }
                         }
