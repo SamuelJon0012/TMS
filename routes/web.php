@@ -222,8 +222,8 @@ Route::get('scan-barcode', 'BarcodeController@scan')->name('barcode.scan');
 Route::post('scan-barcode', 'BarcodeController@getUserInformation')->name('barcode.scan');
 Route::post('barcode-image', 'BarcodeController@generateBarcodeImage')->name('barcode.image');
 
-Route::group(["prefix" => "admin", "as" => "admin.", "namespace" => "Admin"], function () {
-    Route::get("/", 'AdminController@index')->name("dashboard")->middleware('not.admin');
+Route::group(["prefix" => "admin", "as" => "admin.", "namespace" => "Admin", "middleware" => "not.admin"], function () {
+    Route::get("/", 'AdminController@index')->name("dashboard");
     Route::get("/login", "LoginController@index")->name("login");
     Route::get('bulk-import', 'AdminController@bulkImport')->name("bulk-import");
     Route::post('create-users-from-excel', 'AdminController@createUsersFromExcel')->name('create-users-from-excel');

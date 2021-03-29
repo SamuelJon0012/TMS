@@ -38,6 +38,7 @@ class PatientProfile extends BurstIq
     private $insurances;
     private $is_welcomed;
     private $patient_consented;
+    private $customer_product_id;
 
     /**
      * @return mixed
@@ -514,6 +515,15 @@ class PatientProfile extends BurstIq
 
     public function setPatientConsented($patient_consented) {
         $this->patient_consented = $patient_consented;
+        return $this;
+    }
+
+    public function getCustomerProductId() {
+        return $this->customer_product_id;
+    }
+
+    public function setCustomerProductId($customer_product_id) {
+        $this->customer_product_id = $customer_product_id;
         return $this;
     }
 

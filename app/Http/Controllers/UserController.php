@@ -63,39 +63,14 @@ class UserController extends Controller
     }
 
     public function activateUser($token) {
-        $json = base64_decode($token);
-        $userData = json_decode($json, true);
-        if (!$userData || (!isset($userData["email"]) && !isset($userData["token"]))) {
-            abort(404);
-        }
-
-        $user = User::where([
-            "email" => $userData["email"],
-            "token" => $userData["token"]
-        ])->first();
-
-        if (!$user) {
-            abort(404);
-        }
+        $user = $this->activatePatient($token);
 
         return view("auth.passwords.create-password", compact("user"));
     }
 
     public function createPassword($token, Request $request) {
-        $json = base64_decode($token);
-        $userData = json_decode($json, true);
-        if (!$userData || (!isset($userData["email"]) && !isset($userData["token"]))) {
-            abort(404);
-        }
 
-        $user = User::where([
-            "email" => $userData["email"],
-            "token" => $userData["token"]
-        ])->first();
-
-        if (!$user) {
-            abort(404);
-        }
+        $user = $this->activatePatient($token);
 
         $request->validate([
             "password" => "required|confirmed|min:8|string"
@@ -108,5 +83,24 @@ class UserController extends Controller
         Auth::login($user);
 
         return redirect()->home();
+    }
+
+    private function activatePatient($token) : User {
+        $json = base64_decode($token);
+        $userData = json_decode($json, true);
+        if (!$userData || (!isset($userData["email"]) && !isset($userData["token"]))) {
+            abort(404);
+        }
+
+        $user = User::where([
+            "email" => $userData["email"],
+            "token" => $userData["token"]
+        ])->first();
+
+        if (!$user) {
+            abort(404);
+        }
+
+        return $user;
     }
 }
