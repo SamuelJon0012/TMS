@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Notifications\ConfirmPasswordNotification;
+use App\Notifications\RegistrationNotification;
 use App\PatientProfile;
 use App\User;
 use Illuminate\Support\Facades\Hash;
@@ -73,6 +74,67 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
         return $token;
     }
 
+    private function getRowDataFromExcel($row = []){
+        if(app()->getLocale() == 'en'){
+            return [
+                'store_code' => $row['store_code'] ?? '',
+                'name' => $row['location_name'] ?? '',
+                'website' => $row['website'] ?? '',
+                'phone' => $row['phone'] ?? '',
+                'address' => $row['address'] ?? '',
+                'country' => $row['country'] ?? '',
+                'province' => $row['province'] ?? '',
+                'city' => $row['city'] ?? '',
+                'postal_code' => $row['postal_code'] ?? '',
+                'category_id' => $row['business_category'] ?? null,
+                'lat' => $row['latitude'] ?? null,
+                'lng' => $row['longitude'] ?? null,
+            ];
+        }
+        else{
+            return [
+                'store_code' => $row['rmz_almokaa'] ?? '',
+                'name' => $row['esm_almokaa'] ?? '',
+                'website' => $row['almokaa_alelktrony']  ?? '',
+                'phone' => $row['alhatf'] ?? '',
+                'address' => $row['alaanoan'] ?? '',
+                'country' => $row['albld'] ?? '',
+                'province' => $row['almhafth']  ?? '',
+                'city' =>  $row['almdyn']  ?? '',
+                'postal_code' => $row['alrmz_albrydy']  ?? '',
+                'category_id' => $row['fe_alaaml']  ?? null,
+                'lat' => $row['ehdathyat_kht_alaard'] ?? null,
+                'lng' => $row['ehdathyat_kht_altol']  ?? null,
+            ];
+        }
+
+    }
+
+    private function validateData($row){
+        return true;
+    }
+    private function validateStoreCode($datas){
+        $locale = app()->getLocale();
+        $storeCodes = [];
+        foreach($datas as $key => $value){
+            if($locale == 'en'){
+                if($value['store_code']){
+                    $storeCodes[] = $value['store_code'];
+                }
+            }
+            else{
+                if($value['rmz_almokaa']){
+                    $storeCodes[] = $value['rmz_almokaa'];
+                }
+            }
+        }
+        $storeCodesUnique = array_unique($storeCodes);
+        if(count($storeCodesUnique) !== count($storeCodes)){
+            return false;
+        }
+        return true;
+    }
+
     private function createPatientProfile($data) {
         $P = new PatientProfile();
 
@@ -88,20 +150,27 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
             ->setLastName($data['last_name'])
             ->setRace($data['race'])
             ->setVSeeClinicId('trackmysolutions')
+            ->setRelationshipToOwner(0)
+            ->setIsWelcomed(false)
+            ->setPatientConsented(false)
             ->setZipcode($data['zipcode'])
-            ->setId($data['id']);
+            ->setId($data['id'])
+            ->setCustomerProductId(env('CUSTOMER_ID'));
+
+        # sub assets must be stored as arrays and all fields must be included even if they are not required
 
         $phone_number = $data['phone_number'];
 
-        $phone_numbers= [
+        $phone_numbers= [ // Todo: fix registration form (it's sending "Mobile")
             [
                 "is_primary" => "1",
                 "phone_type" => "1",
                 "phone_number" => $phone_number
             ],
+            // Todo: Add 2nd phone number if they have it
         ];
 
-        $insurances = [[
+        $insurances = [[ // We don't have this info yet (It's on the questionnaire)
             "administrator_name" =>"Undefined",
             "group_id" =>"0",
             "employer_name" =>"Undefined",
@@ -114,6 +183,7 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
             "plan_id" => "0",
 
         ]];
+
 
         $result = $P->setInsurances($insurances)
             ->setPhoneNumbers($phone_numbers)

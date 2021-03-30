@@ -71,13 +71,14 @@
 
 @section('content')
 
-
+ 
 
 @component('controls.modal', [
     'id'=>'home-modal',
     'isHome'=>true,
     'breadCrumbs'=>[]
 ])
+
 <div class="container">
     <div class="row justify-content-center">
         @if($v == '1')
@@ -106,6 +107,7 @@
                   'id'=>'lab-results-button',
                   'image'=>asset('images/lab-icon.png'),
                   'caption'=>__('My Lab Results'),
+                  'url'=>'/test/result',
                   'hint'=>'This feature is currently unavailable',
                 ],
 /*                 [
@@ -162,12 +164,6 @@
                 'onclick'=>"Modals.show('patient-search-modal')",
               ],
               [
-                'image'=>asset('images/friend-icon.png'),
-                'caption'=>__('Scheduled Patients by Location'),
-                'hint'=>'This feature is currently unavailable',
-                'classnames'=>'provider-button',
-              ],
-              [
                 'image'=>asset('images/settings-icon.png'),
                 'caption'=>__('Settings'),
                 'hint'=>'This feature is currently unavailable',
@@ -197,28 +193,13 @@
                            </div>
                     </div>--}}
             <br><br><br>
-              @if(session("error"))
-                <div class="alert alert-danger">
-                    <span>{{ session("error") }}</span>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-              @endif
-              @if(session("successImport"))
-                <div class="alert alert-success">
-                    <span>{{ session("successImport") }}</span>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-              @endif
+
             <div class="row justify-content-center">
               <div>
-                  <div class="set-vaccine-location-wrapper" style="border: none">
+              <div class="set-vaccine-location-wrapper" style="border: none">
                         @if(auth()->user()->hasRole('provider'))
                             <button style="margin-right: 10px" class="btn btn-primary" onclick="document.location='/scan-barcode'">{{ __('Scan Patient Barcode') }}</button>
-                            <button class="btn btn-primary" onclick="document.location='/set-vaccine-location'" disabled>{{ __('Set Vaccine Location') }}</button>
+                          <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
                         @else
                           <button id="setVaccineLocation" class="btn btn-primary" onclick="showVaccineLocationSearch()">{{ __('Set Location') }}</button>
                           <div id="currentSiteName"><?=($siteName)? $siteName : '<strong style="color:red">'.__('Not Selected').'</strong>'?></div>
@@ -226,17 +207,35 @@
                             <button id="registerPatientByProvider" class="btn btn-primary form-control" onclick="document.location='/new-patient'">{{ __('Register a Patient') }}</button>
                           </div>
                         @endif
-                  </div>
+                  </div>                  
+                </div>
               </div>
 
 
-              <div class="col-6 col-collapse"  style='display:none'>
+              <div class="col-6 col-collapse"  style='display:none'> 
                 <button id="registerPatientByProvider" class="btn btn-primary form-control" onclick="document.location='labResults/new-patient'">{{ __('Register a Patient') }}</button>
               </div>
 
 
             </div>
           @endif
+
+          @if(session("error"))
+            <div class="alert alert-danger">
+                <span>{{ session("error") }}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+          @endif
+          @if(session("successImport"))
+                <div class="alert alert-success">
+                    <span>{{ session("successImport") }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+          @endif          
 
           <br/><br/>
           <div class="row">
@@ -251,7 +250,11 @@
             </div>
           </div>
         </div>
-    </div>
+
+        <form action="/barcode-image" method="post" class="clearfix" id='barcode-form'>
+            @csrf
+            <input type="hidden" name="barcode" class="form-control form-control-lg border-radius" id="barcode">
+        </form>
 </div>
 @endcomponent
 

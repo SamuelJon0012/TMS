@@ -273,137 +273,17 @@
               </div>
               <div class="card-body text-center">
                 <br>
-                {{ __('Please fill out the fields below to provide additional information and to ensure proper identification during the testing and vaccination process.') }}
+                {{ __('Please fill out the fields below to provide additional information and to ensure proper identification during the testing process.') }}
                 <br><br>
-
-{{--                <div class="form-group row justify-content-center">--}}
-{{--                  <div class="col-md-1 m-0 text-right pr-0">--}}
-
-{{--                  </div>--}}
-{{--                  <div class="col-md-11 text-center m-0 pl-0">--}}
-{{--                        <input id="ssn" type="text" class="form-control-reg @error('ssn') is-invalid @enderror" name="ssn" value="{{ old('ssn') }}"  autocomplete="ssn" placeholder="{{ __('SOCIAL SECURITY NUMBER') }}">--}}
-
-{{--                        @error('ssn')--}}
-{{--                            <span class="invalid-feedback" role="alert">--}}
-{{--                                <strong>{{ $message }}</strong>--}}
-{{--                            </span>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
-                <div class="form-group row justify-content-center">
-                  <div class="col-md-1 m-0 text-right pr-0">
-
-                  </div>
-                  <div class="col-md-11 text-center m-0 pl-0">
-                        <input id="phone_number1" type="text" class="form-control-reg @error('phone_number1') is-invalid @enderror" name="phone_number1" value="{{ old('phone_number1') }}"  autocomplete="phone_number1"  placeholder="{{ __('SECONDARY PHONE NUMBER (optional)') }}">
-
-                        @error('phone_number1')
-                          <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
-                        @enderror
-                        <div class="row form-reg-color">
-                          <div class="col-4">
-                            <input type="radio" name="phone_type1" id="Mobile1" value="2" checked> <label for ="Mobile1">{{ __('Mobile') }}</label>
-                          </div>
-                          <div class="col-4">
-                            <input type="radio" name="phone_type1" id="Home1" value="0"> <label for ="Home1">{{ __('Home') }}</label>
-                          </div>
-                          <div class="col-4">
-                            <input type="radio" name="phone_type1" id="Work1" value="1"> <label for ="Work1">{{ __('Work') }}</label>
-                          </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group row justify-content-center">
-                  <div class="col-md-1 m-0 text-right pr-0">
-
-                  </div>
-                    <div class="col-md-4 text-center m-0 pl-0">
-                        <select id="dl_state" class="form-control-blue @error('dl_state') is-invalid @enderror" name="dl_state" placeholder="{{ __('STATE (optional)') }}">
-                          <option value="">STATE (optional)</option>
-                          <option value="AL">Alabama</option>
-                        	<option value="AK">Alaska</option>
-                        	<option value="AZ">Arizona</option>
-                        	<option value="AR">Arkansas</option>
-                        	<option value="CA">California</option>
-                        	<option value="CO">Colorado</option>
-                        	<option value="CT">Connecticut</option>
-                        	<option value="DE">Delaware</option>
-                        	<option value="DC">District Of Columbia</option>
-                        	<option value="FL">Florida</option>
-                        	<option value="GA">Georgia</option>
-                        	<option value="HI">Hawaii</option>
-                        	<option value="ID">Idaho</option>
-                        	<option value="IL">Illinois</option>
-                        	<option value="IN">Indiana</option>
-                        	<option value="IA">Iowa</option>
-                        	<option value="KS">Kansas</option>
-                        	<option value="KY">Kentucky</option>
-                        	<option value="LA">Louisiana</option>
-                        	<option value="ME">Maine</option>
-                        	<option value="MD">Maryland</option>
-                        	<option value="MA">Massachusetts</option>
-                        	<option value="MI">Michigan</option>
-                        	<option value="MN">Minnesota</option>
-                        	<option value="MS">Mississippi</option>
-                        	<option value="MO">Missouri</option>
-                        	<option value="MT">Montana</option>
-                        	<option value="NE">Nebraska</option>
-                        	<option value="NV">Nevada</option>
-                        	<option value="NH">New Hampshire</option>
-                        	<option value="NJ">New Jersey</option>
-                        	<option value="NM">New Mexico</option>
-                        	<option value="NY">New York</option>
-                        	<option value="NC">North Carolina</option>
-                        	<option value="ND">North Dakota</option>
-                        	<option value="OH">Ohio</option>
-                        	<option value="OK">Oklahoma</option>
-                        	<option value="OR">Oregon</option>
-                        	<option value="PA">Pennsylvania</option>
-                        	<option value="RI">Rhode Island</option>
-                        	<option value="SC">South Carolina</option>
-                        	<option value="SD">South Dakota</option>
-                        	<option value="TN">Tennessee</option>
-                        	<option value="TX">Texas</option>
-                        	<option value="UT">Utah</option>
-                        	<option value="VT">Vermont</option>
-                        	<option value="VA">Virginia</option>
-                        	<option value="WA">Washington</option>
-                        	<option value="WV">West Virginia</option>
-                        	<option value="WI">Wisconsin</option>
-                        	<option value="WY">Wyoming</option>
-                        </select>
-
-                        @error('dl_state')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-7 text-center">
-                        <input id="dl_number" type="text" class="form-control-reg @error('dl_number') is-invalid @enderror" name="dl_number" value="{{ old('dl_number') }}"  autocomplete="dl_number"  placeholder="{{ __('DRIVER LICENSE NUMBER (optional)') }}">
-
-                        @error('dl_number')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                </div>
 
                 <div class="form-group row justify-content-center">
                    <div class="col-md-1 m-0 text-right pr-0">
 
                   </div>
                    <div class="col-md-12 text-center">
-                      <select id="ethnicity" required="required" class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
+                      <select id="ethnicity" required class="form-control @error('ethnicity') is-invalid @enderror" name="ethnicity" placeholder="{{ __('ETHINICITY') }}">
 
-                          <option value="">ETHNICITY</option>
+                          <option selected disabled value="">ETHNICITY</option>
 @if(env('BI_VERSION', '4.6') == '4.6')
                           <option value="0">Unknown</option>
                           <option value="1">Hispanic or Latino</option>
@@ -428,7 +308,7 @@
 
                   </div>
                   <div class="col-md-12 text-center">
-                      <select id="race" required="required" class="form-control @error('race') is-invalid @enderror" name="race" placeholder="{{ __('RACE') }}">
+                      <select id="race" required class="form-control @error('race') is-invalid @enderror" name="race" placeholder="{{ __('RACE') }}">
                         <option value="">RACE</option>
 
                           <option value="1">American Indian or Alaska Native</option>
@@ -443,11 +323,11 @@
                 </div>
                 <div class="form-group row justify-content-center">
                     <div class="col-md-12 text-center">
-                      <select id="birth_sex" required="required" class="form-control @error('birth_sex') is-invalid @enderror" name="birth_sex" placeholder="{{ __('BIRTH SEX') }}">
-                          <option value="">BIRTH SEX</option>
+                      <select id="birth_sex" required class="form-control @error('birth_sex') is-invalid @enderror" name="birth_sex" placeholder="{{ __('BIRTH SEX') }}">
 @if(env('BI_VERSION', '4.6') == '4.6')
 @elseif(env('BI_VERSION') == '4.7')
 @endif
+                          <option value="">BIRTH SEX</option>
                           <option value="1">Male</option>
                           <option value="2">Female</option>
                           <option value="0">Other</option>
@@ -455,11 +335,11 @@
                       </select>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row" style="display:none;">
                   <div class="col-md-12" style="text-align: left">
 
                     <div style="margin: 1pc 0;">
-                      <input type="checkbox" name="affirm_a1" required="true"/>&nbsp;
+                      <input type="checkbox" name="affirm_a1"/>&nbsp;
                       I affirm that I am 
                       <a href="javascript:void(0)" onclick="Popup.show('pop_Affirm_A1')">eligible to receive the vaccine</a>
                       @error('affirm_a1')
@@ -470,7 +350,7 @@
                     </div>
 
                     <div style="margin: 1pc 0;">
-                      <input type="checkbox" name="affirm_benefits" required="true" onclick="Popup.show('pop_Affirm_Benefits')"/>&nbsp;
+                      <input type="checkbox" name="affirm_benefits" onclick="Popup.show('pop_Affirm_Benefits')"/>&nbsp;
                       {{_('I affirm that I accept assignment of benefits')}}
 
                       @error('signedBy')
@@ -679,12 +559,12 @@
   function frmRegister_validate(){
     var frm = frmRegister;
 
-    if ((!frm.affirm_benefits.checked) || (frm.signedBy.value == '')){
-      Popup.show('pop_Affirm_Benefits');
-      return false;
-    }
+//     if ((!frm.affirm_benefits.checked) || (frm.signedBy.value == '')){
+//       Popup.show('pop_Affirm_Benefits');
+//       return false;
+//     }
 
-    return true;
+    return true; 
   }
 </script>
 @endpush

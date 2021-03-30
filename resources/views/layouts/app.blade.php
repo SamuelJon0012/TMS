@@ -29,13 +29,12 @@
     @stack('pageHeader')
 </head>
 <body
-    @if(isset($positive) && $positive) class="positive-page"@endif
-    @if(isset($negative) && $negative) class="negative-page"@endif
+    @if(\Illuminate\Support\Facades\Route::is('user-results')) class="positive-page"@endif
 >
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand small-logo" href="{{ url('/') }}">
+                <a class="navbar-brand small-logo" href="{{ url('/home') }}">
 			             <img src="/{{'images/'}}{{env('APP_logo')}}" style="height:48px;" />
                 </a>
                 

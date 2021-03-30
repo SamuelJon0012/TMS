@@ -4,10 +4,47 @@ namespace App;
 use Illuminate\Http\Request;
 
 
+class Guarantor {
+    public $relationship_to_patient;
+    public $first_name;
+    public $last_name;
+    public $prefix;
+    public $suffix;
+    public $address1;
+    public $address2;
+    public $city;
+    public $state;
+    public $zipcode;
+    public $date_of_birth;
+    public $phone_number;
+    public $customer_product_id;
+    
+    function __construct($source=null)
+    {
+        if (!empty($source))
+            $this->assign($source);
+    }
+
+    protected function assign($source){
+        if (empty($source)){
+            $source = [];
+        } 
+        else if (is_string($source)){
+            if(!$source = json_decode($source, true))
+                throw new \Exception(json_last_error_msg());
+        } 
+        else if (is_object($source))
+            $source = (array)$source;
+
+        $vars = get_class_vars(get_class($this));
+        foreach($vars as $name => $value)
+            $this->{$name} = $source[$name] ?? null;
+    }
+}
+
 
 class PatientProfile extends BurstIq
 {
-
     # $this->status()
     # $this->query(chain, query)
     # $this->upsert(chain, postfields) accepts object or json_encoded object
@@ -36,6 +73,127 @@ class PatientProfile extends BurstIq
     private $vsee_clinic_id;
     private $phone_numbers; # Array of arrays [ is_primary / phone_type / phone_number ]
     private $insurances;
+    private $customer_product_id;
+    
+    private ?Guarantor $guarantor = null;
+    private $is_welcomed = false;
+    private $patient_consented = false;
+
+    static $RelationshipLookup = [
+        0 => 'Associate',
+        1 => 'Brother',
+        2 => 'Care giver',
+        3 => 'Child',
+        4 => 'Handicapped dependent',
+        5 => 'Life partner',
+        6 => 'Emergency contact',
+        7 => 'Employee',
+        8 => 'Employer',
+        9 => 'Extended family',
+        10=> 'Foster child',
+        11=> 'Friend',
+        12=> 'Father',
+        13=> 'Grandchild',
+        14=> 'Guardian',
+        15=> 'Grandparent',
+        16=> 'Manager',
+        17=> 'Mother',
+        18=> 'Natural child',
+        19=> 'None',
+        20=> 'Other adult',
+        21=> 'Other',
+        22=> 'Owner',
+        23=> 'Parent',
+        24=> 'Stepchild',
+        25=> 'Self',
+        26=> 'Sibling',
+        27=> 'Sister',
+        28=> 'Spouse',
+        29=> 'Trainer',
+        30=> 'Unknown',
+        31=> 'Ward of court',
+    ];
+
+    static $States = [
+        'AK' => 'Alaska', 
+        'AL' => 'Alabama', 
+        'AR' => 'Arkansas', 
+        'AZ' => 'Arizona', 
+        'CA' => 'California', 
+        'CO' => 'Colorado', 
+        'CT' => 'Connecticut', 
+        'DC' => 'District of Columbia', 
+        'DE' => 'Delaware', 
+        'FL' => 'Florida', 
+        'GA' => 'Georgia', 
+        'HI' => 'Hawaii', 
+        'IA' => 'Iowa', 
+        'ID' => 'Idaho', 
+        'IL' => 'Illinois', 
+        'IN' => 'Indiana', 
+        'KS' => 'Kansas', 
+        'KY' => 'Kentucky', 
+        'LA' => 'Louisiana', 
+        'MA' => 'Massachusetts', 
+        'MD' => 'Maryland', 
+        'ME' => 'Maine', 
+        'MI' => 'Michigan', 
+        'MN' => 'Minnesota', 
+        'MO' => 'Missouri', 
+        'MS' => 'Mississippi', 
+        'MT' => 'Montana', 
+        'NC' => 'North Carolina', 
+        'ND' => 'North Dakota', 
+        'NE' => 'Nebraska', 
+        'NH' => 'New Hampshire', 
+        'NJ' => 'New Jersey', 
+        'NM' => 'New Mexico', 
+        'NV' => 'Nevada', 
+        'NY' => 'New York', 
+        'OH' => 'Ohio', 
+        'OK' => 'Oklahoma', 
+        'OR' => 'Oregon', 
+        'PA' => 'Pennsylvania', 
+        'PR' => 'Puerto Rico', 
+        'RI' => 'Rhode Island', 
+        'SC' => 'South Carolina', 
+        'SD' => 'South Dakota', 
+        'TN' => 'Tennessee', 
+        'TX' => 'Texas', 
+        'UT' => 'Utah', 
+        'VA' => 'Virginia', 
+        'VT' => 'Vermont', 
+        'WA' => 'Washington', 
+        'WI' => 'Wisconsin', 
+        'WV' => 'West Virginia', 
+        'WY' => 'Wyoming', 
+    ];
+
+    static $EthnicityLookup = [
+        0 => 'Hispanic or Latino',
+        1 => 'Not Hispanic or Latino',
+        2 => 'Unknown',
+    ];
+
+    static $RaceLookup = [
+        1 => 'American Indian or Alaska Native',
+        2 => 'Asian',
+        3 => 'Black or African American',
+        4 => 'Native Hawaiian or other Pacific Islander',
+        5 => 'Other',
+        6 => 'Patient Refused',
+        7 => 'White or Caucasian',
+    ];
+
+    static $BirthSexLookup = [
+        0 => 'Other',
+        1 => 'Male',
+        2 => 'Female',
+        3 => 'Unknown',
+        4 => 'Ambiguous',
+        5 => 'Not Applicable',
+    ];
+
 
     /**
      * @return mixed
@@ -98,6 +256,14 @@ class PatientProfile extends BurstIq
     public function getBirthSex()
     {
         return $this->birth_sex;
+    }
+    
+    public function getBirthSexByIndex($index){
+        return static::$BirthSexLookup[$index];
+    }
+    
+    public function getRaceByIndex($index){
+        return static::$RaceLookup[$index];
     }
 
     /**
@@ -228,7 +394,20 @@ class PatientProfile extends BurstIq
     {
         return $this->address1;
     }
-
+    
+    /**
+     * @return mixed
+     */
+    public function getCustomerProductId()
+    {
+        return $this->customer_product_id;
+    }
+    
+    public function getPatientConsented()
+    {
+        return $this->patient_consented;
+    }
+    
     /**
      * @param mixed $address1
      * @return PatientProfile
@@ -238,7 +417,29 @@ class PatientProfile extends BurstIq
         $this->address1 = $address1;
         return $this;
     }
-
+    
+    /**
+     * @param mixed $customer_product_id
+     * @return PatientProfile
+     */
+    public function setCustomerProductId($customer_product_id): PatientProfile
+    {
+        $this->customer_product_id = $customer_product_id;
+        return $this;
+    }
+    
+    
+    /**
+     * @param mixed $address1
+     * @return PatientProfile
+     */
+    public function setPatientConsented($patient_consented): PatientProfile
+    {
+        $this->patient_consented = $patient_consented;
+        return $this;
+    }
+    
+    
     /**
      * @return mixed
      */
@@ -497,6 +698,33 @@ class PatientProfile extends BurstIq
         return $this;
     }
 
+    public function getGuarantor(){
+        return $this->guarantor;
+    }
+    
+    public function setGuarantor($source){
+        if ( (empty($source)) 
+        or ((is_string($source)) and (strtolower($source) == 'null')) )
+            $source = null;
+
+        if ((is_a($source, 'Guarantor')) or ($source == null)){
+            $this->guarantor = $source;
+        } else {
+            $this->guarantor = new Guarantor($source);
+        }
+        return $this;
+    }
+
+    public function getIsWelcomed(){
+        return $this->is_welcomed;
+    }
+
+    public function setIsWelcomed(bool $value){
+        $this->is_welcomed = $value;
+        return $this;
+    }
+
+
     public function make($record) {
 
         # get the full asset object
@@ -514,6 +742,8 @@ class PatientProfile extends BurstIq
 
         $this->date_of_birth = $asset->date_of_birth ?? '?';
         $this->address1 = $asset->address1 ?? '?';
+        $this->patient_consented = $asset->patient_consented ?? false;
+        
         $this->address2 = $asset->address2 ?? '?';
         $this->city = $asset->city ?? '?';
         $this->state = $asset->state ?? '?';
@@ -526,7 +756,11 @@ class PatientProfile extends BurstIq
         $this->vsee_clinic_id = $asset->vsee_clinic_id ?? '?';
         $this->phone_numbers = $asset->phone_numbers ?? '?';
         $this->insurances = $asset->insurance ?? '?';
-
+        $this->setGuarantor($asset->guarantor ?? null);
+        $this->is_welcomed = $asset->is_welcomed ?? null;
+        $this->patient_consented = $asset->patient_consented ?? null;
+        $this->customer_product_id = $asset->customer_product_id ?? env('CUSTOMER_PRODUCT_ID');
+        
         # make a useful array of this row
 
         $array = [
@@ -540,6 +774,8 @@ class PatientProfile extends BurstIq
             'birth_sex' => $this->lookup['birth_sex'][$asset->birth_sex] ?? '?',
             'date_of_birth' => $asset->date_of_birth ?? '?',
             'address1' => $asset->address1 ?? '?',
+            'patient_consented' => $asset->patient_consented ?? false,
+            
             'address2' => $asset->address2 ?? '?',
             'city' => $asset->city ?? '?',
             'state' => $asset->state ?? '?',
@@ -551,8 +787,11 @@ class PatientProfile extends BurstIq
             'race' => $this->lookup['race'][$asset->race] ?? '?',
             'vsee_clinic_id' => $asset->vsee_clinic_id ?? '?',
             'phone_numbers' => $asset->phone_numbers ?? '?',
-            'insurances' => $asset->insurance ?? '?'
-
+            'insurances' => $asset->insurance ?? '?',
+            'guarantor' => $this->guarantor,
+            'is_welcomed' => $asset->is_welcomed ?? null,
+            'patient_consented' => $asset->patient_consented ?? null,
+            'customer_product_id' => $asset->customer_product_id ?? env('CUSTOMER_PRODUCT_ID'),
         ];
 
         # and APPEND this row's array to the object's array[] array
@@ -560,7 +799,20 @@ class PatientProfile extends BurstIq
         $this->array[] = $array;
 
         return $array;
+    }
 
+    function getPrimaryPhoneNumber(){
+        if (!is_array($this->phone_numbers))
+            return null;
+        foreach($this->phone_numbers as $itm){
+            if ($itm->is_primary)
+                return $itm->phone_number;
+        }
+    }
+
+    function getDateOfBirthText(){
+        $txt = $this->date_of_birth->{'$date'} ?? null;
+        return substr($txt, 0, 10);
     }
 
 }

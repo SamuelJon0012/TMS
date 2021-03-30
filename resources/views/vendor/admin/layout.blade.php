@@ -25,7 +25,6 @@
         {
             color: #303F9F;
         }
-
         .nav>li>a:hover, .nav>li>a:focus
         {
             background-color: #EEEEEE;

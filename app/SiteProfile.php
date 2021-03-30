@@ -40,6 +40,7 @@ class SiteProfile extends BurstIq
     private $county;
     private $phone;
     private $vsee_clinic_id;
+    private $customer_product_id;
 
     /**
      * @return mixed
@@ -221,6 +222,15 @@ class SiteProfile extends BurstIq
         return $this;
     }
 
+    public function getCustomerProductId(){
+        return $this->customer_product_id;
+    }
+
+    public function setCustomerProductId($value): self{
+        $this->customer_product_id = $value;
+        return $this;
+    }
+
     # Generate fluent getters and setters here
 
 
@@ -246,8 +256,9 @@ class SiteProfile extends BurstIq
         $this->state = $asset->state;
         $this->zipcode = $asset->zipcode;
         $this->county = $asset->county;
-        $this->phone = $asset->phone;
+        $this->phone = $asset->phone ?? null;
         $this->vsee_clinic_id = $asset->vsee_clinic_id;
+        $this->customer_product_id = $asset->customer_product_id ?? null;
 
 
 
@@ -264,9 +275,9 @@ class SiteProfile extends BurstIq
             'state' => $asset->state,
             'zipcode' => $asset->zipcode,
             'county' => $asset->county,
-            'phone' => $asset->phone,
+            'phone' => $asset->phone ?? null,
             'vsee_clinic_id' => $asset->vsee_clinic_id,
-
+            'customer_product_id' => $asset->customer_product_id ?? null,
         ];
 
         # and APPEND this row's array to the object's array[] array
@@ -276,4 +287,23 @@ class SiteProfile extends BurstIq
         return $array;
 
     }
+    
+    public function find($query) { //exit($query);
+        
+        $this->query($this->chain, $query);
+        
+        $records = $this->data->records;
+        
+        foreach ($records as $record) {
+            
+            $this->make($record);
+            
+        }
+        
+        return $this;
+        # find and store an array of this object with all of the search results.  Make a first, get and toArray method (in base class?)
+        
+    }
+    
+    
 }

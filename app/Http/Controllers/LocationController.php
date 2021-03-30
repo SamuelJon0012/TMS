@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Sites;
+use App\SiteProfile;
 use Auth;
 
 class LocationController extends Controller
@@ -23,28 +24,36 @@ class LocationController extends Controller
     }
 
     function searchSites(Request $request){
+        
+        $SP = new SiteProfile();
+
         $user = Auth::user();
         if ($user == null)
             abort(401, 'Please login');
 
         $search = $request->get('q');
         if (empty($search)){
-            $rows = Sites::orderBy('name')->get();
+            
+            $rows = $SP->find(" WHERE asset.customer_product_id =2");
+
         } else {
             $v = "%$search%";
-            $rows = Sites::where('name','LIKE',$v)
-                    ->orWhere('address1','LIKE',$v)
-                    ->orWhere('city','LIKE',$v)
-                    ->orWhere('zipcode',$search)
-                    ->orWhere('county','LIKE', $v)
-                    ->orderBy('name')
-                    ->take(50)
-                    ->get();
+            $query = ' WHERE asset.customer_product_id =2 and (asset.name like \''.$v.'\' or asset.address1 like \''.$v.'\' or asset.city like \''.$v.'\' or asset.zipcode like \''.$v.'\' or asset.county like \''.$v.'\' or asset.name like \''.$v.'\' )';
+            $rows = $SP->find($query);
+            
+//             $rows = Sites::where('name','LIKE',$v)
+//                     ->orWhere('address1','LIKE',$v)
+//                     ->orWhere('city','LIKE',$v)
+//                     ->orWhere('zipcode',$search)
+//                     ->orWhere('county','LIKE', $v)
+//                     ->orderBy('name')
+//                     ->take(50)
+//                     ->get();
         }
-        
-        if (count($rows) == 0)
+
+        if (count($rows->data->records) == 0)
             return 'Nothing matches that';
-        return view('app.sites_results', ['rows'=>$rows, 'siteId'=>$user['site_id']??0 ]);
+        return view('app.sites_results', ['rows'=>$rows->data->records, 'siteId'=>$user['site_id']??0 ]);
     }
 
     function switchSite(Request $request){

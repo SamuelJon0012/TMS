@@ -2,6 +2,7 @@
 
 namespace App;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /*
  * encounter
@@ -64,6 +65,7 @@ class Encounter extends BurstIq
     private $billing_provider_id;
     private $procedures;
     private $type;
+    private $customer_product_id;
 
     const EncounterType_COVIDTest  = 0;
     const EncounterType_Vaccine    = 1;
@@ -251,6 +253,37 @@ class Encounter extends BurstIq
         return $this;
     }
 
+    public function getCustomerProductId(){
+        return $this->customer_product_id;
+    }
+
+    public function setCustomerProductId($value): self{
+        $this->customer_product_id = $value;
+        return $this;
+    }
+
+    /**
+     * get the next available id from the barcode table which is used as the asset.id for non barcode encounters
+     * @return int
+     */
+    public function nextId(){
+        $barcodes = DB::table('barcodes');
+        //remove junk
+        $barcodes->where('uniq_id','temp');
+        //Insert record
+        $id = $barcodes->insertGetId([
+            'barcode'=>'temp',
+            'uniq_id'=>'temp',
+            'email'=>'temp@temp',
+            'timestamp'=>'2020-01-01',
+        ]);
+        if (!$id)
+            throw new \Exception('Failed to get next barcode ID');
+        //remove inserted record
+        $barcodes->delete($id);
+        return $id;
+    }
+
     # Generate fluent getters and setters here
 
 
@@ -277,6 +310,7 @@ class Encounter extends BurstIq
         $this->patient_question_responses = $asset->patient_question_responses;
         $this->billing_provider_id = $asset->billing_provider_id;
         $this->procedures = $asset->procedures;
+        $this->customer_product_id = $asset->customer_product_id ?? null;
 
 
         # make a useful array of this row, for example:
@@ -293,7 +327,7 @@ class Encounter extends BurstIq
             'patient_question_responses' => $asset->patient_question_responses,
             'billing_provider_id' => $asset->billing_provider_id,
             'procedures' => $asset->procedures,
-
+            'customer_product_id' => $asset->customer_product_id ?? null,
         ];
 
         # and APPEND this row's array to the object's array[] array

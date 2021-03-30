@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'json', 'dob', 'phone', 'power', 'burstiq_private_id', 'site_id', 'benefit_affirmed_on', 'token'
+        'name', 'email', 'password', 'json', 'dob', 'phone', 'power', 'burstiq_private_id', 'site_id', 'benefit_affirmed_on' ,'token', 'customer_product_id'
     ];
 
     /**
@@ -60,6 +60,7 @@ class User extends Authenticatable
         return $a;
     }
 
+    
     public function setNameAttribute($value)
     {
         $this->attributes['name'] = str_replace('’', "'", $value);

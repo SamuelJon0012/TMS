@@ -27,7 +27,7 @@ class LabResultsLoginController extends Controller
      * @var string
      */
     
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = "home";
     
     
     

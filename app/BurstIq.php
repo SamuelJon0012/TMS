@@ -34,7 +34,7 @@ class BurstIq
      */
     public function __construct() {
 
-        //$this->lookup = (array)json_decode(file_get_contents('/var/www/lookup.json'));
+   //     $this->lookup = (array)json_decode(file_get_contents('/var/www/lookup.json'));
 
         $this->BI_PUBLIC_KEY = env('BI_PUBLIC_KEY');
         $this->BI_BASE_URL = env('BI_BASE_URL');
@@ -42,6 +42,7 @@ class BurstIq
         $this->BI_VERSION = env('BI_VERSION', '4.6');
 
         $this->BI_BASE_URL = rtrim($this->BI_BASE_URL,'/'); //ensure url does not have a tailing /
+
 
     }
 
@@ -63,6 +64,16 @@ class BurstIq
             case JSON_ERROR_UTF8: return 'Malformed UTF-8 characters, possibly incorrectly encoded';
             default: return \json_last_error_msg();
         }
+    }
+
+    /**
+     * update target url
+     * @param string $value
+     */
+    function setEndPoint(string $value){
+        if (substr($value,0,1) != '/')
+            $value = '/'.$value;
+        $this->url = $this->BI_BASE_URL . $value;
     }
 
     /**
@@ -134,18 +145,18 @@ class BurstIq
         $this->url = $this->BI_BASE_URL . '/util/privateid';
 
         return $this->getCurl();
-/*
- * TM captures all relevant info for user
- When performing registration action, do:
-   a. call /trackmy/util/privateid
-   b. store this private id in the users login/credential attributes
-   c. call upsert of patient_profile with that new private id, by setting this header
-      Authorization = ID xxxxxxxxxxx
+        /*
+         * TM captures all relevant info for user
+         When performing registration action, do:
+         a. call /trackmy/util/privateid
+         b. store this private id in the users login/credential attributes
+         c. call upsert of patient_profile with that new private id, by setting this header
+         Authorization = ID xxxxxxxxxxx
 
-    stag ID ef9718dadf578ef7
-    prd ID b67afe2ec35e80bb
+         stag ID ef9718dadf578ef7
+         prd ID b67afe2ec35e80bb
 
- */
+         */
 
     }
 
@@ -168,15 +179,15 @@ class BurstIq
     function query($chain, $query) {
 
         $postFields = "{
-            \"queryTql\": \"$query\"
-        }";
+        \"queryTql\": \"$query\"
+    }";
 
         $this->url = $this->BI_BASE_URL . '/query/' . $chain;
 
         if ($err = $this->checkCurl($this->postCurl($postFields)))
             exit($this->error($err));
 
-        return $this->data;
+            return $this->data;
     }
 
     /**
@@ -192,17 +203,16 @@ class BurstIq
 
         $this->url = $this->BI_BASE_URL . '/upsert/' . $chain;
 
-
-//        $R =  $this->putCurl($postFields);
-//
-//        var_dump($R);
-//
-//        return $R;
+        //        $R =  $this->putCurl($postFields);
+        //
+        //        var_dump($R);
+        //
+        //        return $R;
 
         if ($err = $this->checkCurl($this->putCurl($postFields)))
             exit($this->error($err));
 
-        return $this->data;
+            return $this->data;
     }
 
     /**
@@ -245,7 +255,6 @@ class BurstIq
             $postFields = json_encode($postFields);
 
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
             CURLOPT_URL => $this->url,
             CURLOPT_RETURNTRANSFER => true,
@@ -311,12 +320,29 @@ class BurstIq
             ),
         ));
 
+
+        if ($this->curlLogFileName){
+            $f = fopen($this->curlLogFileName, 'w');
+            fwrite($f, "url = {$this->url}\n");
+            fwrite($f, "postFields = {$postFields}\n\n");
+            curl_setopt($curl, CURLOPT_VERBOSE, true);
+            curl_setopt($curl, CURLOPT_STDERR, $f);
+        }
+
         $response = curl_exec($curl);
+
 
         $this->lastCurlError = ($response !== null) ? null : '('.\curl_errno($curl).') '.\curl_error($curl);
 
+
         curl_close($curl);
+
+        if ($this->curlLogFileName){
+            fwrite($f,"\n\n".substr($response, 0, 500)."\n\n");
+            fclose($f);
+        }
         return $response;
+
     }
 
     /**
@@ -446,8 +472,6 @@ class BurstIq
         return $this;
     }
 
-
-
     /**
      * @return mixed
      */
@@ -479,6 +503,14 @@ class BurstIq
 
     }
 
+    public function savePatientConsented($json) {
+        
+        $results = $this->upsert($this->chain, $json);
+        
+        return $results;
+        
+    }
+    
     /**
      * Attempt to fetch the record identified by the asset.id provided and populate the object before returning true
      * @param mixed $assetId
@@ -519,7 +551,7 @@ class BurstIq
 
     function enum($key, $val) {
 
-            return $this->lookup[$key][$val];
+        return $this->lookup[$key][$val];
 
 
     }

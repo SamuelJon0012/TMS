@@ -21,10 +21,8 @@ use Picqer\Barcode\BarcodeGeneratorSVG;
 
 /* --------------- LabResults ---------------*/
 
-if (isset($_SERVER['SERVER_NAME']) &&
-    ($_SERVER['SERVER_NAME'] == "trackmylabresults.com" || $_SERVER['SERVER_NAME'] == "trackmylabresults.us")) {
-
-
+if(isset($_SERVER['SERVER_NAME']) &&
+    ($_SERVER['SERVER_NAME'] == "trackmylabresults.com" || $_SERVER['SERVER_NAME'] == "trackmylabresults.us")){
     Route::get('/', 'Auth\LabResultsLoginController@login');
     Route::get('labResults/ForgotPassword', 'Auth\LabResultsForgotPasswordController@ForgotPassword');
 
@@ -41,6 +39,8 @@ if (isset($_SERVER['SERVER_NAME']) &&
     });
 
     Route::get('labResults/covid/{id}/{name}', 'LabResultsHomeController@showCovid')->name('showCovid');
+    Route::get('labResults/set/{id}/{name}', 'LabResultsHomeController@setResults')->name('setResults');
+    Route::post('labResults/set/{id}/{name}', 'LabResultsHomeController@setResultsSave')->name('setResultsSave');
     Route::post('/labResults/saveCovid19', 'LabResultsHomeController@saveCovid19')->name('showCovid');
 
     Route::get("/labResults/CovidTest", 'LabResultsPatientCOVIDTestController@patient_COVID_test_modal')->name('showCovidTest');
@@ -49,14 +49,15 @@ if (isset($_SERVER['SERVER_NAME']) &&
     Route::get('/patient-test/{$code}.png', 'LabResultsPatientCOVIDTestController@barcode');
     Route::post('/patient-test-kit', 'LabResultsPatientCOVIDTestController@testKit')->name('patient-test-kit');
 
-} else {
+
+}else {
     /* --------------- Track My Solutions ---------------*/
     Route::get('/', function () {
         return redirect(route('login'));//return view('welcome');
     });
 
-    Route::get('/new-patient', 'HomeController@newPatient');
-    Route::post('/new-patient', 'HomeController@registerNewPatient')->name('register_new_parent');
+    Route::get('/new-patient','HomeController@newPatient');
+    Route::post('/new-patient','HomeController@registerNewPatient')->name('register_new_parent');
     Route::get('/home', 'HomeController@index')->name('home');
 
 }
@@ -66,8 +67,8 @@ if (env('APPLICATION', 'labresult')) {
     Route::get('/', 'Auth\LabResultsLoginController@login');
     Route::get('labResults/ForgotPassword', 'Auth\LabResultsForgotPasswordController@ForgotPassword');
 
-    Route::get('labResults/new-patient', 'LabResultsHomeController@newPatient');
-    Route::post('labResults/new-patient', 'LabResultsHomeController@registerNewPatient')->name('register_new_parent');
+    Route::get('labResults/new-patient','LabResultsHomeController@newPatient');
+    Route::post('labResults/new-patient','LabResultsHomeController@registerNewPatient')->name('register_new_parent');
     Route::get('/home', 'LabResultsHomeController@index')->name('home');
 
     Route::get('labResults/terms', function () {
@@ -78,11 +79,25 @@ if (env('APPLICATION', 'labresult')) {
         return view("terms.policy");
     });
 
-    Route::get('labResults/covid/{id}/{name}', 'LabResultsHomeController@showCovid')->name('showCovid');
-    Route::post('/labResults/saveCovid19', 'LabResultsHomeController@saveCovid19')->name('showCovid');
+    Route::get('labResults/covid/{id}/{name}','LabResultsHomeController@showCovid')->name('showCovid');
+    Route::post('/labResults/saveCovid19','BurstIqController@patientConsented')->name('savePatientConsented');
 
     Route::get("/labResults/CovidTest", 'LabResultsPatientCOVIDTestController@patient_COVID_test_modal')->name('showCovidTest');
+    Route::post('/patient-test', 'LabResultsPatientCOVIDTestController@insert')->name('patient_test_post');
+    Route::get('/patient-test/{$code}.png', 'LabResultsPatientCOVIDTestController@barcode');
+    Route::post('/patient-test-kit', 'LabResultsPatientCOVIDTestController@testKit')->name('patient-test-kit');
+
+    Route::get('/scan-barcode', 'BarcodeController@scan')->name('barcode.scan');
+    Route::post('/scan-barcode', 'BarcodeController@getUserInformation')->name('barcode.scan');
+    Route::post('/barcode-image', 'BarcodeController@generateBarcodeImage')->name('barcode.image');
+    Route::get('/barcode-image/{barcode}', 'BarcodeController@generateBarcodeImage')->name('barcode.image.get');
+    Route::post('/barcode-image-covid19', 'BarcodeController@generateBarcodeImageCovidTest')->name('barcode.image.covid19');
+    Route::get('/barcode-print/{barcode}', function($barcode){
+        return view('printout.barcode', ['barcode'=>$barcode]);
+    })->name('barcode.print');
+    Route ::get("/labResults/checkCovidTest", 'LabResultsHomeController@checkCovidTest')->name('checkCovidTest');
 }
+
 
 //Route::get('/vaccine', function () {
 //    return redirect(route('login'));
@@ -96,7 +111,7 @@ Route::get('/vaccine', 'CoverController@vaccineGet')->name('vaccine_get');
 Route::post('/vaccine', 'CoverController@vaccinePost')->name('vaccine_post');
 Route::post('/affirm', 'CoverController@vaccinePostAffirm')->name('vaccine_post_affirm');
 
-Route::get('/barcode/{code}.svg', function ($code) {
+Route::get('/barcode/{code}.svg', function($code){
     $bc = new BarcodeGeneratorSVG();
     $contents = $bc->getBarcode($code, $bc::TYPE_CODE_128);
     return response($contents)->header('Content-Type', 'image/svg+xml');
@@ -114,7 +129,6 @@ Route::get('/biq/test-status', 'BurstIqTestController@status')->name('test_statu
 Route::get('/biq/test-login', 'BurstIqTestController@login')->name('test_login');
 
 Route::get('/biq/find', 'BurstIqController@find')->name('biq_find');
-Route::get('/biq/get', 'BurstIqController@get')->name('biq_get');
 Route::get('/biq/get', 'BurstIqController@get')->name('biq_get');
 Route::get('/biq/bulkadd', 'BurstIqTestController@bulkAdd')->name('biq_bulkadd');
 Route::post('/biq/bulkadd', 'BurstIqTestController@bulkAdd')->name('biq_bulkadd');
@@ -156,33 +170,38 @@ Route::get('/vsee/test', 'VSeeController@test')->name('vsee_test');
 
 Route::post('/tools/importzilla', 'BurstIqTestController@bulkAddPatients')->name('importzilla');
 
-if (env('APP_ENV') == 'development') {
+if (env('APP_ENV') == 'development'){
     Route::get('/vsee/test_complete', 'VSeeController@test_completing_a_visits');
-    Route::get('/vsee/test_queue', function () {
+    Route::get('/vsee/test_queue', function(){
         dispatch(new \App\Jobs\CompleteVisit(-1, -1, time()));
         return 'In the queue';
     });
 
-    Route::get('/hello-queue/{yourName}', function ($yourName) { // Example of sending a job to the queue
+    Route::get('/hello-queue/{yourName}', function($yourName){ // Example of sending a job to the queue
         dispatch(new \App\Jobs\HelloWorld($yourName));
         return 'Hello "yourName" is queued';
     });
 
-    Route::get('/hello-now/{yourName}', function ($yourName) {  //Example od running the job now and waiting for the response
+    Route::get('/hello-now/{yourName}', function($yourName){  //Example od running the job now and waiting for the response
         dispatch(new \App\Jobs\HelloWorld($yourName))->onConnection('sync');
+    });
+
+    Route::get('/test', function(){
+        return view('printout.barcode',['barcode'=>'00000007-00000001-00002003']);
     });
 }
 
 
-/*
- *
- *  Actual BurstIq methods
- *
- */
+    /*
+     *
+     *  Actual BurstIq methods
+     *
+     */
 
 Route::get('/biq/barcode', 'BurstIqController@barcode')->name('biq-barcode');
 Route::post('/biq/barcode', 'BurstIqController@barcode')->name('biq-barcode');
 // defunct Route::get('/biq/login', 'BurstIqController@login')->name('biq-login');
+
 
 
 #Route::webhooks('api/xcelerateudi');
@@ -208,19 +227,21 @@ Route::get('/vsee/visits', 'VSeeController@Visits')->name('vsee_visits');
 
 Route::post('/vsee/saveonly', 'VSeeController@saveonly')->name('vsee_saveonly');
 
-Route::get('profile/{user}', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
-Route::patch('profile/{user}', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
+Route::get('profile/{user}',  ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
+Route::patch('profile/{user}',  ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 
-Route::get('/test/result/{check}', "TestResultController@result")->name('negative');
 Route::get('search-sites', 'LocationController@searchSites');
 Route::get('switch-site', 'LocationController@switchSite');
-Route::get('change-locale/{locale}', 'LanguageController@changeLocale')->name('change_locale');
+
+Route::get('/test/result', "TestResultController@result")->name('user-results');
+Route::get('get-test', 'UserController@geTest');
+Route::get('post-test', 'UserController@posTest')->name('posTest');
+
+Route::post('create-users-from-excel', 'UserController@createUsersFromExcel')->name('createUsersFromExcel');
 Route::get('create-patient', 'UserController@createPatient')->name('create.patient');
+
 Route::get('activate-user/{binary}', 'UserController@activateUser')->name('password.create');
 Route::post('activate-user/{binary}', 'UserController@createPassword')->name('password.create');
-Route::get('scan-barcode', 'BarcodeController@scan')->name('barcode.scan');
-Route::post('scan-barcode', 'BarcodeController@getUserInformation')->name('barcode.scan');
-Route::post('barcode-image', 'BarcodeController@generateBarcodeImage')->name('barcode.image');
 
 Route::group(["prefix" => "admin", "as" => "admin.", "namespace" => "Admin"], function () {
     Route::get("/", 'AdminController@index')->name("dashboard")->middleware('not.admin');

@@ -7,5 +7,6 @@
   "type": {{(int)$data->getType()}},
   "patient_question_responses": {!!json_encode($data->getPatientQuestionResponses())!!},
   "billing_provider_id": {{(int)$data->getBillingProviderId()}},
-  "procedures": [{!!json_encode($data->getProcedures())!!}]
+  "procedures": {!!json_encode($data->getProcedures())!!},
+  "customer_product_id": [ {{(int)$data->getCustomerProductId()}} ]
 }
