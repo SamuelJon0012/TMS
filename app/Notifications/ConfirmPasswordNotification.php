@@ -18,10 +18,12 @@ class ConfirmPasswordNotification extends Notification
      */
 
     private $binary;
+    private $name;
 
-    public function __construct(string $binary)
+    public function __construct(string $binary, string $name)
     {
         $this->binary = $binary;
+        $this->name = $name;
     }
 
     /**
@@ -44,9 +46,10 @@ class ConfirmPasswordNotification extends Notification
     public function toMail($notifiable)
     {
         $binary = $this->binary;
+        $name = $this->name;
         return (new MailMessage)
                     ->subject('Test')
-                    ->view('emails.notification-create-user', compact("binary"));
+                    ->view('emails.notification-create-user', compact("binary", "name"));
     }
 
     /**

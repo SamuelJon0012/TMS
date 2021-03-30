@@ -243,9 +243,10 @@ Route::get('create-patient', 'UserController@createPatient')->name('create.patie
 Route::get('activate-user/{binary}', 'UserController@activateUser')->name('password.create');
 Route::post('activate-user/{binary}', 'UserController@createPassword')->name('password.create');
 
-Route::group(["prefix" => "admin", "as" => "admin.", "namespace" => "Admin"], function () {
-    Route::get("/", 'AdminController@index')->name("dashboard")->middleware('not.admin');
+Route::group(["prefix" => "admin", "as" => "admin.", "namespace" => "Admin", "middleware" => "not.admin"], function () {
+    Route::get("/", 'AdminController@index')->name("dashboard");
     Route::get("/login", "LoginController@index")->name("login");
     Route::get('bulk-import', 'AdminController@bulkImport')->name("bulk-import");
+    Route::get('create-users-from-excel', 'AdminController@getCreateUsersFromExcel');
     Route::post('create-users-from-excel', 'AdminController@createUsersFromExcel')->name('create-users-from-excel');
 });

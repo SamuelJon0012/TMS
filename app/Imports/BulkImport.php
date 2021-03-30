@@ -3,9 +3,9 @@
 namespace App\Imports;
 
 use App\Notifications\ConfirmPasswordNotification;
-use App\Notifications\RegistrationNotification;
 use App\PatientProfile;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -65,7 +65,15 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
                     "token" => $token
                 ]));
 
-                $user->notify(new ConfirmPasswordNotification($binary));
+                DB::table('role_user')
+                    ->insert([
+                        'user_id' => $user->id,
+                        'role_id' => 2,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+
+                $user->notify(new ConfirmPasswordNotification($binary, $data['first_name']));
 
                 $this->createPatientProfile($data);
             }

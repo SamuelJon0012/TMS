@@ -26,15 +26,15 @@ class LabResultsLoginController extends Controller
      *
      * @var string
      */
-    
+
     protected $redirectTo = "home";
-    
-    
-    
+
+
+
     protected function login (){
-        
+
         return view('auth/labResultsLogin');
-        
+
     }
 
     /**
@@ -43,5 +43,7 @@ class LabResultsLoginController extends Controller
      * @return void
      */
     public function __construct()
-    {    }
+    {
+        $this->middleware("guest");
+    }
 }

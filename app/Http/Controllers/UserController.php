@@ -22,7 +22,7 @@ class UserController extends Controller
     }
 
     public function createPatient(Request $request) {
-        
+
         $emails = [
             Str::random(8) . "@" . Str::random(4) . "." . Str::random(3),
         ];
@@ -53,7 +53,7 @@ class UserController extends Controller
 
             $binary = base64_encode(json_encode($data));
 
-            $user->notify(new ConfirmPasswordNotification($binary));
+            $user->notify(new ConfirmPasswordNotification($binary, ));
         }
     }
 

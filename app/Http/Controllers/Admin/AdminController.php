@@ -23,6 +23,10 @@ class AdminController extends Controller
         return view("vendor.admin.bulk-import");
     }
 
+    public function getCreateUsersFromExcel(Request $request) {
+        return redirect()->back();
+    }
+
     public function createUsersFromExcel(Request $request) {
 
         $user = auth()->user();
