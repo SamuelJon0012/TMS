@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Notifications\ConfirmPasswordNotification;
 use App\PatientProfile;
+use App\Services\BurstIqService;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -51,7 +52,7 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
                     "name" =>  $row["first_name"] . " " . $row["last_name"],
                     "email" => $email,
                     "token" => $token,
-                    "password" => Hash::make("123456789"),
+                    "password" => Hash::make(uniqid()),
                     "json" => json_encode($data),
                     "dob" => date('Y/m/d',strtotime($row["date_of_birth"])),
                     "phone" => $row["phone_number"],
@@ -66,57 +67,10 @@ class BulkImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnF
 
                 $user->notify(new ConfirmPasswordNotification($binary));
 
-                $this->createPatientProfile($data);
+                BurstIqService::getInstance()->createPatientProfile($data);
             }
         }
 
         return $token;
-    }
-
-    private function createPatientProfile($data) {
-        $P = new PatientProfile();
-
-        $P->setAddress1($data['address1'])
-            ->setAddress2($data['address2'])
-            ->setCity($data['city'])
-            ->setDateOfBirth($data['date_of_birth'])
-            ->setState($data['state_code'])
-            ->setEmail($data['email'])
-            ->setBirthSex($data['birth_sex'])
-            ->setEthnicity($data['ethnicity'])
-            ->setFirstName($data['first_name'])
-            ->setLastName($data['last_name'])
-            ->setRace($data['race'])
-            ->setVSeeClinicId('trackmysolutions')
-            ->setZipcode($data['zipcode'])
-            ->setId($data['id']);
-
-        $phone_number = $data['phone_number'];
-
-        $phone_numbers= [
-            [
-                "is_primary" => "1",
-                "phone_type" => "1",
-                "phone_number" => $phone_number
-            ],
-        ];
-
-        $insurances = [[
-            "administrator_name" =>"Undefined",
-            "group_id" =>"0",
-            "employer_name" =>"Undefined",
-            "coverage_effective_date" =>"1/1/2021",
-            "issuer_id" =>"0000",
-            "primary_cardholder" => $data['first_name']." ".$data['last_name'],
-            "insurance_type" => 0,
-            "relationship_to_primary_cardholder" => 0,
-            "plan_type" => 0,
-            "plan_id" => "0",
-
-        ]];
-
-        $result = $P->setInsurances($insurances)
-            ->setPhoneNumbers($phone_numbers)
-            ->save();
     }
 }

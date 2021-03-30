@@ -460,7 +460,7 @@
 
                     <div style="margin: 1pc 0;">
                       <input type="checkbox" name="affirm_a1" required="true"/>&nbsp;
-                      I affirm that I am 
+                      I affirm that I am
                       <a href="javascript:void(0)" onclick="Popup.show('pop_Affirm_A1')">eligible to receive the vaccine</a>
                       @error('affirm_a1')
                         <span class="invalid-feedback" role="alert" style="display: block">
@@ -719,7 +719,7 @@
     });
   </script>
   @enderror
-  
+
 @endcomponent
 
 
@@ -805,16 +805,16 @@
       min-width: 9pc;
     }
     #frmSignBenefits_wrap{
-      display: flex; 
+      display: flex;
       flex-wrap: wrap;
     }
     #frmSignBenefits_name{
-      display: flex; 
+      display: flex;
       flex-wrap: wrap;
     }
     #frmSignBenefits_close{
-      margin-top: auto; 
-      text-align: right; 
+      margin-top: auto;
+      text-align: right;
       flex:1;
     }
 
@@ -842,26 +842,26 @@
   'title'=>'ASSIGNMENT OF BENEFITS / RELEASE OF MEDICAL INFORMATION',
 ])
   <p>
-    I hereby authorize and request that payment of benefits by my insurance companies, as 
-    identified in my account records or as discovered on health insurance portals be made directly 
-    to County of Bucks for services furnished to me or my dependent. 
+    I hereby authorize and request that payment of benefits by my insurance companies, as
+    identified in my account records or as discovered on health insurance portals be made directly
+    to County of Bucks for services furnished to me or my dependent.
   </p>
 
   <p>
-    I understand that I am not responsible for any charges not covered by insurance. I will never 
+    I understand that I am not responsible for any charges not covered by insurance. I will never
     receive a bill as a result of vaccination services provided by the County of Bucks.
   </p>
 
   <p>
-    In addition, I authorize County of Bucks to disclose any and all written information from my 
-    records to my insurance company and/or its designated representatives. Such disclosure shall be 
+    In addition, I authorize County of Bucks to disclose any and all written information from my
+    records to my insurance company and/or its designated representatives. Such disclosure shall be
     for reimbursement purposes for those services received.
   </p>
 
   <p>
-    I hereby release County of Bucks, its officers, agents, employees and any clinical staff 
-    associated with my case, from all liability that may arise as a result of disclosure of 
-    information to the above named insurance company(s) or their designated representatives. 
+    I hereby release County of Bucks, its officers, agents, employees and any clinical staff
+    associated with my case, from all liability that may arise as a result of disclosure of
+    information to the above named insurance company(s) or their designated representatives.
   </p>
 
   <p>
@@ -870,48 +870,48 @@
 
     <ol>
       <li>
-        I am aware and understand that this authorization will not be used unless my insurance 
-        company(s) or its designated representatives request records of information for 
-        reimbursement purposes; or seek to take action in reference to payment for treatment 
+        I am aware and understand that this authorization will not be used unless my insurance
+        company(s) or its designated representatives request records of information for
+        reimbursement purposes; or seek to take action in reference to payment for treatment
         services.
       </li>
       <li>
-        I agree to participate and assist County of Bucks or its designated representatives with 
+        I agree to participate and assist County of Bucks or its designated representatives with
         any appeal process necessary to collect payments for services rendered.
       </li>
       <li>
-        I am aware and have been advised of the provisions of Federal and State statues, rules and 
+        I am aware and have been advised of the provisions of Federal and State statues, rules and
         regulations that provide for my right to confidentiality of these records.
       </li>
       <li>
-        I understand that this assignment and authorization is subject to revocation at anytime 
-        except to the extent that action has been taken in reliance thereof. This authorization 
+        I understand that this assignment and authorization is subject to revocation at anytime
+        except to the extent that action has been taken in reliance thereof. This authorization
         will expire once reimbursement for services rendered is complete.
       </li>
       <li>
-        County of Bucks is filing for insurance benefits assigned to me and it can assume no 
+        County of Bucks is filing for insurance benefits assigned to me and it can assume no
         responsibility for guaranteeing payment of any charges from the insurance company(s).
       </li>
       <li>
         A firm contracted by County of Bucks for billing and collection purposes may do billing.
       </li>
       <li>
-        County of Bucks is appointed by me to act as my representative and on my behalf in any 
-        proceeding that may be necessary to seek payment from my insurance carrier. This includes 
+        County of Bucks is appointed by me to act as my representative and on my behalf in any
+        proceeding that may be necessary to seek payment from my insurance carrier. This includes
         receiving a copy of my insurance plan’s documents.
       </li>
       <li>
-        Should an overpayment take place, a refund check will be mailed to the authorized party 
+        Should an overpayment take place, a refund check will be mailed to the authorized party
         that is due the overpayment.
       </li>
       <li>
-        Should an overpayment take place, a refund check will be mailed to the authorized party 
+        Should an overpayment take place, a refund check will be mailed to the authorized party
         that is due the overpayment.
       </li>
       <li>
-        County of Bucks shall be entitled to the full amount of its charges. It will accept 
-        reimbursement, collectively, from Federal and State agencies and insurance companies as 
-        payment in full. 
+        County of Bucks shall be entitled to the full amount of its charges. It will accept
+        reimbursement, collectively, from Federal and State agencies and insurance companies as
+        payment in full.
       </li>
     </ol>
 

@@ -467,14 +467,11 @@ class BurstIq
     }
 
     public function save() {
-
         $json = view($this->view)->with(['data' => $this])->render();
-
         //echo($json);
         //file_put_contents(__DIR__.'/../storage/logs/lastBurst.json', $json);
 
         $results = $this->upsert($this->chain, $json);
-
         return $results;
 
     }

@@ -18,8 +18,8 @@ class RedirectIfNotAdmin
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (!Auth::user()->hasRole('admin')) {
-            return redirect()->back();
+        if (!Auth::user() || !Auth::user()->hasRole('admin')) {
+            return redirect("/login");
         }
 
         return $next($request);

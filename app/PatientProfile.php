@@ -36,6 +36,9 @@ class PatientProfile extends BurstIq
     private $vsee_clinic_id;
     private $phone_numbers; # Array of arrays [ is_primary / phone_type / phone_number ]
     private $insurances;
+    private $is_welcomed;
+    private $patient_consented;
+    private $customer_product_id;
 
     /**
      * @return mixed
@@ -494,6 +497,33 @@ class PatientProfile extends BurstIq
         }
 
         $this->insurances = $insurances_array;
+        return $this;
+    }
+
+    public function getIsWelcomed() {
+        return $this->is_welcomed;
+    }
+
+    public function setIsWelcomed($is_welcomed) {
+        $this->is_welcomed = $is_welcomed;
+        return $this;
+    }
+
+    public function getPatientConsented() {
+        return $this->patient_consented;
+    }
+
+    public function setPatientConsented($patient_consented) {
+        $this->patient_consented = $patient_consented;
+        return $this;
+    }
+
+    public function getCustomerProductId() {
+        return $this->customer_product_id;
+    }
+
+    public function setCustomerProductId($customer_product_id) {
+        $this->customer_product_id = $customer_product_id;
         return $this;
     }
 

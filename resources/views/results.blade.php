@@ -19,13 +19,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>00/00/0000</td>
-                            <td>Test type</td>
-                            <td>Negative</td>
-                            <td>00/00/0000 00:00:00</td>
-                        </tr>
+                        @foreach($result as $data)
+                            <tr>
+                                <td>1</td>
+                                <td>{{ $data['date_time'] }}</td>
+                                <td>{{ $data['description'] }}</td>
+                                <td>{{ $data['result'] }}</td>
+                                <td>{{ $data['expiration_datetime'] }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -33,12 +35,12 @@
     </div>
 
     <div class="test-result-image">
-        @if($positive)
+{{--        @if($positive)--}}
             <img src="{{ asset("images/positive.png") }}">
-        @endif
-        @if($negative)
-            <img src="{{ asset("images/negative.png") }}">
-        @endif
+{{--        @endif--}}
+{{--        @if($negative)--}}
+{{--            <img src="{{ asset("images/negative.png") }}">--}}
+{{--        @endif--}}
     </div>
 @endsection
 

@@ -211,7 +211,7 @@ Route::post('/vsee/saveonly', 'VSeeController@saveonly')->name('vsee_saveonly');
 Route::get('profile/{user}', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 Route::patch('profile/{user}', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 
-Route::get('/test/result/{check}', "TestResultController@result")->name('negative');
+Route::get('/test/result/', "TestResultController@result")->name('user-results');
 Route::get('search-sites', 'LocationController@searchSites');
 Route::get('switch-site', 'LocationController@switchSite');
 Route::get('change-locale/{locale}', 'LanguageController@changeLocale')->name('change_locale');
@@ -222,8 +222,8 @@ Route::get('scan-barcode', 'BarcodeController@scan')->name('barcode.scan');
 Route::post('scan-barcode', 'BarcodeController@getUserInformation')->name('barcode.scan');
 Route::post('barcode-image', 'BarcodeController@generateBarcodeImage')->name('barcode.image');
 
-Route::group(["prefix" => "admin", "as" => "admin.", "namespace" => "Admin"], function () {
-    Route::get("/", 'AdminController@index')->name("dashboard")->middleware('not.admin');
+Route::group(["prefix" => "admin", "as" => "admin.", "namespace" => "Admin", "middleware" => "not.admin"], function () {
+    Route::get("/", 'AdminController@index')->name("dashboard");
     Route::get("/login", "LoginController@index")->name("login");
     Route::get('bulk-import', 'AdminController@bulkImport')->name("bulk-import");
     Route::post('create-users-from-excel', 'AdminController@createUsersFromExcel')->name('create-users-from-excel');

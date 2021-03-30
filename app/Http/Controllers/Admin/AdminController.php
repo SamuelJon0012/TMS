@@ -26,9 +26,6 @@ class AdminController extends Controller
 
         $user = auth()->user();
 
-        if (!$user->hasRole("admin"))
-            return abort(404);
-
         $validator = Validator::make(
             [
                 'excelFile'      => $request->excelFile,

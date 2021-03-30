@@ -274,7 +274,7 @@ class Encounter extends BurstIq
         $this->datetime = $asset->datetime;
         $this->dx_icd10 = $asset->dx_icd10 ?? null;
         $this->referring_provider_id = $asset->referring_provider_id ?? null;
-        $this->patient_question_responses = $asset->patient_question_responses;
+        $this->patient_question_responses = $asset->patient_question_responses ?? null;
         $this->billing_provider_id = $asset->billing_provider_id;
         $this->procedures = $asset->procedures;
 
@@ -290,7 +290,7 @@ class Encounter extends BurstIq
             'datetime' => $asset->datetime,
             'dx_icd10' => $asset->dx_icd10 ?? null,
             'referring_provider_id' => $asset->referring_provider_id ?? null,
-            'patient_question_responses' => $asset->patient_question_responses,
+            'patient_question_responses' => $asset->patient_question_responses ?? null,
             'billing_provider_id' => $asset->billing_provider_id,
             'procedures' => $asset->procedures,
 
