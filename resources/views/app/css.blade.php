@@ -193,9 +193,8 @@
     #viewer-div {
         max-width: 1000px;
         margin: 0 auto;
-        -webkit-box-shadow: 0px 0px 10px 2px rgb(0 0 0 / 46%);
-        box-shadow: 0px 0px 10px 2px rgb(0 0 0 / 46%);
-        border-radius: 8px;
+        border-radius: 12px;
+        border: 1px solid var(--blue);
         padding: 20px;
         text-align: center;
     }
