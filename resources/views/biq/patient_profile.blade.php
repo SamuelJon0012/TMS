@@ -23,5 +23,9 @@
     "vsee_clinic_id":"{{$data->getVseeClinicId()}}",
     "phone_numbers": {!!json_encode($data->getPhoneNumbers())!!},
     "insurance": {!!json_encode($data->getInsurances())!!},
-    "birth_sex": {{(int)$data->getBirthSex()}}
+    "customer_product_id": [{!!json_encode($data->getCustomerProductId())!!}],
+    "birth_sex": {{(int)$data->getBirthSex()}},
+    "guarantor": {!! json_encode($data->getGuarantor()) !!},
+    "is_welcomed": "{{$data->getIsWelcomed()}}",
+    "patient_consented": "{{$data->getPatientConsented()}}"
     }

@@ -1,6 +1,9 @@
 @extends("vendor.admin.layout")
 
 @section("content")
+    <a href="#"><strong><span class="fa fa-dashboard"></span>Bulk Import</strong></a>
+    <br>
+    <hr>
     @if(session("error"))
         <div class="alert alert-danger">
             <span>{{ session("error") }}</span>
@@ -32,10 +35,9 @@
 @section("style")
     <style type="text/css">
         .choose-excel-file {
-            position: relative;
+            
             height: 30px;
         }
-
         .select-text {
             position: absolute;
             padding: 5px 11px;
@@ -43,7 +45,6 @@
             color: #FFF;
             z-index: 0;
         }
-
         input[name=excelFile] {
             opacity: 0;
             position: absolute;
@@ -51,7 +52,6 @@
             height: 30px;
             z-index: 1;
         }
-
         .excel-file-send {
             margin-top: 10px;
         }

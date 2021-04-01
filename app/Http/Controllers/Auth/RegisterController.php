@@ -31,8 +31,8 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
+    protected $redirectTo = "home";
+    
     /**
      * Create a new controller instance.
      *
@@ -70,8 +70,6 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'date_of_birth' => ['required', 'date'],
             'byProvider'=>['boolean'],
-            'affirm_a1'=>['accepted'],
-            'signedBy'=>['required', 'string'],
         ]);
 
         $validator->after(function($validator){
@@ -83,24 +81,10 @@ class RegisterController extends Controller
             $validator->errors()->add('date_of_birth', __('You must be at least 16 years old to register'));
             return;
           }
-
-          //Check email is in email.json if this is not a provider
-          $byProvider = $validator->getData()['byProvider'] ?? false;
-          if (!$byProvider){
-            $email = trim(strtolower(request('email')));
-            if (strpos($email,'@')){
-              if (!$emails = \json_decode(file_get_contents(public_path().'/email.json')))
-                $validator->errors()->add('email', __('Failed to load list of valid emails'));
-              if (!in_array($email, $emails)){
-                $validator->errors()->add('email', __('This email is not on the authorized list'));
-                $validator->errors()->add('emailPopup', 'Show'); //Triggers popup dialogue
-              }
-            }
-          }
         });
 
       }
-
+        
       return $validator;
     }
 
@@ -108,18 +92,10 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return \App\User 
      */
     protected function create(array $data)
     {
-        /*return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);*/
-
-        // dd($data);
-
         $dob = $data['date_of_birth'] ?? '';
 
         if (!empty($dob)) {
@@ -139,15 +115,12 @@ class RegisterController extends Controller
             'dob' => $data['date_of_birth'] ?? '',
             'password' => bcrypt($data['password']),
             'benefit_affirmed_on' => $benefitAffirmedOn,
-            //'burstiq_private_id' => $patientProfile->newPrivateId(),
+            'customer_product_id' => env('CUSTOMER_PRODUCT_ID'),
         ]);
 
         //Remove passwords
         unset($data['password']);
         unset($data['password_confirmation']);
-
-        // backup spool
-        // file_put_contents('/var/www/data/' . $data['email'], json_encode($data));
 
         if($data['r_type']) {
 
@@ -156,47 +129,26 @@ class RegisterController extends Controller
           if($role) {
               $user->attachRole($role);
           }
-
           //for BurstIq
           if($data['r_type'] == "patient") {
                 //Call for inserting Patient Record in BurstIq
-
-
-
               # instantiate a BurstIq class with optional username & password or use login() method later
 
               # Dev private ID 8311ae006d91d9c7
 
               $P = new PatientProfile();
-
-              $P->setAddress1($data['address1'])
-                  ->setAddress2($data['address2'])
-                  ->setCity($data['city'])
-                  ->setDateOfBirth($data['date_of_birth'])
-                  ->setDlNumber($data['dl_number'])
-                  ->setDlState($data['dl_state'])
-                  ->setEmail($data['email'])
-                  ->setBirthSex($data['birth_sex'])
-                  ->setEthnicity($data['ethnicity'])
-                  ->setFirstName($data['first_name'])
-                  ->setLastName($data['last_name'])
-                  ->setRace($data['race'])
-                  ->setVSeeClinicId('trackmysolutions')
-                  // Todo: This is not in the registration form
-                  //->setRelationshipToOwner($data['relationship_to_owner'])
-                  //->setSsn($data['ssn'])
-                  ->setState($data['state'])
-                  ->setZipcode($data['zipcode'])
-                  ->setId($user->id);
-
+//               print_r($P->setDateOfBirth($data['date_of_birth']));dd($data['date_of_birth']);
+              
+             
+                  //->setIsWelcomed('1')
               # sub assets must be stored as arrays and all fields must be included even if they are not required
 
               $phone_number = $data['phone_number'];
 
               $phone_numbers= [ // Todo: fix registration form (it's sending "Mobile")
                   [
-                      "is_primary" => "1",
-                      "phone_type" => "1",
+                      "is_primary" => true,
+                      "phone_type" => true,
                       "phone_number" => $phone_number
                   ],
                     // Todo: Add 2nd phone number if they have it
@@ -216,11 +168,29 @@ class RegisterController extends Controller
 
               ]];
 
-
-              $result = $P->setInsurances($insurances)
-                  ->setPhoneNumbers($phone_numbers)
-                  ->save();
-
+              $P->setAddress1($data['address1'])
+              ->setAddress2($data['address2'])
+              ->setCity($data['city'])
+              ->setDateOfBirth($data['date_of_birth'])
+              ->setEmail($data['email'])
+              ->setBirthSex($data['birth_sex'])
+              ->setEthnicity($data['ethnicity'])
+              ->setFirstName($data['first_name'])
+              ->setLastName($data['last_name'])
+              ->setRace($data['race'])
+              ->setVSeeClinicId('trackmysolutions')
+              // Todo: This is not in the registration form
+              //->setRelationshipToOwner($data['relationship_to_owner'])
+              //->setSsn($data['ssn'])
+              ->setCustomerProductId(env('CUSTOMER_PRODUCT_ID'))
+              ->setState($data['state'])
+              ->setZipcode($data['zipcode'])
+              ->setId($user->id)->setInsurances($insurances)
+              ->setPhoneNumbers($phone_numbers)
+              ->save();
+              ;
+             // $result = $P
+                  
               $user->notify(new RegistrationNotification());
           }
 
@@ -229,10 +199,11 @@ class RegisterController extends Controller
 
           }
 
+
         }
 
         return $user;
-    }
+    } 
 
     /**
      * Handles the registration of a patient by a provider
@@ -249,7 +220,7 @@ class RegisterController extends Controller
     public function doCreate(array $data) {
 
         // Bulk upload
-
         return $this->create($data);
     }
+
 }

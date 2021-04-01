@@ -173,29 +173,21 @@
                     if (first) {
 
                         var btn = document.createElement('button');
-                        btn.innerHTML = "check-in";
-                        btn.setAttribute('rel', cellData);
-                        rel = cellData;
-                        btn.setAttribute('class', 'seluser btn-success toolb');
-                        cell.appendChild(btn);
-
-                        var btn = document.createElement('button');
-                        btn.innerHTML = "scan"
-
-                        btn.setAttribute('rel', cellData);
-                        rel = cellData;
-                        btn.setAttribute('class', 'seluser-barcode btn-primary toolb');
-                        cell.appendChild(btn);
-
-
-                        var btn = document.createElement('button');
-                        btn.innerHTML = "Covid-19";
+                        btn.innerHTML = "Barcode";
                         btn.setAttribute('rel', cellData);
                         btn.setAttribute('name', rowData[1] );
                         rel = cellData;
                         btn.setAttribute('class', 'Covid-19 btn-primary toolb');
                         cell.appendChild(btn);
-                        
+
+                        var btn = document.createElement('button');
+                        btn.innerHTML = "Results";
+                        btn.setAttribute('rel', cellData);
+                        btn.setAttribute('name', rowData[1]);
+                        rel = cellData;
+                        btn.setAttribute('class', 'results btn-success toolb');
+                        cell.appendChild(btn);
+
 
                         first = false;
                     } else {
@@ -204,7 +196,7 @@
                     }
 
                     row.appendChild(cell);
-                    
+
                 });
 
 
@@ -340,7 +332,37 @@
             preloader_on();
             let id = $(this).attr('rel');
             let name = $(this).attr('name');
-			window.location.href = "/labResults/covid/"+id+"/"+name;
+            $.ajax({
+                url: '/labResults/checkCovidTest',
+                data:  {'barcode': id, 'name': name},
+                dataType: 'json',
+                success: function (data) {
+
+                	data = JSON.parse(JSON.stringify(data));
+
+                	if(data.action == 'redirect') {
+                		window.location.href = data.page;
+                	}
+                	else
+                	{
+						$("#barcode").val(id);
+                    	$("#barcode-form").submit();
+                	}
+                	
+                    preloader_off();
+
+                }
+            })
+            
+// 			window.location.href = "/labResults/covid/"+id+"/"+name;
+
+        });
+
+        $(document.body).on('click', '.results', function ()  {
+            preloader_on();
+            let id = $(this).attr('rel');
+            let name = $(this).attr('name');
+			window.location.href = "/labResults/set/"+id+"/"+name;
 
         });
 

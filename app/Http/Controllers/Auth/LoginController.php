@@ -26,7 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = "home?wlc=ture";
+//     protected $redirectTo = "/home?wlc=ture";
 
     /**
      * Create a new controller instance.
@@ -52,4 +52,7 @@ class LoginController extends Controller
                     
     }
     
+    public function authenticated($request , $user){
+            return redirect("/home");
+    }   
 }

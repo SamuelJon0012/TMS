@@ -1,13 +1,14 @@
 {
-  "id": 1,
-  "name": "Obviously this is a Todo",
-  "vicinity_name": "Tarpon Springs",
-  "address1": "1102 Blackrush Dr",
-  "address2": "",
-  "city": "Tarpon Springs",
-  "state": "FL",
-  "zipcode": "34689",
-  "county": "Pinellas"
-  "phone": "Added in 4.7"
-  "vsee_clinic_id": "trackmysolutions"
+  "id": {{(int)$data->getId()}},
+  "name": "{{$data->getName()}}",
+  "vicinity_name": "{{$data->getVicinityName()}}",
+  "address1": "{{$data->getAddress1()}}",
+  "address2": "{{$data->getAddress2()}}",
+  "city": "{{$data->getCity()}}",
+  "state": "{{$data->getState()}}",
+  "zipcode": "{{$data->getZipcode()}}",
+  "county": "{{$data->getCountry()}}"
+  "phone": "{{$data->getPhone()}}",
+  "vsee_clinic_id": "{{$data->getVseeClinicId()}}",
+  "customer_product_id": "{{$data->getCustomerProductId()}}"
 }

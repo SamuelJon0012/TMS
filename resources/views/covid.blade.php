@@ -15,58 +15,47 @@
     </div>
     <div class="row justify-content-center">
         <p class='mt-3'>
-            The Health Insurance Portability and Accountability Act (HIPAA) provides safeguards to protect your privacy. Implementation of HIPAA requirements officially began on April 14, 2003. Many of the policies have been our practice for years. 
+            The Health Insurance Portability and Accountability Act (HIPAA) provides safeguards to protect your privacy. Specifically, there are rules and restrictions on who may see or be notified of your Protected Health Information (PHI). These restrictions do not include the normal interchange of information  necessary  to  provide  you  with  standard  employee  benefits  and  services.  HIPAA provides  certain  rights  and  protections  to  you.  We  balance  these  needs  with  our  goal  of maintaining a safe workplace for all. Additional information is available from the U.S. Department of Health and Human Services. <a href='www.hhs.gov'>www.hhs.gov</a> 
         </p>
-        <p>
-        	What this is all about: 
-        </p>
-        <p>
-            Specifically, there are rules and restrictions on who may see or be notified of your Protected Health Information (PHI). These restrictions do not include the normal interchange of information necessary to provide you with office services. HIPAA provides certain rights and protections to you as the patient. We balance these needs with our goal of providing you with quality professional service and care. Additional information is available from the U.S. Department of Health and Human Services. <a href='www.hhs.gov'>www.hhs.gov</a> 
-       </p>
        
         <p>
-            We have adopted the following policies: 
+            We have adopted the following policies:  
        </p>
        <div class='row'>
        		<div class='col-12'>
            		<ol type = "1" class="ml-3">
            			<li class="mb-3">
-           			   Patient information will be kept confidential except as is necessary to provide services or to ensure that all administrative matters related to your care are handled appropriately. 
+						Your testing information will be kept confidential except as necessary to maintain a safe workplace.            			</li>
+           			<li class="mb-3">
+						You agree to bring any concerns or complaints regarding privacy to the attention of HR.           			</li>
+           			<li class="mb-3">
+						Your access to your testing records will be in accordance with state and federal laws.
            			</li>
            			<li class="mb-3">
-           				You agree to bring any concerns or complaints regarding privacy to the attention of the office manager.
-           			</li>
-           			<li class="mb-3">
-           				Your confidential information will not be used for the purposes of marketing or advertising of products, goods, or services.
-           			</li>
-           			<li class="mb-3">
-           				We agree to provide patients with access to their records in accordance with state and federal laws.
+						You  have  the  right  to  request  restrictions  in  the  use  of  your  PHI.  However,  we  are  not obligated to alter firm policies to conform to your request.
        				</li>
-           			<li class="mb-3">
-           				You have the right to request restrictions in the use of your protected health information and to request change in certain policies used within the office concerning your PHI. However, we are not obligated to alter internal policies to conform to your request.
-           			</li>
            		</ol>
     
-                The sign-off of this specific HIPAA release form only applies to Covid-19 testing data. The Covid-19 testing data will only be viewed by person(s) who have signed valid non-disclosure agreements including the CLIA certified testing vendor, corporate medical and site personnel,
-                and testing teams, and as required by local/state or other government entities. The retention period of this Covid-19 testing information will end at the termination of the testing engagement and will be purged from the HIPAA compliant systems using NIST compliant methods. 
-			</div>
+    			This specific HIPAA release form only applies to Covid-19 on-site testing data, which will only be accessible  to  authorized  personnel,
+      			our  third  party  testing  vendor's  employees  who  have executed valid non-disclosure agreements, and as required by local/state or other government entities.
+    		    The  retention  period  of  this  Covid-19  on-site  testing  information  will  end  at  the termination of the on-site testing program and will be purged from the HIPAA compliant systems.
+ 			</div>
 		</div>
 
 
     </div>
     <div class="row mt-5 font-weight-bold">
     	<div class="col-12">
-    		Employee ID #: {{$id}}
-    	</div>
-
-    	<div class="col-12  mt-2">
-    		Please Sign Below: 
-    	</div>
-
-    	<div class="col-12">
-			I, <u>{{$name}}</u> date <u> {{date("Y-d-m")}} </u>do hereby consent and acknowledge my agreement to the terms set
-			 forth in the HIPAA INFORMATION FORM and any subsequent changes in office policy. I understand that this consent shall remain
-			 in force from this time forward
+    		<div class='col-6'>
+    			Name: <u>{{$name}}</u>
+			</div>
+    		<div class='col-6'>
+    			Date: <u> {{date("Y-d-m")}} </u>
+			</div>
+	    	<div class="col-12">
+				I, {{$name}} do hereby consent and acknowledge my agreement to the terms set forth in this HIPAA INFORMATION and CONSENT FORM and any subsequent changes in related policies.
+			    I understand that this consent shall remain in force from this time forward.
+    		</div>
     	</div>
     </div>
      

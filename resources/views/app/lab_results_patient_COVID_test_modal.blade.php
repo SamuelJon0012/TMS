@@ -201,7 +201,7 @@ $(function(){
             .then(function(data){
                 checkAjaxResponse(data);
                 frmTestQuestions.setData(data);
-                if (frmTestQuestions.isSelfTesting)
+                if ( (frmTestQuestions.isSelfTesting.value == 'yes') || (frmTestQuestions.isSelfTesting.value == 'true') )
                     Modals.show('patient-COVID-PCRCode-modal');
                 else
                     Modals.show('patient-COVID-test3-modal');
@@ -219,23 +219,26 @@ $(function(){
         preloader_on();
         frmTestKitCode.btnSend.disabled = true;
 
-        $.ajax({
-            type: "POST",
-            url:'/patient-test-kit',
-            data: $(frmTestKitCode).serialize(),
-            processData: false,
-        })
-        .then(function(data){
-            checkAjaxResponse(data);
-            Modals.show('patient-COVID-KitDone-modal');
-        })
-        .always(function(){
-            preloader_off();
-            frmTestKitCode.btnSend.disabled = false;
-        });
+        decorateAjax(
+            $.ajax({
+                type: "POST",
+                url:'/patient-test-kit',
+                data: $(frmTestKitCode).serialize(),
+                processData: false,
+            })
+            .then(function(data){
+                if (checkAjaxResponse(data))
+                    Modals.show('patient-COVID-KitDone-modal');
+            })
+            .always(function(){
+                preloader_off();
+                frmTestKitCode.btnSend.disabled = false;
+            })
+        );
 
     }
 });
+
 </script>
 
 <style>
@@ -356,7 +359,7 @@ $(function(){
         {{ __('Are you performing a COVID test at a facility or are you going to preform a self-given sample collection and send to testing lab?') }}
     </div>
     <div class="patient-COVID-test-self-row">
-        <div class="patient-COVID-test-self-item" onclick="frmTestQuestions.isSelfTesting='no'; frmTestQuestions.handleSelfTestingSelected('no')">
+        <div class="patient-COVID-test-self-item" onclick="frmTestQuestions.handleSelfTestingSelected('no')">
             {{ __('Performing COVID Test at ON-SITE testing facility') }}
         </div>
         <div class="patient-COVID-test-self-item" onclick="frmTestQuestions.handleSelfTestingSelected('yes')">
@@ -575,7 +578,9 @@ $(function(){
         <p>at the testing facility to proceed with testing.</p><br>
         <p>Show the following barcode to the</p>
         <p>testing administrator</p>
-        <img width="300" height="100" src="{{route('barcode',['code'=>$patient_id])}}">
+<!--         <img width="300" height="100" src="{{route('barcode',['code'=>$patient_id])}}"> -->
+        <img width="300" height="100" src="/images/SSCC-Pallet-Barcode.jpg">
+        <p class='barcode'>{{sprintf('%013d', Auth::user()->id)}}</p>
     </div>
 
 @endcomponent
@@ -617,7 +622,7 @@ $(function(){
     <div style="text-align: center; display: flex; flex-direction: column; max-width: 32pc; margin:auto">
         <h2>{{__('Questionnaire Complete!')}}</h2>
         <p>{{__('Thank you for entering your Activation Code.')}}</p>
-        <p>{{__('Please follow the instructions provided with your test kit and mail your specimen smaple to the lab for analysis.')}}</p>
+        <p>{{__('Please follow the instructions provided with your test kit and mail your specimen sample to the lab for analysis.')}}</p>
         <p>{{__('Click the close button to return to your home page')}}</p>
         <input  type="button" value="{{__('Close')}}"  onclick="document.location='{{route('home')}}'; " class="btn btn-primary form-control"/>
     </div>

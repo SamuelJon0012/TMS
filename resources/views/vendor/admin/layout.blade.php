@@ -25,7 +25,6 @@
         {
             color: #303F9F;
         }
-
         .nav>li>a:hover, .nav>li>a:focus
         {
             background-color: #EEEEEE;
@@ -62,7 +61,13 @@
                         <li><a href="#"><i class="fa fa-user-secret"></i> My Profile</a></li>
                     </ul>
                 </li>
-                <li><a href="{{ route("logout") }}"><i class="fa fa-sign-out"></i> Logout</a></li>
+                <li>
+                    <a href="{{ route("logout") }}" onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();"><i class="fa fa-sign-out"></i> Logout</a>
+                </li>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
             </ul>
         </div>
     </div>

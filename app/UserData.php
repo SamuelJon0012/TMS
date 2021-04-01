@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserData extends Model
 {
     const DataType_COVID_Test_Questionare = 'COVIDTestQuestions';
+    const DataType_Last_Rapid_Antigen = 'LastRapidAntigen';
 
     protected $table = 'user_data';
     protected $primaryKey = 'id';
@@ -28,5 +29,10 @@ class UserData extends Model
             $data = json_encode($data);
 
         self::updateOrCreate(compact('user_id','data_type'), ['data'=>$data]);
+    }
+
+    static function read(int $user_id, string $data_type){
+        if ($rec = self::where('user_id',$user_id)->where('data_type',$data_type)->first())
+            return $rec->data;
     }
 }

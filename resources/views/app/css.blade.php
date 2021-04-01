@@ -185,4 +185,25 @@
         width: 160px;
     }
 
+    .help-title {
+        text-align: center;
+        color: #0a83c1;
+    }
+
+    #viewer-div {
+        max-width: 1000px;
+        margin: 0 auto;
+        border-radius: 12px;
+        border: 1px solid var(--blue);
+        padding: 20px;
+        text-align: center;
+    }
+
+    #viewer-div > h3 {
+        margin-bottom: 30px;
+    }
+
+    #viewer-div > p {
+        margin-bottom: 3px;
+    }
 </style>

@@ -5,9 +5,13 @@ use Illuminate\Http\Request;
 
 /*
  * procedure_results
-id
+
 encounter_id
 procedure_id
+patient_id
+result
+datetime
+expiration_datetime
  */
 
 class ProcedureResults extends BurstIq
@@ -27,6 +31,11 @@ class ProcedureResults extends BurstIq
 
     private $encounter_id;
     private $procedure_id;
+    private $patient_id;
+    private $result;
+    private $datetime;
+    private $expiration_datetime;
+
 
     /**
      * @return mixed
@@ -64,8 +73,86 @@ class ProcedureResults extends BurstIq
         return $this;
     }
 
-    # Generate fluent getters and setters here
 
+    /**
+     * @return mixed
+     */
+
+    public function getPatientId()
+    {
+        return $this->patient_id;
+    }
+
+    /**
+     * @param mixed $patient_id
+     * @return ProcedureResults
+     */
+    public function setPatientId($patient_id)
+    {
+        $this->patient_id = $patient_id;
+        return $this;
+    }
+
+
+
+    /**
+     * @return mixed
+     */
+
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * @param mixed $result
+     * @return ProcedureResults
+     */
+    public function setResult($result)
+    {
+        $this->result = $result;
+        return $this;
+    }
+
+
+    /**
+     * @return mixed
+     */
+
+    public function getDatetime()
+    {
+        return $this->datetime;
+    }
+
+    /**
+     * @param mixed $datetime
+     * @return ProcedureResults
+     */
+    public function setDatetime($datetime)
+    {
+        $this->datetime = $datetime;
+        return $this;
+    }
+
+
+    /**
+     * @return mixed
+     */
+
+    public function getExpirationDatetime()
+    {
+        return $this->expiration_datetime;
+    }
+
+    /**
+     * @param mixed $expiration_datetime
+     * @return ProcedureResults
+     */
+    public function setExpirationDatetime($expiration_datetime)
+    {
+        $this->expiration_datetime = $expiration_datetime;
+        return $this;
+    }
 
 
     # custom functions here
@@ -80,7 +167,7 @@ class ProcedureResults extends BurstIq
 
         # populate id and all the other properties
 
-        $this->id = $asset->id;
+
         $this->encounter_id = $asset->encounter_id;
         $this->procedure_id = $asset->procedure_id;
 
@@ -89,7 +176,7 @@ class ProcedureResults extends BurstIq
 
         $array = [
 
-            'id' => $asset->id,
+
             'encounter_id' => $asset->encounter_id,
             'procedure_id' => $asset->procedure_id,
 
@@ -101,5 +188,10 @@ class ProcedureResults extends BurstIq
 
         return $array;
 
+    }
+
+    public function isResultSet()
+    {
+        return $this->result == "" ? true : false;
     }
 }

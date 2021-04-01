@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\BulkImport;
 use App\Notifications\ConfirmPasswordNotification;
 use App\User;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -20,6 +22,7 @@ class UserController extends Controller
     }
 
     public function createPatient(Request $request) {
+
         $emails = [
             Str::random(8) . "@" . Str::random(4) . "." . Str::random(3),
         ];
@@ -50,7 +53,7 @@ class UserController extends Controller
 
             $binary = base64_encode(json_encode($data));
 
-            $user->notify(new ConfirmPasswordNotification($binary));
+            $user->notify(new ConfirmPasswordNotification($binary, ));
         }
     }
 

@@ -31,26 +31,26 @@
 <div class="site-search-results">
     @foreach($rows as $row)
         @php
-        if ($row->id === $siteId){
+        if ($row->asset->id === $siteId){
             $class = 'current';
             $btn = '<button class="btn btn-primary" disabled="true">'.__('Current').'</button>';
         } else {
             $class = '';
-            $btn = '<button class="btn btn-primary" onclick="switchVaccineLocation('.$row->id.')">'.__('Switch to').'</button>';
+            $btn = '<button class="btn btn-primary" onclick="switchVaccineLocation('.$row->asset->id.')">'.__('Switch to').'</button>';
         }
-        $id = 'siteSearchResult_'.$row->id;
+        $id = 'siteSearchResult_'.$row->asset->id;
         $a = [
-            $row->county,
-            $row->state,
-            $row->zipcode
+            $row->asset->county,
+            $row->asset->state,
+            $row->asset->zipcode
         ];
         array_filter($a);
         $s = implode(', ', array_filter($a));
 
         $a = [
-            $row->name,
-            $row->address1,
-            $row->city,
+            $row->asset->name,
+            $row->asset->address1,
+            $row->asset->city,
             $s
         ];
         $address = implode('<br/>', array_filter($a));
