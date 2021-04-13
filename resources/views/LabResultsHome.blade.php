@@ -151,6 +151,10 @@
                     <button id="CovidTest" class="btn btn-primary form-control" onclick="window.location.href='/labResults/CovidTest'">{{ __('Start COVID Test') }}</button>
                 </div>
 
+                <div class="col-6 col-collapse">
+                    <button id="myLabResultsBtn" class="btn btn-primary form-control" onclick="window.location.href='/labResults/my'">{{ __('MyLab Results') }}</button>
+                </div>
+
             </div>
           @endif
 

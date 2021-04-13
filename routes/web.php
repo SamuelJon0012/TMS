@@ -82,6 +82,7 @@ if (env('APPLICATION', 'labresult')) {
     Route::post('/labResults/saveCovid19', 'LabResultsHomeController@saveCovid19')->name('showCovid');
 
     Route::get("/labResults/CovidTest", 'LabResultsPatientCOVIDTestController@patient_COVID_test_modal')->name('showCovidTest');
+    Route::get("/labResults/my", 'LabResultsPatientCOVIDTestController@myLabResults')->middleware("auth")->name('myLabResults');
 }
 
 //Route::get('/vaccine', function () {

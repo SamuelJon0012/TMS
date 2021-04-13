@@ -25,7 +25,7 @@
 
     <style type="text/css">
     @yield('styleCss')
-    </style> 
+    </style>
     @stack('pageHeader')
 </head>
 <body
@@ -38,11 +38,11 @@
                 <a class="navbar-brand small-logo" href="{{ url('/') }}">
 			             <img src="/{{'images/'}}{{env('APP_logo')}}" style="height:48px;" />
                 </a>
-                
+
                 @if(env('APP_NAME') == 'TrackMy Lab Results')
 					<img src = "{{ asset('images/HITL_Logo.jpg') }}" height= '48'>
                 @endif
-                
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -107,8 +107,9 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    @yield("patientJs")
     <script>
-    @yield('scriptJs')
+        @yield('scriptJs')
     </script>
 
     @include('app.js')
