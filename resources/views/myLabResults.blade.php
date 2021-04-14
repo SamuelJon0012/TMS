@@ -4,110 +4,111 @@
     <div class="container" id="covidResult">
         <div class="row">
             <div class="col-12">
-                <div id="search-results"></div>
+                <div id="search-results">
+                    @if(!$results)
+                        <h3 class="text-danger text-center">{{ __('This user has not taken any tests') }}</h3>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
 @endsection
 
 @section('patientJs')
-    <script>
-        var DT = false;
-        function doCreateTable(tableData) {
-            var table = document.createElement('table');
-            table.setAttribute("id", "search-table");
-            table.setAttribute("class", "stripe");
-            var tableHead = document.createElement('thead');
-            var tableBody = document.createElement('tbody');
+    @if($results)
+        <script>
+            function doCreateTable(tableData) {
+                var table = document.createElement('table');
+                table.setAttribute("id", "search-table");
+                table.setAttribute("class", "table table-striped table-hover stripe mb-2 ");
+                var tableHead = document.createElement('thead');
+                var tableBody = document.createElement('tbody');
 
-            let once = true;
+                let once = true;
 
-            let row;
+                let row;
 
-            let rel;
+                let rel;
 
-            tableData.forEach(function (rowData) {
+                tableData.forEach(function (rowData) {
 
-                let first = true;
+                    let first = true;
 
-                if (once) {
-                    row = document.createElement('tr');
+                    if (once) {
+                        row = document.createElement('tr');
 
-                    rowData.forEach(function (cellData) {
-                        var cell = document.createElement('th');
-                        cell.appendChild(document.createTextNode(cellData));
-                        row.appendChild(cell);
-                    });
-
-                    tableHead.appendChild(row);
-                    once = false;
-
-                } else {
-
-                    row = document.createElement('tr');
-
-                    rowData.forEach(function (cellData) {
-                        var cell = document.createElement('td');
-
-                        if (first) {
-                            first = false;
-                        } else {
+                        rowData.forEach(function (cellData) {
+                            var cell = document.createElement('th');
                             cell.appendChild(document.createTextNode(cellData));
-                        }
+                            row.appendChild(cell);
+                        });
 
-                        row.appendChild(cell);
-                    });
-                    tableBody.appendChild(row);
-                }
-            });
+                        tableHead.appendChild(row);
+                        once = false;
 
-            table.appendChild(tableHead);
-            table.appendChild(tableBody);
-            table.after("<button type='button'>Test</button>")
-            table.after("<button type='button'>Test 1</button>")
-            $('#search-results').html('');
+                    } else {
+
+                        row = document.createElement('tr');
+
+                        rowData.forEach(function (cellData) {
+                            var cell = document.createElement('td');
+                            cell.appendChild(document.createTextNode(cellData));
+                            row.appendChild(cell);
+                        });
+                        tableBody.appendChild(row);
+                    }
+                });
+
+                table.appendChild(tableHead);
+                table.appendChild(tableBody);
+                $("#search-results").html('');
                 document.getElementById("search-results").appendChild(table);
+                $("#search-results").append('<button type="button" class="btn btn-primary mr-2" onclick="exportResults()">{{ __("Export") }}</button><form id="resultExportForm" action="{{ route('resultsPdf') }}" method="post">@csrf</form>');
+                $("#search-results").append("<button type='button' class='btn btn-primary' onclick='exportPdf()'>{{ __("Result PDF") }}</button>");
 
-            $("#search-results").add("<");
-
-        }
-
-        function doPatientSearch(o) {
-            if (!checkAjaxResponse(o))
-                return;
-
-            data = o.data;
-
-            let row, xdate_of_birth;
-
-            dtData = [['', 'Patient Name', 'Date of Birth', 'Patient Email', 'Patient Phone']];
-
-            data.forEach(function (row) {
-                xdate_of_birth = '1970-01-01';
-                try{
-                    xdate_of_birth = row.date_of_birth.$date.replace('T00:00:00.000Z', '');
-                } catch(e){
-                    xdate_of_birth = '1970-01-01';
-                }
-
-                dtData.push([
-                    row.id, row.first_name + ' ' + row.last_name,
-                    xdate_of_birth,
-                    row.email,
-                    row.phone_numbers[0].phone_number
-                ]);
-            });
-
-            if (DT !== false) {
-                DT.destroy(true);
             }
-            doCreateTable(dtData);
-        }
-    </script>
+
+            function doPatientSearch(o) {
+                if (!checkAjaxResponse(o))
+                    return;
+
+                data = o.data;
+
+                dtData = [['Test Date', 'Test Type', 'Result', 'Result Date & Time', 'Result Corrected']];
+
+                data.forEach(function (row) {
+                    dtData.push([
+                        row.date,
+                        row.type,
+                        row.result,
+                        row.resultDate,
+                        row.resultCorrected
+                    ]);
+                });
+
+                doCreateTable(dtData);
+            }
+
+            function exportResults() {
+                $('#resultExportForm').submit();
+            }
+
+            function exportPdf() {
+                console.log("exportPdf");
+            }
+        </script>
+    @endif
 @endsection
 @section('scriptJs')
-    let tableData = JSON.parse('{!! $data->content() !!}');
-    $(function() {
-        doPatientSearch(tableData);
-    })
+    @if($results)
+        let tableData = JSON.parse('{!! $results->content() !!}');
+        $(function() {
+            doPatientSearch(tableData);
+        })
+    @endif
+@endsection
+@section('styleCss')
+    #resultExportForm {
+        display: none;
+    }
 @endsection
