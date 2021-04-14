@@ -108,6 +108,13 @@
                   'caption'=>__('My Lab Results'),
                   'hint'=>'This feature is currently unavailable',
                 ],
+                [
+                  'id'=>'exportResults',
+                  'image'=>asset('images/lab-icon.png'),
+                  'caption'=>__('Export Results'),
+                  'hint'=>'Export Results',
+                  'onclick'=>'document.location=\'' . route('myLabResults') . '\'',
+                ],
 /*                 [
                   'id'=>'myvaccine-button',
                   'image'=>asset('images/syringe.png'),
@@ -149,6 +156,10 @@
 
                 <div class="col-6 col-collapse">
                     <button id="CovidTest" class="btn btn-primary form-control" onclick="window.location.href='/labResults/CovidTest'">{{ __('Start COVID Test') }}</button>
+                </div>
+
+                <div class="col-6 col-collapse">
+                    <button id="myLabResultsBtn" class="btn btn-primary form-control" onclick="window.location.href='/labResults/my'">{{ __('MyLab Results') }}</button>
                 </div>
 
             </div>

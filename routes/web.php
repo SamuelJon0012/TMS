@@ -82,6 +82,9 @@ if (env('APPLICATION', 'labresult')) {
     Route::post('/labResults/saveCovid19', 'LabResultsHomeController@saveCovid19')->name('showCovid');
 
     Route::get("/labResults/CovidTest", 'LabResultsPatientCOVIDTestController@patient_COVID_test_modal')->name('showCovidTest');
+    Route::get("/labResults/my", 'LabResultsPatientCOVIDTestController@myLabResults')->middleware("auth")->name('myLabResults');
+    Route::get("/labResults/pdf", 'LabResultsPatientCOVIDTestController@getPdf')->middleware("auth")->name('resultsPdf');
+    Route::post("/labResults/pdf", 'LabResultsPatientCOVIDTestController@getPdf')->middleware("auth")->name('resultsPdf');
 }
 
 //Route::get('/vaccine', function () {
